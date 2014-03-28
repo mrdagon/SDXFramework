@@ -1,0 +1,174 @@
+﻿#pragma once//☀DXLIB
+#include <Multimedia/SDX.h>
+
+namespace SDX
+{
+/** ゲームパッドの種類.*/
+enum class PadType
+{
+	KeyAndPad1 = DX_INPUT_KEY_PAD1,//!< 
+	Pad1 = DX_INPUT_PAD1,//!< 
+	Pad2 = DX_INPUT_PAD2,//!< 
+	Pad3 = DX_INPUT_PAD3,//!< 
+	Pad4 = DX_INPUT_PAD4,//!< 
+	KeyBord = DX_INPUT_KEY//!< 
+};
+
+/** ゲームパッドコード.*/
+enum class PadCode :unsigned int
+{
+	Down = PAD_INPUT_DOWN,
+	Left = PAD_INPUT_LEFT,
+	Right = PAD_INPUT_RIGHT,
+	Up = PAD_INPUT_UP,
+	Button1 = PAD_INPUT_1,
+	Button2 = PAD_INPUT_2,
+	Button3 = PAD_INPUT_3,
+	Button4 = PAD_INPUT_4,
+	Button5 = PAD_INPUT_5,
+	Button6 = PAD_INPUT_6,
+	Button7 = PAD_INPUT_7,
+	Button8 = PAD_INPUT_8,
+	Button9 = PAD_INPUT_9,
+	Button10 = PAD_INPUT_10,
+	Button11 = PAD_INPUT_11,
+	Button12 = PAD_INPUT_12,
+	Button13 = PAD_INPUT_13,
+	Button14 = PAD_INPUT_14,
+	Button15 = PAD_INPUT_15,
+	Button16 = PAD_INPUT_16,
+	Button17 = PAD_INPUT_17,
+	Button18 = PAD_INPUT_18,
+	Button19 = PAD_INPUT_19,
+	Button20 = PAD_INPUT_20,
+	Button21 = PAD_INPUT_21,
+	Button22 = PAD_INPUT_22,
+	Button23 = PAD_INPUT_23,
+	Button24 = PAD_INPUT_24,
+	Button25 = PAD_INPUT_25,
+	Button26 = PAD_INPUT_26,
+	Button27 = PAD_INPUT_27,
+	Button28 = PAD_INPUT_28
+};
+
+/** キーボードコード.*/
+enum class KeyCode
+{
+	Null = -1,
+	Back = KEY_INPUT_BACK,
+	Tab = KEY_INPUT_TAB,
+	Return = KEY_INPUT_RETURN,
+	LShift = KEY_INPUT_LSHIFT,
+	RShift = KEY_INPUT_RSHIFT,
+	LControl = KEY_INPUT_LCONTROL,
+	RControl = KEY_INPUT_RCONTROL,
+	Escape = KEY_INPUT_ESCAPE,
+	Space = KEY_INPUT_SPACE,
+	PageUp = KEY_INPUT_PGUP,
+	PageDown = KEY_INPUT_PGDN,
+	End = KEY_INPUT_END,
+	Home = KEY_INPUT_HOME,
+	Left = KEY_INPUT_LEFT,
+	Up = KEY_INPUT_UP,
+	Right = KEY_INPUT_RIGHT,
+	Down = KEY_INPUT_DOWN,
+	Insert = KEY_INPUT_INSERT,
+	Delete = KEY_INPUT_DELETE,
+
+	Minus = KEY_INPUT_MINUS,
+	Yen = KEY_INPUT_YEN,
+	PrevTrack = KEY_INPUT_PREVTRACK,
+	Period = KEY_INPUT_PERIOD,
+	Slash = KEY_INPUT_SLASH,
+	LAlt = KEY_INPUT_LALT,
+	RAlt = KEY_INPUT_RALT,
+	Scroll = KEY_INPUT_SCROLL,
+	Semicolon = KEY_INPUT_SEMICOLON,
+	Colon = KEY_INPUT_COLON,
+	LBracket = KEY_INPUT_LBRACKET,
+	RBracket = KEY_INPUT_RBRACKET,
+	At = KEY_INPUT_AT,
+	Backslash = KEY_INPUT_BACKSLASH,
+	Comma = KEY_INPUT_COMMA,
+	Capslock = KEY_INPUT_CAPSLOCK,
+	Pause = KEY_INPUT_PAUSE,
+
+	Numpad0 = KEY_INPUT_NUMPAD0,
+	Numpad1 = KEY_INPUT_NUMPAD1,
+	Numpad2 = KEY_INPUT_NUMPAD2,
+	Numpad3 = KEY_INPUT_NUMPAD3,
+	Numpad4 = KEY_INPUT_NUMPAD4,
+	Numpad5 = KEY_INPUT_NUMPAD5,
+	Numpad6 = KEY_INPUT_NUMPAD6,
+	Numpad7 = KEY_INPUT_NUMPAD7,
+	Numpad8 = KEY_INPUT_NUMPAD8,
+	Numpad9 = KEY_INPUT_NUMPAD9,
+	Multiply = KEY_INPUT_MULTIPLY,
+	Add = KEY_INPUT_ADD,
+	Subtract = KEY_INPUT_SUBTRACT,
+	Decimal = KEY_INPUT_DECIMAL,
+	Divide = KEY_INPUT_DIVIDE,
+	NUMPADEnter = KEY_INPUT_NUMPADENTER,
+	F1 = KEY_INPUT_F1,
+	F2 = KEY_INPUT_F2,
+	F3 = KEY_INPUT_F3,
+	F4 = KEY_INPUT_F4,
+	F5 = KEY_INPUT_F5,
+	F6 = KEY_INPUT_F6,
+	F7 = KEY_INPUT_F7,
+	F8 = KEY_INPUT_F8,
+	F9 = KEY_INPUT_F9,
+	F10 = KEY_INPUT_F10,
+	F11 = KEY_INPUT_F11,
+	F12 = KEY_INPUT_F12,
+	A = KEY_INPUT_A,
+	B = KEY_INPUT_B,
+	C = KEY_INPUT_C,
+	D = KEY_INPUT_D,
+	E = KEY_INPUT_E,
+	F = KEY_INPUT_F,
+	G = KEY_INPUT_G,
+	H = KEY_INPUT_H,
+	I = KEY_INPUT_I,
+	J = KEY_INPUT_J,
+	K = KEY_INPUT_K,
+	L = KEY_INPUT_L,
+	M = KEY_INPUT_M,
+	N = KEY_INPUT_N,
+	O = KEY_INPUT_O,
+	P = KEY_INPUT_P,
+	Q = KEY_INPUT_Q,
+	R = KEY_INPUT_R,
+	S = KEY_INPUT_S,
+	T = KEY_INPUT_T,
+	U = KEY_INPUT_U,
+	V = KEY_INPUT_V,
+	W = KEY_INPUT_W,
+	X = KEY_INPUT_X,
+	Y = KEY_INPUT_Y,
+	Z = KEY_INPUT_Z,
+	_0 = KEY_INPUT_0,
+	_1 = KEY_INPUT_1,
+	_2 = KEY_INPUT_2,
+	_3 = KEY_INPUT_3,
+	_4 = KEY_INPUT_4,
+	_5 = KEY_INPUT_5,
+	_6 = KEY_INPUT_6,
+	_7 = KEY_INPUT_7,
+	_8 = KEY_INPUT_8,
+	_9 = KEY_INPUT_9
+};
+
+/** マウスボタンコード.*/
+enum class MouseCode
+{
+	Left = MOUSE_INPUT_LEFT,
+	Right = MOUSE_INPUT_RIGHT,
+	Middle = MOUSE_INPUT_MIDDLE,
+	_4 = MOUSE_INPUT_4,
+	_5 = MOUSE_INPUT_5,
+	_6 = MOUSE_INPUT_6,
+	_7 = MOUSE_INPUT_7,
+	_8 = MOUSE_INPUT_8
+};
+}
