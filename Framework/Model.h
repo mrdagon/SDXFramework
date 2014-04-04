@@ -8,7 +8,7 @@
 namespace SDX
 {
 /** ShapeとSpriteをまとめて、2Dモデルを表すクラス.*/
-/**    \include ModelSample.h*/
+/** \include ModelSample.h*/
 class Model
 {
 private:
@@ -20,7 +20,7 @@ private:
 protected:
     bool isRemove = false;
 public:
-    std::vector<std::shared_ptr<Sprite>> sprites;            
+    std::vector<std::shared_ptr<Sprite>> sprites;
     std::unique_ptr<Shape> shape;
 
     Model( Shape *shape , Sprite *sprite ):
@@ -28,7 +28,6 @@ public:
     {
         if( sprite ) sprites.emplace_back(sprite);
     }
-
 
     /** 消滅フラグの取得.*/
     bool GetRemoveFlag()
@@ -80,7 +79,7 @@ public:
                 Screen::SetBright(Color::White);
             }
         }
-        
+
         //当たり判定を表示するならコメントアウト解除
         //shape.get()->Draw(Color::Red,128,Camera::Now() );
     }
