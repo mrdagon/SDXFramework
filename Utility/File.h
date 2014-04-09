@@ -1,4 +1,4 @@
-﻿#pragma once
+﻿#pragma once//☀Unicode
 #include <fstream>
 #include <sstream>
 #include <iostream>

@@ -1,60 +1,81 @@
 ﻿#pragma once
 #include <vector>
+#include <new>
 
 namespace SDX
 {
 /** メモリプールを表すクラス[未実装].*/
 /**    \include PoolSample.h*/
-class Pool
+template <int Size> class Pool
 {
 private:
-    std::vector<char> byte1;
-    std::vector<char> byte2;
-    std::vector<char> byte4;
-    std::vector<char> byte8;
-    std::vector<char> byte16;
-    std::vector<char> byte32;
-    std::vector<char> byte64;
-    std::vector<char> byte128;
+    int index = -1;
 
-    Pool& Single()
+    char* data;//確保している領域
+    const int elemetsNumber = 4096;//要素数
+
+    Pool* itr;//サイズが大きくなったら次プールに繋ぐ
+    Pool* next;//サイズが大きくなったら次プールに繋ぐ
+
+    Pool()
+    {
+        itr = this;
+        next = nullptr;
+        data = new char[elemetsNumber * Size];
+        for (int i = Size-1; i < elemetsNumber; i+=Size)
+        {
+            data[i] = 0;
+        }
+    }
+
+public:
+    inline static Pool& Single()
     {
         static Pool pool;
         return pool;
     }
 
-public:
-    static void* Allocate( size_t size)
+    inline void* Allocate()
     {
+        while (1)
+        {
+            index++;
+            if (index >= elemetsNumber) index = 0;
 
+            //使用フラグをチェック
+            if (data[index*Size + Size - 1] == 0)
+            {
+                data[index*Size + Size - 1] = 1;
+                break;
+            }
+        }
+
+        return &data[index*Size];
     }
-            
-    static void* DeAllocate( void* p)
-    {
 
+    inline void DeAllocate( void* p)
+    {
+        char* pt = static_cast<char*>(p);
+        pt[Size - 1] = 0;
     }
 };
 
 /** 自作メモリアロケータ.*/
 /**    \include PoolSample.h*/
-class Allocater
+template <class T> class Allocater
 {
 public:
-    void* operator new( size_t size )
+    const int size = sizeof(T);
+
+    inline static void* operator new( size_t size )
     {
-        Pool::Allocate( size );
+        return Pool<sizeof(T)+1>::Single().Allocate();
     }
 
-    void operator delete( void* p )
+    inline static void operator delete(void* p)
     {
-        Pool::DeAllocate( p );
-    }
-    void* operator new(size_t, void* p)
-    {
-        return p;
-    }
-    void operator delete(void*, void*)
-    {
+        Pool<sizeof(T)+1>::Single().DeAllocate(p);
     }
 };
+
 }
