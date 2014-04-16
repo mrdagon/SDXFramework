@@ -442,7 +442,18 @@ public:
     {
         this->CulLine();
     }
-            
+
+    Line(double X中心座標, double Y中心座標, double 角度, double 前方長さ , double 後方長さ , double 太さ) :
+        x(X中心座標),
+        y(Y中心座標),
+        angle(角度),
+        lengthA(前方長さ),
+        lengthB(後方長さ),
+        thick(太さ)
+    {
+        this->CulLine();
+    }
+
     virtual Shape* Clone(double X座標,double Y座標) const
     {
         auto shape = new Line( X座標 , Y座標 , this->angle , this->lengthA , this->thick);
