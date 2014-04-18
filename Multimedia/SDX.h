@@ -25,7 +25,7 @@ namespace SDX
 
 #pragma execution_character_set("utf-8")//charの文字コードをUTF-8に変更
 
-#ifdef DEBUG
+#ifdef _DEBUG
     #pragma comment(linker, "/NODEFAULTLIB:msvcrt.lib")
 #endif
 

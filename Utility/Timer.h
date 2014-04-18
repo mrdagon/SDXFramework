@@ -16,7 +16,7 @@ private:
 
     Time(void)
     {
-        this->ResetCount();    
+        this->ResetCount();
     }
 
     ~Time(void){};

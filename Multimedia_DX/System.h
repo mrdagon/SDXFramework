@@ -23,7 +23,7 @@ public:
 	{
 		Window::SetTitle(const_cast<char*>(ウィンドウ名));
 		DxLib::SetGraphMode(幅, 高さ, 32);
-	#ifndef DEBUG
+	#ifndef _DEBUG
 		SetUseDirectInputFlag(FALSE);//DebugビルドではDirectInputが重いので停止。
 	#endif
 
