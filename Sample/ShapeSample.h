@@ -1,47 +1,47 @@
 ﻿//図形の当たり判定をする
-bool    SampleShape()
+bool SampleShape()
 {
-    using    namespace    SDX;
-    System::Initialise("sample",    600,    400);
+    using namespace SDX;
+    System::Initialise("sample", 600, 400);
 
     //図形を宣言する
-    Circle    circle(10,    10,    100);
-    Rect    rect(60,    60,    100,    100);
-    Line    line(200,    100,    PAI    /    4,    300,    5);
+    Circle circle(10, 10, 100);
+    Rect rect(60, 60, 100, 100);
+    Line line(200, 100, PAI / 4, 300, 5);
 
     //共通のインターフェースを持っている
-    Shape*    shapes[3];
-    shapes[0]    =    &circle;
-    shapes[1]    =    &rect;
-    shapes[2]    =    &line;
+    Shape* shapes[3];
+    shapes[0] = &circle;
+    shapes[1] = &rect;
+    shapes[2] = &line;
 
-    while    (System::Update())
+    while (System::Update())
     {
-        circle.SetPos(Input::mouse.x,Input::mouse.y);
+        circle.SetPos(Input::mouse.x, Input::mouse.y);
         //Lineは回転可能
         line.Rotate(0.01);
 
         //ダブルディスパッチによる当たり判定
-        bool    isHit[3];
-        isHit[0]    =    circle.Hit(&rect)    ||    circle.Hit(&line);
-        isHit[1]    =    shapes[1]->Hit(shapes[0])    ||    shapes[1]->Hit(shapes[2]);
-        isHit[2]    =    shapes[2]->Hit(shapes[0])    ||    shapes[2]->Hit(shapes[1]);
+        bool isHit[3];
+        isHit[0] = circle.Hit(&rect) || circle.Hit(&line);
+        isHit[1] = shapes[1]->Hit(shapes[0]) || shapes[1]->Hit(shapes[2]);
+        isHit[2] = shapes[2]->Hit(shapes[0]) || shapes[2]->Hit(shapes[1]);
 
-        for    (int    i    =    0;    i    <    3    ;++i    )
+        for (int i = 0; i < 3; ++i)
         {
-            if    (isHit[i])
+            if (isHit[i])
             {
-                shapes[i]->Draw(Color::Red,255);
+                shapes[i]->Draw(Color::Red, 255);
             }
             else
             {
-                shapes[i]->Draw(Color::White,    255);
+                shapes[i]->Draw(Color::White, 255);
             }
         }
 
-        if    (Input::key.Return.on)    break;//Enterで終了    
+        if (Input::key.Return.on) break;//Enterで終了
     }
 
     System::End();
-    return    true;
+    return true;
 }
