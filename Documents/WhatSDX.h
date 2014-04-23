@@ -54,5 +54,5 @@ MacやLinux環境でのサポートが早まるかもしれませんし、英語
   解説を書いていないだけでどの環境でも大体使えます\n
 <HR>
 <B>機能一覧</B>\n
-  @ref classgroup\n
+  @ref ClassGroup
 */
