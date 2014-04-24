@@ -7,3 +7,11 @@ https://googledrive.com/host/0Bzj9IZoqQNA1LVBEaXVuaHQ2d2M/index.html
 
 Sorceforgeで開発しています
 https://sourceforge.jp/projects/dxframework/simple/
+
+最新版について:
+Sorceforgeで公開しているのは安定版で、Githubで公開しているのが最新版です。
+
+
+プルリクエストについて:
+Githubに送って下さい。
+13歳以下でGithubの利用制限にかかる場合やプルリクエストの方法が良く分からない場合は、Sorceforgeのフォーラムに書き込んで下さい。
