@@ -45,6 +45,8 @@ public:
     /** 範囲を指定して乱数を取得.*/
     static bool Coin(double trueになる確率)
     {
+        if (trueになる確率 >= 1.0) return true;
+
         std::bernoulli_distribution coin( std::min( trueになる確率 , 1.0) );
 
         return coin(engine);
