@@ -145,25 +145,36 @@ public:
     template< class T>
     bool Read(T &読み込み先変数 )
     {
+        if (!canRead) return false;
         
-
-        if (canRead)
-        {
-            SDL_RWread( handle, &読み込み先変数, sizeof(読み込み先変数), 1);
-        }
-        return canRead;
+        SDL_RWread( handle, &読み込み先変数, sizeof(読み込み先変数), 1);
+        
+        return true;
     }
     bool Read(std::string &読み込み先変数)
     {
-        if (canRead)
-        {
-            int 文字数 = 0;
-            SDL_RWread(handle, &文字数, sizeof(int), 1);
+        if (!canRead) return false;
+        
+        int 文字数 = 0;
+        SDL_RWread(handle, &文字数, sizeof(int), 1);
 
-            読み込み先変数.resize(文字数);
-            SDL_RWread(handle, (char*)読み込み先変数.c_str(), 文字数 , 1);
+        読み込み先変数.resize(文字数);
+        SDL_RWread(handle, (char*)読み込み先変数.c_str(), 文字数 , 1);
+        
+        return true;
+    }
+
+    template< class T>
+    bool Read(T *読み込み先配列, int 要素数)
+    {
+        if (!canRead) return false;
+        
+        for (int i = 0; i < 要素数; ++i)
+        {
+            SDL_RWread(handle, &読み込み先配列[i], sizeof(T), 1);
         }
-        return canWrite;
+        
+        return true;
     }
 
     /** データを書き込む.*/
