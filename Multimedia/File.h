@@ -164,7 +164,7 @@ public:
         return true;
     }
 
-    template< class T>
+    template< class T >
     bool Read(T *読み込み先配列, int 要素数)
     {
         if (!canRead) return false;
@@ -177,28 +177,78 @@ public:
         return true;
     }
 
+    /**型変換をしつつ読み込む.*/
+    template <class TSaveType,class TOutput>
+    bool Read(TOutput *読み込み先配列, int 要素数 , int 分母)
+    {
+        if (!canRead) return false;
+
+        TSaveType buff;
+
+        for (int i = 0; i < 要素数; ++i)
+        {
+            SDL_RWread(handle, &buff, sizeof(TSaveType), 1);
+            読み込み先配列[i] = TOutput(buff) / 分母;
+        }
+
+        return true;
+    }
+
+    template< class TSaveType, class TOutput>
+    bool Read(TOutput &読み込み先変数)
+    {
+        if (!canRead) return false;
+
+        TSaveType buff;
+        SDL_RWread(handle, &buff, sizeof(TSaveType), 1);
+
+        読み込み先変数 = TOutput(buff);
+
+        return true;
+    }
+
+
+
     /** データを書き込む.*/
     /**    FileModeがWriteかAddの場合成功。\n
         書込元変数をファイルに書き込む。*/
     template< class T>
     bool Write(T& 書込み元変数)
     {
-        if (canWrite)
-        {
-            SDL_RWwrite( handle , &書込み元変数 , sizeof(書込み元変数) , 1);
-        }
+        if (!canWrite) return false;
+        
+        SDL_RWwrite( handle , &書込み元変数 , sizeof(書込み元変数) , 1);
+        
         return canWrite;
     }
     bool Write(std::string &書込み元変数)
     {
-        if (canWrite)
-        {
-            const int 文字数 = (int)書込み元変数.size();
+        if (!canWrite) return false;
+        
+        const int 文字数 = (int)書込み元変数.size();
 
-            SDL_RWwrite(handle, &文字数, sizeof(int), 1);
-            SDL_RWwrite(handle, 書込み元変数.c_str(), 文字数, 1);
-        }
+        SDL_RWwrite(handle, &文字数, sizeof(int), 1);
+        SDL_RWwrite(handle, 書込み元変数.c_str(), 文字数, 1);
+        
         return canWrite;
+    }
+
+    /**型変換をして書き込む.*/
+    /**double型をfloatに変換して保存する時用*/
+    template <class TSaveType, class TInput>
+    bool Write(TInput *書き込み元配列 , int 要素数 )
+    {
+        if (!canWrite) return false;
+
+        for (int a = 0; a < 要素数; ++a)
+        {
+            TSaveType buff = (TSaveType)書き込み元配列[a];
+
+            SDL_RWwrite(handle, &buff , sizeof(TSaveType), 1);
+
+        }
+
+        return true;
     }
 
     /** FileModeがReadの場合Read、WriteかAddの場合Writeを行う.*/
