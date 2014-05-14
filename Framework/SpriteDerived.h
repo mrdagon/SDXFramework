@@ -258,18 +258,18 @@ public:
 
         data.resize( 幅 );
 
-        for(int i=0 ; i<幅 ;++i)
+        for(int a=0 ; a<幅 ;++a)
         {
-            data[i].resize( 高さ );
+            data[a].resize( 高さ );
         }
 
         auto lineS = csvFile.GetCsvS();
 
-        for(int i = 0 ; i < 高さ ; ++i )
+        for(int a = 0 ; a < 高さ ; ++a )
         {
-            for( int j = 0 ; j < 幅 ; j++)
+            for( int b = 0 ; b < 幅 ; ++b)
             {
-                data[j][i] = atoi( lineS[i][j].c_str() );
+                data[b][a] = atoi( lineS[a][b].c_str() );
             }
         }
     }
@@ -289,28 +289,28 @@ public:
             int posXB;
             int posYB;
 
-            for(int i=0 ; i<width ; ++i )
+            for(int a=0 ; a<width ; ++a )
             {
-                posXA = int( baseX + chipW * i * Camera::Now()->GetZoom() );
-                posXB = int( baseX + chipW * (i+1) * Camera::Now()->GetZoom() );
+                posXA = int( baseX + chipW * a * Camera::Now()->GetZoom() );
+                posXB = int( baseX + chipW * (a+1) * Camera::Now()->GetZoom() );
 
-                for(int j=0 ; j<height ; ++j )
+                for(int b=0 ; b<height ; ++b )
                 {
-                    posYA = int( baseY + chipH * j * Camera::Now()->GetZoom() );
-                    posYB = int( baseY + chipH * (j+1) * Camera::Now()->GetZoom() );
-                    const int no = data[i][j];
+                    posYA = int( baseY + chipH * b * Camera::Now()->GetZoom() );
+                    posYB = int( baseY + chipH * (b+1) * Camera::Now()->GetZoom() );
+                    const int no = data[a][b];
                     if( no == 0 ) continue;
                     chip[no]->DrawExtend( posXA , posYA , posXB , posYB );
                 }
             }
         }else{
-            for(int i=0 ; i<width ; ++i )
+            for(int a=0 ; a<width ; ++a )
             {
-                for(int j=0 ; j<height ; ++j )
+                for(int b=0 ; b<height ; ++b )
                 {
-                    const int no = data[i][j];
+                    const int no = data[a][b];
                     if( no == 0 ) continue;
-                    chip[no]->Draw( int(X座標 + i*chipW) , int(Y座標 + j*chipH) );
+                    chip[no]->Draw( int(X座標 + a*chipW) , int(Y座標 + b*chipH) );
                 }
             }
         }

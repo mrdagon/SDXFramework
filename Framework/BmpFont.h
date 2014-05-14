@@ -121,16 +121,16 @@ public:
         
         for (auto it : 描画する文字列.StringS)
         {
-            int i = 0;
+            int a = 0;
             int addX = 0;
             int addY = this->maxHeight;
             const char* bufstr = it.c_str();
 
-            while ( bufstr[i] != 0)//終端なら終了
+            while ( bufstr[a] != 0)//終端なら終了
             {
-                if (bufstr[i] >= '0' && bufstr[i] <= '9' && this->isNumber)
+                if (bufstr[a] >= '0' && bufstr[a] <= '9' && this->isNumber)
                 {
-                    divImageNumber[0][bufstr[i] - '0']->DrawExtend(
+                    divImageNumber[0][bufstr[a] - '0']->DrawExtend(
                         X座標 + addX,
                         Y座標 + addY - this->numberHeight,
                         X座標 + addX + this->numberWidth,
@@ -138,10 +138,10 @@ public:
 
                     addX += this->numberWidth;
                 }
-                else if (bufstr[i] >= 'A' && bufstr[i] <= 'Z' && this->isAlphabetCapital)
+                else if (bufstr[a] >= 'A' && bufstr[a] <= 'Z' && this->isAlphabetCapital)
                 {
 
-                    divImageAlphabetCapital[0][bufstr[i] - 'A']->DrawExtend
+                    divImageAlphabetCapital[0][bufstr[a] - 'A']->DrawExtend
                         (
                         X座標 + addX,
                         Y座標 + addY - this->alphabetCapitalHeight,
@@ -152,10 +152,10 @@ public:
                     addX += this->alphabetCapitalWidth;
 
                 }
-                else if (bufstr[i] >= 'a' && bufstr[i] <= 'z' && this->isAlphabetLow)
+                else if (bufstr[a] >= 'a' && bufstr[a] <= 'z' && this->isAlphabetLow)
                 {
 
-                    divImageAlphabetLow[0][bufstr[i] - 'a']->DrawExtend
+                    divImageAlphabetLow[0][bufstr[a] - 'a']->DrawExtend
                         (
                         X座標 + addX,
                         Y座標 + addY - this->numberHeight,
@@ -166,12 +166,12 @@ public:
                     addX += this->alphabetLowWidth;
 
                 }
-                else if ( bufstr[i] == ' ')
+                else if ( bufstr[a] == ' ')
                 {
                     addX += spaceWidth;
                 }
-                ++i;
-                if (i == strlen( bufstr )) break;
+                ++a;
+                if (a == strlen( bufstr )) break;
             }
             addY += maxHeight + enterSpace;
         }
@@ -183,16 +183,16 @@ public:
     {
         for (auto it : 描画する文字列.StringS)
         {
-            int i = 0;
+            int a = 0;
             int addX = 0;
             int addY = this->maxHeight;
             const char* bufstr = it.c_str();
 
-            while (bufstr[i] != 0)
+            while (bufstr[a] != 0)
             {
-                if (bufstr[i] >= '0' && bufstr[i] <= '9' && this->isNumber)
+                if (bufstr[a] >= '0' && bufstr[a] <= '9' && this->isNumber)
                 {
-                    this->divImageNumber[0][bufstr[i] - '0']->ZMaskExtend
+                    this->divImageNumber[0][bufstr[a] - '0']->ZMaskExtend
                         (
                         X座標 + addX,
                         Y座標 + addY - this->numberHeight,
@@ -202,10 +202,10 @@ public:
                         );
                     addX += this->numberWidth;
                 }
-                else if (bufstr[i] >= 'A' && bufstr[i] <= 'Z' && this->isAlphabetCapital)
+                else if (bufstr[a] >= 'A' && bufstr[a] <= 'Z' && this->isAlphabetCapital)
                 {
 
-                    this->divImageAlphabetCapital[0][bufstr[i] - 'A']->ZMaskExtend
+                    this->divImageAlphabetCapital[0][bufstr[a] - 'A']->ZMaskExtend
                         (
                         X座標 + addX,
                         Y座標 + addY - this->alphabetCapitalHeight,
@@ -217,10 +217,10 @@ public:
                     addX += this->alphabetCapitalWidth;
 
                 }
-                else if (bufstr[i] >= 'a' && bufstr[i] <= 'z' && this->isAlphabetLow)
+                else if (bufstr[a] >= 'a' && bufstr[a] <= 'z' && this->isAlphabetLow)
                 {
 
-                    this->divImageAlphabetLow[0][bufstr[i] - 'a']->ZMaskExtend
+                    this->divImageAlphabetLow[0][bufstr[a] - 'a']->ZMaskExtend
                         (
                         X座標 + addX,
                         Y座標 + addY - this->numberHeight,
@@ -232,12 +232,12 @@ public:
                     addX += this->alphabetLowWidth;
 
                 }
-                else if (bufstr[i] == ' ')
+                else if (bufstr[a] == ' ')
                 {
                     addX += this->spaceWidth;
                 }
-                ++i;
-                if (i == strlen(bufstr)) break;
+                ++a;
+                if (a == strlen(bufstr)) break;
             }
             addY += this->maxHeight + this->enterSpace;
         }
@@ -260,19 +260,19 @@ public:
     {
         for (auto it : 描画する文字列.StringS)
         {
-            int i = 0;
+            int a = 0;
             int addX = 0;
             int addY = this->maxHeight;
             const char* bufstr = it.c_str();
 
             Screen::SetBright(描画色);
 
-            while (bufstr[i] != 0)
+            while (bufstr[a] != 0)
             {
-                if (bufstr[i] >= '0' && bufstr[i] <= '9' && this->isNumber)
+                if (bufstr[a] >= '0' && bufstr[a] <= '9' && this->isNumber)
                 {
 
-                    this->divImageNumber[0][bufstr[i] - '0']->DrawExtend
+                    this->divImageNumber[0][bufstr[a] - '0']->DrawExtend
                         (
                         X座標 + int(addX * X拡大率),
                         Y座標 + int((addY - this->numberHeight) * Y拡大率),
@@ -283,10 +283,10 @@ public:
                     addX += this->numberWidth;
 
                 }
-                else if (bufstr[i] >= 'A' && bufstr[i] <= 'Z' && this->isAlphabetCapital)
+                else if (bufstr[a] >= 'A' && bufstr[a] <= 'Z' && this->isAlphabetCapital)
                 {
 
-                    this->divImageAlphabetCapital[0][bufstr[i] - 'A']->DrawExtend
+                    this->divImageAlphabetCapital[0][bufstr[a] - 'A']->DrawExtend
                         (
                         X座標 + int(addX * X拡大率),
                         Y座標 + int((addY - this->alphabetCapitalHeight) * Y拡大率),
@@ -297,9 +297,9 @@ public:
                     addX += this->alphabetCapitalWidth;
 
                 }
-                else if (bufstr[i] >= 'a' && bufstr[i] <= 'z' && this->isAlphabetLow)
+                else if (bufstr[a] >= 'a' && bufstr[a] <= 'z' && this->isAlphabetLow)
                 {
-                    this->divImageAlphabetLow[0][bufstr[i] - 'a']->DrawExtend
+                    this->divImageAlphabetLow[0][bufstr[a] - 'a']->DrawExtend
                         (
                         X座標 + int(addX * X拡大率),
                         Y座標 + int((addY - this->alphabetLowHeight) * Y拡大率),
@@ -309,12 +309,12 @@ public:
 
                     addX += this->alphabetLowWidth;
                 }
-                else if (bufstr[i] == ' ')
+                else if (bufstr[a] == ' ')
                 {
                     addX += this->spaceWidth;
                 }
-                ++i;
-                if (i == strlen(bufstr)) break;
+                ++a;
+                if (a == strlen(bufstr)) break;
             }
             addY += this->maxHeight + this->enterSpace;
         }
@@ -327,17 +327,17 @@ public:
     {
         for (auto it : 描画する文字列.StringS)
         {
-            int i = 0;
+            int a = 0;
             int addX = 0;
             int addY = this->maxHeight;
             const char* bufstr = it.c_str();
 
-            while (bufstr[i] != 0)
+            while (bufstr[a] != 0)
             {
-                if (bufstr[i] >= '0' && bufstr[i] <= '9' && this->isNumber)
+                if (bufstr[a] >= '0' && bufstr[a] <= '9' && this->isNumber)
                 {
 
-                    this->divImageNumber[0][bufstr[i] - '0']->ZMaskExtend
+                    this->divImageNumber[0][bufstr[a] - '0']->ZMaskExtend
                         (
                         X座標 + int(addX * X拡大率),
                         Y座標 + int((addY - this->numberHeight) * Y拡大率),
@@ -349,10 +349,10 @@ public:
                     addX += this->numberWidth;
 
                 }
-                else if (bufstr[i] >= 'A' && bufstr[i] <= 'Z' && this->isAlphabetCapital)
+                else if (bufstr[a] >= 'A' && bufstr[a] <= 'Z' && this->isAlphabetCapital)
                 {
 
-                    this->divImageAlphabetCapital[0][bufstr[i] - 'A']->ZMaskExtend
+                    this->divImageAlphabetCapital[0][bufstr[a] - 'A']->ZMaskExtend
                         (
                         X座標 + int(addX * X拡大率),
                         Y座標 + int((addY - this->alphabetCapitalHeight) * Y拡大率),
@@ -364,9 +364,9 @@ public:
                     addX += this->alphabetCapitalWidth;
 
                 }
-                else if (bufstr[i] >= 'a' && bufstr[i] <= 'z' && this->isAlphabetLow)
+                else if (bufstr[a] >= 'a' && bufstr[a] <= 'z' && this->isAlphabetLow)
                 {
-                    this->divImageAlphabetLow[0][bufstr[i] - 'a']->ZMaskExtend
+                    this->divImageAlphabetLow[0][bufstr[a] - 'a']->ZMaskExtend
                         (
                         X座標 + int(addX * X拡大率),
                         Y座標 + int((addY - this->alphabetLowHeight) * Y拡大率),
@@ -377,12 +377,12 @@ public:
 
                     addX += this->alphabetLowWidth;
                 }
-                else if (bufstr[i] == ' ')
+                else if (bufstr[a] == ' ')
                 {
                     addX += this->spaceWidth;
                 }
-                ++i;
-                if (i == strlen(bufstr)) break;
+                ++a;
+                if (a == strlen(bufstr)) break;
             }
             addY += this->maxHeight + this->enterSpace;
         }

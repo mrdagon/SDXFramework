@@ -169,9 +169,9 @@ public:
     {
         if (!canRead) return false;
         
-        for (int i = 0; i < 要素数; ++i)
+        for (int a = 0; a < 要素数; ++a)
         {
-            SDL_RWread(handle, &読み込み先配列[i], sizeof(T), 1);
+            SDL_RWread(handle, &読み込み先配列[a], sizeof(T), 1);
         }
         
         return true;
@@ -185,10 +185,10 @@ public:
 
         TSaveType buff;
 
-        for (int i = 0; i < 要素数; ++i)
+        for (int a = 0; a < 要素数; ++a)
         {
             SDL_RWread(handle, &buff, sizeof(TSaveType), 1);
-            読み込み先配列[i] = TOutput(buff) / 分母;
+            読み込み先配列[a] = TOutput(buff) / 分母;
         }
 
         return true;

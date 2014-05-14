@@ -18,16 +18,16 @@ bool SampleSpeed()
 
     while (System::Update())
     {
-        for (int i = 0; i < 3; ++i)
+        for (int a= 0; a < 3; ++a)
         {
             //速度を更新する
-            speeds[i]->Update();
+            speeds[a]->Update();
 
             //図形を移動させる
-            shapes[i]->MoveA(speeds[i]->Get(), 0);
+            shapes[a]->MoveA(speeds[a]->Get(), 0);
 
             //描画する
-            shapes[i]->Draw(Color::White, 255);
+            shapes[a]->Draw(Color::White, 255);
         }
 
         if (Input::key.Return.on) break;//Enterで終了

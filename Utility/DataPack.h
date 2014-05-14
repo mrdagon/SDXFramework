@@ -2,6 +2,7 @@
 
 namespace SDX
 {
+    /**—ñ‹“Œ^‚ğ’¼Ú“Yš‚Ég‚¦‚é”z—ñ.*/
     template <class TData, class TType>
     class DataPack
     {

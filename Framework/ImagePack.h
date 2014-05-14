@@ -39,10 +39,10 @@ public:
         const int width = image.GetWidth() / コマ割り横;
         const int height = image.GetHeight() / コマ割り縦;
 
-        for (int i = 0; i < コマ割り縦; ++i)
+        for (int a = 0; a < コマ割り縦; ++a)
         {
             x = 0;
-            for (int j = 0; j < コマ割り横; j++)
+            for (int b = 0; b < コマ割り横; ++b)
             {
                 if (count >= 総コマ数) break;
                 this->Add(new Image(image, x, y, width, height));
@@ -60,10 +60,10 @@ public:
         例:「ファイル名***.拡張子」*/
     bool Load(const char *ファイル名 , const char *拡張子 , int 総コマ数 , const char* 書式 = "%03d.")
     {
-        for(int i=0 ; i<総コマ数 ; ++i)
+        for(int a=0 ; a<総コマ数 ; ++a)
         { 
             char fileBuf[8];
-            sprintf_s( fileBuf , 8 , 書式 , i );
+            sprintf_s( fileBuf , 8 , 書式 , a );
 
             std::string fileName = ファイル名;
             fileName += fileBuf;

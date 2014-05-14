@@ -27,15 +27,15 @@ bool SampleShape()
         isHit[1] = shapes[1]->Hit(shapes[0]) || shapes[1]->Hit(shapes[2]);
         isHit[2] = shapes[2]->Hit(shapes[0]) || shapes[2]->Hit(shapes[1]);
 
-        for (int i = 0; i < 3; ++i)
+        for (int a = 0; a < 3; ++a)
         {
-            if (isHit[i])
+            if (isHit[a])
             {
-                shapes[i]->Draw(Color::Red, 255);
+                shapes[a]->Draw(Color::Red, 255);
             }
             else
             {
-                shapes[i]->Draw(Color::White, 255);
+                shapes[a]->Draw(Color::White, 255);
             }
         }
 

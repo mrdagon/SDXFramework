@@ -100,7 +100,7 @@ public:
     Anime(const char *ファイル名, int 総コマ数, int コマ割り横, int コマ割り縦, int 再生フレーム数 = 1) :
         ImagePack( ファイル名 , 総コマ数 ,コマ割り横 , コマ割り縦)
     {
-        for( unsigned int i=0; i<times.size() ; ++i )
+        for( unsigned int a=0; a<times.size() ; ++a )
         {
             times.push_back(再生フレーム数);
             nexts.push_back((int)NextFrame::Normal);
@@ -112,7 +112,7 @@ public:
     {
         ImagePack::Load(ファイル名, 総コマ数, コマ割り横, コマ割り縦);
         
-        for(int i=0;i<総コマ数;++i)
+        for(int a=0 ; a<総コマ数 ; ++a)
         {
             times.push_back(再生フレーム数);
             nexts.push_back((int)NextFrame::Normal);
@@ -124,10 +124,10 @@ public:
     /** 連番ファイルを一括して読み込む.*/
     bool Load(const char* ファイル名, const char *拡張子, int 総コマ数, int 再生フレーム数 = 1)
     {
-        for(int i=0 ; i<総コマ数 ; ++i)
+        for(int a=0 ; a<総コマ数 ; ++a)
         { 
             char fileBuf[8];
-            sprintf_s( fileBuf , 8 , "%03d." , i );
+            sprintf_s( fileBuf , 8 , "%03d." , a );
             std::string fileName = ファイル名;
             fileName += fileBuf;
             fileName += 拡張子;
@@ -162,9 +162,9 @@ public:
     /** 先頭コマのフレーム数を配列で渡す*/
     void SetFrameTime( int フレーム時間[] )
     {
-        for(unsigned int i=0 ; i< times.size() ; ++i )
+        for(unsigned int a=0 ; a< times.size() ; ++a )
         {
-            times[i] = フレーム時間[i];
+            times[a] = フレーム時間[a];
         }
     }
 

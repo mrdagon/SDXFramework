@@ -24,7 +24,7 @@ private:
         data = new char[elemetsNumber * Size];
         for (int i = Size-1; i < elemetsNumber; i+=Size)
         {
-            data[i] = 0;
+            data[a] = 0;
         }
     }
 
