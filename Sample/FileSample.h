@@ -3,7 +3,7 @@ bool SampleFile()
 {
     using namespace SDX;
 
-    File fileA("test.txt", FileMode::Write, true);
+    File fileA("test.txt", FileMode::Write, true );
     int a = 100;
     char c = 123;
     std::string    str = "こんにちは";
@@ -12,7 +12,7 @@ bool SampleFile()
     fileA.Write(str);
     fileA.Close();
 
-    File fileB("test.txt", FileMode::Read, true);
+    File fileB("test.txt", FileMode::Read, true );
     int b;
     std::string str2;
     fileB.Read(b);
