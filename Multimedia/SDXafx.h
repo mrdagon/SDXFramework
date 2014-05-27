@@ -1,6 +1,7 @@
 ﻿#pragma once//☀SDL
 //多重定義の関係でプリコンパイル済みヘッダーにのみインクルードするヘッダー
 #include <Framework/Hit.h>
+#include <Framework/ShapeDraw.h>
 
 namespace SDX
 {

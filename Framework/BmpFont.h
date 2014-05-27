@@ -323,6 +323,12 @@ public:
 
         return true;
     }
+
+    bool DrawExtend(const Point &座標 ,  double X拡大率, double Y拡大率, Color 描画色, VariadicStream 描画する文字列) const
+    {
+         return DrawExtend((int)座標.x, (int)座標.y, X拡大率, Y拡大率, 描画色, 描画する文字列);    
+    }
+
     bool ZMaskExtend(int X座標, int Y座標, double X拡大率, double Y拡大率, ZMaskType Zマスクタイプ, VariadicStream 描画する文字列) const override
     {
         for (auto it : 描画する文字列.StringS)

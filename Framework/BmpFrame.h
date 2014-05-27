@@ -3,6 +3,7 @@
 #include <Multimedia/Font.h>
 #include <Framework/BmpFont.h>
 #include <Framework/Anime.h>
+#include <Utility/Position.h>
 
 namespace SDX
 {
@@ -62,6 +63,11 @@ public:
         frame[0][2]->Draw(X座標 + 幅 - fWidth, Y座標);
         frame[0][6]->Draw(X座標, Y座標 + 高さ - fHeight);
         frame[0][8]->Draw(X座標 + 幅 - fWidth, Y座標 + 高さ - fHeight);
+    }
+
+    void Draw(const Rect &座標)
+    {
+        Draw((int)座標.x,(int)座標.y,(int)座標.GetW(),(int)座標.GetH());
     }
 };
 }

@@ -1,6 +1,7 @@
 ﻿#pragma once//☀SDL
 #include<Multimedia/SDX.h>
 #include<Multimedia/Screen.h>
+#include <Framework/Shape.h>
 
 namespace SDX
 {
@@ -172,6 +173,13 @@ public:
             return !SDL_RenderCopy(Screen::GetHandle(), handle, &part, &temp );
         }
     }
+
+    bool Draw(const Point &座標 , bool 反転フラグ = false) const
+    {
+        return Draw((int)座標.x,(int)座標.y,反転フラグ);
+    }
+
+
     /** 指定座標にマスク[DXLIB].*/
     bool ZMask(int X座標,int Y座標 , ZMaskType Zマスクタイプ ,  bool 反転フラグ = false) const
     {
@@ -201,6 +209,12 @@ public:
         RGBACulculate();
         return !SDL_RenderCopyEx(Screen::GetHandle(), handle, &part, &temp, 角度*180 / PAI, &point, SDL_RendererFlip(反転フラグ));
     }
+
+    bool DrawRotate(const Point &座標 , double 拡大率 , double 角度, bool 反転フラグ = false) const
+    {
+        return DrawRotate((int)座標.x,(int)座標.y,拡大率,角度,反転フラグ);    
+    }
+
     /** 角度、拡大率を指定してマスク[DXLIB].*/
     bool ZMaskRotate(int X座標, int Y座標, double 拡大率, double 角度, ZMaskType Zマスクタイプ, bool 反転フラグ = false) const
     {

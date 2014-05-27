@@ -5,6 +5,7 @@
 #include <Multimedia/SystemFont.h>
 #include <Multimedia/Image.h>
 #include <Multimedia/Window.h>
+#include <Framework/Shape.h>
 
 namespace SDX
 {
@@ -16,7 +17,6 @@ enum class FontType
     AntiAliase,
     AntiAliaseEdge
 };
-
 
 /** フォントデータを表すクラス.*/
 /**    \include FontSample.h*/
@@ -157,6 +157,17 @@ public:
         }
 
         return true;
+    }
+
+    bool Draw(const Point &座標 , Color 色, VariadicStream 描画する文字列) const
+    {
+        return Draw((int)座標.x,(int)座標.y,色,描画する文字列);
+    }
+
+    bool DrawShadow(const Point &座標 , Color 表色 , Color 影色 ,  VariadicStream 描画する文字列 ) const
+    {
+        Draw(int(座標.x+1),int(座標.y+1),影色,描画する文字列);
+        return Draw(座標,表色,描画する文字列);
     }
 
     /** 文字をマスク[DXLIB].*/
