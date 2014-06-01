@@ -67,7 +67,7 @@ public:
 
     void Draw(const Rect &座標)
     {
-        Draw((int)座標.x,(int)座標.y,(int)座標.GetW(),(int)座標.GetH());
+        Draw((int)座標.GetLeft(),(int)座標.GetTop(),(int)座標.GetW(),(int)座標.GetH());
     }
 };
 }
