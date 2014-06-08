@@ -9,14 +9,10 @@ namespace SDX
     private:
         TData dataS[(int)TType::MAX];
     public:
-        TData& operator[](TType index)
+
+        TData& operator[](const TType index)
         {
             return dataS[(int)index];
-        }
-
-        TData& operator[](int index)
-        {
-            return dataS[index];
         }
     };
 }
