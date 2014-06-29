@@ -161,7 +161,7 @@ public:
     }
     
     /** 指定座標に描画.*/
-    bool Draw(int X座標,int Y座標 , bool 反転フラグ = false) const
+    bool Draw(const Point &座標 , bool 反転フラグ = false) const
     {
         SDL_Rect temp = { X座標, Y座標, part.w, part.h };
         RGBACulculate();
@@ -179,28 +179,16 @@ public:
         return Draw((int)座標.x,(int)座標.y,反転フラグ);
     }
 
-
-    /** 指定座標にマスク[DXLIB].*/
-    bool ZMask(int X座標,int Y座標 , ZMaskType Zマスクタイプ ,  bool 反転フラグ = false) const
-    {
-        return false;
-    }
-
     /** 指定矩形内に描画.*/
-    bool DrawExtend(int X座標A,int Y座標A,int X座標B,int Y座標B ) const
+    bool DrawExtend(const Point &座標A,const Point &座標B ) const
     {
         SDL_Rect temp = { X座標A, Y座標A, X座標B - X座標A, Y座標B - Y座標A };
         RGBACulculate();
         return !SDL_RenderCopy(Screen::GetHandle(), handle, &part, &temp);        
     }
-    /** 指定矩形内にマスク[DXLIB].*/
-    bool ZMaskExtend(int X座標A,int Y座標A,int X座標B,int Y座標B  , ZMaskType Zマスクタイプ) const
-    {
-        return false;
-    }
-        
+
     /** 角度、拡大率を指定して描画.*/
-    bool DrawRotate(int X座標, int Y座標, double 拡大率, double 角度, bool 反転フラグ = false) const
+    bool DrawRotate(const Point &座標, double 拡大率, double 角度, bool 反転フラグ = false) const
     {
         const int wbuf = int(part.w*拡大率);
         const int hbuf = int(part.h*拡大率);
@@ -215,14 +203,8 @@ public:
         return DrawRotate((int)座標.x,(int)座標.y,拡大率,角度,反転フラグ);    
     }
 
-    /** 角度、拡大率を指定してマスク[DXLIB].*/
-    bool ZMaskRotate(int X座標, int Y座標, double 拡大率, double 角度, ZMaskType Zマスクタイプ, bool 反転フラグ = false) const
-    {
-        return false;
-    }
-
     /** 回転軸、角度、拡大率を指定して描画.*/
-    bool DrawRotateAxis(int X座標, int Y座標, int X軸, int Y軸, double 拡大率, double 角度, bool 反転フラグ = false) const
+    bool DrawRotateAxis(const Point &座標, int X軸, int Y軸, double 拡大率, double 角度, bool 反転フラグ = false) const
     {
         const int wbuf = int(part.w*拡大率);
         const int hbuf = int(part.h*拡大率);
@@ -231,14 +213,9 @@ public:
         RGBACulculate();
         return !SDL_RenderCopyEx(Screen::GetHandle(), handle, &part, &temp, 角度*180 / PAI , &point, SDL_RendererFlip(反転フラグ));
     }
-    /** 回転軸、角度、拡大率を指定してマスク[DXLIB].*/
-    bool ZMaskRotateAxis(int X座標, int Y座標, int X軸, int Y軸, double 拡大率, double 角度, ZMaskType Zマスクタイプ, bool 反転フラグ = false) const
-    {
-        return false;
-    }
 
     /** 回転軸、角度、拡大率を縦横別に指定して描画.*/
-    bool DrawRotateAxis(int X座標, int Y座標, int X軸, int Y軸, double 拡大率X, double 拡大率Y, double 角度, bool 反転フラグ = false) const
+    bool DrawRotateAxis(const Point &座標, int X軸, int Y軸, double 拡大率X, double 拡大率Y, double 角度, bool 反転フラグ = false) const
     {
         const int wbuf = int(part.w*拡大率X);
         const int hbuf = int(part.h*拡大率Y);
@@ -247,20 +224,9 @@ public:
         RGBACulculate();
         return !SDL_RenderCopyEx(Screen::GetHandle(), handle, &part, &temp, 角度*180/PAI, &point, SDL_RendererFlip(反転フラグ));
     }
-    /** 回転軸、角度、拡大率を縦横別に指定してマスク[DXLIB].*/
-    bool ZMaskRotateAxis(int X座標, int Y座標, int X軸, int Y軸, double 拡大率X, double 拡大率Y, double 角度, ZMaskType Zマスクタイプ, bool 反転フラグ = false) const
-    {
-        return false;
-    }
 
     /** 四角形に変形描画[DXLIB].*/
-    bool DrawModify(int 頂点aX, int 頂点aY, int 頂点bX, int 頂点bY, int 頂点cX, int 頂点cY, int 頂点dX, int 頂点dY) const
-    {
-        return false;
-    }
-
-    /** 四角形に変形マスク[DXLIB].*/
-    bool ZMaskModify(int 頂点aX, int 頂点aY, int 頂点bX, int 頂点bY, int 頂点cX, int 頂点cY, int 頂点dX, int 頂点dY, ZMaskType Zマスクタイプ) const
+    bool DrawModify(const Point &頂点A,const Point &頂点B, const Point &頂点C, const Point &頂点D ) const
     {
         return false;
     }
@@ -273,11 +239,6 @@ public:
         static SDL_Point point = { 0, 0 };
         RGBACulculate();
         return !SDL_RenderCopyEx(Screen::GetHandle(), handle, &part, &temp, 0, &point, SDL_RendererFlip(反転フラグ));
-    }
-    /** 一部を指定してマスク[DXLIB].*/
-    bool ZMaskPart(int 描画先X座標, int 描画先Y座標, int 描画元X原点, int 描画元Y原点, int 幅, int 高さ, ZMaskType Zマスクタイプ, bool 反転フラグ = false) const
-    {
-        return false;
     }
 
     /** スクリーンの一部をイメージに取り込む[DXLIB].*/

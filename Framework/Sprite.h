@@ -39,7 +39,7 @@ public:
     virtual ~Sprite(){};
 
     /** Spriteを描画する.*/
-    virtual void Draw( double X座標 , double Y座標 , bool カメラフラグ) = 0;
+    virtual void Draw( const Point &座標 , bool カメラフラグ) = 0;
 
     /** Shapeとの相対座標を移動.*/
     void MoveGap(double X移動量 , double Y移動量)
@@ -49,10 +49,10 @@ public:
     }
 
     /** Shapeとの相対座標を指定.*/
-    void SetGap(double X座標 , double Y座標 )
+    void SetGap(const Point &座標 )
     {
-        gapX = X座標;
-        gapY = Y座標;
+        gapX = 座標.x;
+        gapY = 座標.y;
     }    
 
     /** 表示倍率を設定.*/

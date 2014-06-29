@@ -107,37 +107,37 @@ public:
     }
     
     /** 指定座標に描画.*/
-    bool Draw(int X座標,int Y座標 , bool 反転フラグ = false)
+    bool Draw(const Point &座標 , bool 反転フラグ = false)
     {
         return false;
     }
 
     /** 指定矩形内に描画.*/
-    bool DrawExtend(int X座標A, int Y座標A, int X座標B, int Y座標B)
+    bool DrawExtend(const Rect &領域)
     {
         return false;
     }
 
     /** 角度、拡大率を指定して描画.*/
-    bool DrawRotate(int X座標, int Y座標, double 拡大率, double 角度, bool 反転フラグ = false)
+    bool DrawRotate(const Point &座標, double 拡大率, double 角度, bool 反転フラグ = false)
     {
         return false;
     }
     
     /** 角度、拡大率を指定して描画.*/
-    bool DrawRotateAxis(int X座標, int Y座標, int X軸, int Y軸, double 拡大率, double 角度, bool 反転フラグ = false)
+    bool DrawRotateAxis(const Point &座標, int X軸, int Y軸, double 拡大率, double 角度, bool 反転フラグ = false)
     {
         return false;
     }
     
     /** 四角形に変形描画.*/
-    bool DrawModify(int X頂点A, int Y頂点A, int X頂点B, int Y頂点B, int X頂点C, int Y頂点C, int X頂点D, int Y頂点D) const
+    bool DrawModify(const Point &頂点A, const Point &頂点B, const Point &頂点C, const Point &頂点D) const
     {
         return false;
     }
 
     /** 一部を指定して描画.*/
-    bool DrawPart(int destX,int destY,int srcX, int srcY, int width, int height, bool isTurn)
+    bool DrawPart(const Point &描画座標,const Rect &元領域 , bool 反転フラグ)
     {
         return false;
     }

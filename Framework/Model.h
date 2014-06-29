@@ -36,10 +36,7 @@ public:
     }
 
     /** 更新処理を行う.*/
-    virtual void Update()
-    {
-    
-    }
+    virtual void Update(){}
 
     /** 影の大きさを設定.*/
     void SetShadowSize(double 影の表示倍率)

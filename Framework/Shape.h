@@ -691,27 +691,21 @@ public:
     double heightUp;
     double heightDown;
 
-    Rect(double X座標,double Y座標,double 幅 ,double 高さ):
+    /*座標と大きさを指定*/
+    /*デフォルト引数だと左上座標と大きさを指定*/
+    /*横幅A=横幅B,高さA=高さBとすると中心座標指定になる*/
+    Rect(double X座標,double Y座標,double 横幅A ,double 高さA, double 横幅B = 0 , double 高さB = 0):
         x(X座標),
         y(Y座標),
-        heightUp( 高さ/2 ),
-        heightDown( 高さ/2 ),
-        widthLeft( 幅/2 ),
-        widthRight( 幅/2 )
-    {}
-
-    Rect(double X座標,double Y座標,double 幅 ,double 高さ , double X中心 , double Y中心):
-        x(X座標),
-        y(Y座標),
-        heightUp( Y中心 ),
-        heightDown( 高さ-Y中心 ),
-        widthLeft( X中心 ),
-        widthRight( 幅-X中心 )
+        heightUp( 高さB ),
+        heightDown( 高さA ),
+        widthLeft( 横幅B ),
+        widthRight( 横幅A )
     {}
 
     virtual Shape* Clone(double X座標,double Y座標) const
     {
-        auto shape = new Rect( X座標 , Y座標 , GetW() , GetH() , widthLeft , heightUp );
+        auto shape = new Rect( X座標 , Y座標 , widthRight , heightDown , widthLeft , heightUp );
         shape->zoomX = this->zoomX;
         shape->zoomY = this->zoomY;
         return shape;
@@ -934,7 +928,7 @@ public:
     double y;
     double radius;
 
-    Circle(    double X座標 , double Y座標 , double 半径):
+    Circle( double X座標 , double Y座標 , double 半径):
         x(X座標),
         y(Y座標),
         radius(半径)

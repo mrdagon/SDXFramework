@@ -4,6 +4,7 @@
 #include<Multimedia/Image.h>
 #include<Multimedia/Font.h>
 #include<Utility/VariadicStream.h>
+#include<Framework/Shape.h>
 
 namespace SDX
 {
@@ -82,16 +83,16 @@ public:
 
     /** 始点と終点を結ぶ直線を描画.*/
     /** SDLは太さ指定不可*/
-    static bool Line(int 始点X, int 始点Y, int 終点X, int 終点Y, Color 色, int 太さ)
+    static bool Line(const Point &始点, const Point &終点, Color 色, int 太さ)
     {
         RGBACulculate(色.GetRed() , 色.GetGreen() , 色.GetBlue() );
-        return !SDL_RenderDrawLine(Screen::GetHandle(), 始点X, 始点Y, 終点X, 終点Y);
+        return !SDL_RenderDrawLine(Screen::GetHandle(), (int)始点.x, (int)始点.y, (int)終点.x, (int)終点.y);
     }
 
     /** 左上の座標と大きさを指定して矩形を描画.*/
-    static bool Rect(int 座標X, int 座標Y, int 幅, int 高さ, Color 色, bool 塗りつぶしフラグ)
+    static bool Rect(const Rect &領域, Color 色, bool 塗りつぶしフラグ)
     {
-        SDL_Rect buf = { 座標X, 座標Y, 幅, 高さ };
+        SDL_Rect buf = { (int)領域.GetLeft(),(int)領域.GetTop(),(int)領域.GetW(),(int)領域.GetH() };
         RGBACulculate(色.GetRed() , 色.GetGreen() , 色.GetBlue() );
         if (塗りつぶしフラグ)
         {
@@ -101,82 +102,82 @@ public:
         }
     }
     /** 左上の座標と大きさを指定して矩形をマスク[DXLIB].*/
-    static bool RectZMask(int 座標X, int 座標Y, int 幅, int 高さ, ZMaskType マスクタイプ, bool 塗りつぶしフラグ)
+    static bool RectZMask(const Rect &領域 , ZMaskType マスクタイプ, bool 塗りつぶしフラグ)
     {
         return false;
     }
 
     /** 中心と半径を指定して円を描画.*/
     /** SDLは仮実装*/
-    static bool Circle(int 中心X, int 中心Y, int 半径, Color 色, bool 塗りつぶしフラグ)
+    static bool Circle(const Point &中心 , int 半径, Color 色, bool 塗りつぶしフラグ)
     {
         SDL_SetRenderDrawColor(Screen::GetHandle(), 色.GetRed(), 色.GetGreen(), 色.GetBlue(), 0);
-        circleTexture(塗りつぶしフラグ).DrawExtend(中心X - 半径, 中心Y - 半径, 中心X + 半径, 中心Y + 半径);
+        circleTexture(塗りつぶしフラグ).DrawExtend(中心.x - 半径, 中心.y - 半径, 中心.x + 半径, 中心.y + 半径);
         return true;
     }
 
     /** 中心と半径を指定して円をマスク[DXLIB].*/
-    static bool CircleZMask(int 中心X, int 中心Y, int 半径, Color 色, bool 塗りつぶしフラグ)
+    static bool CircleZMask(const Point &中心, int 半径, Color 色, bool 塗りつぶしフラグ)
     {
         return false;
     }
 
     /** 中心と外接する四角形の大きさを指定して楕円を描画[DXLIB].*/
     /** SDLは仮実装*/
-    static bool Oval( int 中心X , int 中心Y , int 幅 , int 高さ , Color 色 , bool 塗りつぶしフラグ )
+    static bool Oval( const Point &中心 , int 幅 , int 高さ , Color 色 , bool 塗りつぶしフラグ )
     {
         SDL_SetRenderDrawColor(Screen::GetHandle(), 色.GetRed(), 色.GetGreen(), 色.GetBlue(), 0);
-        circleTexture(塗りつぶしフラグ).DrawExtend(中心X - 幅/2, 中心Y - 高さ/2, 中心X + 幅/2, 中心Y + 高さ/2);
+        circleTexture(塗りつぶしフラグ).DrawExtend(中心.x - 幅/2, 中心.y - 高さ/2, 中心.x + 幅/2, 中心.y + 高さ/2);
         return true;
     }
 
     /** 頂点を３つ指定して三角形を描画.*/
     /** SDLは塗りつぶし不可*/
-    static bool Triangle(int 頂点aX, int 頂点aY, int 頂点bX, int 頂点bY, int 頂点cX, int 頂点cY, Color 色, bool 塗りつぶしフラグ)
+    static bool Triangle(const Point &頂点A, const Point &頂点B, const Point &頂点C, Color 色, bool 塗りつぶしフラグ)
     {
         RGBACulculate(色.GetRed(), 色.GetGreen(), 色.GetBlue());
-        SDL_RenderDrawLine(Screen::GetHandle(), 頂点aX , 頂点aY, 頂点bX, 頂点bY);
-        SDL_RenderDrawLine(Screen::GetHandle(), 頂点bX, 頂点bY, 頂点cX, 頂点cY);
-        SDL_RenderDrawLine(Screen::GetHandle(), 頂点cX, 頂点cY, 頂点aX, 頂点aY);
+        SDL_RenderDrawLine(Screen::GetHandle(), 頂点A.x , 頂点A.y, 頂点B.x, 頂点B.y);
+        SDL_RenderDrawLine(Screen::GetHandle(), 頂点B.x , 頂点B.y, 頂点C.x, 頂点C.y);
+        SDL_RenderDrawLine(Screen::GetHandle(), 頂点C.x , 頂点C.y, 頂点A.x, 頂点A.y);
         return true;
     }
 
     /** 指定座標に点を描画.*/
-    static bool Pixel(int 座標X, int 座標Y, Color 色)
+    static bool Pixel(const Point &座標 , Color 色)
     {
         RGBACulculate(色.GetRed() , 色.GetGreen() , 色.GetBlue() );
-        SDL_RenderDrawPoint(Screen::GetHandle() ,座標X, 座標Y);
+        SDL_RenderDrawPoint(Screen::GetHandle() , 座標.x , 座標.y );
         return false;
     }
 
     /** 指定座標の色を取得[DXLIB].*/
-    static ColorData GetPixel( int 座標X , int 座標Y )
+    static ColorData GetPixel( const Point &座標 )
     {
         return SDL_Color{ 0, 0, 0 };
     }
 
     /** 画像を一時的にメモリに読み込んで描画.*/
     /** この処理は重いので、通常はImageクラスを利用する*/
-    static bool ImageFile( int 座標X , int 座標Y , const char *ファイル名 , bool 透過フラグ = true )
+    static bool ImageFile( const Point &座標 , const char *ファイル名 , bool 透過フラグ = true )
     {
         Image buf(ファイル名);
-        buf.Draw(座標X , 座標Y , false);
+        buf.Draw( 座標 , false);
         buf.Release();
         return true;
     }
 
     /** 文字を描画.*/
     /** フォントはデフォルトでゴシック体*/
-    static void String(int X座標, int Y座標, Color 色, VariadicStream 描画する文字列)
+    static void String( const Point &座標 , Color 色, VariadicStream 描画する文字列)
     {
-        defaultFont.Draw(X座標,Y座標,色 , 描画する文字列 );
+        defaultFont.Draw( 座標 ,色 , 描画する文字列 );
     }
     /** 文字をマスク[DXLIB].*/
-    static void StringZMask( int X座標 , int Y座標 , ZMaskType Zマスク , VariadicStream 描画する文字列 )
+    static void StringZMask( const Point &座標 , ZMaskType Zマスク , VariadicStream 描画する文字列 )
     {
         for (auto it : 描画する文字列.StringS)
         {
-            Y座標 += 20;
+            座標.y += 20;
         }
     }
 };

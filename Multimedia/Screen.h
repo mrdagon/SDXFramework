@@ -58,7 +58,7 @@ public:
     }
 
     /** 描画範囲を設定する、設定範囲外には描画されない[DXLIB].*/
-    static bool SetArea(int 座標X , int 座標Y , int 幅 , int 高さ)
+    static bool SetArea(const Rect &描画領域)
     {
         return false;
     }
@@ -144,7 +144,7 @@ public:
     }
     
     /** 描画対象になっている画面の一部をBMP形式で保存[DXLIB].*/
-    static bool SaveBmp(int 座標X, int 座標Y , int 幅 , int 高さ , const char *ファイル名 )
+    static bool SaveBmp(const Point &座標, int 幅 , int 高さ , const char *ファイル名 )
     {
         return false;
     }

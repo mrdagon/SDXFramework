@@ -132,7 +132,7 @@ public:
     }
 
     /** 文字を描画.*/
-    bool Draw(int X座標, int Y座標, Color 色, VariadicStream 描画する文字列) const override
+    bool Draw(const Point &座標, Color 色, VariadicStream 描画する文字列) const override
     {
         if( !handle ) return false;
 
@@ -147,13 +147,13 @@ public:
                 image = TTF_RenderUTF8_Blended(handle, it.c_str() , 色);
             
                 moji = SDL_CreateTextureFromSurface(Screen::GetHandle(), image);
-                temp = { X座標, Y座標, image->w, image->h };
+                temp = { 座標.x, 座標.y, image->w, image->h };
                 SDL_RenderCopy(Screen::GetHandle(), moji, 0, &temp);
 
                 SDL_FreeSurface(image);
                 SDL_DestroyTexture(moji);
             }
-            Y座標 += this->enterHeight;
+            座標.y += this->enterHeight;
         }
 
         return true;
@@ -169,34 +169,19 @@ public:
         Draw(int(座標.x+1),int(座標.y+1),影色,描画する文字列);
         return Draw(座標,表色,描画する文字列);
     }
-
-    /** 文字をマスク[DXLIB].*/
-    bool ZMask(int X座標, int Y座標, ZMaskType Zマスクタイプ, VariadicStream 描画する文字列) const override
-    {
-        return false;
-    }
-
+   
     /** 文字を回転して描画.*/
     /** 呼び出す度に画像イメージを作成するので処理は重い*/
-    bool DrawRotate(int X座標, int Y座標, double 拡大率, double 角度, Color 描画色, bool 反転フラグ, VariadicStream 描画する文字列) const override
+    bool DrawRotate(const Point &座標, double 拡大率, double 角度, Color 描画色, bool 反転フラグ, VariadicStream 描画する文字列) const override
     {
         Image 文字イメージ = MakeImage(描画色, 反転フラグ, 描画する文字列);
-        文字イメージ.DrawRotate(X座標,Y座標,拡大率,角度,反転フラグ);
-        文字イメージ.Release();
-        return true;
-    }
-
-    /** 文字を回転してマスク[DXLIB].*/
-    bool ZMaskRotate(int X座標, int Y座標, double 拡大率, double 角度, ZMaskType Zマスクタイプ, bool 反転フラグ, VariadicStream 描画する文字列) const override
-    {
-        Image 文字イメージ = MakeImage(Color::White, 反転フラグ, 描画する文字列);
-        文字イメージ.ZMaskRotate(X座標, Y座標, 拡大率, 角度, Zマスクタイプ, 反転フラグ);
+        文字イメージ.DrawRotate(座標.x,座標.y,拡大率,角度,反転フラグ);
         文字イメージ.Release();
         return true;
     }
 
     /** 拡大率を指定して文字を描画.*/
-    bool DrawExtend(int X座標, int Y座標, double X拡大率, double Y拡大率, Color 描画色, VariadicStream 描画する文字列) const override
+    bool DrawExtend(const Point &座標, double X拡大率, double Y拡大率, Color 描画色, VariadicStream 描画する文字列) const override
     {
         if( !handle ) return false;
         
@@ -223,10 +208,5 @@ public:
         return true;
     }
 
-    /** 拡大率を指定して文字をマスク[DXLIB].*/
-    bool ZMaskExtend(int X座標, int Y座標, double X拡大率, double Y拡大率, ZMaskType Zマスクタイプ, VariadicStream 描画する文字列) const override
-    {
-        return false;
-    }
 };
 }

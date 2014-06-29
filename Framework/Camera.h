@@ -153,5 +153,10 @@ public:
     {
         return centerY + ( Y座標変換前 - this->y ) * zoom;
     }
+
+    Point Trans(const Point &変換前座標)
+    {
+        return Point(centerX + ( 変換前座標.x - this->x ) * zoom , centerY + ( 変換前座標.y - this->y ) * zoom );
+    }
 };
 }
