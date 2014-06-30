@@ -7,7 +7,7 @@ bool SampleWindow()
 
     while (System::Update())
     {
-        Drawing::String(100, 100, Color::White, "Windowクラスのテスト");
+        Drawing::String({ 100, 100 }, Color::White, "Windowクラスのテスト");
 
         if (Input::key._1.on) Window::SetTitle("ウィンドウタイトルを変えたよ！");//ウィンドウタイトルを変更
 

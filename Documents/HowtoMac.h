@@ -80,7 +80,7 @@ AppStoreからXcodeの最新版をダウンロードしてインストールし�
         if (Input::pad.Right.hold) x += 5;
         if (Input::pad.Left.hold) x -= 5;
 
-        Drawing::Rect(x-10, y-10, 20, 20, Color::White, true);
+        Drawing::Rect({x-10, y-10, 20, 20}, Color::White, true);
     }
 
     System::End();//ライブラリの終了処理

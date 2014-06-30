@@ -16,14 +16,14 @@ bool    SampleAnime()
     int    frames[9]    =    {    1,    2,    3,    4,    5,    6,    7,    8,    9    };
     animeB.SetFrameTime(    frames    );
 
-    while    (System::Update())
+    while (System::Update())
     {
         countA.Update();
         countB.Update();
 
-        countA.GetFrame()->Draw(10,    10);
+        countA.GetFrame()->Draw({ 10, 10 });
 
-        countB.GetFrame()->Draw(100,    10);
+        countB.GetFrame()->Draw({100, 10});
 
         if    (Input::key.Return.on)    break;//Enterで終了    
     }

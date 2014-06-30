@@ -81,14 +81,13 @@ public:
     /** 処理時間計測終了.*/
     /**    StartWatchからの経過時間をミリ秒単位で描画\n
         続けてDrawWatchする事も可能*/
-    static void DrawWatch(int X座標 , int Y座標 , const char* 描画文字列)
+    static void DrawWatch(const Point &座標, const char* 描画文字列)
     {
         std::string buf = 描画文字列;
         buf += " = ";
 
-
         auto diff = std::chrono::system_clock::now() - Single().watch;
-        Drawing::String(X座標, Y座標, Color(255, 255, 255), { buf , (double)std::chrono::duration_cast<std::chrono::microseconds>(diff).count() / 1000 });
+        Drawing::String(座標, Color(255, 255, 255), { buf , (double)std::chrono::duration_cast<std::chrono::microseconds>(diff).count() / 1000 });
         Single().watch = std::chrono::system_clock::now();
     }
 };

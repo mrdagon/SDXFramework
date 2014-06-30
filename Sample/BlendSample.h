@@ -12,10 +12,10 @@ bool    SampleBlend()
 
     while    (System::Update())
     {
-        imageA.Draw(10,    10);
-        imageB.Draw(10,    200);
+        imageA.Draw({ 10, 10 });
+        imageB.Draw({ 10, 200 });
 
-        imageC.Draw(200,    10);
+        imageC.Draw({ 200, 10 });
 
         if    (Input::key.Return.on)    break;//Enterで終了    
     }

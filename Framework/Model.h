@@ -65,13 +65,13 @@ public:
 
             if( it->GetColor() == Color::White )
             {
-                it->Draw( GetX() , GetY() , isCamera && Camera::Now() );                 
+                it->Draw({ GetX(), GetY() }, isCamera && Camera::Now());
             }
             else
             {
                 Screen::SetBright(it->GetColor());
                 Screen::SetBlendMode( BlendMode::Alpha , it->GetColor().GetAlpha() );
-                it->Draw( GetX() , GetY() , isCamera && Camera::Now() );
+                it->Draw({ GetX(), GetY() }, isCamera && Camera::Now());
                 Screen::SetBlendMode(BlendMode::NoBlend, 0);
                 Screen::SetBright(Color::White);
             }
@@ -100,7 +100,7 @@ public:
                 double zoomY = it->zoomY;
                 it->zoomX *= shadowSize;
                 it->zoomY *= shadowSize;
-                it->Draw( GetX() + X座標ずれ , GetY() + Y座標ずれ , isCamera && Camera::Now() ); 
+                it->Draw({ GetX() + X座標ずれ, GetY() + Y座標ずれ }, isCamera && Camera::Now());
                 it->zoomX = zoomX;
                 it->zoomY = zoomY;
             }
@@ -133,6 +133,12 @@ public:
     void SetPos(double X座標 , double Y座標)
     {                
         shape->SetPos(X座標, Y座標);
+    }
+
+    /** 座標を取得.*/
+    Point GetPoint()
+    {
+        return Point(GetX(),GetY());
     }
 
     /** 拡大率を設定する.*/

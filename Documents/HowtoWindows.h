@@ -28,6 +28,7 @@ SDL版を使う場合は｢SDXFramework_SDL2｣を使って下さい。\n
 <HR>
 <B>3.1 新規プロジェクトの作成、DXLIB版</B>\n
 DXLIB版は3.1、SDL版は3.2の設定をして下さい。\n
+DXLIB版は開発停止したため、SDL版を推奨しています。\n
 \n
 VisualStudioを起動したら新規プロジェクトを作成します。\n
 大体DXライブラリと似た方法になるので、そちらも参考にして下さい。\n
@@ -113,7 +114,7 @@ int main(int argc, char* argv[])
         if (Input::pad.Right.hold) x += 5;
         if (Input::pad.Left.hold) x -= 5;
 
-        Drawing::Rect(x-10, y-10, 20, 20, Color::White, true);
+        Drawing::Rect({x-10, y-10, 20, 20}, Color::White, true);
     }
 
     System::End();//ライブラリの終了処理

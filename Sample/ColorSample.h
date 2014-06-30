@@ -13,7 +13,7 @@ bool SampleColor()
         Drawing::Rect({10, 100, 200, 200}, { 0, 255, 0 }, true);
 
         //青い●を描画、定数を使う
-        Drawing::Circle(110, 300, 50, Color::Blue, true);
+        Drawing::Circle({ 110, 300, 50 }, Color::Blue, true);
 
         if (Input::key.Return.on) break;//Enterで終了
     }

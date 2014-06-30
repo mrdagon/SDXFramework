@@ -15,22 +15,19 @@ public:
         image(描画Image)
     {}
 
-    void Draw(double X座標, double Y座標, bool Cameraフラグ) override
+    void Draw(const Point &座標, bool Cameraフラグ) override
     {
         if ( Cameraフラグ )
         {
-            image->DrawRotateAxis(        (int)Camera::Now()->TransX(X座標 + gapX) ,
-                                        (int)Camera::Now()->TransY(Y座標 + gapY) ,
-                                        (int)(axisX + image->GetWidth() / 2), 
-                                        (int)(axisY + image->GetHeight() / 2), 
+            image->DrawRotateAxis(Camera::Now()->Trans({ 座標.x + gapX, 座標.y+gapY}),
+                                  { axisX + image->GetWidth() / 2, axisY + image->GetHeight() / 2 },
                                         zoomX * Camera::Now()->GetZoom() ,
                                         zoomY * Camera::Now()->GetZoom() ,
                                         angle , isTurn);
         }else{
-            image->DrawRotateAxis(        (int)(X座標 + gapX) ,
-                                        (int)(Y座標 + gapY),
-                                        (int)(axisX + image->GetHeight() / 2), 
-                                        (int)(axisY + image->GetHeight() / 2), 
+            image->DrawRotateAxis(      { 座標.x + gapX, 座標.y + gapY},
+                                        { axisX + image->GetHeight() / 2,
+                                          axisY + image->GetHeight() / 2 },
                                         zoomX ,
                                         zoomY ,
                                         angle , isTurn);
@@ -60,27 +57,31 @@ public:
         return index;
     }
 
-    void Draw(double X座標, double Y座標, bool Cameraフラグ) override
+    void Draw(const Point &座標, bool Cameraフラグ) override
     {
         const auto image = imageS->operator[](index);
 
         if ( Cameraフラグ )
         {
-            image->DrawRotateAxis((int)Camera::Now()->TransX(X座標 + gapX) ,
-                                        (int)Camera::Now()->TransY(Y座標 + gapY) ,
-                                        (int)(axisX + image->GetWidth() / 2), 
-                                        (int)(axisY + image->GetHeight() / 2), 
-                                        zoomX * Camera::Now()->GetZoom() ,
-                                        zoomY * Camera::Now()->GetZoom() ,
-                                        angle , isTurn);
+            image->DrawRotateAxis
+                (
+                    Camera::Now()->Trans({ 座標.x + gapX ,座標.y + gapY}),
+                    { axisX + image->GetWidth() / 2,axisY + image->GetHeight() / 2 },
+                    zoomX * Camera::Now()->GetZoom() ,
+                    zoomY * Camera::Now()->GetZoom() ,
+                    angle ,
+                    isTurn
+                );
         }else{
-            image->DrawRotateAxis(        (int)(X座標 + gapX) ,
-                                        (int)(Y座標 + gapY),
-                                        (int)(axisX + image->GetHeight() / 2), 
-                                        (int)(axisY + image->GetHeight() / 2), 
-                                        zoomX ,
-                                        zoomY ,
-                                        angle , isTurn);
+            image->DrawRotateAxis
+                (
+                    { 座標.x + gapX, 座標.y + gapY },
+                    { axisX + image->GetHeight() / 2, axisY + image->GetHeight() / 2 },
+                    zoomX ,
+                    zoomY ,
+                    angle ,
+                    isTurn
+                );
         }
     }        
 };
@@ -108,30 +109,31 @@ public:
         counter.Update( aniSpeed );
     }
 
-    void Draw(double X座標, double Y座標, bool Cameraフラグ) override
+    void Draw(const Point &座標, bool Cameraフラグ) override
     {
         if( Cameraフラグ )
         {
-            counter.GetFrame()->DrawRotateAxis( 
-                                        (int)Camera::Now()->TransX(X座標 + gapX) , 
-                                        (int)Camera::Now()->TransY(Y座標 + gapY) ,
-                                        (int)(axisX + anime->GetWidth() / 2 ), 
-                                        (int)(axisY + anime->GetHeight() / 2 ),
-                                        zoomX * Camera::Now()->GetZoom() ,
-                                        zoomY * Camera::Now()->GetZoom(),
-                                        angle ,
-                                        isTurn);
+            counter.GetFrame()->DrawRotateAxis
+                ( 
+                    Camera::Now()->Trans({ 座標.x + gapX, 座標.y + gapY }),
+                    { axisX + anime->GetWidth() / 2, axisY + anime->GetHeight() / 2 },
+                    zoomX * Camera::Now()->GetZoom() ,
+                    zoomY * Camera::Now()->GetZoom(),
+                    angle ,
+                    isTurn
+                );
         }
         else
         {
-            counter.GetFrame()->DrawRotateAxis(
-                                        (int)(X座標 +gapX),
-                                        (int)(Y座標 +gapY),
-                                        (int)axisX + anime->GetWidth() / 2,
-                                        (int)axisY + anime->GetHeight() / 2,
-                                        zoomX ,
-                                        zoomY ,
-                                        angle , isTurn);
+            counter.GetFrame()->DrawRotateAxis
+                (
+                    { 座標.x + gapX, 座標.y + gapY },
+                    { axisX + anime->GetWidth() / 2, axisY + anime->GetHeight() / 2 },
+                    zoomX ,
+                    zoomY ,
+                    angle ,
+                    isTurn
+                );
         }
     }
 };
@@ -167,14 +169,13 @@ public:
         this->SetZoom(縦倍率,横倍率);
     }
 
-    void Draw(double X座標, double Y座標, bool Cameraフラグ) override
+    void Draw(const Point &座標, bool Cameraフラグ) override
     {
         if( Cameraフラグ )
         {
             font->DrawExtend
                 (
-                    (int)Camera::Now()->TransX(X座標 + gapX) ,
-                    (int)Camera::Now()->TransY(Y座標 + gapY) ,
+                    Camera::Now()->Trans({ 座標.x + gapX, 座標.y + gapY }),
                     zoomX * Camera::Now()->GetZoom() ,
                     zoomY * Camera::Now()->GetZoom() ,
                     rgb ,
@@ -185,8 +186,7 @@ public:
         {
             font->DrawExtend
                 (
-                    (int)(X座標+gapX),
-                    (int)(Y座標+gapY),
+                    { 座標.x + gapX, 座標.y + gapY },
                     zoomX,
                     zoomY,
                     rgb,
@@ -217,21 +217,33 @@ public:
         height( 高さ )
     {}
 
-    void Draw(double X座標, double Y座標, bool Cameraフラグ) override
+    void Draw(const Point &座標, bool Cameraフラグ) override
     {
         if( Cameraフラグ )
         {
-            bmpFrame->Draw(    (int)Camera::Now()->TransX(X座標 + gapX) ,
-                            (int)Camera::Now()->TransY(Y座標 + gapY) ,
-                            (int)(width * zoomX * Camera::Now()->GetZoom()) ,
-                            (int)(height * zoomY * Camera::Now()->GetZoom()));
+            const Point 左上 = Camera::Now()->Trans({ 座標.x + gapX, 座標.y + gapY });
+
+            bmpFrame->Draw
+                (
+                    {
+                     左上.x,
+                     左上.y,
+                     width * zoomX * Camera::Now()->GetZoom(),
+                     height * zoomY * Camera::Now()->GetZoom() 
+                    }
+                );
         }
         else
         {
-            bmpFrame->Draw(    (int)(X座標 + gapX),
-                            (int)(Y座標 + gapY),
-                            (int)(width * zoomX) ,
-                            (int)(height * zoomY) );
+            bmpFrame->Draw
+                (
+                    { 
+                    座標.x + gapX,
+                    座標.y + gapY,
+                    width * zoomX,
+                    height * zoomY
+                    }
+                );
         }
     }
 };
@@ -274,33 +286,33 @@ public:
         }
     }
 
-    void Draw(double X座標, double Y座標, bool カメラ有りフラグ) override
+    void Draw(const Point &座標, bool カメラ有りフラグ) override
     {
         const int chipW = chip.GetWidth();
         const int chipH = chip.GetHeight();
 
         if( カメラ有りフラグ )
         {
-            const int baseY = int(Camera::Now()->TransY( Y座標 ));
-            const int baseX = int(Camera::Now()->TransX( X座標 ));
+            const int baseY = int(Camera::Now()->TransY( 座標.y ));
+            const int baseX = int(Camera::Now()->TransX( 座標.x ));
             
-            int posXA;
-            int posYA;
-            int posXB;
-            int posYB;
+            double posXA;
+            double posYA;
+            double posXB;
+            double posYB;
 
             for(int a=0 ; a<width ; ++a )
             {
-                posXA = int( baseX + chipW * a * Camera::Now()->GetZoom() );
-                posXB = int( baseX + chipW * (a+1) * Camera::Now()->GetZoom() );
+                posXA = baseX + chipW * a * Camera::Now()->GetZoom();
+                posXB = baseX + chipW * (a+1) * Camera::Now()->GetZoom();
 
                 for(int b=0 ; b<height ; ++b )
                 {
-                    posYA = int( baseY + chipH * b * Camera::Now()->GetZoom() );
-                    posYB = int( baseY + chipH * (b+1) * Camera::Now()->GetZoom() );
+                    posYA = baseY + chipH * b * Camera::Now()->GetZoom();
+                    posYB = baseY + chipH * (b+1) * Camera::Now()->GetZoom();
                     const int no = data[a][b];
                     if( no == 0 ) continue;
-                    chip[no]->DrawExtend( posXA , posYA , posXB , posYB );
+                    chip[no]->DrawExtend({ posXA, posYA }, { posXB, posYB });
                 }
             }
         }else{
@@ -310,7 +322,7 @@ public:
                 {
                     const int no = data[a][b];
                     if( no == 0 ) continue;
-                    chip[no]->Draw( int(X座標 + a*chipW) , int(Y座標 + b*chipH) );
+                    chip[no]->Draw({ 座標.x + a*chipW, 座標.y + b*chipH });
                 }
             }
         }

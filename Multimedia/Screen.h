@@ -1,6 +1,7 @@
 ﻿#pragma once//☀SDL
 #include <Multimedia/SDX.h>
 #include <Multimedia/Color.h>
+#include <Framework/Shape.h>
 
 namespace SDX
 {
@@ -144,7 +145,7 @@ public:
     }
     
     /** 描画対象になっている画面の一部をBMP形式で保存[DXLIB].*/
-    static bool SaveBmp(const Point &座標, int 幅 , int 高さ , const char *ファイル名 )
+    static bool SaveBmp(const Rect &領域 , const char *ファイル名 )
     {
         return false;
     }

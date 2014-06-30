@@ -163,7 +163,7 @@ public:
     /** 指定座標に描画.*/
     bool Draw(const Point &座標 , bool 反転フラグ = false) const
     {
-        SDL_Rect temp = { X座標, Y座標, part.w, part.h };
+        SDL_Rect temp = { (int)座標.x, (int)座標.y, part.w, part.h };
         RGBACulculate();
         if( 反転フラグ )
         {
@@ -174,17 +174,12 @@ public:
         }
     }
 
-    bool Draw(const Point &座標 , bool 反転フラグ = false) const
-    {
-        return Draw((int)座標.x,(int)座標.y,反転フラグ);
-    }
-
     /** 指定矩形内に描画.*/
     bool DrawExtend(const Point &座標A,const Point &座標B ) const
     {
-        SDL_Rect temp = { X座標A, Y座標A, X座標B - X座標A, Y座標B - Y座標A };
+        SDL_Rect temp = { (int)座標A.x, (int)座標A.y, (int)(座標B.x - 座標A.x), (int)(座標B.y - 座標A.y) };
         RGBACulculate();
-        return !SDL_RenderCopy(Screen::GetHandle(), handle, &part, &temp);        
+        return !SDL_RenderCopy(Screen::GetHandle(), handle, &part, &temp);
     }
 
     /** 角度、拡大率を指定して描画.*/
@@ -192,35 +187,30 @@ public:
     {
         const int wbuf = int(part.w*拡大率);
         const int hbuf = int(part.h*拡大率);
-        SDL_Rect temp = { X座標 - wbuf/2, Y座標 - hbuf/2, wbuf , hbuf };
+        SDL_Rect temp = { (int)座標.x - wbuf / 2, (int)座標.y - hbuf / 2, wbuf, hbuf };
         SDL_Point point = { wbuf / 2, hbuf / 2 };
         RGBACulculate();
         return !SDL_RenderCopyEx(Screen::GetHandle(), handle, &part, &temp, 角度*180 / PAI, &point, SDL_RendererFlip(反転フラグ));
     }
 
-    bool DrawRotate(const Point &座標 , double 拡大率 , double 角度, bool 反転フラグ = false) const
-    {
-        return DrawRotate((int)座標.x,(int)座標.y,拡大率,角度,反転フラグ);    
-    }
-
     /** 回転軸、角度、拡大率を指定して描画.*/
-    bool DrawRotateAxis(const Point &座標, int X軸, int Y軸, double 拡大率, double 角度, bool 反転フラグ = false) const
+    bool DrawRotateAxis(const Point &座標, const Point &回転軸座標, double 拡大率, double 角度, bool 反転フラグ = false) const
     {
         const int wbuf = int(part.w*拡大率);
         const int hbuf = int(part.h*拡大率);
-        SDL_Rect temp = { X座標 - wbuf / 2, Y座標 - hbuf / 2, wbuf, hbuf };
-        SDL_Point point = { int(X軸*拡大率), int(Y軸*拡大率) };
+        SDL_Rect temp = { (int)座標.x - wbuf / 2, (int)座標.y - hbuf / 2, wbuf, hbuf };
+        SDL_Point point = { int(回転軸座標.x*拡大率), int(回転軸座標.y*拡大率) };
         RGBACulculate();
         return !SDL_RenderCopyEx(Screen::GetHandle(), handle, &part, &temp, 角度*180 / PAI , &point, SDL_RendererFlip(反転フラグ));
     }
 
     /** 回転軸、角度、拡大率を縦横別に指定して描画.*/
-    bool DrawRotateAxis(const Point &座標, int X軸, int Y軸, double 拡大率X, double 拡大率Y, double 角度, bool 反転フラグ = false) const
+    bool DrawRotateAxis(const Point &座標, const Point &回転軸座標 , double 拡大率X, double 拡大率Y, double 角度, bool 反転フラグ = false) const
     {
         const int wbuf = int(part.w*拡大率X);
         const int hbuf = int(part.h*拡大率Y);
-        SDL_Rect temp = { X座標 - wbuf / 2, Y座標 - hbuf / 2, wbuf, hbuf };
-        SDL_Point point = { int(X軸*拡大率X) , int(Y軸*拡大率Y) };
+        SDL_Rect temp = { (int)座標.x - wbuf / 2, (int)座標.y - hbuf / 2, wbuf, hbuf };
+        SDL_Point point = { int(回転軸座標.x*拡大率X), int(回転軸座標.y*拡大率Y) };
         RGBACulculate();
         return !SDL_RenderCopyEx(Screen::GetHandle(), handle, &part, &temp, 角度*180/PAI, &point, SDL_RendererFlip(反転フラグ));
     }

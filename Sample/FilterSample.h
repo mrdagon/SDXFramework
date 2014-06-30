@@ -10,7 +10,7 @@ bool SampleFilter()
 
     while (System::Update())
     {
-        image.Draw(10, 10);
+        image.Draw({ 10, 10 });
         if (Input::key.Return.on) break;//Enterで終了
     }
 

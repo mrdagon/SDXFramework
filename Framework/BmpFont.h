@@ -114,7 +114,7 @@ public:
     }
             
     /** 書式付きで文字を描画.*/
-    bool Draw(int X座標 , int Y座標 , Color 描画色 , VariadicStream 描画する文字列 ) const override
+    bool Draw(const Point &座標 , Color 描画色 , VariadicStream 描画する文字列 ) const override
     {
         Screen::SetBright(描画色);
 
@@ -131,10 +131,10 @@ public:
                 if (bufstr[a] >= '0' && bufstr[a] <= '9' && this->isNumber)
                 {
                     divImageNumber[0][bufstr[a] - '0']->DrawExtend(
-                        X座標 + addX,
-                        Y座標 + addY - this->numberHeight,
-                        X座標 + addX + this->numberWidth,
-                        Y座標 + addY);
+                        { 座標.x + addX,
+                        座標.y + addY - this->numberHeight },
+                        { 座標.x + addX + this->numberWidth,
+                        座標.y + addY });
 
                     addX += this->numberWidth;
                 }
@@ -143,10 +143,10 @@ public:
 
                     divImageAlphabetCapital[0][bufstr[a] - 'A']->DrawExtend
                         (
-                        X座標 + addX,
-                        Y座標 + addY - this->alphabetCapitalHeight,
-                        X座標 + addX + this->alphabetCapitalWidth,
-                        Y座標 + addY
+                        { 座標.x + addX,
+                        座標.y + addY - this->alphabetCapitalHeight },
+                        { 座標.x + addX + this->alphabetCapitalWidth,
+                        座標.y + addY }
                         );
 
                     addX += this->alphabetCapitalWidth;
@@ -157,10 +157,10 @@ public:
 
                     divImageAlphabetLow[0][bufstr[a] - 'a']->DrawExtend
                         (
-                        X座標 + addX,
-                        Y座標 + addY - this->numberHeight,
-                        X座標 + addX + this->numberWidth,
-                        Y座標 + addY
+                        { 座標.x + addX,
+                        座標.y + addY - this->numberHeight },
+                        { 座標.x + addX + this->numberWidth,
+                        座標.y + addY }
                         );
 
                     addX += this->alphabetLowWidth;
@@ -179,84 +179,15 @@ public:
         Screen::SetBright(Color::White);
         return true;
     }
-    bool ZMask(int X座標, int Y座標, ZMaskType Zマスクタイプ, VariadicStream 描画する文字列) const override
-    {
-        for (auto it : 描画する文字列.StringS)
-        {
-            int a = 0;
-            int addX = 0;
-            int addY = this->maxHeight;
-            const char* bufstr = it.c_str();
 
-            while (bufstr[a] != 0)
-            {
-                if (bufstr[a] >= '0' && bufstr[a] <= '9' && this->isNumber)
-                {
-                    this->divImageNumber[0][bufstr[a] - '0']->ZMaskExtend
-                        (
-                        X座標 + addX,
-                        Y座標 + addY - this->numberHeight,
-                        X座標 + addX + this->numberWidth,
-                        Y座標 + addY,
-                        Zマスクタイプ
-                        );
-                    addX += this->numberWidth;
-                }
-                else if (bufstr[a] >= 'A' && bufstr[a] <= 'Z' && this->isAlphabetCapital)
-                {
-
-                    this->divImageAlphabetCapital[0][bufstr[a] - 'A']->ZMaskExtend
-                        (
-                        X座標 + addX,
-                        Y座標 + addY - this->alphabetCapitalHeight,
-                        X座標 + addX + this->alphabetCapitalWidth,
-                        Y座標 + addY,
-                        Zマスクタイプ
-                        );
-
-                    addX += this->alphabetCapitalWidth;
-
-                }
-                else if (bufstr[a] >= 'a' && bufstr[a] <= 'z' && this->isAlphabetLow)
-                {
-
-                    this->divImageAlphabetLow[0][bufstr[a] - 'a']->ZMaskExtend
-                        (
-                        X座標 + addX,
-                        Y座標 + addY - this->numberHeight,
-                        X座標 + addX + this->numberWidth,
-                        Y座標 + addY,
-                        Zマスクタイプ
-                        );
-
-                    addX += this->alphabetLowWidth;
-
-                }
-                else if (bufstr[a] == ' ')
-                {
-                    addX += this->spaceWidth;
-                }
-                ++a;
-                if (a == strlen(bufstr)) break;
-            }
-            addY += this->maxHeight + this->enterSpace;
-        }
-        return true;
-    }
-    
     /** 文字を回転して描画[未実装].*/
-    bool DrawRotate(int X座標, int Y座標, double 拡大率, double 角度, Color 描画色, bool 反転フラグ, VariadicStream 描画する文字列) const override
-    {
-        return false;
-    }
-    /** 文字を回転してマスク[未実装].*/
-    bool ZMaskRotate(int X座標, int Y座標, double 拡大率, double 角度, ZMaskType Zマスクタイプ, bool 反転フラグ, VariadicStream 描画する文字列) const override
+    bool DrawRotate(const Point &座標, double 拡大率, double 角度, Color 描画色, bool 反転フラグ, VariadicStream 描画する文字列) const override
     {
         return false;
     }
 
     /** 拡大率を指定して文字を描画.*/
-    bool DrawExtend(int X座標, int Y座標, double X拡大率, double Y拡大率, Color 描画色, VariadicStream 描画する文字列) const override
+    bool DrawExtend(const Point &座標, double X拡大率, double Y拡大率, Color 描画色, VariadicStream 描画する文字列) const override
     {
         for (auto it : 描画する文字列.StringS)
         {
@@ -274,10 +205,10 @@ public:
 
                     this->divImageNumber[0][bufstr[a] - '0']->DrawExtend
                         (
-                        X座標 + int(addX * X拡大率),
-                        Y座標 + int((addY - this->numberHeight) * Y拡大率),
-                        X座標 + int((addX + this->numberWidth) * X拡大率),
-                        Y座標 + int(addY * Y拡大率)
+                        { 座標.x + int(addX * X拡大率),
+                        座標.y + int((addY - this->numberHeight) * Y拡大率) },
+                        { 座標.x + int((addX + this->numberWidth) * X拡大率),
+                        座標.y + int(addY * Y拡大率) }
                         );
 
                     addX += this->numberWidth;
@@ -288,10 +219,10 @@ public:
 
                     this->divImageAlphabetCapital[0][bufstr[a] - 'A']->DrawExtend
                         (
-                        X座標 + int(addX * X拡大率),
-                        Y座標 + int((addY - this->alphabetCapitalHeight) * Y拡大率),
-                        X座標 + int((addX + this->alphabetCapitalWidth) * X拡大率),
-                        Y座標 + int(addY * Y拡大率)
+                        { 座標.x + int(addX * X拡大率),
+                        座標.y + int((addY - this->alphabetCapitalHeight) * Y拡大率) },
+                        { 座標.x + int((addX + this->alphabetCapitalWidth) * X拡大率),
+                        座標.y + int(addY * Y拡大率) }
                         );
 
                     addX += this->alphabetCapitalWidth;
@@ -301,10 +232,10 @@ public:
                 {
                     this->divImageAlphabetLow[0][bufstr[a] - 'a']->DrawExtend
                         (
-                        X座標 + int(addX * X拡大率),
-                        Y座標 + int((addY - this->alphabetLowHeight) * Y拡大率),
-                        X座標 + int((addX + this->alphabetLowWidth) * X拡大率),
-                        Y座標 + int(addY * Y拡大率)
+                        { 座標.x + int(addX * X拡大率),
+                        座標.y + int((addY - this->alphabetLowHeight) * Y拡大率) },
+                        { 座標.x + int((addX + this->alphabetLowWidth) * X拡大率),
+                        座標.y + int(addY * Y拡大率) }
                         );
 
                     addX += this->alphabetLowWidth;
@@ -324,76 +255,5 @@ public:
         return true;
     }
 
-    bool DrawExtend(const Point &座標 ,  double X拡大率, double Y拡大率, Color 描画色, VariadicStream 描画する文字列) const
-    {
-         return DrawExtend((int)座標.x, (int)座標.y, X拡大率, Y拡大率, 描画色, 描画する文字列);    
-    }
-
-    bool ZMaskExtend(int X座標, int Y座標, double X拡大率, double Y拡大率, ZMaskType Zマスクタイプ, VariadicStream 描画する文字列) const override
-    {
-        for (auto it : 描画する文字列.StringS)
-        {
-            int a = 0;
-            int addX = 0;
-            int addY = this->maxHeight;
-            const char* bufstr = it.c_str();
-
-            while (bufstr[a] != 0)
-            {
-                if (bufstr[a] >= '0' && bufstr[a] <= '9' && this->isNumber)
-                {
-
-                    this->divImageNumber[0][bufstr[a] - '0']->ZMaskExtend
-                        (
-                        X座標 + int(addX * X拡大率),
-                        Y座標 + int((addY - this->numberHeight) * Y拡大率),
-                        X座標 + int((addX + this->numberWidth) * X拡大率),
-                        Y座標 + int(addY * Y拡大率),
-                        Zマスクタイプ
-                        );
-
-                    addX += this->numberWidth;
-
-                }
-                else if (bufstr[a] >= 'A' && bufstr[a] <= 'Z' && this->isAlphabetCapital)
-                {
-
-                    this->divImageAlphabetCapital[0][bufstr[a] - 'A']->ZMaskExtend
-                        (
-                        X座標 + int(addX * X拡大率),
-                        Y座標 + int((addY - this->alphabetCapitalHeight) * Y拡大率),
-                        X座標 + int((addX + this->alphabetCapitalWidth) * X拡大率),
-                        Y座標 + int(addY * Y拡大率),
-                        Zマスクタイプ
-                        );
-
-                    addX += this->alphabetCapitalWidth;
-
-                }
-                else if (bufstr[a] >= 'a' && bufstr[a] <= 'z' && this->isAlphabetLow)
-                {
-                    this->divImageAlphabetLow[0][bufstr[a] - 'a']->ZMaskExtend
-                        (
-                        X座標 + int(addX * X拡大率),
-                        Y座標 + int((addY - this->alphabetLowHeight) * Y拡大率),
-                        X座標 + int((addX + this->alphabetLowWidth) * X拡大率),
-                        Y座標 + int(addY * Y拡大率),
-                        Zマスクタイプ
-                        );
-
-                    addX += this->alphabetLowWidth;
-                }
-                else if (bufstr[a] == ' ')
-                {
-                    addX += this->spaceWidth;
-                }
-                ++a;
-                if (a == strlen(bufstr)) break;
-            }
-            addY += this->maxHeight + this->enterSpace;
-        }
-        return true;
-    }
-    
 };
 }

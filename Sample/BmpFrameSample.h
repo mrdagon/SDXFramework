@@ -13,7 +13,7 @@ bool    SampleBmpFrame()
 
     while    (System::Update())
     {
-        bmpFrame.Draw(10,    10,    500,    300);
+        bmpFrame.Draw({ 10, 10, 500, 300 });
         if    (Input::key.Return.on)    break;//Enterで終了    
     }
 

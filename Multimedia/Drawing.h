@@ -101,53 +101,38 @@ public:
             return !SDL_RenderDrawRect(Screen::GetHandle(), &buf);
         }
     }
-    /** 左上の座標と大きさを指定して矩形をマスク[DXLIB].*/
-    static bool RectZMask(const Rect &領域 , ZMaskType マスクタイプ, bool 塗りつぶしフラグ)
-    {
-        return false;
-    }
 
     /** 中心と半径を指定して円を描画.*/
     /** SDLは仮実装*/
-    static bool Circle(const Point &中心 , int 半径, Color 色, bool 塗りつぶしフラグ)
+    static void Circle(const Circle &円形, Color 色, bool 塗りつぶしフラグ)
     {
         SDL_SetRenderDrawColor(Screen::GetHandle(), 色.GetRed(), 色.GetGreen(), 色.GetBlue(), 0);
-        circleTexture(塗りつぶしフラグ).DrawExtend(中心.x - 半径, 中心.y - 半径, 中心.x + 半径, 中心.y + 半径);
-        return true;
-    }
-
-    /** 中心と半径を指定して円をマスク[DXLIB].*/
-    static bool CircleZMask(const Point &中心, int 半径, Color 色, bool 塗りつぶしフラグ)
-    {
-        return false;
+        circleTexture(塗りつぶしフラグ).DrawExtend({ 円形.x - 円形.radius, 円形.y - 円形.radius }, { 円形.x + 円形.radius, 円形.y + 円形.radius });
     }
 
     /** 中心と外接する四角形の大きさを指定して楕円を描画[DXLIB].*/
     /** SDLは仮実装*/
-    static bool Oval( const Point &中心 , int 幅 , int 高さ , Color 色 , bool 塗りつぶしフラグ )
+    static void Oval( const Point &中心 , int 幅 , int 高さ , Color 色 , bool 塗りつぶしフラグ )
     {
         SDL_SetRenderDrawColor(Screen::GetHandle(), 色.GetRed(), 色.GetGreen(), 色.GetBlue(), 0);
-        circleTexture(塗りつぶしフラグ).DrawExtend(中心.x - 幅/2, 中心.y - 高さ/2, 中心.x + 幅/2, 中心.y + 高さ/2);
-        return true;
+        circleTexture(塗りつぶしフラグ).DrawExtend({ 中心.x - 幅 / 2, 中心.y - 高さ / 2 }, { 中心.x + 幅 / 2, 中心.y + 高さ / 2 });
     }
 
     /** 頂点を３つ指定して三角形を描画.*/
     /** SDLは塗りつぶし不可*/
-    static bool Triangle(const Point &頂点A, const Point &頂点B, const Point &頂点C, Color 色, bool 塗りつぶしフラグ)
+    static void Triangle(const Point &頂点A, const Point &頂点B, const Point &頂点C, Color 色, bool 塗りつぶしフラグ)
     {
         RGBACulculate(色.GetRed(), 色.GetGreen(), 色.GetBlue());
-        SDL_RenderDrawLine(Screen::GetHandle(), 頂点A.x , 頂点A.y, 頂点B.x, 頂点B.y);
-        SDL_RenderDrawLine(Screen::GetHandle(), 頂点B.x , 頂点B.y, 頂点C.x, 頂点C.y);
-        SDL_RenderDrawLine(Screen::GetHandle(), 頂点C.x , 頂点C.y, 頂点A.x, 頂点A.y);
-        return true;
+        SDL_RenderDrawLine(Screen::GetHandle(), (int)頂点A.x, (int)頂点A.y, (int)頂点B.x, (int)頂点B.y);
+        SDL_RenderDrawLine(Screen::GetHandle(), (int)頂点B.x, (int)頂点B.y, (int)頂点C.x, (int)頂点C.y);
+        SDL_RenderDrawLine(Screen::GetHandle(), (int)頂点C.x, (int)頂点C.y, (int)頂点A.x, (int)頂点A.y);
     }
 
     /** 指定座標に点を描画.*/
-    static bool Pixel(const Point &座標 , Color 色)
+    static void Pixel(const Point &座標 , Color 色)
     {
         RGBACulculate(色.GetRed() , 色.GetGreen() , 色.GetBlue() );
-        SDL_RenderDrawPoint(Screen::GetHandle() , 座標.x , 座標.y );
-        return false;
+        SDL_RenderDrawPoint(Screen::GetHandle(), (int)座標.x, (int)座標.y);
     }
 
     /** 指定座標の色を取得[DXLIB].*/
@@ -158,12 +143,11 @@ public:
 
     /** 画像を一時的にメモリに読み込んで描画.*/
     /** この処理は重いので、通常はImageクラスを利用する*/
-    static bool ImageFile( const Point &座標 , const char *ファイル名 , bool 透過フラグ = true )
+    static void ImageFile( const Point &座標 , const char *ファイル名 , bool 透過フラグ = true )
     {
         Image buf(ファイル名);
         buf.Draw( 座標 , false);
         buf.Release();
-        return true;
     }
 
     /** 文字を描画.*/
@@ -171,14 +155,6 @@ public:
     static void String( const Point &座標 , Color 色, VariadicStream 描画する文字列)
     {
         defaultFont.Draw( 座標 ,色 , 描画する文字列 );
-    }
-    /** 文字をマスク[DXLIB].*/
-    static void StringZMask( const Point &座標 , ZMaskType Zマスク , VariadicStream 描画する文字列 )
-    {
-        for (auto it : 描画する文字列.StringS)
-        {
-            座標.y += 20;
-        }
     }
 };
 }

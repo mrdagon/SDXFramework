@@ -28,20 +28,20 @@ SDXフレームワークとリンクしているだけのコードは同じラ�
 
 内部で使用するライブラリを切り替えられるので、使用したライブラリのライセンスを適用して下さい。
 
-<B>DXLIB</B><BR>
-DX Library Copyright (C) 2001-2013 Takumi Yamada.
-
-ここに書いてある事にしたがって下さい<BR>
-http://homepage2.nifty.com/natupaji/DxLib/dxlicense.html
-<BR>
-GetRandと物理演算は使用していません。
-
 <B>SDL</B><BR>
 zlibライセンスなので、実行形式で配布する場合、表記は特に必要ありません。<BR>
 詳しくはここを参照：<BR>
 http://www.libsdl.org/license.php
 <HR>
-<B>ソースコードを配布する場合は必要</B><BR>
+
+<B>DXLIB</B><BR>
+DX Library Copyright (C) 2001-2013 Takumi Yamada.<BR>
+ここに書いてある事にしたがって下さい<BR>
+http://homepage2.nifty.com/natupaji/DxLib/dxlicense.html
+<BR>
+GetRandと物理演算は使用していません。<BR>
+
+<B>改変したソースコードを配布する場合(DXLIB,SDL共通)</B><BR>
 SDX Framework<BR>
 URL:http://sourceforge.jp/projects/dxframework/simple/
 <BR>

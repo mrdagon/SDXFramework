@@ -20,7 +20,7 @@ private:
     int size = 0;
     int thick = 0;
     int enterHeight = 0;
-    std::map<std::string, Image*> hash;
+    mutable std::map<std::string, Image*> hash;
 
 public:
 
@@ -111,7 +111,7 @@ public:
             SDL_Surface* surface = TTF_RenderUTF8_Blended(handle, 文字, { 255, 255, 255 });
             SDL_Texture* moji = SDL_CreateTextureFromSurface(Screen::GetHandle(), surface);
             Image* image = new Image(moji, surface->w, surface->h);
-            std::map<std::string, Image*> *map = const_cast<std::map<std::string, Image*>*>( &hash);
+            std::map<std::string, Image*> *map = &hash;
             map->operator[](文字) = image;
             SDL_FreeSurface(surface);
             return image;

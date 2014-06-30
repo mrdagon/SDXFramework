@@ -29,7 +29,7 @@
 #include <Utility/BanCopy.h>
 #include <Utility/Pool.h>
 #include <Utility/Module.h>
-#include <Utility/DataPack.h>
+#include <Utility/EnumArray.h>
 
 #include <Framework/Anime.h>
 #include <Framework/BmpFont.h>

@@ -1,9 +1,22 @@
 ﻿/*!
 @page ReleaseNote 更新履歴
 各バージョンの主な更新履歴です \n
-詳細はSorceForgeのコミットコメントを確認して下さい\n
+詳細はGithubのコミットコメントを確認して下さい\n
+今後の変更予定はSorceForgeの
 \n
 <HR>
+<B>ver 0.09</B>\n
+DXLIB版を開発停止、以降はSDL2.0版の開発に注力して行きます。\n
+DXLIB版とSDL2.0版の互換性の維持を終了\n
+\n
+int 座標X,int 座標Yとなっている関数をconst Point &座標に変更\n
+int X座標,int Y座標,int 高さ,int 幅はconst Rect &領域に変更\n
+非実装だったZマスク系関数を削除\n
+テキスト入力系の関数を一旦削除\n
+Rectの座標を左上以外に出来るように変更\n
+ユーティリティーにEnumArrayを追加
+<B>ver 0.08</B>\n
+細かいバグを修正\n
 <B>ver 0.07</B>\n
 Android対応強化\n
 Fileクラスを修正、Multimediaフォルダに移動\n

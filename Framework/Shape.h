@@ -294,6 +294,12 @@ public:
         y(Y座標)
     {}
 
+    template<class TA, class TB>
+    Point(TA X座標, TB Y座標) :
+        x(X座標),
+        y(Y座標)
+    {}
+
     Shape* Clone(double X座標,double Y座標) const
     {
         auto shape = new Point( X座標 , Y座標 );
@@ -702,6 +708,17 @@ public:
         widthLeft( 横幅B ),
         widthRight( 横幅A )
     {}
+
+    template <class T>
+    Rect(T X座標, T Y座標, T 横幅A, T 高さA, T 横幅B = 0, T 高さB = 0) :
+        x((double)X座標),
+        y((double)Y座標),
+        heightUp((double)高さB),
+        heightDown((double)高さA),
+        widthLeft((double)横幅B),
+        widthRight((double)横幅A)
+    {}
+
 
     virtual Shape* Clone(double X座標,double Y座標) const
     {

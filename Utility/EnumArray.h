@@ -5,7 +5,7 @@ namespace SDX
 {
     /**—ñ‹“Œ^‚ğ’¼Ú“Yš‚Ég‚¦‚é”z—ñ.*/
     template <class TData, class TType>
-    class DataPack
+    class EnumArray
     {
     private:
         std::array<TData, (int)TType::MAX> Array;
@@ -25,47 +25,25 @@ namespace SDX
             return Array[(int)index];
         }
 
-#ifdef __WINDOWS__
-        std::_Array_iterator<TData, (int)TType::MAX> begin()
+        auto begin() ->decltype(Array.begin())
         {
             return Array.begin();
         }
 
-        std::_Array_iterator<TData, (int)TType::MAX> end()
+        auto end() ->decltype(Array.end())
         {
             return Array.end();
         }
 
-        std::_Array_const_iterator<TData, (int)TType::MAX> begin() const
+        auto begin() const ->decltype(Array.begin())
         {
             return Array.begin();
         }
 
-        std::_Array_const_iterator<TData, (int)TType::MAX> end() const
+        auto end() const ->decltype(Array.end())
         {
             return Array.end();
         }
-#else
-        auto begin()
-        {
-            return Array.begin();
-        }
-
-        auto end()
-        {
-            return Array.end();
-        }
-
-        auto begin() const
-        {
-            return Array.begin();
-        }
-
-        auto end() const
-        {
-            return Array.end();
-        }
-#endif
 
     };
 }

@@ -24,8 +24,8 @@ bool    SampleBmpFont()
 
     while    (System::Update())
     {
-        ifont[0]->Draw(10,    10,    Color::White,    {    "Hello    World!\n",    1928374650    });
-        ifont[1]->Draw(10,    100,    Color::White,    {    "Hello    World!\n",    1928374650    });
+        ifont[0]->Draw({ 10, 10 }, Color::White, { "Hello    World!\n", 1928374650 });
+        ifont[1]->Draw({ 10, 100 }, Color::White, { "Hello    World!\n", 1928374650 });
         if    (Input::key.Return.on)    break;//Enterで終了    
     }
 

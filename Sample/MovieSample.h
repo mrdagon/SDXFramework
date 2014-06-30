@@ -13,7 +13,7 @@ bool SampleMovie()
 
     while (System::Update())
     {
-        movieImage.Draw(10, 10);
+        movieImage.Draw({ 10, 10 });
 
         if (Input::key.Z.on) movieImage.Play();
         if (Input::key.X.on) movieImage.Pause();

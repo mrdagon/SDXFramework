@@ -17,10 +17,10 @@ bool SampleRand()
         double d = Rand::Get(100.0);
 
         //a,bは初期化子が同じなので常に同じ、cdは一秒毎に変化
-        Drawing::String(10, 10, Color::White, { "a:", a });
-        Drawing::String(10, 50, Color::White, { "b:", b });
-        Drawing::String(10, 90, Color::White, { "c:", c });
-        Drawing::String(10, 130, Color::White, { "d:", d });
+        Drawing::String({ 10, 10 }, Color::White, { "a:", a });
+        Drawing::String({ 10, 50 }, Color::White, { "b:", b });
+        Drawing::String({ 10, 90 }, Color::White, { "c:", c });
+        Drawing::String({ 10, 130 }, Color::White, { "d:", d });
 
         if (Input::key.Return.on) break;//Enterで終了
     }

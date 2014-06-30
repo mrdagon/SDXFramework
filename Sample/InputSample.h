@@ -15,7 +15,7 @@ bool SampleInput()
         if (Input::key.Z.holdCount > 60 ) message = "Zを長押し";
 
         //マウスの位置に文字を描画
-        Drawing::String(Input::mouse.x, Input::mouse.y, Color::White, message.c_str());
+        Drawing::String({ Input::mouse.x, Input::mouse.y }, Color::White, message.c_str());
 
         if (Input::key.Return.on) break;//Enterで終了    
     }

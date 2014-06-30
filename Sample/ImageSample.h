@@ -12,13 +12,13 @@ bool SampleImage()
     {
         angle += 0.1;
 
-        image.Draw(10, 10, true);//反転して描画
+        image.Draw({ 10, 10 }, true);//反転して描画
 
-        image.DrawExtend(400, 10, 420, 30);//指定矩形に描画
+        image.DrawExtend({ 400, 10 }, {420, 30 });//指定矩形に描画
 
-        image.DrawRotate(400, 200, 0.5, angle);//角度と拡大率を指定して描画
+        image.DrawRotate({ 400, 200 }, 0.5, angle);//角度と拡大率を指定して描画
 
-        Drawing::String(10, 10, Color::White, { "あいうえお", "\n", 123.456 });
+        Drawing::String({ 10, 10 }, Color::White, { "あいうえお", "\n", 123.456 });
 
         if (Input::key.Return.on) break;//Enterで終了
     }

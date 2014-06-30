@@ -3,7 +3,6 @@
 #include <Multimedia/Font.h>
 #include <Framework/BmpFont.h>
 #include <Framework/Anime.h>
-#include <Utility/Position.h>
 
 namespace SDX
 {
@@ -13,7 +12,7 @@ namespace SDX
 class IFrame
 {
 public:
-    virtual void Draw(int X座標, int Y座標, int 幅, int 高さ) const = 0;
+    virtual void Draw(const Rect &領域) const = 0;
 };
 
 /** 描画用枠を表すクラス.*/
@@ -38,36 +37,33 @@ public:
     
     /** 矩形のフレームを描画.*/
     /** 右上座標を指定してフレームを描画する*/
-    void Draw( int X座標, int Y座標, int 幅, int 高さ) const
+    void Draw(const Rect &領域) const
     {
         const int fWidth = frame->GetWidth();
         const int fHeight = frame->GetHeight();
 
-        const int xA = X座標 + fWidth;
-        const int xB = X座標 - fWidth + 幅;
-        const int yA = Y座標 + fHeight;
-        const int yB = Y座標 - fHeight + 高さ;
+        const double X座標 = 領域.GetLeft();
+        const double Y座標 = 領域.GetTop();
+        const double xA = X座標 + fWidth;
+        const double xB = X座標 - fWidth + 領域.GetW();
+        const double yA = Y座標 + fHeight;
+        const double yB = Y座標 - fHeight + 領域.GetH();
 
         //内部スキンを描画
-        frame[0][4]->DrawExtend(X座標 + fWidth, Y座標 + fHeight, X座標 + 幅 - fWidth, Y座標 + 高さ - fHeight);
-        
+        frame[0][4]->DrawExtend({ fWidth +X座標, fHeight + Y座標}, { 領域.GetW() - fWidth + X座標, 領域.GetH() - fHeight + Y座標});
+
         //まず外枠を描画    
-        frame[0][3]->DrawExtend(X座標, yA, xA, yB);
-        frame[0][5]->DrawExtend(xB, yA, xB + fWidth, yB);
+        frame[0][3]->DrawExtend({ X座標, yA }, { xA, yB });
+        frame[0][5]->DrawExtend({ xB, yA }, { xB + fWidth, yB });
 
-        frame[0][1]->DrawExtend(xA, Y座標, xB, yA);
-        frame[0][7]->DrawExtend(xA, yB, xB, yB + fHeight);
-        
+        frame[0][1]->DrawExtend({ xA, Y座標 }, { xB, yA });
+        frame[0][7]->DrawExtend({ xA, yB }, { xB, yB + fHeight });
+
         //四隅を描画
-        frame[0][0]->Draw(X座標, Y座標);
-        frame[0][2]->Draw(X座標 + 幅 - fWidth, Y座標);
-        frame[0][6]->Draw(X座標, Y座標 + 高さ - fHeight);
-        frame[0][8]->Draw(X座標 + 幅 - fWidth, Y座標 + 高さ - fHeight);
-    }
-
-    void Draw(const Rect &座標)
-    {
-        Draw((int)座標.GetLeft(),(int)座標.GetTop(),(int)座標.GetW(),(int)座標.GetH());
+        frame[0][0]->Draw({ X座標, Y座標 });
+        frame[0][2]->Draw({ X座標 + 領域.GetW() - fWidth, Y座標 });
+        frame[0][6]->Draw({ X座標, Y座標 + 領域.GetH() - fHeight });
+        frame[0][8]->Draw({ X座標 + 領域.GetW() - fWidth, Y座標 + 領域.GetH() - fHeight });
     }
 };
 }

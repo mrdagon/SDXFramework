@@ -24,7 +24,7 @@ bool SampleFile()
 
     while (System::Update())
     {
-        Drawing::String(10, 10, Color::White, { "書き込んだ数字は:", b, "\n書き込んだ文字は:", str2 });
+        Drawing::String({ 10, 10 }, Color::White, { "書き込んだ数字は:", b, "\n書き込んだ文字は:", str2 });
 
         if (Input::key.Return.on) break;//Enterで終了    
     }
