@@ -26,8 +26,8 @@ public:
     
     virtual Shape& GetShape() = 0;
     virtual Sprite& GetSprite() = 0;
-    virtual Shape& GetShape() const = 0;
-    virtual Sprite& GetSprite() const = 0;
+    virtual const Shape& GetShape() const = 0;
+    virtual const Sprite& GetSprite() const = 0;
 
     /** 消滅フラグの取得.*/
     bool GetRemoveFlag()
@@ -51,7 +51,7 @@ public:
     }
 
     /** 描画する.*/
-    virtual void Draw() const
+    virtual void Draw()
     {
         if( GetSprite().GetColor() == Color::White )
         {
@@ -238,36 +238,36 @@ public:
 };
 
 template <class TShape,class TSprite>
-class ModelBase
+class Model : public IModel
 {
     public:
         TShape shape;
         TSprite sprite;
 
-        ModelBase(const TShape &図形と位置, const TSprite &描画方法):
+        Model(const TShape &図形と位置, const TSprite &描画方法):
             shape(図形と位置),
             sprite(描画方法)
         {}
 
-        
-        Shape* GetShape()
+        Shape& GetShape() override
         {
             return shape;
         }
 
-        Sprite* GetSprite()
+        Sprite& GetSprite() override
         {
             return sprite;
         }
-};
 
-template <class TShape,class TSprite>
-class Model : public IModel , public ModelBase<TShape,TSprite>
-{
-    public:
-        Model(const TShape &図形と位置, const TSprite &描画方法):
-            ModelBase(図形と位置,描画方法)
-        {}
+        const Shape& GetShape() const override
+        {
+            return shape;
+        }
+
+        const Sprite& GetSprite() const override
+        {
+            return sprite;
+        }
 };
 
 }
