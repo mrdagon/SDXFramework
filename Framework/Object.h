@@ -1,27 +1,15 @@
 ﻿#pragma once//☀SDXFramework
 #include <SDXFrameWork.h>
-#include <Framework/ModelMove.h>
-#include <Utility/Module.h>
+#include <Framework/IObject.h>
 
 namespace SDX
 {
-/** 所属するレイヤーの識別子.*/
-enum class Belong
-{
-    Ally,//!< 味方
-    EnemyF,//!< 空中の敵
-    EnemyG,//!< 地上の敵
-    Item,//!< アイテム
-    Block,//!< 障害物
-    Etc,//!< その他
-};
 
 /** ModelにSTG用の機能を追加したクラス.*/
 /**    \include */
-class Object : public Model , public ModelMove
+template <class TShape = Point , class TSprite = SpImage>
+class Object : public Model<TShape,TSprite> , public IObject
 {
-friend class Layer;
-
 protected:
     int  timer = 0;//!< 発生してから経過したフレーム数
     bool isRemove = false;//!< 消滅フラグ
@@ -32,11 +20,11 @@ protected:
     Belong belong;//!< 所属するレイヤー
 
     /** 消滅判定を行う.*/
-    virtual bool RemoveCheck(Rect* 存在可能範囲)
+    bool RemoveCheck(Rect* 存在可能な範囲) override
     {
         if(
             timer == this->lifeTime ||
-            (isOutCheck && !shape->Hit( 存在可能範囲 ) )
+            (isOutCheck && !shape.Hit( 存在可能な範囲 ) )
             )
         {
             this->isRemove = true;
@@ -47,70 +35,52 @@ protected:
         return this->isRemove;
     }
 
-    /** 衝突した相手に攻撃する.*/
-    virtual void Attack(Object *攻撃対象 )
-    {
-        攻撃対象->Damaged( power );
-    }
-
-    void SetTimer(int フレーム数)
-    {
-        timer = フレーム数;
-    }
-
 public:
     /** 説明.*/
-    Object( Shape *当たり判定 , Sprite *デフォルトSprite , double 攻撃力 = 0 , Belong 所属 = Belong::Etc):
-        Model(当たり判定, デフォルトSprite),
-        ModelMove(this),
+    Object( const TShape &当たり判定 , const TSprite &描画方法 , double 攻撃力 = 0 , Belong 所属 = Belong::Etc):
+        Model<>(当たり判定, 描画方法),
         power(攻撃力),
         belong(所属)
     {}
 
-    /** 発生後経過時間を返す.*/
-    int GetTimer()
-    {
-        return timer;
-    }
-
     virtual ~Object(){}
 
     /** 状態の更新.*/
-    virtual void Update()
+    void Update() override
     {
         this->timer++;
         AnimeUpdate();
         this->Act();
     }
 
+    /** 発生後経過時間を返す.*/
+    int& GetTimer() override
+    {
+        return timer;
+    }
+
     /** 消滅フラグの取得.*/
-    bool GetRemoveFlag()
+    bool& GetRemoveFlag() override
     {
         return isRemove;
     }
 
-    void SetRemoveFlag(bool 消滅フラグ)
-    {
-        isRemove = 消滅フラグ;
-    }
-
     /** 所属を取得.*/
-    Belong GetBelong()
+    Belong& GetBelong() override
     {
         return belong;
     }
+    
+    /**Update時の追加処理.*/
+    void Act() override{};
 
-    /** Update時の行動処理.*/
-    virtual void Act(){}
-
-    /** 消滅時の処理.*/
-    virtual void Remove(){}
+    /**消滅時の追加処理.*/
+    void Remove() override{};
 
     /** ダメージを受けた時の処理.*/
-    virtual void React(){}
+    void React() override{};
 
-    /** 攻撃された時の処理.*/
-    virtual void Damaged(double 被ダメージ){}
-
+    /**ダメージ処理.*/
+    void Damaged(double ダメージ量 , IObject *衝突相手 ) override{};
 };
 }

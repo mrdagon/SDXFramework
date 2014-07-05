@@ -9,8 +9,8 @@ bool SampleCamera()
 
     Image image("image.bmp");
 
-    Model model(new Point(300,200),new SpImage(&image) );
-    Model model2(new Point(550, 350), new SpImage(&image));
+    Model<> model({300,200},{&image} );
+    Model<> model2({550, 350},{&image});
     model2.SetIsCamera(false);
     
     while(System::Update())

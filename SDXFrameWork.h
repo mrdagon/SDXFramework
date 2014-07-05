@@ -27,8 +27,6 @@
 #include <Utility/Speed.h>
 #include <Utility/SpeedDerived.h>
 #include <Utility/BanCopy.h>
-#include <Utility/Pool.h>
-#include <Utility/Module.h>
 #include <Utility/EnumArray.h>
 
 #include <Framework/Anime.h>
