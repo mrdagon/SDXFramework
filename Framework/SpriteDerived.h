@@ -15,7 +15,7 @@ public:
         image(描画Image)
     {}
 
-    void Draw(const Point &座標, bool Cameraフラグ) const override
+    void Draw(const Point &座標, bool Cameraフラグ) override
     {
         if ( Cameraフラグ )
         {
@@ -57,7 +57,7 @@ public:
         return index;
     }
 
-    void Draw(const Point &座標, bool Cameraフラグ) const override
+    void Draw(const Point &座標, bool Cameraフラグ) override
     {
         const auto image = imageS->operator[](index);
 
@@ -109,7 +109,7 @@ public:
         counter.Update( aniSpeed );
     }
 
-    void Draw(const Point &座標, bool Cameraフラグ) const override
+    void Draw(const Point &座標, bool Cameraフラグ) override
     {
         if( Cameraフラグ )
         {
@@ -169,7 +169,7 @@ public:
         this->SetZoom(縦倍率,横倍率);
     }
 
-    void Draw(const Point &座標, bool Cameraフラグ) const override
+    void Draw(const Point &座標, bool Cameraフラグ) override
     {
         if( Cameraフラグ )
         {
@@ -217,7 +217,7 @@ public:
         height( 高さ )
     {}
 
-    void Draw(const Point &座標, bool Cameraフラグ) const override
+    void Draw(const Point &座標, bool Cameraフラグ) override
     {
         if( Cameraフラグ )
         {
@@ -286,7 +286,7 @@ public:
         }
     }
 
-    void Draw(const Point &座標, bool カメラ有りフラグ) const override
+    void Draw(const Point &座標, bool カメラ有りフラグ) override
     {
         const int chipW = chip.GetWidth();
         const int chipH = chip.GetHeight();

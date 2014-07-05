@@ -82,7 +82,7 @@ public:
         }
         
         /** 現在のコマ番号を取得.*/
-        Image* GetFrame() const
+        Image* GetFrame()
         {
             return anime[0][frameNumber];
         }

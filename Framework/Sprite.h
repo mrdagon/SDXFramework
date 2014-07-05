@@ -14,7 +14,9 @@ namespace SDX
 /**    \include ModelSample.h */
 class Sprite
 {
-public:
+friend class Model;
+
+protected:
     double    zoomX = 1;
     double    zoomY = 1;
 
@@ -26,7 +28,7 @@ public:
 
     Color    color = {255,255,255,255};
     double    angle = 0;
-
+public:
     bool    isTurn = false;
     bool    isVisible = true;
     bool    isActive = false;
@@ -37,7 +39,7 @@ public:
     virtual ~Sprite(){};
 
     /** Spriteを描画する.*/
-    virtual void Draw( const Point &座標 , bool カメラフラグ) const = 0;
+    virtual void Draw( const Point &座標 , bool カメラフラグ) = 0;
 
     /** Shapeとの相対座標を移動.*/
     void MoveGap(double X移動量 , double Y移動量)
@@ -80,13 +82,13 @@ public:
     }
 
     /** 横方向の表示倍率を取得.*/
-    double GetZoomX() const
+    double GetZoomX()
     {
         return this->zoomX;
     }
 
     /** 縦方向の表示倍率を取得.*/
-    double GetZoomY() const
+    double GetZoomY()
     {
         return this->zoomY;
     }
@@ -98,13 +100,13 @@ public:
     }
 
     /** 左右反転フラグを取得.*/
-    bool GetTurn() const
+    bool GetTurn()
     {
         return this->isTurn;
     }
     
     /** 表示角度を取得.*/
-    double GetAngle() const
+    double GetAngle()
     {
         return this->angle;
     }
@@ -122,7 +124,7 @@ public:
     }
 
     /** 描画色を取得.*/
-    Color GetColor() const
+    Color GetColor()
     {
         return color;
     }
