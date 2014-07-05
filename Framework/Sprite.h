@@ -14,7 +14,7 @@ namespace SDX
 /**    \include ModelSample.h */
 class Sprite
 {
-friend class Model;
+friend class IModel;
 
 protected:
     double    zoomX = 1;

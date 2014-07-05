@@ -10,7 +10,7 @@ namespace SDX
 
 /** ShapeとSpriteをまとめて、2Dモデルを表すクラス.*/
 /** \include ModelSample.h*/
-class Model
+class IModel
 {
 private:
     double zoomX = 1;
@@ -21,13 +21,13 @@ private:
 protected:
     bool isRemove = false;
 public:
-    std::unique_ptr<Sprite> sprite;
-    std::unique_ptr<Shape> shape;
-
-    Model( Shape *位置と図形 , Sprite *描画方法 ):
-        shape(位置と図形),
-        sprite(描画方法)
-    {}
+    IModel(){};
+    virtual ~IModel(){};
+    
+    virtual Shape& GetShape() = 0;
+    virtual Sprite& GetSprite() = 0;
+    virtual Shape& GetShape() const = 0;
+    virtual Sprite& GetSprite() const = 0;
 
     /** 消滅フラグの取得.*/
     bool GetRemoveFlag()
@@ -53,15 +53,15 @@ public:
     /** 描画する.*/
     virtual void Draw() const
     {
-        if( sprite->GetColor() == Color::White )
+        if( GetSprite().GetColor() == Color::White )
         {
-            sprite->Draw({ GetX(), GetY()}, isCamera && Camera::Now());
+            GetSprite().Draw({ GetX(), GetY()}, isCamera && Camera::Now());
         }
         else
         {
-            Screen::SetBright(sprite->GetColor());
-            Screen::SetBlendMode( BlendMode::Alpha , sprite->GetColor().GetAlpha() );
-            sprite->Draw({ GetX(), GetY() }, isCamera && Camera::Now());
+            Screen::SetBright(GetSprite().GetColor());
+            Screen::SetBlendMode( BlendMode::Alpha , GetSprite().GetColor().GetAlpha() );
+            GetSprite().Draw({ GetX(), GetY() }, isCamera && Camera::Now());
             Screen::SetBlendMode(BlendMode::NoBlend, 0);
             Screen::SetBright(Color::White);
         }
@@ -73,44 +73,42 @@ public:
     /** 影を描画する.*/
     void DrawShadow( double X座標ずれ , double Y座標ずれ )
     {
-        if( !sprite ) return;
         if( shadowSize <= 0 ) return;
 
         X座標ずれ *= shadowSize;
         Y座標ずれ *= shadowSize;
 
-        double zoomX = sprite->zoomX;
-        double zoomY = sprite->zoomY;
-        sprite->zoomX *= shadowSize;
-        sprite->zoomY *= shadowSize;
-        sprite->Draw({ GetX() + X座標ずれ, GetY() + Y座標ずれ }, isCamera && Camera::Now());
-        sprite->zoomX = zoomX;
-        sprite->zoomY = zoomY;
+        double zoomX = GetSprite().zoomX;
+        double zoomY = GetSprite().zoomY;
+        GetSprite().zoomX *= shadowSize;
+        GetSprite().zoomY *= shadowSize;
+        GetSprite().Draw({ GetX() + X座標ずれ, GetY() + Y座標ずれ }, isCamera && Camera::Now());
+        GetSprite().zoomX = zoomX;
+        GetSprite().zoomY = zoomY;
     }
 
     /** アニメーションを更新する.*/
     void AnimeUpdate()
     {
-        if( !sprite ) return;
-        sprite->AnimeUpdate();
+        GetSprite().AnimeUpdate();
     }
 
     /** 相対座標で移動.*/
     void Move(double X移動量 , double Y移動量)
     {
-        shape->Move(X移動量, Y移動量);
+        GetShape().Move(X移動量, Y移動量);
     }
 
     /** 極座標で移動.*/
     void MovePolar(double 距離 , double 角度)
     {
-        shape->Move(距離 * cos(角度), 距離 * sin(角度));
+        GetShape().Move(距離 * cos(角度), 距離 * sin(角度));
     }
 
     /** 指定座標に移動.*/
     void SetPos(double X座標 , double Y座標)
     {                
-        shape->SetPos(X座標, Y座標);
+        GetShape().SetPos(X座標, Y座標);
     }
 
     /** 拡大率を設定する.*/
@@ -134,20 +132,18 @@ public:
     /** 縦横別で拡大率を掛ける.*/
     void MultiZoom(double X倍率 , double Y倍率)
     {
-        shape->MultiZoom(X倍率 , Y倍率);
+        GetShape().MultiZoom(X倍率 , Y倍率);
         zoomX *= X倍率;
         zoomY *= Y倍率;
         
-        if( !sprite ) return;
-        sprite->MultiZoom(X倍率, Y倍率);
+        GetSprite().MultiZoom(X倍率, Y倍率);
     }
 
     /** 回転させる.*/
     void Rotate( double 回転角度 )
     {
-        if( !sprite ) return;
         this->angle += 回転角度;
-        sprite->Rotate(回転角度);
+        GetSprite().Rotate(回転角度);
     }
 
     /** 角度を取得する.*/
@@ -159,16 +155,14 @@ public:
     /** 角度を設定する.*/
     void SetAngle( double 角度 )
     {
-        if( !sprite ) return;
-        sprite->Rotate( 角度 - this->angle);
+        GetSprite().Rotate( 角度 - this->angle);
         this->angle = 角度;
     }
 
     /** 色をまとめて変更する、透明度も含む.*/
     void SetColor( Color 描画色)
     {
-        if( !sprite ) return;
-        sprite->SetColor(描画色);
+        GetSprite().SetColor(描画色);
     }
 
     /** 横方向の拡大率を取得.*/
@@ -186,25 +180,25 @@ public:
     /** X座標を取得.*/
     double GetX() const
     {
-        return shape->GetX();
+        return GetShape().GetX();
     }
 
     /** Y座標を取得.*/
     double GetY() const
     {
-        return shape->GetY();
+        return GetShape().GetY();
     }
 
     /** Modelとの衝突判定.*/
-    bool Hit( Model *判定を行うModel)
+    bool Hit( IModel *判定を行うModel)
     {
-        return shape->Hit(判定を行うModel->shape.get());
+        return GetShape().Hit( &判定を行うModel->GetShape());
     }
 
     /** Shapeとの衝突判定.*/
     bool Hit( Shape *判定を行うShape)
     {
-        return shape->Hit(判定を行うShape);
+        return GetShape().Hit(判定を行うShape);
     }
 
     /** マウスカーソルとの衝突判定.*/
@@ -221,7 +215,7 @@ public:
             pt.y = Input::mouse.y;
         }
 
-        return shape->Hit(&pt);
+        return GetShape().Hit(&pt);
     }
 
     /** 対象との角度を取得.*/
@@ -240,29 +234,40 @@ public:
 
         return sqrt( xd * xd + yd * yd );
     }
-
-    //virtual Shape* GetShape() = 0;
-    //virtual Sprite* GetSprite() = 0;
+    
 };
 
-/*
 template <class TShape,class TSprite>
-class BModel : public Model
+class ModelBase
 {
-public:
-    TShape shape;
-    TSprite sprite;
+    public:
+        TShape shape;
+        TSprite sprite;
 
-    Shape* GetShape()
-    {
-        return shape;
-    }
+        ModelBase(const TShape &図形と位置, const TSprite &描画方法):
+            shape(図形と位置),
+            sprite(描画方法)
+        {}
 
-    Sprite* GetSprite()
-    {
-        return sprite;
-    }
+        
+        Shape* GetShape()
+        {
+            return shape;
+        }
+
+        Sprite* GetSprite()
+        {
+            return sprite;
+        }
 };
-*/
+
+template <class TShape,class TSprite>
+class Model : public IModel , public ModelBase<TShape,TSprite>
+{
+    public:
+        Model(const TShape &図形と位置, const TSprite &描画方法):
+            ModelBase(図形と位置,描画方法)
+        {}
+};
 
 }

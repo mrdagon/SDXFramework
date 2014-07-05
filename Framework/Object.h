@@ -18,7 +18,7 @@ enum class Belong
 
 /** ModelにSTG用の機能を追加したクラス.*/
 /**    \include */
-class Object : public Model , public ModelMove
+class IObject : public IModel
 {
 friend class Layer;
 
@@ -113,4 +113,14 @@ public:
     virtual void Damaged(double 被ダメージ){}
 
 };
+
+template <class TShape,class TSprite>
+class Object : public IObject , public ModelBase<TShape,TSprite>
+{
+    public:
+        Object(const TShape &図形と位置, const TSprite &描画方法):
+            ModelBase(図形と位置,描画方法)
+        {}
+};
+
 }
