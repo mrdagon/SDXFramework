@@ -28,11 +28,9 @@ protected:
 
     Color    color = {255,255,255,255};
     double    angle = 0;
+
 public:
-    bool    isTurn = false;
-    bool    isVisible = true;
-    bool    isActive = false;
-    bool    isAllway = true;
+    bool isTurn = false;
 
     Sprite(){}
 

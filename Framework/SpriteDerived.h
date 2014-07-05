@@ -86,7 +86,6 @@ public:
     }        
 };
 
-
 /** Animeスプライト.*/
 /**    \include */
 class SpAnime : public Sprite

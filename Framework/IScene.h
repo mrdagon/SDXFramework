@@ -13,6 +13,7 @@ public:
 
     virtual void Init(){};
     virtual void Final(){};
+    virtual void Event(){};
 
     bool IsEnd()
     {
