@@ -25,7 +25,6 @@
 #include <Utility/Rand.h>
 #include <Utility/Timer.h>
 #include <Utility/Speed.h>
-#include <Utility/SpeedDerived.h>
 #include <Utility/EnumArray.h>
 
 #include <Framework/Anime.h>

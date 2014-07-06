@@ -1,44 +1,87 @@
-﻿#pragma once
+﻿#pragma once//☀SDXFramework
+#include <Utility/ISpeed.h>
 
 namespace SDX
 {
-/** 変化する数値を表す抽象クラス.*/
-/**    \include SpeedSample.h */
-class ISpeed
+/** ISpeedを継承したクラスが属する.*/
+namespace Speed
 {
-protected:
-    double speed;//基本速度
+/** 常に同じ速度.*/
+///    \include SpeedSample.h
+class Liner : public ISpeed
+{
 public:
-    ISpeed(double 速度):
-            speed(速度)
+    Liner(double 速度) :
+        ISpeed(速度)
     {}
 
-    /** 現在の速度を取得.*/
-    virtual double Get() const
-    {
-        return speed; 
-    };
+    void Update() override
+    {}
+};
 
-    /** 更新後、速度を取得.*/
-    double Ease()
-    {
-        Update();
-        return Get();
-    }
+/** 加速する.*/
+///    \include SpeedSample.h
+class Accel : public ISpeed
+{
+private:
+    double accel;//加速度
+public:
+    Accel( double 初速 , double 加速度):
+        ISpeed(初速),
+        accel(加速度)
+    {}
 
-    /** 速度を更新.*/
-    virtual void Update() = 0;
-
-    /** 速度を掛ける.*/
-    virtual void Multi(double 倍率)
+    void Update() override
     {
-        speed *= 倍率;
-    }
-
-    /** 速度を加算する.*/
-    virtual void Add(double 加算値)
-    {
-        speed += 加算値;
+        speed += accel;
     }
 };
+
+/** 0～速度で周期的に変化.*/
+///    \include SpeedSample.h
+class Wave : public ISpeed
+{
+private:
+    double 角度;
+    double 角速度;
+public:
+    Wave( double 速度 , double 角速度 , double 初角 = 0):
+        ISpeed(速度),
+        角速度(角速度),
+        角度(初角)
+    {}
+
+    double Get() const override
+    {
+        return std::abs(std::sin( 角度 ) * speed);
+    }
+
+    void Update() override
+    {
+        角度 += 角速度;
+    }
+};
+
+/** 一定速度まで加速.*/
+class AccelLimit : public ISpeed
+{
+private:
+    double 加速度;
+    double 限界速度;
+public:
+    AccelLimit(double 初速, double 加速度,double 限界速度) :
+        ISpeed(初速),
+        加速度(加速度),
+        限界速度(限界速度)
+    {}
+
+    void Update() override
+    {
+        speed += 加速度;
+        if (speed > 限界速度 && 加速度 > 0) speed = 限界速度;
+        if (speed < 限界速度 && 加速度 < 0) speed = 限界速度;
+    }
+};
+
+}
 }

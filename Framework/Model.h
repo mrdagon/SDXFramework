@@ -2,7 +2,6 @@
 #include<Framework/Sprite.h>
 #include<Framework/Shape.h>
 #include<Framework/Camera.h>
-#include<Framework/SpriteDerived.h>
 #include<memory>
 
 namespace SDX
@@ -24,10 +23,10 @@ public:
     IModel(){};
     virtual ~IModel(){};
     
-    virtual Shape& GetShape() = 0;
-    virtual Sprite& GetSprite() = 0;
-    virtual const Shape& GetShape() const = 0;
-    virtual const Sprite& GetSprite() const = 0;
+    virtual IShape& GetShape() = 0;
+    virtual ISprite& GetSprite() = 0;
+    virtual const IShape& GetShape() const = 0;
+    virtual const ISprite& GetSprite() const = 0;
 
     /** 消滅フラグの取得.*/
     bool GetRemoveFlag()
@@ -196,7 +195,7 @@ public:
     }
 
     /** Shapeとの衝突判定.*/
-    bool Hit( Shape *判定を行うShape)
+    bool Hit( IShape *判定を行うShape)
     {
         return GetShape().Hit(判定を行うShape);
     }
@@ -249,22 +248,22 @@ class Model : public IModel
             sprite(描画方法)
         {}
 
-        Shape& GetShape() override
+        IShape& GetShape() override
         {
             return shape;
         }
 
-        Sprite& GetSprite() override
+        ISprite& GetSprite() override
         {
             return sprite;
         }
 
-        const Shape& GetShape() const override
+        const IShape& GetShape() const override
         {
             return shape;
         }
 
-        const Sprite& GetSprite() const override
+        const ISprite& GetSprite() const override
         {
             return sprite;
         }

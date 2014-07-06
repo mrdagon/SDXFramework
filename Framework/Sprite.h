@@ -1,140 +1,332 @@
 ﻿#pragma once//☀SDXFramework
-#include <Multimedia/Image.h>
-#include <Framework/Shape.h>
-#include <Framework/Camera.h>
-#include <Multimedia/Screen.h>
-#include <Multimedia/Input.h>
-#include <Multimedia/Font.h>
-#include <Framework/BmpFrame.h>
-#include <memory>
+#include <Framework/ISprite.h>
 
 namespace SDX
 {
-/** 2Dモデルに貼り付けるスプライトを表す抽象クラス.*/
-/**    \include ModelSample.h */
-class Sprite
+/** Imageスプライト.*/
+/**    \include ModelSample.h*/
+class SpImage : public ISprite
 {
-friend class IModel;
-
-protected:
-    double    zoomX = 1;
-    double    zoomY = 1;
-
-    double    gapX = 0;//中心モデルとの位置差
-    double    gapY = 0;
-
-    double    axisX = 0;//回転軸
-    double    axisY = 0;
-
-    Color    color = {255,255,255,255};
-    double    angle = 0;
+private:
+    const Image *image;
 
 public:
-    bool isTurn = false;
+    SpImage(const Image *描画Image ):
+        image(描画Image)
+    {}
 
-    Sprite(){}
-
-    virtual ~Sprite(){};
-
-    /** Spriteを描画する.*/
-    virtual void Draw( const Point &座標 , bool カメラフラグ) = 0;
-
-    /** Shapeとの相対座標を移動.*/
-    void MoveGap(double X移動量 , double Y移動量)
+    void Draw(const Point &座標, bool Cameraフラグ) override
     {
-        gapX += X移動量;
-        gapY += Y移動量;
+        if ( Cameraフラグ )
+        {
+            image->DrawRotateAxis(Camera::Now()->Trans({ 座標.x + gapX, 座標.y+gapY}),
+                                  { axisX + image->GetWidth() / 2, axisY + image->GetHeight() / 2 },
+                                        zoomX * Camera::Now()->GetZoom() ,
+                                        zoomY * Camera::Now()->GetZoom() ,
+                                        angle , isTurn);
+        }else{
+            image->DrawRotateAxis(      { 座標.x + gapX, 座標.y + gapY},
+                                        { axisX + image->GetHeight() / 2,
+                                          axisY + image->GetHeight() / 2 },
+                                        zoomX ,
+                                        zoomY ,
+                                        angle , isTurn);
+        }
+    }
+};
+
+/** ImagePackスプライト.*/
+/**    \include ModelSample.h*/
+class SpImageS : public ISprite
+{
+private:
+    const ImagePack *imageS;
+    int index = 0;
+public:
+    SpImageS(const ImagePack *描画ImagePack ):
+        imageS(描画ImagePack)
+    {}
+
+    void SetIndex(int コマ番号)
+    {
+        index = コマ番号;
     }
 
-    /** Shapeとの相対座標を指定.*/
-    void SetGap(const Point &座標 )
+    int GetIndex()
     {
-        gapX = 座標.x;
-        gapY = 座標.y;
-    }    
-
-    /** 表示倍率を設定.*/
-    void SetZoom(double X拡大率 , double Y拡大率)
-    {
-        zoomX = X拡大率;
-        zoomY = Y拡大率;
+        return index;
     }
 
-    /** 拡大率を掛け算する.*/
-    void MultiZoom(double 倍率 )
+    void Draw(const Point &座標, bool Cameraフラグ) override
     {
-        MultiZoom(倍率,倍率);
+        const auto image = imageS->operator[](index);
+
+        if ( Cameraフラグ )
+        {
+            image->DrawRotateAxis
+                (
+                    Camera::Now()->Trans({ 座標.x + gapX ,座標.y + gapY}),
+                    { axisX + image->GetWidth() / 2,axisY + image->GetHeight() / 2 },
+                    zoomX * Camera::Now()->GetZoom() ,
+                    zoomY * Camera::Now()->GetZoom() ,
+                    angle ,
+                    isTurn
+                );
+        }else{
+            image->DrawRotateAxis
+                (
+                    { 座標.x + gapX, 座標.y + gapY },
+                    { axisX + image->GetHeight() / 2, axisY + image->GetHeight() / 2 },
+                    zoomX ,
+                    zoomY ,
+                    angle ,
+                    isTurn
+                );
+        }
+    }        
+};
+
+/** Animeスプライト.*/
+/**    \include */
+class SpAnime : public ISprite
+{
+private:
+    const Anime *anime;
+    Anime::Player counter;
+    double aniSpeed;
+
+public:
+
+    SpAnime(const Anime *描画Anime , double 再生速度 = 1) :
+            anime( 描画Anime ),
+            counter( 描画Anime ),
+            aniSpeed( 再生速度 )
+    {}
+
+    void AnimeUpdate() override
+    {
+        counter.Update( aniSpeed );
     }
 
-    /** 縦横別で拡大率を掛け算する.*/
-    void MultiZoom(double X倍率 , double Y倍率)
+    void Draw(const Point &座標, bool Cameraフラグ) override
     {
-        zoomX *= X倍率;
-        zoomY *= Y倍率;
+        if( Cameraフラグ )
+        {
+            counter.GetFrame()->DrawRotateAxis
+                ( 
+                    Camera::Now()->Trans({ 座標.x + gapX, 座標.y + gapY }),
+                    { axisX + anime->GetWidth() / 2, axisY + anime->GetHeight() / 2 },
+                    zoomX * Camera::Now()->GetZoom() ,
+                    zoomY * Camera::Now()->GetZoom(),
+                    angle ,
+                    isTurn
+                );
+        }
+        else
+        {
+            counter.GetFrame()->DrawRotateAxis
+                (
+                    { 座標.x + gapX, 座標.y + gapY },
+                    { axisX + anime->GetWidth() / 2, axisY + anime->GetHeight() / 2 },
+                    zoomX ,
+                    zoomY ,
+                    angle ,
+                    isTurn
+                );
+        }
+    }
+};
 
-        gapX *= X倍率;
-        gapY *= Y倍率;
+/** Fontスプライト.*/
+/**    \include */
+class SpFont : public ISprite
+{
+private:
+    const IFont *font;
+    std::string& refStr;
+    std::string  str;
+    bool isReference;
+    Color rgb;
 
-        axisX *= X倍率;
-        axisY *= Y倍率;
-    }
-
-    /** 横方向の表示倍率を取得.*/
-    double GetZoomX()
+public:
+    SpFont(const IFont *フォント ,  Color 描画色 , double 縦倍率 , double 横倍率,const char* 描画する文字列 ):
+        font(フォント),
+        rgb(描画色),
+        str( 描画する文字列 ),
+        refStr( str ),
+        isReference(false)
     {
-        return this->zoomX;
-    }
-
-    /** 縦方向の表示倍率を取得.*/
-    double GetZoomY()
-    {
-        return this->zoomY;
-    }
-    
-    /** 左右反転フラグを設定.*/        
-    void SetTurn( bool 反転フラグ )
-    {
-        this->isTurn = 反転フラグ;
-    }
-
-    /** 左右反転フラグを取得.*/
-    bool GetTurn()
-    {
-        return this->isTurn;
-    }
-    
-    /** 表示角度を取得.*/
-    double GetAngle()
-    {
-        return this->angle;
-    }
-    
-    /** 表示角度を設定.*/
-    void SetAngle( double 角度 )
-    {
-        this->angle = 角度;
-    }
-    
-    /** 回転させる.*/
-    void Rotate( double 回転する角度 )
-    {
-        this->angle += 回転する角度;
+        this->SetZoom(縦倍率,横倍率);
     }
 
-    /** 描画色を取得.*/
-    Color GetColor()
+    SpFont(const IFont *フォント ,  Color 描画色 , double 縦倍率 , double 横倍率, std::string& 参照する文字列 ):
+        font(フォント),
+        rgb(描画色),
+        refStr( 参照する文字列 ),
+        isReference(true)
     {
-        return color;
+        this->SetZoom(縦倍率,横倍率);
     }
-    
-    /** 透明度を0～255で設定.*/
-    void SetColor( Color 描画色)
+
+    void Draw(const Point &座標, bool Cameraフラグ) override
     {
-        color = 描画色;
+        if( Cameraフラグ )
+        {
+            font->DrawExtend
+                (
+                    Camera::Now()->Trans({ 座標.x + gapX, 座標.y + gapY }),
+                    zoomX * Camera::Now()->GetZoom() ,
+                    zoomY * Camera::Now()->GetZoom() ,
+                    rgb ,
+                    refStr.c_str() 
+                );
+        }
+        else
+        {
+            font->DrawExtend
+                (
+                    { 座標.x + gapX, 座標.y + gapY },
+                    zoomX,
+                    zoomY,
+                    rgb,
+                    refStr.c_str()
+                );
+        }
     }
-    
-    /** 説明.*/
-    virtual void AnimeUpdate(){};
+
+    void SetText( const char* 表示する文字 )
+    {
+        refStr = 表示する文字;
+    }
+};
+
+/** IFrameスプライト.*/
+/**    \include */
+class SpFrame : public ISprite
+{
+private:
+    const IFrame *bmpFrame;
+    double width;
+    double height;
+
+public:
+    SpFrame(const IFrame *描画する枠 , double 幅 , double 高さ ):
+        bmpFrame( 描画する枠),
+        width( 幅 ),
+        height( 高さ )
+    {}
+
+    void Draw(const Point &座標, bool Cameraフラグ) override
+    {
+        if( Cameraフラグ )
+        {
+            const Point 左上 = Camera::Now()->Trans({ 座標.x + gapX, 座標.y + gapY });
+
+            bmpFrame->Draw
+                (
+                    {
+                     左上.x,
+                     左上.y,
+                     width * zoomX * Camera::Now()->GetZoom(),
+                     height * zoomY * Camera::Now()->GetZoom() 
+                    }
+                );
+        }
+        else
+        {
+            bmpFrame->Draw
+                (
+                    { 
+                    座標.x + gapX,
+                    座標.y + gapY,
+                    width * zoomX,
+                    height * zoomY
+                    }
+                );
+        }
+    }
+};
+
+/** マップチップスプライト.*/
+/**    \include */
+class SpMap : public ISprite
+{
+private:
+    ImagePack &chip;
+    int width;
+    int height;
+    int rotate;
+    std::vector< std::vector<int> > data;
+public:
+
+    SpMap( ImagePack& マップチップ , const char* ファイル名 , int 幅 , int 高さ , int 角度):
+        width(幅),
+        height(高さ),
+        rotate(角度),
+        chip(マップチップ)
+    {
+        File csvFile( ファイル名 , FileMode::Read );
+
+        data.resize( 幅 );
+
+        for(int a=0 ; a<幅 ;++a)
+        {
+            data[a].resize( 高さ );
+        }
+
+        auto lineS = csvFile.GetCsvS();
+
+        for(int a = 0 ; a < 高さ ; ++a )
+        {
+            for( int b = 0 ; b < 幅 ; ++b)
+            {
+                data[b][a] = atoi( lineS[a][b].c_str() );
+            }
+        }
+    }
+
+    void Draw(const Point &座標, bool カメラ有りフラグ) override
+    {
+        const int chipW = chip.GetWidth();
+        const int chipH = chip.GetHeight();
+
+        if( カメラ有りフラグ )
+        {
+            const int baseY = int(Camera::Now()->TransY( 座標.y ));
+            const int baseX = int(Camera::Now()->TransX( 座標.x ));
+            
+            double posXA;
+            double posYA;
+            double posXB;
+            double posYB;
+
+            for(int a=0 ; a<width ; ++a )
+            {
+                posXA = baseX + chipW * a * Camera::Now()->GetZoom();
+                posXB = baseX + chipW * (a+1) * Camera::Now()->GetZoom();
+
+                for(int b=0 ; b<height ; ++b )
+                {
+                    posYA = baseY + chipH * b * Camera::Now()->GetZoom();
+                    posYB = baseY + chipH * (b+1) * Camera::Now()->GetZoom();
+                    const int no = data[a][b];
+                    if( no == 0 ) continue;
+                    chip[no]->DrawExtend({ posXA, posYA }, { posXB, posYB });
+                }
+            }
+        }else{
+            for(int a=0 ; a<width ; ++a )
+            {
+                for(int b=0 ; b<height ; ++b )
+                {
+                    const int no = data[a][b];
+                    if( no == 0 ) continue;
+                    chip[no]->Draw({ 座標.x + a*chipW, 座標.y + b*chipH });
+                }
+            }
+        }
+    }
+
 };
 
 }
