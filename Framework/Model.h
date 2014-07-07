@@ -20,13 +20,15 @@ private:
 protected:
     bool isRemove = false;
 public:
-    IModel(){};
+    IShape &iShape;
+    ISprite &iSprite;
+
+    IModel(IShape &図形,ISprite &描画方法):
+        iShape(図形),
+        iSprite(描画方法)
+    {};
     virtual ~IModel(){};
     
-    virtual IShape& GetShape() = 0;
-    virtual ISprite& GetSprite() = 0;
-    virtual const IShape& GetShape() const = 0;
-    virtual const ISprite& GetSprite() const = 0;
 
     /** 消滅フラグの取得.*/
     bool GetRemoveFlag()
@@ -52,15 +54,15 @@ public:
     /** 描画する.*/
     virtual void Draw()
     {
-        if( GetSprite().GetColor() == Color::White )
+        if( iSprite.GetColor() == Color::White )
         {
-            GetSprite().Draw({ GetX(), GetY()}, isCamera && Camera::Now());
+            iSprite.Draw({ GetX(), GetY()}, isCamera && Camera::Now());
         }
         else
         {
-            Screen::SetBright(GetSprite().GetColor());
-            Screen::SetBlendMode( BlendMode::Alpha , GetSprite().GetColor().GetAlpha() );
-            GetSprite().Draw({ GetX(), GetY() }, isCamera && Camera::Now());
+            Screen::SetBright(iSprite.GetColor());
+            Screen::SetBlendMode( BlendMode::Alpha , iSprite.GetColor().GetAlpha() );
+            iSprite.Draw({ GetX(), GetY() }, isCamera && Camera::Now());
             Screen::SetBlendMode(BlendMode::NoBlend, 0);
             Screen::SetBright(Color::White);
         }
@@ -77,37 +79,37 @@ public:
         X座標ずれ *= shadowSize;
         Y座標ずれ *= shadowSize;
 
-        double zoomX = GetSprite().zoomX;
-        double zoomY = GetSprite().zoomY;
-        GetSprite().zoomX *= shadowSize;
-        GetSprite().zoomY *= shadowSize;
-        GetSprite().Draw({ GetX() + X座標ずれ, GetY() + Y座標ずれ }, isCamera && Camera::Now());
-        GetSprite().zoomX = zoomX;
-        GetSprite().zoomY = zoomY;
+        double zoomX = iSprite.zoomX;
+        double zoomY = iSprite.zoomY;
+        iSprite.zoomX *= shadowSize;
+        iSprite.zoomY *= shadowSize;
+        iSprite.Draw({ GetX() + X座標ずれ, GetY() + Y座標ずれ }, isCamera && Camera::Now());
+        iSprite.zoomX = zoomX;
+        iSprite.zoomY = zoomY;
     }
 
     /** アニメーションを更新する.*/
     void AnimeUpdate()
     {
-        GetSprite().AnimeUpdate();
+        iSprite.AnimeUpdate();
     }
 
     /** 相対座標で移動.*/
     void Move(double X移動量 , double Y移動量)
     {
-        GetShape().Move(X移動量, Y移動量);
+        iShape.Move(X移動量, Y移動量);
     }
 
     /** 極座標で移動.*/
     void MovePolar(double 距離 , double 角度)
     {
-        GetShape().Move(距離 * cos(角度), 距離 * sin(角度));
+        iShape.Move(距離 * cos(角度), 距離 * sin(角度));
     }
 
     /** 指定座標に移動.*/
     void SetPos(double X座標 , double Y座標)
     {                
-        GetShape().SetPos(X座標, Y座標);
+        iShape.SetPos(X座標, Y座標);
     }
 
     /** 拡大率を設定する.*/
@@ -131,18 +133,18 @@ public:
     /** 縦横別で拡大率を掛ける.*/
     void MultiZoom(double X倍率 , double Y倍率)
     {
-        GetShape().MultiZoom(X倍率 , Y倍率);
+        iShape.MultiZoom(X倍率 , Y倍率);
         zoomX *= X倍率;
         zoomY *= Y倍率;
         
-        GetSprite().MultiZoom(X倍率, Y倍率);
+        iSprite.MultiZoom(X倍率, Y倍率);
     }
 
     /** 回転させる.*/
     void Rotate( double 回転角度 )
     {
         this->angle += 回転角度;
-        GetSprite().Rotate(回転角度);
+        iSprite.Rotate(回転角度);
     }
 
     /** 角度を取得する.*/
@@ -154,14 +156,14 @@ public:
     /** 角度を設定する.*/
     void SetAngle( double 角度 )
     {
-        GetSprite().Rotate( 角度 - this->angle);
+        iSprite.Rotate( 角度 - this->angle);
         this->angle = 角度;
     }
 
     /** 色をまとめて変更する、透明度も含む.*/
     void SetColor( Color 描画色)
     {
-        GetSprite().SetColor(描画色);
+        iSprite.SetColor(描画色);
     }
 
     /** 横方向の拡大率を取得.*/
@@ -179,25 +181,25 @@ public:
     /** X座標を取得.*/
     double GetX() const
     {
-        return GetShape().GetX();
+        return iShape.GetX();
     }
 
     /** Y座標を取得.*/
     double GetY() const
     {
-        return GetShape().GetY();
+        return iShape.GetY();
     }
 
     /** Modelとの衝突判定.*/
     bool Hit( IModel *判定を行うModel)
     {
-        return GetShape().Hit( &判定を行うModel->GetShape());
+        return iShape.Hit( &判定を行うModel->iShape);
     }
 
     /** Shapeとの衝突判定.*/
     bool Hit( IShape *判定を行うShape)
     {
-        return GetShape().Hit(判定を行うShape);
+        return iShape.Hit(判定を行うShape);
     }
 
     /** マウスカーソルとの衝突判定.*/
@@ -214,7 +216,7 @@ public:
             pt.y = Input::mouse.y;
         }
 
-        return GetShape().Hit(&pt);
+        return iShape.Hit(&pt);
     }
 
     /** 対象との角度を取得.*/
@@ -243,30 +245,11 @@ class Model : public IModel
         TShape shape;
         TSprite sprite;
 
-        Model(const TShape &図形と位置, const TSprite &描画方法):
+        Model(TShape &&図形と位置,TSprite &&描画方法):
+            IModel(shape,sprite),
             shape(図形と位置),
             sprite(描画方法)
         {}
-
-        IShape& GetShape() override
-        {
-            return shape;
-        }
-
-        ISprite& GetSprite() override
-        {
-            return sprite;
-        }
-
-        const IShape& GetShape() const override
-        {
-            return shape;
-        }
-
-        const ISprite& GetSprite() const override
-        {
-            return sprite;
-        }
 };
 
 }

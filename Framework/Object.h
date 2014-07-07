@@ -60,8 +60,8 @@ protected:
 
 public:
     /** 説明.*/
-    Object( IShape *当たり判定 , Sprite *デフォルトSprite , double 攻撃力 = 0 , Belong 所属 = Belong::Etc):
-        Model(当たり判定, デフォルトSprite),
+    IObject( IShape &図形 , ISprite &描画方法 , double 攻撃力 = 0 , Belong 所属 = Belong::Etc):
+        IModel(図形, 描画方法),
         ModelMove(this),
         power(攻撃力),
         belong(所属)
@@ -125,26 +125,7 @@ class Object : public IObject
             shape(図形と位置),
             sprite(描画方法)
         {}
-        
-        IShape& GetShape() override
-        {
-            return shape;
-        }
 
-        Sprite& GetSprite() override
-        {
-            return sprite;
-        }
-
-        const IShape& GetShape() const override
-        {
-            return shape;
-        }
-
-        const Sprite& GetSprite() const override
-        {
-            return sprite;
-        }
 };
 
 }
