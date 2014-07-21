@@ -5,7 +5,7 @@
 
 namespace SDX
 {
-namespace Motion
+namespace MOTION
 {
     /*
     //コピペ用ひな形    
@@ -38,7 +38,7 @@ namespace Motion
         
         void Update(IModel* 移動対象) override
         {
-            移動対象->MovePolar(speed.Ease(),移動対象->GetAngle());
+            移動対象->MovePolar(speed.Update(),移動対象->GetAngle());
         }
     };
 
@@ -92,7 +92,7 @@ namespace Motion
             if (進行方向 < 0) 進行方向 += PAI * 2;
             if (進行方向 > PAI * 2) 進行方向 -= PAI * 2;
     
-            移動対象->MovePolar(speed.Ease() , 進行方向);
+            移動対象->MovePolar(speed.Update() , 進行方向);
         }
     };
 
@@ -112,7 +112,7 @@ namespace Motion
         void Update(IModel* 移動対象)
         {
             //移動対象
-            const double nowSpeed = speed.Ease();
+            const double nowSpeed = speed.Update();
             const double lx = 目標座標.GetX() - 移動対象->GetX();
             const double ly = 目標座標.GetY() - 移動対象->GetY();
     
@@ -147,7 +147,7 @@ namespace Motion
         void Update(IModel* 移動対象)
         {
             //移動対象
-            角度 += speed.Ease();
+            角度 += speed.Update();
     
             const double nextX = cos(角度) * 半径X;
             const double nextY = sin(角度) * 半径Y;

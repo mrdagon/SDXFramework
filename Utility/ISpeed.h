@@ -2,35 +2,22 @@
 
 namespace SDX
 {
-namespace Speed
+namespace SPEED
 {
 /** 変化する数値を表す抽象クラス.*/
 ///    \include SpeedSample.h
 class ISpeed
 {
-protected:
-    double speed;
 public:
-    ISpeed(double 速度):
-        speed(速度)
-    {}
+    ISpeed(){};
+
     virtual ~ISpeed(){};
 
     /** 現在の速度を取得.*/
-    virtual double Get() const
-    {
-        return speed; 
-    }
-
-    /** 更新後、速度を取得.*/
-    double Ease()
-    {
-        Update();
-        return Get();
-    }
+    virtual double Get() const = 0;
 
     /** 速度を更新.*/
-    virtual void Update() = 0;
+    virtual double Update() = 0;
 };
 }
 }

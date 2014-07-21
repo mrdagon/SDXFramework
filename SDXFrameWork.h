@@ -26,6 +26,8 @@
 #include <Utility/Timer.h>
 #include <Utility/Speed.h>
 #include <Utility/EnumArray.h>
+#include <Utility/Motion.h>
+#include <Utility/Speed.h>
 
 #include <Framework/Anime.h>
 #include <Framework/BmpFont.h>

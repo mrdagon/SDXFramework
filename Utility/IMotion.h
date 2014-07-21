@@ -5,7 +5,7 @@
 
 namespace SDX
 {
-namespace Motion
+namespace MOTION
 {
     /**Modelの移動方法.*/
     /**ジェネリックな設計なら継承不要.*/
