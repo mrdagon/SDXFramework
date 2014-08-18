@@ -1,4 +1,4 @@
-﻿//時間を取得したり計測する
+﻿//🍣時間を取得したり計測する
 bool SampleTime()
 {
     using namespace SDX;

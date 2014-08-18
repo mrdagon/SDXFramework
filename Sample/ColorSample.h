@@ -1,4 +1,4 @@
-﻿//色を指定して図形を描画する
+﻿//🍣色を指定して図形を描画する
 bool SampleColor()
 {
     using namespace SDX;

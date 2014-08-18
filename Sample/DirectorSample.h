@@ -1,4 +1,4 @@
-﻿//[サンプルコード作成中]
+﻿//🍣[サンプルコード作成中]
 bool SampleDirector()
 {
     using namespace SDX;

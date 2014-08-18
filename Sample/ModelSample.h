@@ -1,9 +1,10 @@
-﻿//初期化を行い何かキーを押すと終了する
-bool    SampleModel()
+﻿//🍣初期化を行い何かキーを押すと終了する
+//\todo 未実装
+bool SampleModel()
 {
     using namespace SDX;
     System::Initialise("sample", 600, 400);
-
+	/*
     Camera camera(300, 200, 1);
     camera.SetActive();
 
@@ -32,5 +33,6 @@ bool    SampleModel()
     }
 
     System::End();
-    return    true;
+	*/
+    return true;
 }

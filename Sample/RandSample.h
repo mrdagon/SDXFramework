@@ -1,4 +1,4 @@
-﻿//乱数で取得して表示する
+﻿//🍣乱数で取得して表示する
 bool SampleRand()
 {
     using namespace SDX;

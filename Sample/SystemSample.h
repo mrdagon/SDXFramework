@@ -1,9 +1,7 @@
-﻿//ライブラリの初期化等を行う
+﻿//🍣ライブラリの初期化等を行う
 bool SampleSystem()
 {
     using namespace SDX;
-    System::SetAlwaysRun(true);//ウィンドウが非アクティブでも処理を続行
-    System::SetOutputLog(false);//動作ログを出力しない
 
     System::Initialise("sample", 600, 400);//ウィンドウタイトルを指定して、初期化する
 

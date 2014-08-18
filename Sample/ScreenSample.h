@@ -1,4 +1,4 @@
-﻿//初期化を行い何かキーを押すと終了する
+﻿//🍣初期化を行い何かキーを押すと終了する
 bool SampleScreen()
 {
     using namespace SDX;
@@ -8,6 +8,7 @@ bool SampleScreen()
 
     while (System::Update())
     {
+
         //輝度を変更して描画
         Screen::SetBright(Color::Red);
         image.Draw({ 0, 0 });

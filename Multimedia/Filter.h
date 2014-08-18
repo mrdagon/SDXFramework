@@ -5,7 +5,7 @@
 
 namespace SDX
 {
-/** Imageにフィルター処理を行う関数群[DXLIB].*/
+/** Imageにフィルター処理を行う関数群[未実装].*/
 /** ImageやImagePackに対して画像編集ソフトにあるようなフィルター処理を施す。\n
     \include FilterSample.h*/
 class Filter

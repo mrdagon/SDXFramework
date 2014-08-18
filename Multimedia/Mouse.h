@@ -83,7 +83,7 @@ public:
         y = yBuffer;
     }
 
-    /** カーソルの表示設定[DXLIB].*/
+    /** カーソルの表示設定[未実装].*/
     bool SetVisible(bool 表示フラグ)
     {
         return false;

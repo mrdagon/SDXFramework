@@ -20,7 +20,6 @@ private:
 
     Window(){}
     WindowHandle handle = 0;
-
 public:
 
     static Window& Single()
@@ -30,7 +29,6 @@ public:
     }
 
     /** スクリーンモードを設定する.*/
-    /** DXLIBでは色々な設定が初期化される上、アスペクトが無視されます*/
     static bool SetFullScreen(bool フルスクリーンフラグ)
     {
         Single().isFullScreen = フルスクリーンフラグ;
@@ -54,28 +52,15 @@ public:
         SDL_SetWindowTitle( Single().handle , タイトル名 );
         return true;
     }
-    
-    /** アイコンIDの設定[DXLIB].*/
-    static bool SetIconID(int アイコンID)
-    {    
-        return false;
-    }
-    
-    /** ウィンドウの拡大縮小可否設定[DXLIB].*/
-    static bool SetSizeChangeEnable(bool 拡大縮小可能フラグ)
-    {
-        return false;
-    }
-    
+        
     /** ウィンドウサイズの設定.*/
-    static bool SetSize(int 幅,int 高さ )
+    static void SetSize(int 幅,int 高さ )
     {
         Window::Single().width  = 幅;
         Window::Single().height = 高さ;
 
         SDL_RenderSetLogicalSize(Screen::GetHandle(), 幅, 高さ);
         SDL_SetWindowSize( Single().handle , 幅, 高さ);
-        return true;
     }
     
     /** ウィンドウ幅の取得.*/

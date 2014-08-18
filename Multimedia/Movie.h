@@ -4,7 +4,7 @@
 
 namespace SDX
 {
-/** 動画を表すクラス[DXLIB].*/
+/** 動画を表すクラス[未実装].*/
 /**    \include MovieSample.h*/
 class Movie
 {
@@ -34,7 +34,7 @@ public:
     }
 };
     
-/** Imageクラスの動画版[DXLIB].*/
+/** Imageクラスの動画版[未実装].*/
 /**    \include*/
 class MovieImage
 {

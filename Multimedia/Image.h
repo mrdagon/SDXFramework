@@ -1,6 +1,6 @@
 ﻿#pragma once//☀SDL
-#include<Multimedia/SDX.h>
-#include<Multimedia/Screen.h>
+#include <Multimedia/SDX.h>
+#include <Multimedia/Screen.h>
 #include <Framework/Shape.h>
 
 namespace SDX
@@ -215,7 +215,7 @@ public:
         return !SDL_RenderCopyEx(Screen::GetHandle(), handle, &part, &temp, 角度*180/PAI, &point, SDL_RendererFlip(反転フラグ));
     }
 
-    /** 四角形に変形描画[DXLIB].*/
+    /** 四角形に変形描画[未実装].*/
     bool DrawModify(const Point &頂点A,const Point &頂点B, const Point &頂点C, const Point &頂点D ) const
     {
         return false;
@@ -231,7 +231,7 @@ public:
         return !SDL_RenderCopyEx(Screen::GetHandle(), handle, &part, &temp, 0, &point, SDL_RendererFlip(反転フラグ));
     }
 
-    /** スクリーンの一部をイメージに取り込む[DXLIB].*/
+    /** スクリーンの一部をイメージに取り込む[未実装].*/
     /** 指定した座標を右上にして、スクリーンからImageと同じ大きさコピーする*/
     int LoadScreen(int X座標,int Y座標)
     {

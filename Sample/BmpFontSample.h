@@ -1,4 +1,4 @@
-﻿//ビットマップフォントを使った描画を行う
+﻿//🍣ビットマップフォントを使った描画を行う
 bool    SampleBmpFont()
 {
     using    namespace    SDX;

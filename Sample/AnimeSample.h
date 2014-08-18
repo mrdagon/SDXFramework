@@ -1,7 +1,7 @@
-﻿//画像をアニメーションさせる
-bool    SampleAnime()
+﻿//🍣画像をアニメーションさせる
+bool SampleAnime()
 {
-    using    namespace    SDX;
+    using namespace SDX;
     System::Initialise("sample",    600,    400);
 
     //画像を分割して読み込む

@@ -1,9 +1,9 @@
-#pragma once//?Unicode
+ï»¿#pragma once//â˜€Unicode
 #include <array>
 
 namespace SDX
 {
-    /**—ñ‹“Œ^‚ğ’¼Ú“Yš‚Ég‚¦‚é”z—ñ.*/
+    /**åˆ—æŒ™å‹ã‚’ç›´æ¥æ·»å­—ã«ä½¿ãˆã‚‹é…åˆ—.*/
     template <class TData, class TType>
     class EnumArray
     {

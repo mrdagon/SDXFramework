@@ -154,15 +154,8 @@ public:
     {
         inputType = 入力タイプ;
     }
-
-    /** キー割り当て追加[DXLIB].*/
-    /** 第二引数以降のキーが押された時、指定したパッドのボタンを押されたと判定する*/
-    bool SetInputToKey(PadCode padInput,KeyCode keyInput1 ,KeyCode keyInput2, KeyCode keyInput3,KeyCode keyInput4)
-    {
-        return false;
-    }
-            
-    /** パッドを振動させる[DXLIB].*/
+      
+    /** パッドを振動させる[未実装].*/
     /**    指定した強さ(0.0～1.0)で指定ミリ秒パッドを振動させる\n
         時間が-1の場合、StopVibration関数を呼ぶまで振動させる*/
     bool StartVibration(double 強さ,int 振動ミリ秒)
@@ -170,7 +163,7 @@ public:
         return false;
     }
     
-    /** パッドの振動を停止する[DXLIB].*/
+    /** パッドの振動を停止する[未実装].*/
     bool StopVibration()
     {
         return false;

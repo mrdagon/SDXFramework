@@ -6,7 +6,7 @@
 
 namespace SDX
 {
-/** リソースの非同期読み込み設定関数群[DXLIB].*/
+/** リソースの非同期読み込み設定関数群[非実装].*/
 /**    \include ThreadLoadSample.h*/
 class ThreadLoad
 {

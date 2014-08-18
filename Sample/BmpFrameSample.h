@@ -1,4 +1,4 @@
-﻿//初期化を行い何かキーを押すと終了する
+﻿//🍣初期化を行い何かキーを押すと終了する
 bool    SampleBmpFrame()
 {
     using    namespace    SDX;

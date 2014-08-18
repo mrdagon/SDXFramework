@@ -59,19 +59,19 @@ public:
         return true;
     }
         
-    /** 再生中か判定[DXLIB].*/
+    /** 再生中か判定[未実装].*/
     bool Check() const
     {
         return false;
     }
         
-    /** 再生を停止[DXLIB].*/
+    /** 再生を停止[未実装].*/
     bool Stop()
     {
         return false;
     }
         
-    /** 音声パンを設定[DXLIB].*/
+    /** 音声パンを設定[未実装].*/
     bool SetPan(int 音声パン)
     {
         return false;
@@ -84,20 +84,20 @@ public:
         return true;
     }
         
-    /** 再生周波数を設定[DXLIB].*/
+    /** 再生周波数を設定[未実装].*/
     /** 単位はHzで範囲は100～100,000*/
     bool SetFrequency(int 再生周波数)
     {
         return false;
     }
         
-    /** ミリ秒単位でループ位置を設定[DXLIB].*/
+    /** ミリ秒単位でループ位置を設定[未実装].*/
     bool SetLoopPos(int ループ位置)
     {
         return false;
     }
         
-    /** サンプリング周波数でループ位置を設定[DXLIB].*/
+    /** サンプリング周波数でループ位置を設定[未実装].*/
     /** 周期が44.1KHzの場合、44,100を渡すと1秒の位置でループする*/
     bool SetLoopSamplePos(int ループ周波数)
     {

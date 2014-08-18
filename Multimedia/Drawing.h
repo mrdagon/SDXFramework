@@ -110,7 +110,7 @@ public:
         circleTexture(塗りつぶしフラグ).DrawExtend({ 円形.x - 円形.radius, 円形.y - 円形.radius }, { 円形.x + 円形.radius, 円形.y + 円形.radius });
     }
 
-    /** 中心と外接する四角形の大きさを指定して楕円を描画[DXLIB].*/
+    /** 中心と外接する四角形の大きさを指定して楕円を描画.*/
     /** SDLは仮実装*/
     static void Oval( const Point &中心 , int 幅 , int 高さ , Color 色 , bool 塗りつぶしフラグ )
     {
@@ -135,7 +135,7 @@ public:
         SDL_RenderDrawPoint(Screen::GetHandle(), (int)座標.x, (int)座標.y);
     }
 
-    /** 指定座標の色を取得[DXLIB].*/
+    /** 指定座標の色を取得[未実装].*/
     static ColorData GetPixel( const Point &座標 )
     {
         return SDL_Color{ 0, 0, 0 };

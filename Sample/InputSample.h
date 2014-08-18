@@ -1,4 +1,4 @@
-﻿//入力を取得する
+﻿//🍣入力を取得する
 bool SampleInput()
 {
     using namespace SDX;

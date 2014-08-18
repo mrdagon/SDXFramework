@@ -1,4 +1,4 @@
-﻿//ファイルに書き込みと読み込みを行う
+﻿//🍣ファイルに書き込みと読み込みを行う
 bool SampleFile()
 {
     using namespace SDX;

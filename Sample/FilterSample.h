@@ -1,4 +1,4 @@
-﻿//画像に処理を施して加工する[サンプル作成中]
+﻿//🍣画像に処理を施して加工する[サンプル作成中]
 bool SampleFilter()
 {
     using namespace SDX;

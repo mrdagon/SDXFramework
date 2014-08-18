@@ -18,7 +18,7 @@ public:
         SDL_Delay(停止ミリ秒);
     }
     
-    /** 垂直同期信号を指定回数待つ[DXLIB].*/
+    /** 垂直同期信号を指定回数待つ[未実装].*/
     static bool VSync(int 信号回数)
     {
         return false;

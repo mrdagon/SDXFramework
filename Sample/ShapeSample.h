@@ -1,4 +1,4 @@
-﻿//図形の当たり判定をする
+﻿//🍣図形の当たり判定をする
 bool SampleShape()
 {
     using namespace SDX;
@@ -10,7 +10,7 @@ bool SampleShape()
     Line line(200, 100, PAI / 4, 300, 5);
 
     //共通のインターフェースを持っている
-    Shape* shapes[3];
+    IShape* shapes[3];
     shapes[0] = &circle;
     shapes[1] = &rect;
     shapes[2] = &line;

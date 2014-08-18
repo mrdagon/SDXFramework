@@ -1,4 +1,4 @@
-﻿//音楽を再生する
+﻿//🍣音楽を再生する
 bool SampleMusic()
 {
     using namespace SDX;

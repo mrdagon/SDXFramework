@@ -23,7 +23,7 @@ namespace SDX
 #pragma comment(lib, "SDL2_mixer.lib")
 #pragma comment(lib, "SDL2_ttf.lib")
 
-#pragma execution_character_set("utf-8")//charの文字コードをUTF-8に変更
+#pragma execution_character_set("utf-8")//charの文字コードをUTF-8に変更:Windows
 
 #ifdef _DEBUG
     #pragma comment(linker, "/NODEFAULTLIB:msvcrt.lib")
@@ -36,7 +36,7 @@ namespace SDX
 
 using ImageHandle = SDL_Texture*;
 using SoundHandle = Mix_Chunk*;
-using ScreenHandle = SDL_Renderer*;
+using RendererHandle = SDL_Renderer*;
 using WindowHandle = SDL_Window*;
 using StickHandle = SDL_Joystick*;
 using FontHandle = TTF_Font*;
@@ -54,6 +54,6 @@ using ColorData = SDL_Color;
     #include<xutility>
 #else
     #include <locale.h>
-    #define sprintf_s(a,b,c,d) sprintf(a,c,d)
+    #define sprintf_s(a,b,c,d) sprintf(a,c,d) //boost::formatにしたい
     #define localtime_s(a,b) a = localtime(b)
 #endif

@@ -1,4 +1,4 @@
-﻿//画像を描画する
+﻿//🍣画像を描画する
 bool SampleImage()
 {
     using namespace SDX;

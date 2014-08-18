@@ -1,4 +1,4 @@
-﻿//動画の再生を行う[未テスト]
+﻿//🍣動画の再生を行う[未テスト]
 bool SampleMovie()
 {
     using namespace SDX;

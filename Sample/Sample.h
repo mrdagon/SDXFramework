@@ -18,7 +18,6 @@ namespace SDX
     #include <Sample/ModelSample.h>
     #include <Sample/MovieSample.h>
     #include <Sample/MusicSample.h>
-    #include <Sample/PoolSample.h>
     #include <Sample/RandSample.h>
     #include <Sample/ScreenSample.h>
     #include <Sample/ShapeSample.h>

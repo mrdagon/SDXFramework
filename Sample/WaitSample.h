@@ -1,4 +1,4 @@
-﻿//処理停止関数を試す
+﻿//🍣処理停止関数を試す
 bool SampleWait()
 {
     using namespace SDX;

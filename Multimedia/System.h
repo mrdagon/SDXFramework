@@ -1,7 +1,5 @@
 ﻿#pragma once//☀SDL
-#include <Multimedia/SDX.h>
 #include <Multimedia/Window.h>
-#include <Multimedia/Screen.h>
 #include <Multimedia/Input.h>
 #include <Multimedia/Font.h>
 #include <Multimedia/Music.h>
@@ -16,6 +14,7 @@ private:
     System();
     ~System();
     static bool isEnd;
+	static Renderer defaultRenderer;
 public:
 
     /** ライブラリの初期化.*/
@@ -42,8 +41,11 @@ public:
         Window::Single().height = 高さ;
 
         Window::Single().handle = SDL_CreateWindow( ウィンドウ名 ,SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 幅 , 高さ , flag);
-        Screen::SetRenderer(SDL_CreateRenderer(Window::Single().handle, -1, SDL_RENDERER_PRESENTVSYNC));
+       
+		defaultRenderer.Create(Window::Single().handle);
 
+		Screen::SetRenderer(defaultRenderer);
+		
         #ifdef TABLET
             int dpiX;
             int dpiY;
@@ -133,28 +135,6 @@ switch (event.window.event)
         }
 
         return !isEnd;
-    }
-
-    /** ログ出力の有無を設定[DXLIB].*/
-    /**    DXライブラリのデバッグ情報ログ・ファイル『App.log』を出力設定する。
-        この関数は、Initialise前に呼び出す必要がある。*/
-    static bool SetOutputLog( bool 出力フラグ)
-    {
-        return false;
-    }
-
-    /** ビデオRAM使用を設定[DXLIB].*/
-    /**    この関数は、Initialise前に呼び出す必要がある。*/
-    static bool SetMemToVram( bool VRAM使用フラグ)
-    {
-        return false;
-    }
-
-    /** 非アクティブ時も処理を続行するか設定[DXLIB].*/
-    /** デフォルトで非アクティブ時は処理を停止する。*/
-    static bool SetAlwaysRun( bool 常時処理フラグ )
-    {
-        return false;
     }
 };
 }

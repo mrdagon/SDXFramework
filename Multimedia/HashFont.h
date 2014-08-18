@@ -131,7 +131,7 @@ public:
         return this->thick;
     }
             
-    /** 描画時の幅を取得[DXLIB].*/
+    /** 描画時の幅を取得.*/
     int GetDrawStringWidth( VariadicStream 幅を計算する文字列 ) const
     {
         for (auto it : 幅を計算する文字列.StringS)
@@ -171,21 +171,10 @@ public:
 
         return true;
     }
-    /** 文字をマスク[DXLIB].*/
-    bool ZMask(const Point &座標, ZMaskType Zマスクタイプ, VariadicStream 描画する文字列 ) const override
-    {
-        return false;
-    }
     
     /** 文字を回転して描画.*/
     /** 呼び出す度に画像イメージを作成するので処理は重い*/
     bool DrawRotate(const Point &座標, double 拡大率, double 角度, Color 描画色 , bool 反転フラグ, VariadicStream 描画する文字列) const override
-    {
-        return false;
-    }
-
-    /** 文字を回転してマスク[DXLIB].*/
-    bool ZMaskRotate(const Point &座標, double 拡大率, double 角度, ZMaskType Zマスクタイプ, bool 反転フラグ, VariadicStream 描画する文字列) const override
     {
         return false;
     }
@@ -210,10 +199,5 @@ public:
             SDL_DestroyTexture(moji);
         }
     }        
-    /** 拡大率を指定して文字をマスク[DXLIB].*/
-    bool ZMaskExtend(const Point &座標, double X拡大率, double Y拡大率, ZMaskType Zマスクタイプ, VariadicStream 描画する文字列) const override
-    {
-        return false;
-    }
 };
 }
