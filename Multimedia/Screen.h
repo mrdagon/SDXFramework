@@ -18,6 +18,7 @@ enum class BlendMode
 class Image;
 
 /** 描画先を表すクラス.*/
+/** 実装中.*/
 /** \include ScreenSample.*/
 class Renderer
 {
@@ -36,9 +37,9 @@ public:
 	}
 
 	/*Rendererを生成*/
-	void Create(WindowHandle 対象ウィンドウ)
+	void Create(WindowHandle 元Window)
 	{
-		handle = SDL_CreateRenderer(対象ウィンドウ, -1, SDL_RENDERER_PRESENTVSYNC);
+		handle = SDL_CreateRenderer(元Window, -1, SDL_RENDERER_PRESENTVSYNC);
 	}
 
 	/*Rendererを削除*/
