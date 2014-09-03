@@ -1,4 +1,5 @@
-﻿//🍣初期化を行い何かキーを押すと終了する
+﻿//©SDXFramework http://sourceforge.jp/projects/dxframework/
+//🍣初期化を行い何かキーを押すと終了する
 bool SampleScreen()
 {
     using namespace SDX;

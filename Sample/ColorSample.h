@@ -1,4 +1,4 @@
-﻿//🍣色を指定して図形を描画する
+﻿//©SDXFramework http://sourceforge.jp/projects/dxframework/
 bool SampleColor()
 {
     using namespace SDX;

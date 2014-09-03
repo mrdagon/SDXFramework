@@ -1,4 +1,5 @@
-﻿//🍣[サンプルコード作成中]
+﻿//©SDXFramework http://sourceforge.jp/projects/dxframework/
+//🍣[サンプルコード作成中]
 bool SampleDirector()
 {
     using namespace SDX;

@@ -1,4 +1,4 @@
-﻿#pragma once//☀SDXFramework
+﻿#pragma once//©SDXFramework http://sourceforge.jp/projects/dxframework/
 #include <Multimedia/Image.h>
 #include <Framework/Camera.h>
 #include <Multimedia/Screen.h>

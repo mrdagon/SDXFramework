@@ -1,4 +1,5 @@
-﻿//🍣色んな画像を合成してみる
+﻿//©SDXFramework http://sourceforge.jp/projects/dxframework/
+//🍣色んな画像を合成してみる
 bool    SampleBlend()
 {
     //サンプルコード作成途中です。

@@ -2,6 +2,8 @@
 @page Licence ライセンスについて
   SDXフレームワークのライセンスはAGPL Ver3です。<BR>
 http://www.gnu.org/licenses/agpl-3.0.html
+\n
+マニュアルのライセンスはパブリックドメインです\n
 <HR>
 　License.txtをソフトウェアと一緒に配布して下さい\n
 以下のような表記をソフトウェアと一緒に配布するドキュメントに含んで下さい\n

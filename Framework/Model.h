@@ -1,4 +1,4 @@
-﻿#pragma once//☀SDXFramework
+﻿#pragma once//©SDXFramework http://sourceforge.jp/projects/dxframework/
 #include<Framework/Sprite.h>
 #include<Framework/Shape.h>
 #include<Framework/Camera.h>

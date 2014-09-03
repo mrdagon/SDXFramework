@@ -4,7 +4,7 @@
 @section イントロダクション
 @ref WhatSDX\n
 @ref HowtoSDX\n
-@ref Licence\n
+@ref LicenceInfo\n
 @ref QandA\n
 @ref PortaBility\n
 \n
@@ -27,6 +27,4 @@
 <B>ライブラリ開発者</B>\n
 <a href="" target="_blank"><B>mr_dagonのブログ</B></a>\n
 \n
-このリファレンスマニュアルはGNU Free Documentation License
-http://www.gnu.org/licenses/fdl.html
 */

@@ -1,4 +1,5 @@
-﻿//🍣ライブラリの初期化等を行う
+﻿//©SDXFramework http://sourceforge.jp/projects/dxframework/
+//🍣ライブラリの初期化等を行う
 bool SampleSystem()
 {
     using namespace SDX;

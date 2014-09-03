@@ -1,4 +1,5 @@
-﻿//🍣図形の当たり判定をする
+﻿//©SDXFramework http://sourceforge.jp/projects/dxframework/
+//🍣図形の当たり判定をする
 bool SampleShape()
 {
     using namespace SDX;

@@ -1,4 +1,5 @@
-﻿//🍣時間を取得したり計測する
+﻿//©SDXFramework http://sourceforge.jp/projects/dxframework/
+//🍣時間を取得したり計測する
 bool SampleTime()
 {
     using namespace SDX;

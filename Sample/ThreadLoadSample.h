@@ -1,6 +1,5 @@
-﻿//🍣リソースを非同期で読み込む
-//#include <thread>
-
+﻿//©SDXFramework http://sourceforge.jp/projects/dxframework/
+//🍣リソースを非同期で読み込む[未実装]
 bool SampleThreadLoad()
 {
     using namespace SDX;
@@ -8,10 +7,7 @@ bool SampleThreadLoad()
 
     ThreadLoad::SetIsUse(true);//非同期読み込み開始
 
-    //200個同じ画像を非同期で読み込む
-    //std::thread thd([&]{ ++x; });
     Image loadTest[200];
-	//SDX::std::thread thd([&]{ loadTest[0].Load("image.bmp"); });
 
     for (auto it : loadTest)
     {

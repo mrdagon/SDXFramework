@@ -1,4 +1,4 @@
-﻿#pragma once//☀SDXFramework
+﻿#pragma once//©SDXFramework http://sourceforge.jp/projects/dxframework/
 #include <Framework/IScene.h>
 #include <Utility/Timer.h>
 #include <Multimedia/Input.h>

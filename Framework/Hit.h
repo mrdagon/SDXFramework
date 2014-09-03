@@ -1,4 +1,4 @@
-﻿//☀SDXFramework
+﻿//©SDXFramework http://sourceforge.jp/projects/dxframework/
 namespace SDX
 {
     bool Complex::Hit(const Point *point) const

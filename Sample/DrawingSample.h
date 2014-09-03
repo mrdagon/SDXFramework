@@ -1,4 +1,5 @@
-﻿//🍣色々描画してみる
+﻿//©SDXFramework http://sourceforge.jp/projects/dxframework/
+//🍣色々描画してみる
 bool SampleDrawing()
 {
     using namespace SDX;

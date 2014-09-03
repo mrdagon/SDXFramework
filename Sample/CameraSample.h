@@ -1,4 +1,5 @@
-﻿//🍣初期化を行い何かキーを押すと終了する[未実装]
+﻿//©SDXFramework http://sourceforge.jp/projects/dxframework/
+//🍣初期化を行い何かキーを押すと終了する[未実装]
 bool SampleCamera()
 {
     using namespace SDX;

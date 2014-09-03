@@ -1,4 +1,5 @@
-﻿//🍣画像を描画する
+﻿//©SDXFramework http://sourceforge.jp/projects/dxframework/
+//🍣画像を描画する
 bool SampleImage()
 {
     using namespace SDX;

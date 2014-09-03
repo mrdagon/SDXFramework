@@ -1,4 +1,5 @@
-﻿//🍣動画の再生を行う[未テスト]
+﻿//©SDXFramework http://sourceforge.jp/projects/dxframework/
+//🍣動画の再生を行う[未実装]
 bool SampleMovie()
 {
     using namespace SDX;

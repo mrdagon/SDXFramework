@@ -1,4 +1,4 @@
-﻿#pragma once//☀SDX
+﻿#pragma once//©SDXFramework http://sourceforge.jp/projects/dxframework/
 namespace SDX
 {
     #include <Sample/AnimeSample.h>

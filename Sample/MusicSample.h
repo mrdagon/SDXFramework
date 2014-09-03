@@ -1,4 +1,5 @@
-﻿//🍣音楽を再生する
+﻿//©SDXFramework http://sourceforge.jp/projects/dxframework/
+//🍣音楽を再生する
 bool SampleMusic()
 {
     using namespace SDX;

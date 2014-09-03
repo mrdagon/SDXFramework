@@ -1,4 +1,5 @@
-﻿//🍣入力を取得する
+﻿//©SDXFramework http://sourceforge.jp/projects/dxframework/
+//🍣入力を取得する
 bool SampleInput()
 {
     using namespace SDX;

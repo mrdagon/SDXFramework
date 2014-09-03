@@ -1,4 +1,4 @@
-﻿#pragma once//☀SDXFramework
+﻿#pragma once//©SDXFramework http://sourceforge.jp/projects/dxframework/
 #include <SDXFrameWork.h>
 #include <Framework/Model.h>
 #include <utility/ISpeed.h>

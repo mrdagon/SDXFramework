@@ -1,4 +1,5 @@
-﻿//🍣速度オブジェクトを使う
+﻿//©SDXFramework http://sourceforge.jp/projects/dxframework/
+//🍣速度オブジェクトを使う
 bool SampleSpeed()
 {
     using namespace SDX;

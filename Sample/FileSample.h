@@ -1,4 +1,5 @@
-﻿//🍣ファイルに書き込みと読み込みを行う
+﻿//©SDXFramework http://sourceforge.jp/projects/dxframework/
+//🍣ファイルに書き込みと読み込みを行う
 bool SampleFile()
 {
     using namespace SDX;

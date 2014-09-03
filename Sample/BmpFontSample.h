@@ -1,4 +1,5 @@
-﻿//🍣ビットマップフォントを使った描画を行う
+﻿//©SDXFramework http://sourceforge.jp/projects/dxframework/
+//🍣ビットマップフォントを使った描画を行う
 bool    SampleBmpFont()
 {
     using    namespace    SDX;

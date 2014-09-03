@@ -1,4 +1,5 @@
-﻿//🍣乱数で取得して表示する
+﻿//©SDXFramework http://sourceforge.jp/projects/dxframework/
+//🍣乱数で取得して表示する
 bool SampleRand()
 {
     using namespace SDX;

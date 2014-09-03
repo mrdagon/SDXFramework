@@ -1,4 +1,4 @@
-﻿#pragma once
+﻿#pragma once//©SDXFramework http://sourceforge.jp/projects/dxframework/
 
 #include <Multimedia/ThreadLoad.h>
 #include <Multimedia/Blend.h>
