@@ -1,10 +1,7 @@
 ﻿/*!
 @page howtoLinux SDXの導入方法(Linux)
- Ubuntuでの導入方法メモです。\n
- 多分、この通りにやっても上手く行きません\n
- linuxのディストリビューションによってSDL2.0のインストール方法が変わります\n
- Ubuntu13.10のclangはデフォルトでver3.27であり、Unicodeの識別子が使えません\n
- しかしUbuntuのclang-3.3パッケージにバグ?があるのかSDL2.0の動作しか確認していません\n
+ Ubuntu14.04での導入方法です。他のディストリビューションでも大体同じになると思います\n
+とりあえずターミナルからのコンパイル方法だけ解説します.
 <HR>
 <B>1.SDL2.0のインストール</B>\n
  ターミナルを起動して以下のコマンドを実行する\n
@@ -16,10 +13,10 @@
 <HR>
 <B>2.SDXの導入</B>\n
  SDXFramework_SDL2/jni/SDL/includeフォルダをインクルードパスに指定するか\n
- usr/include等のフォルダに置いて下さい\n
+ ターミナルから"sudo nautilus /usr/local"でフォルダを開いて、includeフォルダにコピーするかして下さい\n
 <HR>
 <B>3.コンパイル</B>\n
- clangの最新版や標準ライブラリ等を自前でコンパイルしc++のコンパイルが可能な状態にします\n
+ clangの最新版や標準ライブラリ等を入手し、c++のコンパイルが可能な状態にします\n
  \n
  main.cppファイルを作成します。\n
  @code
@@ -42,7 +39,7 @@
  if (Input::pad.Right.hold) x += 5;
  if (Input::pad.Left.hold) x -= 5;
 
- Drawing::Rect(x-10, y-10, 20, 20, Color::White, true);
+ Drawing::Rect({x-10, y-10, 20, 20}, Color::White, true);
  }
 
  System::End();//ライブラリの終了処理
@@ -51,5 +48,6 @@
  }
  @endcode
  main.cppがあるディレクトリに移動してコマンドを実行\n
- $ clang -o sdxtest main.cpp -lSDL -lSDL_image -lSDL_ttf -lSDL_mixer\n
+ $ clang++ -std=c++11 -o sdxtest main.cpp -lSDL2 -lSDL2_image -lSDL_ttf -lSDL2_mixer\n
+ sdxtest.aとかが出力されたら成功です.
 */

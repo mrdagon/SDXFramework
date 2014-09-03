@@ -10,12 +10,12 @@ Windows環境の場合、コンパイラは「VisualC++ 2013 Express Edition for
 VisualStudio2013以前の環境については、サポートしていません。
 <HR>
 <B>1 VisualStudioをインストールする</B>\n
-C++の文法準拠の関係で、VisualStudio2012以前のコンパイラは使用できません。\n
+C++の規格準拠具合の関係で、VisualStudio2012以前のコンパイラは使用できません。\n
 <a href="http://www.visualstudio.com/downloads/download-visual-studio-vs" target="_blank"><B>Visual Studio のダウンロード</B></a>\n
 「Visual Studio Express 2013 for Windows」と\n
 「Visual Studio Express 2013 for Windows Desktop」がありますが\n
 Desktopの方しか使えないので、注意して下さい。\n
-また使用しているOSがWindowsXPやVistaの場合、VisualStudio2013がインストール出来ないため、SDXは使用できません。
+また使用しているOSがWindowsXPやVistaの場合、VisualStudio2013がインストール出来ないため、SDXは使用できません。\n
 \n
 詳細なインストール方法やライセンス登録については、「VisualStudio 2013 インストール」でGoogle検索するといくつかキャプチャ付きの記事が見つかると思うので\n
 それらを参考にしてください\n
@@ -23,8 +23,6 @@ Desktopの方しか使えないので、注意して下さい。\n
 <B>2 SDXFrameWorkをダウンロードする</B>\n
 下記サイトで最新版を配布しているので、リンク先からダウンロードして下さい\n
 <a href="https://sourceforge.jp/projects/dxframework/" target="_blank"><B>SorceForge</B></a>\n
-  解凍すると「SDXFramework_DXLIB」と言うフォルダが出来るので、適当な場所において下さい。\n
-SDL版を使う場合は｢SDXFramework_SDL2｣を使って下さい。\n
 <HR>
 <B>3 新規プロジェクトの作成</B>\n
 <B>プロジェクトの作成</B>\n
@@ -100,7 +98,7 @@ SDXは色々な理由があって、大半のコードをヘッダーに実装�
 <B>ファイルを追加する</B>\n
 画面左側の「ソリューションエクスプローラー」の「ソースファイル」フォルダを右クリックして\n
 「追加」→「新しい項目」から.cppファイルを追加して下さい。\n
-ファイル名は「pre_compile.cpp」にして下さい。\n
+ファイル名は「pre_compile.cpp」とします。\n
 \n
 次に画面左側の「ソリューションエクスプローラー」の「ヘッダーファイル」フォルダを右クリックして\n
 「追加」→「新しい項目」から.hファイルを追加して下さい。\n

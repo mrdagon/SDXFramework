@@ -26,4 +26,7 @@
 <a href="http://www.libsdl.org/projects/SDL_ttf/" target="_blank"><B>SDL_ttf</B></a>\n
 <B>ライブラリ開発者</B>\n
 <a href="" target="_blank"><B>mr_dagonのブログ</B></a>\n
+\n
+このリファレンスマニュアルはGNU Free Documentation License
+http://www.gnu.org/licenses/fdl.html
 */

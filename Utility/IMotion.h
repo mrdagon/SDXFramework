@@ -5,6 +5,7 @@
 
 namespace SDX
 {
+/*Modelの移動方法のポリシー*/
 namespace MOTION
 {
     /**Modelの移動方法.*/

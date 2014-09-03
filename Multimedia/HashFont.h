@@ -10,7 +10,7 @@
 
 namespace SDX
 {
-/** フォントデータを表すクラス[SDL専用].*/
+/** フォントデータを表すクラス[未実装].*/
 /** 毎回レンダリングせず、ハッシュマップにデータを格納する*/
 /**    \include FontSample.h*/
 class HashFont : public IFont

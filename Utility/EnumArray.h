@@ -4,11 +4,12 @@
 namespace SDX
 {
     /**列挙型を直接添字に使える配列.*/
+    /**エラー処理など未実装*/
     template <class TData, class TType>
     class EnumArray
     {
     private:
-        std::array<TData, (int)TType::MAX> Array;
+        std::array<TData, (int)TType::COUNT> Array;
     public:
         size_t size() const
         {

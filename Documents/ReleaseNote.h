@@ -6,7 +6,8 @@
 \n
 <HR>
 <B>ver 0.09</B>\n
-DXLIB版を開発停止、以降はSDL2.0版の開発に注力して行きます。\n
+ライセンスをGPL Ver2に変更\n
+DXLIB版を開発終了、以降はSDL2.0版の開発に注力して行きます。\n
 DXLIB版とSDL2.0版の互換性の維持を終了\n
 \n
 int 座標X,int 座標Yとなっている関数をconst Point &座標に変更\n
