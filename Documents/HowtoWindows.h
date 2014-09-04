@@ -1,7 +1,7 @@
 ﻿/*!
 @page howtoWindows SDXの導入方法(Windows)
 
-SDXFrameWorkの使用には\n
+SDXFrameworkの使用には\n
  ｢SDXFramework｣\n
 「VisualStudio2013」\n
 が必要です。\n
@@ -20,7 +20,7 @@ Desktopの方しか使えないので、注意して下さい。\n
 詳細なインストール方法やライセンス登録については、「VisualStudio 2013 インストール」でGoogle検索するといくつかキャプチャ付きの記事が見つかると思うので\n
 それらを参考にしてください\n
 <HR>
-<B>2 SDXFrameWorkをダウンロードする</B>\n
+<B>2 SDXFrameworkをダウンロードする</B>\n
 下記サイトで最新版を配布しているので、リンク先からダウンロードして下さい\n
 <a href="https://sourceforge.jp/projects/dxframework/" target="_blank"><B>SorceForge</B></a>\n
 <HR>
@@ -37,15 +37,15 @@ Desktopの方しか使えないので、注意して下さい。\n
 ②ダイアログ左上の構成を「アクティブ(Debug)」から「全ての構成」に変更します\n
 \n
 ③ダイアログ左の「構成プロパティ」→「C/C++」→「全般」を選びます。\n
-追加のインクルードディレクトリに先ほど解凍した「SDXFramework_SDL2/jni/SDL/include」を追加し、「適用」ボタンをクリックします。\n
+追加のインクルードディレクトリに先ほど解凍した「SDXFramework/jni/SDL/include」を追加し、「適用」ボタンをクリックします。\n
 \n
 ④ダイアログ左の「構成プロパティ」→「リンカー」→「全般」を選びます。\n
-追加のライブラリディレクトリに先ほど解凍した「SDXFrameWork_SDL2/Windows/lib/x86」を追加し、「適用」ボタンをクリックします。\n
+追加のライブラリディレクトリに先ほど解凍した「SDXFramework/Windows/lib/x86」を追加し、「適用」ボタンをクリックします。\n
 \n
 ⑤最後にダイアログの右下にある「OK」を押してダイアログを閉じます。\n
 \n
 <B>dllのコピー</B>\n
-SDXFrameWork_SDL2/Windows/dll/x86の中にあるdllファイルを実行ファイルが作成されるフォルダと同じ場所にコピーします\n
+SDXFramework/Windows/dll/x86の中にあるdllファイルを実行ファイルが作成されるフォルダと同じ場所にコピーします\n
 
 64bit版の場合、X64。32bit版の場合、X86を使ってください。
 libとdllの構成が違う場合、コンパイルエラーか実行エラーになります。
@@ -57,7 +57,7 @@ libとdllの構成が違う場合、コンパイルエラーか実行エラー�
 ファイル名は何でもかまいませんが「main.cpp」にして下さい。\n
 追加したcppファイルに以下のコードをコピペして、コンパイルして実行して下さい。\n
 @code
-#include <SDXFrameWork.h>
+#include <SDXFramework.h>
 #include <Multimedia/SDXafx.h>
 
 using namespace SDX;
@@ -88,7 +88,7 @@ return 0;
   画面に白い□が表示され、カーソルで移動出来れば導入成功です。\n
 失敗した場合は、もう一度手順を確認して下さい。\n
 よくわからない場合は、掲示板で「新しい話題を始める」をクリックして質問して下さい。\n
-<a href="http://sourceforge.jp/projects/dxframework/forums/31378/" target="_blank"><B>SDXFrameWork：ヘルプフォーラム</B></a>\n
+<a href="http://sourceforge.jp/projects/dxframework/forums/31378/" target="_blank"><B>SDXFramework：ヘルプフォーラム</B></a>\n
 
 <HR>
 <B>5 プリコンパイル済みヘッダーを利用する</B>\n
@@ -114,13 +114,13 @@ pre_compile.cpp（cppとhを間違えないで下さい）には\n
 \n
 stdafx.hには\n
 @code
-#include <SDXFrameWork.h>
+#include <SDXFramework.h>
 @endcode
 と入力して下さい。\n
 \n
 先ほどの「main.cpp」の\n
 @code
-#include <SDXFrameWork.h>
+#include <SDXFramework.h>
 #include <Multimedia/SDXafx.h>
 @endcode
 の三行を\n

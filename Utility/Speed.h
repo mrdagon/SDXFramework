@@ -3,7 +3,6 @@
 
 namespace SDX
 {
-/** ISpeedを継承したクラスが属する.*/
 namespace SPEED
 {
 /** 常に同じ速度.*/

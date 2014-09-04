@@ -12,7 +12,7 @@
  これでSDLの必要なファイルがインストールされます
 <HR>
 <B>2.SDXの導入</B>\n
- SDXFramework_SDL2/jni/SDL/includeフォルダをインクルードパスに指定するか\n
+ SDXFramework/jni/SDL/includeフォルダをインクルードパスに指定するか\n
  ターミナルから"sudo nautilus /usr/local"でフォルダを開いて、includeフォルダにコピーするかして下さい\n
 <HR>
 <B>3.コンパイル</B>\n
@@ -20,7 +20,7 @@
  \n
  main.cppファイルを作成します。\n
  @code
- #include <SDXFrameWork.h>
+ #include <SDXFramework.h>
  #include <Multimedia/SDXafx.h>
 
  using namespace SDX;

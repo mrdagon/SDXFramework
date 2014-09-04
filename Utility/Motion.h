@@ -1,5 +1,5 @@
 ﻿#pragma once//©SDXFramework http://sourceforge.jp/projects/dxframework/
-#include <SDXFrameWork.h>
+#include <SDXFramework.h>
 #include <Utility/IMotion.h>
 #include <Framework/Shape.h>
 
@@ -96,7 +96,7 @@ namespace MOTION
         }
     };
 
-    /*目標座標に移動*/
+    /**目標座標に移動.*/
     template <class TSpeed>
     class ToPoint : public IMotion
     {
@@ -126,7 +126,7 @@ namespace MOTION
         }
     };
 
-    /*円周上を移動*/
+    /**円周上を移動.*/
     template <class TSpeed>
     class Orbit: public IMotion
     {
@@ -158,7 +158,7 @@ namespace MOTION
         }
     };
 
-    /*範囲内で振動*/
+    /**範囲内で振動.*/
     class  Vibrate : public IMotion
     {
     private:

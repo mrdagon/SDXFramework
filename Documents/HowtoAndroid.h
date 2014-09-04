@@ -1,8 +1,9 @@
 ﻿/*!
 @page howtoAndroid SDXの導入方法(android)
- SDXFrameWorkの利用にはSDXFrameWork_SDL2が必要です。\n
+ SDXFrameworkの利用にはSDXFrameworkが必要です。\n
  androidの環境構築は他のOSに比べるとややこしいです\n
  実機デバッグの設定方法は機種により違うので各自で調べて下さい\n
+ clangにしか対応していないのでandroidNDKの64bit版だと使えないと思います\n
 <HR>
 <B>1.android-sdkの導入</B>\n
 以下のサイトを参考にしてjavaやeclipseの環境を構築して下さい\n
@@ -13,12 +14,12 @@ http://techfun.cc/techinf/setup/android/ \n
 http://dench.flatlib.jp/opengl/androidsdk \n
 <HR>
 <B>3.SDXの導入とプロジェクト作成</B>\n
- eclipseを起動すると作成されるworkspaceフォルダにSDXFrameWork_SDL2フォルダを移動します。\n
- コマンドプロンプトを開き cd workspace/SDXFrameWork_SDL2 で作成したプロジェクトのフォルダに移動\n
+ eclipseを起動すると作成されるworkspaceフォルダにSDXFrameworkフォルダを移動します。\n
+ コマンドプロンプトを開き cd workspace/SDXFramework で作成したプロジェクトのフォルダに移動\n
  ndk-build のコマンドでコンパイルをします\n
  \n
  eclipseを起動し、ファイルメニューからインポートを選び、Existing Android Code Into Workspaceを選びます\n 
- ルート・ディレクトリにworkspace内のSDXFrameWork_SDL2フォルダを選択します\n
+ ルート・ディレクトリにworkspace内のSDXFrameworkフォルダを選択します\n
  プロジェクトをワークスペースにコピーにチェックを入れ、新規プロジェクト名を変更し完了を押します。\n
  少し待つとコピーされたプロジェクトが作成されます\n
  \n

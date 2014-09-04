@@ -6,7 +6,7 @@
 \n
 <HR>
 <B>ver 0.09</B>\n
-ライセンスをGPL Ver2に変更\n
+ライセンスをAGPL Ver3に変更\n
 DXLIB版を開発終了、以降はSDL2.0版の開発に注力して行きます。\n
 DXLIB版とSDL2.0版の互換性の維持を終了\n
 \n
@@ -15,9 +15,13 @@ int X座標,int Y座標,int 高さ,int 幅はconst Rect &領域に変更\n
 非実装だったZマスク系関数を削除\n
 テキスト入力系の関数を一旦削除\n
 Rectの座標を左上以外に出来るように変更\n
-ユーティリティーにEnumArrayを追加
+ユーティリティーにEnumArrayを追加\n
+GNU/Linuxに対応\n
+MacOSX 10.6に対応\n
+<HR>
 <B>ver 0.08</B>\n
 細かいバグを修正\n
+<HR>
 <B>ver 0.07</B>\n
 Android対応強化\n
 Fileクラスを修正、Multimediaフォルダに移動\n
@@ -28,7 +32,7 @@ Sample.hをSample/Sample.hに変更\n
 可変文字列の引数を全てVariadicStreamに変更\n
 ドキュメントに移植に関するページを追加\n
 大体実装が終わったので、SDL版とDXLIB版のソースを分割、#define SDLや#define DXLIBを不要に\n
-\n
+<HR>
 <B>ver 0.06</B>\n
 iOSとandroidに暫定対応\n
 \n

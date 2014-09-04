@@ -1,11 +1,11 @@
 ﻿#pragma once//©SDXFramework http://sourceforge.jp/projects/dxframework/
-#include <SDXFrameWork.h>
+#include <SDXFramework.h>
 #include <Framework/Model.h>
 #include <utility/ISpeed.h>
 
 namespace SDX
 {
-/*Modelの移動方法のポリシー*/
+/**Modelの移動パターンのポリシー.*/
 namespace MOTION
 {
     /**Modelの移動方法.*/

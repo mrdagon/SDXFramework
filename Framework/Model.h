@@ -238,6 +238,7 @@ public:
     
 };
 
+/**Modelの基本クラス.*/
 template <class TShape,class TSprite>
 class Model : public IModel
 {

@@ -53,37 +53,4 @@ namespace SDX
             }
         }
     };
-
-    class VString
-    {
-    private:
-        std::string 文字列;
-
-        template < class TFirst, typename ... TRest>
-        void Change(std::ostringstream& 文字列, TFirst 最初の要素, TRest... 残りの要素)
-        {
-            文字列 << 最初の要素;
-            Change(文字列, 残りの要素...);
-        }
-
-        template < class TFirst>
-        void Change(std::ostringstream& 文字列, TFirst 最初の要素)
-        {
-            文字列 << 最初の要素;
-        }
-
-    public:
-        template < typename ... TStream>
-        VString( TStream... 文字列ストリーム)
-        {
-            std::ostringstream 文字バッファ;
-            Change( 文字バッファ ,  文字列ストリーム...);
-            文字列 = 文字バッファ.str();
-        }   
-
-        const char* c_str()
-        {
-            return 文字列.c_str();
-        }
-    };
 }

@@ -63,7 +63,7 @@
     <tr>                            <td>SDX::File               <td>入出力可能なテキストかバイナリファイルを表すクラス</td></tr>
     <tr>                            <td>SDX::Rand               <td>乱数生成関数群</td></tr>
     <tr>                            <td>SDX::Time               <td>時間と日付を取得する関数群</td></tr>
-    <tr>                            <td>SDX::SPEED              <td>移動速度のポリシー</td></tr>
+    <tr>                            <td>SDX::SPEED              <td>速度変化のポリシー</td></tr>
     <tr>                            <td>SDX::MOTION             <td>移動方法のポリシー</td></tr>
     <tr>                            <td>SDX::EnumArray          <td>列挙型用固定配列</td></tr>
 </table>

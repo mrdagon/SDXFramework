@@ -1,16 +1,16 @@
 ﻿/*!
-@page Licence ライセンスについて
-  SDXフレームワークのライセンスはAGPL Ver3です。<BR>
+@page LicenseInfo ライセンスについて
+  SDXFrameworkのライセンスはAGPL Ver3です。<BR>
 http://www.gnu.org/licenses/agpl-3.0.html
 \n
-マニュアルのライセンスはパブリックドメインです\n
+マニュアルのソースもライセンスもAGPL Ver3です\n
 <HR>
-　License.txtをソフトウェアと一緒に配布して下さい\n
+　License.txtをソフトウェアと一緒に配布する等して下さい\n
 以下のような表記をソフトウェアと一緒に配布するドキュメントに含んで下さい\n
 \n
 <B>ライセンス表記</B><BR>
-SDX Framework<BR>\n
-URL:http://sourceforge.jp/projects/dxframework/simple/
+SDXFramework<BR>
+http://sourceforge.jp/projects/dxframework/simple/
 \n
     Copyright (C) 2014- SDXFramework\n
 \n

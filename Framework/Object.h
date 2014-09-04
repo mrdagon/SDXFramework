@@ -1,5 +1,5 @@
 ﻿#pragma once//©SDXFramework http://sourceforge.jp/projects/dxframework/
-#include <SDXFrameWork.h>
+#include <SDXFramework.h>
 #include <Framework/ModelMove.h>
 #include <Utility/Module.h>
 
@@ -16,7 +16,7 @@ enum class Belong
     Etc,//!< その他
 };
 
-/** ModelにSTG用の機能を追加したクラス.*/
+/** ModelにSTG用の機能を追加したサンプルクラス.*/
 /**    \include */
 class IObject : public IModel
 {
@@ -114,6 +114,7 @@ public:
 
 };
 
+/**Model派生のサンプルクラス.*/
 template <class TShape,class TSprite>
 class Object : public IObject
 {

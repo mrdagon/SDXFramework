@@ -10,7 +10,7 @@
 
 #include<vector>
 
-/** SDXフレームワーク共通の名前空間.*/
+/** SDXFramework共通の名前空間.*/
 namespace SDX
 {
     const double PAI = 3.1415926535897931;

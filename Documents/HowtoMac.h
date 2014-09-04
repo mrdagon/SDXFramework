@@ -1,19 +1,19 @@
 ﻿/*!
 @page howtoMac SDXの導入方法(MacOSX)
 
-SDXFrameWorkの使用には\n
-「SDXFrameWorkのソース」\n
-「Xcode5.2」\n
+SDXFrameworkの使用には\n
+「SDXFramework」\n
+「Xcode」\n
 が必要です。\n
-Xcode以外の環境については、サポートしていません。\n
+Xcode以外の環境に以外ついては説明しませんが、多分出来るはずです。\n
 <HR>
 <B>1 Xcodeをインストールする</B>\n
 AppStoreからXcodeの最新版をダウンロードしてインストールします。 \n
 <HR>
-<B>2 SDXFrameWorkをダウンロードする</B>\n
+<B>2 SDXFrameworkをダウンロードする</B>\n
 下記サイトで最新版を配布しているので、リンク先からダウンロードして下さい\n
 <a href="https://sourceforge.jp/projects/dxframework/" target="_blank"><B>SorceForge</B></a>\n
-  解凍すると「SDXFrameWork_SDL2」と言うフォルダが出来るので。\n
+  解凍すると「SDXFramework」と言うフォルダが出来るので。\n
  ホームディレクリ等において下さい。\n
  <HR>
 <B>3 frameworkのインストール</B>\n
@@ -21,7 +21,7 @@ AppStoreからXcodeの最新版をダウンロードしてインストールし�
  \n
  ② ライブラリフォルダを開き、Frameworksフォルダを開きます。\n
  \n
- ③ Frameworksフォルダ に  「SDXFrameWork/MacOSX」の中にある\n
+ ③ Frameworksフォルダ に  「SDXFramework/MacOSX」の中にある\n
  「SDL2.framework」\n
  「SDL2_image.framework」\n
  「SDL2_mixer.framework」\n
@@ -42,7 +42,7 @@ AppStoreからXcodeの最新版をダウンロードしてインストールし�
  ②メインウィンドウにプロジェクトの設定が表示されるので、画面の上の方にある「Build Phases」を選択します\n
  \n
  ③Link Binaly With Libraryesをクリックします\n
- Add  frameworks & libraries here に  「SDXFrameWork/MacOSX」の中にある\n
+ Add  frameworks & libraries here に  「SDXFramework/MacOSX」の中にある\n
  「SDL2.framework」\n
  「SDL2_image.framework」\n
  「SDL2_mixer.framework」\n
@@ -53,7 +53,7 @@ AppStoreからXcodeの最新版をダウンロードしてインストールし�
  左のBasicをAllに変更します。\n
  \n
  ⑤画面をスクロールしてSerch Paths の項目から Header Search Pathsを開き\n
- 先ほど解凍した「SDXFrameWork/jni/SDL/include｣フォルダをドラッグ＆ドロップして追加します。\n
+ 先ほど解凍した「SDXFramework/jni/SDL/include｣フォルダをドラッグ＆ドロップして追加します。\n
  以上でプロジェクトの設定は完了です\n
  \n
  <HR>
@@ -61,7 +61,7 @@ AppStoreからXcodeの最新版をダウンロードしてインストールし�
  画面左側の「Sorce」のフォルダのmain.cppファイルを開きます。\n
  main.cppファイルに以下のコードをコピペして、コンパイルして実行して下さい。\n
  @code
- #include <SDXFrameWork.h>
+ #include <SDXFramework.h>
  #include <Multimedia/SDXafx.h>
 
  using namespace SDX;
@@ -88,16 +88,18 @@ AppStoreからXcodeの最新版をダウンロードしてインストールし�
     return 0;
 }
 @endcode
-
+\n
 画面に白い□が表示され、カーソルで移動出来れば導入成功です。\n
 失敗した場合は、もう一度手順を確認して下さい。\n
 よくわからない場合は、掲示板で「新しい話題を始める」をクリックして質問して下さい。\n
-<a href="http://sourceforge.jp/projects/dxframework/forums/31378/" target="_blank"><B>SDXFrameWork：ヘルプフォーラム</B></a>\n
-
+<a href="http://sourceforge.jp/projects/dxframework/forums/31378/" target="_blank"><B>SDXFramework：ヘルプフォーラム</B></a>\n
+\n
 <HR>
 <B>7 プリコンパイル済みヘッダーを利用する</B>\n
 調査中\n
 \n
 <B>8 完成したソフトを配布する</B>\n
-調査中\n
+.appファイルを作りましょう。\n
+[参考]\n
+http://d.hatena.ne.jp/o_mega/20080512/1210612958
 */
