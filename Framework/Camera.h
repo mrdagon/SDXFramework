@@ -1,5 +1,6 @@
-﻿#pragma once//©SDXFramework http://sourceforge.jp/projects/dxframework/
-namespace SDX
+﻿//©SDXFramework http://sourceforge.jp/projects/dxframework/
+//[License] Affero General Public License ver 3
+#pragma oncenamespace SDX
 {
 /** カメラの追跡方式.*/
 enum class ChaseType

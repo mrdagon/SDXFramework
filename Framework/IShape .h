@@ -1,5 +1,6 @@
-﻿#pragma once//©SDXFramework http://sourceforge.jp/projects/dxframework/
-//#include <Framework/Camera.h>
+﻿//©SDXFramework http://sourceforge.jp/projects/dxframework/
+//[License] Affero General Public License ver 3
+#pragma once
 #include <vector>
 #include <algorithm>
 

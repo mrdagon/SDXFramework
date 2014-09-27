@@ -1,4 +1,6 @@
-﻿#pragma once//☀SDL
+﻿//©SDXFramework http://sourceforge.jp/projects/dxframework/
+//[License] Affero General Public License ver 3
+#pragma once
 /** OS標準の日本語フォント.*/
 /** SystemFont::GothicとSystemFont::Mincho以外はプラットフォーム依存*/
 /** 参考外部リンク:http://rinrin.saiin.net/~aor/fonts/fonts */

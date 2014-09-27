@@ -1,4 +1,6 @@
-﻿#pragma once//☀SDL
+﻿//©SDXFramework http://sourceforge.jp/projects/dxframework/
+//[License] Affero General Public License ver 3
+#pragma once
 #include<Multimedia/Image.h>
 
 namespace SDX

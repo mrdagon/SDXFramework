@@ -1,5 +1,6 @@
-﻿#pragma once//©SDXFramework http://sourceforge.jp/projects/dxframework/
-#include <Multimedia/Image.h>
+﻿//©SDXFramework http://sourceforge.jp/projects/dxframework/
+//[License] Affero General Public License ver 3
+#pragma once#include <Multimedia/Image.h>
 #include <Framework/Anime.h>
 #include <Multimedia/Font.h>
 #include <Multimedia/Screen.h>
