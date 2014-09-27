@@ -1,10 +1,10 @@
 ﻿C++のマルチプラットフォームゲーム開発フレームワーク。
 画像の描画、音声再生、入力等の機能を実装しています。
-対応OS:Windows/Linux/MacOSX/Android/iOS
+対応OS:Windows,GNU/Linux,MacOSX,Android,(iOS)
 ライセンス:AGPL Ver3
 
 オンラインマニュアル（詳細についてはこちら）:
-https://googledrive.com/host/0Bzj9IZoqQNA1LVBEaXVuaHQ2d2M/index.html
+https://googledrive.com/host/0Bzj9IZoqQNA1QTBDM0xUdFE2VzA/index.html
 
 Sorceforgeで開発しています
 https://sourceforge.jp/projects/dxframework/simple/
