@@ -1,5 +1,5 @@
 ﻿//©SDXFramework http://sourceforge.jp/projects/dxframework/
-//[License] Affero General Public License ver 3
+//[License] GNU Affero General Public License, version 3
 #pragma once
 #include <Multimedia/SDX.h>
 

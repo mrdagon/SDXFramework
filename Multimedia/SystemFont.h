@@ -1,5 +1,5 @@
 ﻿//©SDXFramework http://sourceforge.jp/projects/dxframework/
-//[License] Affero General Public License ver 3
+//[License] GNU Affero General Public License, version 3
 #pragma once
 /** OS標準の日本語フォント.*/
 /** SystemFont::GothicとSystemFont::Mincho以外はプラットフォーム依存*/

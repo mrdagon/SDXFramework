@@ -1,6 +1,7 @@
 ﻿//©SDXFramework http://sourceforge.jp/projects/dxframework/
-//[License] Affero General Public License ver 3
-#pragma oncenamespace SDX
+//[License] GNU Affero General Public License, version 3
+#pragma once
+namespace SDX
 {
 /** カメラの追跡方式.*/
 enum class ChaseType

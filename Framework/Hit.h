@@ -1,4 +1,6 @@
 ﻿//©SDXFramework http://sourceforge.jp/projects/dxframework/
+//[License] GNU Affero General Public License, version 3
+#pragma once
 namespace SDX
 {
     bool Complex::Hit(const Point *point) const
