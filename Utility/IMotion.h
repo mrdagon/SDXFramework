@@ -1,4 +1,7 @@
-﻿#pragma once//©SDXFramework http://sourceforge.jp/projects/dxframework/
+﻿//Copyright © 2014 SDXFramework
+//[License]GNU Affero General Public License, version 3
+//[Contact]http://sourceforge.jp/projects/dxframework/
+#pragma once
 #include <SDXFramework.h>
 #include <Framework/Model.h>
 #include <utility/ISpeed.h>

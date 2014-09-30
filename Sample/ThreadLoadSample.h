@@ -1,5 +1,7 @@
-﻿//©SDXFramework http://sourceforge.jp/projects/dxframework/
-//🍣リソースを非同期で読み込む[未実装]
+﻿//Copyright © 2014 SDXFramework
+//[License]GNU Affero General Public License, version 3
+//[Contact]http://sourceforge.jp/projects/dxframework/
+//リソースを非同期で読み込む[未実装]
 bool SampleThreadLoad()
 {
     using namespace SDX;

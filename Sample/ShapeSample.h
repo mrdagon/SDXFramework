@@ -1,5 +1,7 @@
-﻿//©SDXFramework http://sourceforge.jp/projects/dxframework/
-//🍣図形の当たり判定をする
+﻿//Copyright © 2014 SDXFramework
+//[License]GNU Affero General Public License, version 3
+//[Contact]http://sourceforge.jp/projects/dxframework/
+//図形の当たり判定をする
 bool SampleShape()
 {
     using namespace SDX;

@@ -1,10 +1,14 @@
-﻿#pragma once
+﻿//Copyright © 2014 SDXFramework
+//[License]GNU Affero General Public License, version 3
+//[Contact]http://sourceforge.jp/projects/dxframework/
+#pragma once
 #include <Multimedia/Color.h>
 #include <chrono>
 
 namespace SDX
 {
 /** 時間と日付を取得する関数群.*/
+/** わりと標準ライブラリで良い感じはある.*/
 /**    \include TimerSample.h*/
 class Time
 {

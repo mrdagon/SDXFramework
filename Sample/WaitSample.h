@@ -1,5 +1,7 @@
-﻿//©SDXFramework http://sourceforge.jp/projects/dxframework/
-//🍣処理停止関数を試す
+﻿//Copyright © 2014 SDXFramework
+//[License]GNU Affero General Public License, version 3
+//[Contact]http://sourceforge.jp/projects/dxframework/
+//処理停止関数を試す
 bool SampleWait()
 {
     using namespace SDX;

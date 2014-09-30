@@ -1,5 +1,7 @@
-﻿//©SDXFramework http://sourceforge.jp/projects/dxframework/
-//🍣ビットマップフォントを使った描画を行う
+﻿//Copyright © 2014 SDXFramework
+//[License]GNU Affero General Public License, version 3
+//[Contact]http://sourceforge.jp/projects/dxframework/
+//ビットマップフォントを使った描画を行う
 bool    SampleBmpFont()
 {
     using    namespace    SDX;

@@ -1,5 +1,7 @@
-﻿//©SDXFramework http://sourceforge.jp/projects/dxframework/
-//🍣入力を取得する
+﻿//Copyright © 2014 SDXFramework
+//[License]GNU Affero General Public License, version 3
+//[Contact]http://sourceforge.jp/projects/dxframework/
+//入力を取得する
 bool SampleInput()
 {
     using namespace SDX;

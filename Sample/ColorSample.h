@@ -1,4 +1,7 @@
-﻿//©SDXFramework http://sourceforge.jp/projects/dxframework/
+﻿//Copyright © 2014 SDXFramework
+//[License]GNU Affero General Public License, version 3
+//[Contact]http://sourceforge.jp/projects/dxframework/
+//図形を異なる色で描画
 bool SampleColor()
 {
     using namespace SDX;

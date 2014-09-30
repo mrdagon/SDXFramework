@@ -1,5 +1,7 @@
-﻿//©SDXFramework http://sourceforge.jp/projects/dxframework/
-//🍣ファイルに書き込みと読み込みを行う
+﻿//Copyright © 2014 SDXFramework
+//[License]GNU Affero General Public License, version 3
+//[Contact]http://sourceforge.jp/projects/dxframework/
+//ファイルに書き込みと読み込みを行う
 bool SampleFile()
 {
     using namespace SDX;

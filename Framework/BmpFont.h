@@ -1,6 +1,8 @@
-﻿//©SDXFramework http://sourceforge.jp/projects/dxframework/
-//[License] GNU Affero General Public License, version 3
-#pragma once#include <Multimedia/Image.h>
+﻿//Copyright © 2014 SDXFramework
+//[License]GNU Affero General Public License, version 3
+//[Contact]http://sourceforge.jp/projects/dxframework/
+#pragma once
+#include <Multimedia/Image.h>
 #include <Framework/Anime.h>
 #include <Multimedia/Font.h>
 #include <Multimedia/Screen.h>

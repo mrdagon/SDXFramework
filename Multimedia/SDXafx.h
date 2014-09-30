@@ -1,5 +1,6 @@
-﻿//©SDXFramework http://sourceforge.jp/projects/dxframework/
-//[License] GNU Affero General Public License, version 3
+﻿//Copyright © 2014 SDXFramework
+//[License]GNU Affero General Public License, version 3
+//[Contact]http://sourceforge.jp/projects/dxframework/
 #pragma once
 //多重定義の関係でプリコンパイル済みヘッダーにのみインクルードするヘッダー
 #include <Framework/Hit.h>

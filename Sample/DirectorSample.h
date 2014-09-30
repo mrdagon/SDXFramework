@@ -1,4 +1,6 @@
-﻿//©SDXFramework http://sourceforge.jp/projects/dxframework/
+﻿//Copyright © 2014 SDXFramework
+//[License]GNU Affero General Public License, version 3
+//[Contact]http://sourceforge.jp/projects/dxframework/
 //🍣[サンプルコード作成中]
 bool SampleDirector()
 {
