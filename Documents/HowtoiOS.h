@@ -12,5 +12,6 @@ SDXFrameworkフォルダのXcode-iOS/SampleのSDX.xcodeprojを開きます\n
 ビルドして実行するとシミュレータ上でサンプルが動きます\n
 <HR>
 <B>3 配布方法やアプリケーション名の変更</B>\n
-調査中\n
+ライセンスの関係でAppStoreで配布する事は難しいです\n
+色々調査中\n
 */
