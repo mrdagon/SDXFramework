@@ -29,13 +29,13 @@ public:
     {
         Time::ResetFPS();
 
-        while( System::Update() )
+        while( System::Update( IsDraw() ) )
         {
             if( Single().scenes.size() == 0 ) break;
             Single().scenes.back()->Update();
-            Single().scenes.back()->Draw();
+            if( IsDraw() ){ Single().scenes.back()->Draw(); }
             //更新処理
-            if( Camera::Now() ) Camera::Now()->Update();
+            if( Camera::Now() ){ Camera::Now()->Update(); }
             Time::CheckFPS();
 
             Remove();
@@ -86,6 +86,12 @@ public:
     {
         return Single().scenes[Single().scenes.size() - インデックス - 1].get();
     }
+
+    static bool& IsDraw()
+    {
+        static bool isDraw = true;
+        return isDraw;
+    }    
 };
 }
 
