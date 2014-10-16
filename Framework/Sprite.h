@@ -277,13 +277,13 @@ public:
             data[a].resize( 高さ );
         }
 
-        auto lineS = csvFile.GetCsvS();
+        auto lineS = csvFile.GetCsvToInt2();
 
         for(int a = 0 ; a < 高さ ; ++a )
         {
             for( int b = 0 ; b < 幅 ; ++b)
             {
-                data[b][a] = atoi( lineS[a][b].c_str() );
+                data[b][a] = lineS[a][b];
             }
         }
     }

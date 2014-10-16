@@ -45,7 +45,12 @@ public:
         pad.Update();
         mouse.Update();
         key.Update();
-        for (auto && it : touch) it.Update();
+
+        for (auto && it : touch)
+        { 
+            it.Update();
+        }
+
         gesture.Update();
     }
 
@@ -166,7 +171,9 @@ public:
                     case SDLK_k: key.press[(int)KeyCode::K] = isPush; break;
                     case SDLK_l: key.press[(int)KeyCode::L] = isPush; break;
                     case SDLK_m: key.press[(int)KeyCode::M] = isPush; break;
-                    case SDLK_n: key.press[(int)KeyCode::N] = isPush; break;
+                    case SDLK_n: 
+                        key.press[(int)KeyCode::N] = isPush;
+                        break;
                     case SDLK_o: key.press[(int)KeyCode::O] = isPush; break;
                     case SDLK_p: key.press[(int)KeyCode::P] = isPush; break;
                     case SDLK_q: key.press[(int)KeyCode::Q] = isPush; break;

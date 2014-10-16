@@ -210,8 +210,6 @@ public:
         return true;
     }
 
-
-
     /** データを書き込む.*/
     /**    FileModeがWriteかAddの場合成功。\n
         書込元変数をファイルに書き込む。*/
@@ -289,9 +287,39 @@ public:
         }
         return lineS;
     }
-            
-    /** カンマ区切りのCSVファイルを一括読込.*/
-    std::vector<std::vector<std::string>> GetCsvS()
+       
+    /** カンマ区切りのCSVファイルを配列に文字列として一括読込.*/
+    std::vector<std::string> GetCsvToString()
+    {
+        std::vector<std::string> lineS;
+
+        if( canRead )
+        {
+            std::string all;
+            unsigned int fileSize = (unsigned int)handle->size(handle);
+            all.resize(fileSize);
+            SDL_RWread(handle, (char*)all.c_str(), fileSize, 1);
+
+            int lineNo = 0;
+            std::string buf;
+            std::string buf2;
+            std::istringstream iss(all);
+
+            while (std::getline(iss, buf, '\n'))
+            {
+                std::istringstream iss2(buf);
+                while (std::getline(iss2, buf2, ','))
+                {
+                    lineS.push_back(buf2);
+                }
+                ++lineNo;
+            }
+        }
+        return lineS;
+    }
+    
+    /** カンマ区切りのCSVファイルを二次元配列に文字列として一括読込.*/
+    std::vector<std::vector<std::string>> GetCsvToString2()
     {
         std::vector<std::vector<std::string>> lineS;
 
@@ -322,6 +350,70 @@ public:
         return lineS;
     }
     
+    /** カンマ区切りのCSVファイルを配列に整数として一括読込.*/
+    std::vector<int> GetCsvToInt()
+    {
+        std::vector<int> lineS;
+
+        if( canRead )
+        {
+            std::string all;
+            unsigned int fileSize = (unsigned int)handle->size(handle);
+            all.resize(fileSize);
+            SDL_RWread(handle, (char*)all.c_str(), fileSize, 1);
+
+            int lineNo = 0;
+            std::string buf;
+            std::string buf2;
+            std::istringstream iss(all);
+
+            while (std::getline(iss, buf, '\n'))
+            {
+                std::istringstream iss2(buf);
+
+                while (std::getline(iss2, buf2, ','))
+                {
+                    lineS.push_back(atoi(buf2.c_str()));
+                }
+                ++lineNo;
+            }
+        }
+        return lineS;    
+    }
+
+    /** カンマ区切りのCSVファイルを二次元配列に整数として一括読込.*/
+    std::vector<std::vector<int>> GetCsvToInt2()
+    {
+        std::vector<std::vector<int>> lineS;
+
+        if( canRead )
+        {
+            std::string all;
+            unsigned int fileSize = (unsigned int)handle->size(handle);
+            all.resize(fileSize);
+            SDL_RWread(handle, (char*)all.c_str(), fileSize, 1);
+
+            int lineNo = 0;
+            std::string buf;
+            std::string buf2;
+            std::istringstream iss(all);
+
+            while (std::getline(iss, buf, '\n'))
+            {
+                std::istringstream iss2(buf);
+                lineS.push_back(std::vector<int>());
+
+                while (std::getline(iss2, buf2, ','))
+                {
+                    lineS[lineNo].push_back(atoi(buf2.c_str()));
+                }
+                ++lineNo;
+            }
+        }
+        return lineS;    
+    }
+
+
     /** ファイルの終端判定.*/
     bool CheckEOF()
     {
