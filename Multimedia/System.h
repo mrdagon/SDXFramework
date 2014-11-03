@@ -99,8 +99,8 @@ public:
             Screen::Flip();
             Screen::Clear();
         }
-        bool result = System::ProcessMessage();
         Input::Update();
+        bool result = System::ProcessMessage();
         return result;
     }
 

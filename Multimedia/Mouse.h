@@ -84,6 +84,8 @@ public:
 
         x = xBuffer;
         y = yBuffer;
+
+        Whell = 0;
     }
 
     /** カーソルの表示設定[未実装].*/

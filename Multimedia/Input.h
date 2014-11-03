@@ -266,6 +266,9 @@ public:
                     case SDL_BUTTON_X2:mouse.press[(int)MouseCode::_5] = isPush; break;
                 }
                 break;
+            case SDL_MOUSEWHEEL:
+                mouse.Whell = event.button.x;
+                break;
             case SDL_FINGERUP:
                 isPush = false;
             case SDL_FINGERDOWN:
