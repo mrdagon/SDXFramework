@@ -16,8 +16,8 @@
 /** SDXFramework共通の名前空間.*/
 namespace SDX
 {
-    const double PAI = 3.1415926535897931;
-    const double DEG = PAI / 180;
+	const double PAI = 3.1415926535897931;
+	const double DEG = PAI / 180;
 }
 
 #pragma comment(lib, "SDL2.lib")
@@ -29,7 +29,7 @@ namespace SDX
 #pragma execution_character_set("utf-8")//charの文字コードをUTF-8に変更:Windows
 
 #ifdef _DEBUG
-    #pragma comment(linker, "/NODEFAULTLIB:msvcrt.lib")
+#pragma comment(linker, "/NODEFAULTLIB:msvcrt.lib")
 #endif
 
 #include <SDL.h>
@@ -48,15 +48,15 @@ using ColorData = SDL_Color;
 #define NULL_HANDLE nullptr
 
 #ifdef __ANDROID__
-    #define TABLET
+#define TABLET
 #elif defined(__IPHONEOS__)
-    #define TABLET
+#define TABLET
 #endif
 
 #ifdef __WINDOWS__
-    #include<xutility>
+#include<xutility>
 #else
-    #include <locale.h>
-    #define sprintf_s(a,b,c,d) sprintf(a,c,d) //boost::formatにしたい
-    #define localtime_s(a,b) a = localtime(b)
+#include <locale.h>
+#define sprintf_s(a,b,c,d) sprintf(a,c,d) //boost::formatにしたい
+#define localtime_s(a,b) a = localtime(b)
 #endif
