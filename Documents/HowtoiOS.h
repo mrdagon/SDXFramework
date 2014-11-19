@@ -1,7 +1,7 @@
 ﻿/*!
 @page howtoiOS SDXの導入方法(iOS)
-SDXFrameworkの利用にはSDXFrameworkが必要です。\n
-開発者登録していないため、シミュレータ上での動かし方のみ解説します\n
+ SDXFrameworkの利用にはSDXFrameworkが必要です。\n
+ 開発者登録していないため、シミュレータ上での動かし方のみ解説します\n
 とりあえず1からプロジェクトを設定する方法がややこしいので、サンプルプロジェクトを改造しています\n
 <HR>
 <B>1 Xcodeをインストールする</B>\n

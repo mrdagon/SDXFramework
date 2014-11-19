@@ -4,23 +4,23 @@
 #pragma once
 namespace SDX
 {
-	/*! シーンのインターフェース.*/
-	/*!    \include DirectorSample.h*/
-	class IScene
-	{
-	public:
-		bool isEnd = false;
+/** シーンのインターフェース.*/
+/**    \include DirectorSample.h*/
+class IScene
+{
+public:
+    bool isEnd = false;
 
-		virtual void Update() = 0;
-		virtual void Draw() = 0;
+    virtual void Update() = 0;
+    virtual void Draw() = 0;
 
-		virtual void Init(){};
-		virtual void Final(){};
-		virtual void Event(){};
+    virtual void Init(){};
+    virtual void Final(){};
+    virtual void Event(){};
 
-		bool IsEnd()
-		{
-			return isEnd;
-		}
-	};
+    bool IsEnd()
+    {
+        return isEnd;
+    }
+};
 }

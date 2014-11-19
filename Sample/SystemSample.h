@@ -4,15 +4,15 @@
 //ライブラリの初期化等を行う
 bool SampleSystem()
 {
-	using namespace SDX;
+    using namespace SDX;
 
-	System::Initialise("sample", 600, 400);//ウィンドウタイトルを指定して、初期化する
+    System::Initialise("sample", 600, 400);//ウィンドウタイトルを指定して、初期化する
 
-	while (System::Update())//ウィンドウの更新や、入力の更新等を行う
-	{
-		if (Input::key.Return.on) break;//Enterで終了
-	}
+    while (System::Update())//ウィンドウの更新や、入力の更新等を行う
+    {
+        if (Input::key.Return.on) break;//Enterで終了    
+    }
 
-	System::End();//ライブラリの終了処理を行う
-	return true;
+    System::End();//ライブラリの終了処理を行う
+    return true;
 }

@@ -4,25 +4,25 @@
 //色んな画像を合成してみる
 bool    SampleBlend()
 {
-	//サンプルコード作成途中です。
-	using    namespace    SDX;
-	System::Initialise("sample", 600, 400);
+    //サンプルコード作成途中です。
+    using    namespace    SDX;
+    System::Initialise("sample",    600,    400);
 
-	Image    imageA("image.bmp");
-	Image    imageB("image.bmp");
+    Image    imageA("image.bmp");
+    Image    imageB("image.bmp");
 
-	Image    imageC = BlendBlt::Add(&imageA, &imageB, 128);
+    Image    imageC    =    BlendBlt::Add(&imageA,    &imageB,    128);
 
-	while (System::Update())
-	{
-		imageA.Draw({ 10, 10 });
-		imageB.Draw({ 10, 200 });
+    while    (System::Update())
+    {
+        imageA.Draw({ 10, 10 });
+        imageB.Draw({ 10, 200 });
 
-		imageC.Draw({ 200, 10 });
+        imageC.Draw({ 200, 10 });
 
-		if (Input::key.Return.on)    break;//Enterで終了
-	}
+        if    (Input::key.Return.on)    break;//Enterで終了    
+    }
 
-	System::End();
-	return    true;
+    System::End();
+    return    true;
 }
