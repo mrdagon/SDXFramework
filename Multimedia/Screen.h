@@ -11,22 +11,29 @@ namespace SDX
 	/** ブレンドモード.*/
 	enum class BlendMode
 	{
-		NoBlend = SDL_BLENDMODE_NONE,
-		Alpha = SDL_BLENDMODE_BLEND,
-		Add = SDL_BLENDMODE_ADD,
-		Mula = SDL_BLENDMODE_MOD
+		NoBlend = SDL_BLENDMODE_NONE,//!<
+		Alpha = SDL_BLENDMODE_BLEND,//!<
+		Add = SDL_BLENDMODE_ADD,//!<
+		Mula = SDL_BLENDMODE_MOD,//!<
 	};
 
-	class Image;
-
 	/** 描画先を表すクラス.*/
-	/** 実装中.*/
+	/** ScreenにSetして使う.*/
 	/** \include ScreenSample.*/
 	class Renderer
 	{
 	private:
-		RendererHandle handle = 0;
+
+	
 	public:
+		RendererHandle handle = nullptr;
+		SurfaceHandle surface = nullptr;
+
+		BlendMode nowBlendMode = BlendMode::NoBlend;
+		int blendParam = 0;//!<αブレンドの比率 0～255
+		Color clearColor = Color(0, 0, 0);//!<消去時の色
+		Color rgba = Color(255, 255, 255, 0);//!<描画輝度と透明度
+
 		/*描画ハンドルを取得*/
 		RendererHandle GetHandle()
 		{
@@ -38,35 +45,62 @@ namespace SDX
 			Destroy();
 		}
 
-		/*Rendererを生成*/
-		void Create(WindowHandle 元Window)
+		/*Surfaceに対応した、Rendererを生成.*/
+		bool Create(int 幅,int 高さ)
 		{
-			handle = SDL_CreateRenderer(元Window, -1, SDL_RENDERER_PRESENTVSYNC);
+			if (handle != nullptr) return false;
+			surface = SDL_CreateRGBSurface(0, 幅, 高さ, 32, 0, 0, 0, 0);
+			handle = SDL_CreateSoftwareRenderer(surface);
+
+			return true;
 		}
 
-		/*Rendererを削除*/
+		/*Windowに対応した、Rendererを生成.*/
+		bool Create(WindowHandle 元Window)
+		{
+			if (handle != nullptr) return false;
+
+			handle = SDL_CreateRenderer(元Window, -1, SDL_RENDERER_PRESENTVSYNC);
+
+			return true;
+		}
+
+		/**対象RenderHandleにコピー.*/
+		void Draw(RendererHandle コピー先 , int X座標 , int Y座標)
+		{
+			ImageHandle image;
+			image = SDL_CreateTextureFromSurface(コピー先, surface);
+			SDL_RenderCopy(コピー先, image, 0, 0);
+			SDL_DestroyTexture(image);
+		}
+
+		/*Rendererを削除.*/
 		bool Destroy()
 		{
 			if (handle == 0) return false;
+			if (surface != nullptr)
+			{
+				SDL_FreeSurface(surface);
+			}
+
 			SDL_DestroyRenderer(handle);
+
+			surface = nullptr;
+			handle = nullptr;
+
 			return true;
 		}
 	};
 
-	/** 描画先を表すクラス.*/
+	/** 現在の描画先を操作するクラス.*/
 	/** \include ScreenSample.h*/
 	class Screen
 	{
 	private:
 		Screen(){};
 		~Screen(){};
-		RendererHandle handle = 0;//現在の描画先
-
+		Renderer *handle = nullptr;
 	public:
-		BlendMode nowBlendMode = BlendMode::NoBlend;
-		int blendParam = 0;
-		Color clearColor = Color(0, 0, 0);//消去時の色
-		Color rgba = Color(255, 255, 255, 0);//描画輝度と透明度
 
 		/** シングルトンなインスタンスを取得.*/
 		static Screen& Single()
@@ -78,25 +112,53 @@ namespace SDX
 		/** スクリーンハンドルを取得.*/
 		static RendererHandle GetHandle()
 		{
+			return Single().handle->GetHandle();
+		}
+
+		/** Rendererを取得.*/
+		static Renderer* GetRenderer()
+		{
 			return Single().handle;
 		}
 
-		/** スクリーンハンドルを設定.*/
+		/** Rendererを設定.*/
 		static void SetRenderer(Renderer &描画先Renderer)
 		{
-			Single().handle = 描画先Renderer.GetHandle();
+			Single().handle = &描画先Renderer;
 		}
 
-		/** 描画範囲を設定する、設定範囲外には描画されない[未実装].*/
+		/** 描画領域を設定する、設定範囲外には描画されない.*/
 		static bool SetArea(const Rect &描画領域)
 		{
-			return false;
+			SDL_Rect rect = { (int)描画領域.GetX(), (int)描画領域.GetY(), (int)描画領域.GetW(), (int)描画領域.GetH() };
+
+			return !SDL_RenderSetViewport(Single().GetHandle(),&rect);
+		}
+
+		/** 非描画領域を設定する、設定範囲内には描画されない.*/
+		static bool SetClip(const Rect &非描画領域)
+		{
+			SDL_Rect rect = { (int)非描画領域.GetX(), (int)非描画領域.GetY(), (int)非描画領域.GetW(), (int)非描画領域.GetH() };
+
+			return !SDL_RenderSetViewport(Single().GetHandle(), &rect);
+		}
+
+		/**描画領域を解除する.*/
+		static void ResetArea()
+		{
+			SDL_RenderSetViewport(Single().GetHandle(), 0);
+		}
+
+		/**非描画領域を解除する.*/
+		static void ResetClip()
+		{
+			SDL_RenderSetViewport(Single().GetHandle(), 0);
 		}
 
 		/** Screen::Clear後の色を設定.*/
 		static bool SetBackColor(Color 背景色)
 		{
-			Single().clearColor.SetColor(背景色.GetRed(), 背景色.GetGreen(), 背景色.GetBlue());
+			Single().GetRenderer()->clearColor.SetColor(背景色.GetRed(), 背景色.GetGreen(), 背景色.GetBlue());
 
 			return true;
 		}
@@ -120,23 +182,23 @@ namespace SDX
 		{
 			SDL_SetRenderDrawColor
 				(
-				Screen::GetHandle(),
-				Single().clearColor.GetRed(),
-				Single().clearColor.GetGreen(),
-				Single().clearColor.GetBlue(),
+				GetHandle(),
+				Single().GetRenderer()->clearColor.GetRed(),
+				Single().GetRenderer()->clearColor.GetGreen(),
+				Single().GetRenderer()->clearColor.GetBlue(),
 				0
 				);
-			SDL_RenderClear(GetHandle());
+			SDL_RenderClear(GetRenderer()->GetHandle());
 			return true;
 		}
 
 		/** ブレンド描画のモードを設定.*/
 		static bool SetBlendMode(BlendMode ブレンドモード, int 設定値)
 		{
-			Single().nowBlendMode = ブレンドモード;
-			if (設定値 > 255)      Single().blendParam = 255;
-			else if (設定値 < 0)      Single().blendParam = 0;
-			else                   Single().blendParam = 設定値;
+			Single().GetRenderer()->nowBlendMode = ブレンドモード;
+			if (設定値 > 255)      Single().GetRenderer()->blendParam = 255;
+			else if (設定値 < 0)      Single().GetRenderer()->blendParam = 0;
+			else                   Single().GetRenderer()->blendParam = 設定値;
 
 			return true;
 		}
@@ -150,7 +212,7 @@ namespace SDX
 		/** 描画輝度を設定.*/
 		static bool SetBright(Color 輝度)
 		{
-			Single().rgba.SetColor(輝度.GetRed(), 輝度.GetGreen(), 輝度.GetBlue());
+			Single().GetRenderer()->rgba.SetColor(輝度.GetRed(), 輝度.GetGreen(), 輝度.GetBlue());
 			return true;
 		}
 

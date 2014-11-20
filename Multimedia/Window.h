@@ -7,6 +7,22 @@
 
 namespace SDX
 {
+	/** 2つ目以降のウィンドウを表すクラス.*/
+	/** デスクトップ版のみ使用可能.*/
+	/**    \include WindowSample.h*/
+	class SubWindow
+	{
+		friend class System;
+		friend class Mouse;
+		friend class Gesture;
+		friend class Touch;
+
+		int width;
+		int height;
+		double aspect;
+	};
+
+
 	/** ウィンドウを表すクラス.*/
 	/**    \include WindowSample.h*/
 	class Window
@@ -22,13 +38,34 @@ namespace SDX
 		double aspect;
 
 		Window(){}
-		WindowHandle handle = 0;
+		WindowHandle handle = nullptr;
 	public:
 
 		static Window& Single()
 		{
 			static Window single;
 			return single;
+		}
+
+		static WindowHandle GetHandle()
+		{
+			return Single().handle;
+		}
+
+		static void Create( const char* ウィンドウ名, int 幅, int 高さ , bool フルスクリーンフラグ = false)
+		{
+			Single().width = 幅;
+			Single().height = 高さ;
+			Single().isFullScreen = フルスクリーンフラグ;
+
+			int flag = 0;
+			if (Window::Single().isFullScreen)
+			{
+				flag = SDL_WINDOW_FULLSCREEN;
+			}
+
+			Window::Single().handle = SDL_CreateWindow(ウィンドウ名, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 幅, 高さ, flag);
+
 		}
 
 		/** スクリーンモードを設定する.*/

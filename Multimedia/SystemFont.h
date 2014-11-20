@@ -2,6 +2,7 @@
 //[License]GNU Affero General Public License, version 3
 //[Contact]http://sourceforge.jp/projects/dxframework/
 #pragma once
+
 /** OS標準の日本語フォント.*/
 /** SystemFont::GothicとSystemFont::Mincho以外はプラットフォーム依存*/
 /** 参考外部リンク:http://rinrin.saiin.net/~aor/fonts/fonts */

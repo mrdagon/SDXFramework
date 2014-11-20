@@ -18,22 +18,22 @@ namespace SDX
 	/** 説明.*/
 	enum class RGBA
 	{
-		SrcR,
-		SrcG,
+		SrcR,//!<
+		SrcG,//!<
 
-		SrcB,
-		SrcA,
-		BlendR,
-		BlendG,
-		BlendB,
-		BlendA,
+		SrcB,//!<
+		SrcA,//!<
+		BlendR,//!<
+		BlendG,//!<
+		BlendB,//!<
+		BlendA,//!<
 	};
 
 	/** 説明.*/
 	enum class ClipType
 	{
-		Less,
-		Greater,
+		Less,//!<
+		Greater,//!<
 	};
 
 	/** 画像データを表すクラス.*/
@@ -56,22 +56,22 @@ namespace SDX
 		// 透過状態を計算する
 		void RGBACulculate() const
 		{
-			if (Screen::Single().nowBlendMode == BlendMode::NoBlend)
+			if (Screen::Single().GetRenderer()->nowBlendMode == BlendMode::NoBlend)
 			{
 				SDL_SetTextureBlendMode(handle, (SDL_BlendMode)BlendMode::Alpha);
 				SDL_SetTextureAlphaMod(handle, 255);
 			}
 			else{
-				SDL_SetTextureBlendMode(handle, (SDL_BlendMode)Screen::Single().nowBlendMode);
-				SDL_SetTextureAlphaMod(handle, Screen::Single().blendParam);
+				SDL_SetTextureBlendMode(handle, (SDL_BlendMode)Screen::Single().GetRenderer()->nowBlendMode);
+				SDL_SetTextureAlphaMod(handle, Screen::Single().GetRenderer()->blendParam);
 			}
 
 			SDL_SetTextureColorMod
 				(
 				handle,
-				Screen::Single().rgba.GetRed(),
-				Screen::Single().rgba.GetGreen(),
-				Screen::Single().rgba.GetBlue()
+				Screen::Single().GetRenderer()->rgba.GetRed(),
+				Screen::Single().GetRenderer()->rgba.GetGreen(),
+				Screen::Single().GetRenderer()->rgba.GetBlue()
 				);
 		}
 

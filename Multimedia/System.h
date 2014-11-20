@@ -14,16 +14,23 @@ namespace SDX
 	class System
 	{
 	private:
-		System();
-		~System();
-		static bool isEnd;
-		static Renderer defaultRenderer;
+		System(){};
+		~System(){};
+		bool isEnd;
+		Renderer defaultRenderer;
 	public:
+
+		/** シングルトンなインスタンスを取得.*/
+		static System& Single()
+		{
+			static System single;
+			return single;
+		}
 
 		/** ライブラリの初期化.*/
 		/**    初期化に失敗した場合、ソフトを強制的に終了する。\n
 			一部の設定関数は初期化前に呼び出す必要がある。*/
-		static void Initialise(const char* ウィンドウ名, int 幅, int 高さ)
+		static void Initialise(const char* ウィンドウ名, int 幅, int 高さ , bool フルスクリーンフラグ = false)
 		{
 			if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_AUDIO | SDL_INIT_VIDEO) < 0)
 			{
@@ -33,29 +40,6 @@ namespace SDX
 			}
 
 			setlocale(LC_CTYPE, "jpn");//文字コードを日本語に
-
-			int flag = 0;
-			if (Window::Single().isFullScreen)
-			{
-				flag = SDL_WINDOW_FULLSCREEN;
-			}
-
-			Window::Single().width = 幅;
-			Window::Single().height = 高さ;
-
-			Window::Single().handle = SDL_CreateWindow(ウィンドウ名, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 幅, 高さ, flag);
-
-			defaultRenderer.Create(Window::Single().handle);
-
-			Screen::SetRenderer(defaultRenderer);
-
-#ifdef TABLET
-			int dpiX;
-			int dpiY;
-			SDL_GetWindowSize(Window::Single().handle, &dpiX, &dpiY);
-			Window::Single().aspect = (double)dpiX / dpiY;
-			SDL_RenderSetLogicalSize(Screen::GetHandle(), 幅, 高さ);
-#endif
 
 			TTF_Init();
 
@@ -76,7 +60,23 @@ namespace SDX
 			Mix_OpenAudio(44100, AUDIO_S16, 2, 1024);
 			Mix_AllocateChannels(16);
 
-			isEnd = false;
+			Single().isEnd = false;
+
+			Window::Single().Create(ウィンドウ名,幅,高さ,フルスクリーンフラグ);
+
+			Single().defaultRenderer.Create(Window::GetHandle());
+
+			Screen::SetRenderer(Single().defaultRenderer);
+
+			//タブレットと画面サイズを合わせる
+#ifdef TABLET
+			int dpiX;
+			int dpiY;
+			SDL_GetWindowSize(Window::Single().handle, &dpiX, &dpiY);
+			Window::Single().aspect = (double)dpiX / dpiY;
+			SDL_RenderSetLogicalSize(Screen::GetHandle(), 幅, 高さ);
+#endif
+
 		}
 
 		/** ライブラリの終了処理.*/
@@ -87,7 +87,7 @@ namespace SDX
 			Mix_CloseAudio();
 			Mix_Quit();
 			SDL_Quit();
-			isEnd = true;
+			Single().isEnd = true;
 			return true;
 		}
 
@@ -130,7 +130,7 @@ namespace SDX
 				}
 				else if (event.type == SDL_QUIT)
 				{
-					isEnd = true;
+					Single().isEnd = true;
 				}
 				else
 				{
@@ -138,7 +138,12 @@ namespace SDX
 				}
 			}
 
-			return !isEnd;
+			return !Single().isEnd;
+		}
+
+		static void ResetRenderer()
+		{
+			Screen::SetRenderer(Single().defaultRenderer);
 		}
 	};
 }

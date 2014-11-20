@@ -21,9 +21,9 @@ namespace SDX
 	/** Androidでの保存先.*/
 	enum class SaveMode
 	{
-		Asset,
-		Internal,
-		External
+		Asset,//!<
+		Internal,//!<
+		External,//!<
 	};
 
 	/** 入出力可能なテキストかバイナリファイルを表すクラス.*/

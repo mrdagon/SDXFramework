@@ -4,7 +4,7 @@
 #pragma once
 #include <SDXFramework.h>
 #include <Framework/Model.h>
-#include <utility/ISpeed.h>
+#include <Utility/ISpeed.h>
 
 namespace SDX
 {

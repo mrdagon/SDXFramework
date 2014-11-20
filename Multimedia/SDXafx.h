@@ -36,9 +36,6 @@ namespace SDX
 	Touch Input::touch[10];
 	Gesture Input::gesture;
 
-	bool System::isEnd;
-	Renderer System::defaultRenderer;
-
 	Font Drawing::defaultFont;
 
 	Time Time::singleton;

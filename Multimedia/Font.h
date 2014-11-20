@@ -15,10 +15,10 @@ namespace SDX
 	/** フォントの種類.*/
 	enum class FontType
 	{
-		Normal,
-		Edge,
-		AntiAliase,
-		AntiAliaseEdge
+		Normal,//!<
+		Edge,//!<
+		AntiAliase,//!<
+		AntiAliaseEdge,//!<
 	};
 
 	/** フォントデータを表すクラス.*/

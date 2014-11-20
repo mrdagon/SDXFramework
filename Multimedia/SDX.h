@@ -40,6 +40,7 @@ namespace SDX
 using ImageHandle = SDL_Texture*;
 using SoundHandle = Mix_Chunk*;
 using RendererHandle = SDL_Renderer*;
+using SurfaceHandle = SDL_Surface*;
 using WindowHandle = SDL_Window*;
 using StickHandle = SDL_Joystick*;
 using FontHandle = TTF_Font*;
