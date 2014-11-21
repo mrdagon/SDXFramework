@@ -38,6 +38,8 @@ namespace SDX
 
 	Font Drawing::defaultFont;
 
+	Renderer Renderer::defaultRenderer;
+
 	Time Time::singleton;
 
 	int Music::nowVolume;

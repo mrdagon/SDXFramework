@@ -7,22 +7,6 @@
 
 namespace SDX
 {
-	/** 2つ目以降のウィンドウを表すクラス.*/
-	/** デスクトップ版のみ使用可能.*/
-	/**    \include WindowSample.h*/
-	class SubWindow
-	{
-		friend class System;
-		friend class Mouse;
-		friend class Gesture;
-		friend class Touch;
-
-		int width;
-		int height;
-		double aspect;
-	};
-
-
 	/** ウィンドウを表すクラス.*/
 	/**    \include WindowSample.h*/
 	class Window
@@ -39,17 +23,11 @@ namespace SDX
 
 		Window(){}
 		WindowHandle handle = nullptr;
-	public:
 
 		static Window& Single()
 		{
 			static Window single;
 			return single;
-		}
-
-		static WindowHandle GetHandle()
-		{
-			return Single().handle;
 		}
 
 		static void Create( const char* ウィンドウ名, int 幅, int 高さ , bool フルスクリーンフラグ = false)
@@ -66,6 +44,13 @@ namespace SDX
 
 			Window::Single().handle = SDL_CreateWindow(ウィンドウ名, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 幅, 高さ, flag);
 
+		}
+
+	public:
+
+		static WindowHandle GetHandle()
+		{
+			return Single().handle;
 		}
 
 		/** スクリーンモードを設定する.*/

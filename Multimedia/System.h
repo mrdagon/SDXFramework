@@ -13,19 +13,18 @@ namespace SDX
 	/**    \include SystemSample.h*/
 	class System
 	{
+		friend class Window;
+
 	private:
 		System(){};
 		~System(){};
-		bool isEnd;
-		Renderer defaultRenderer;
-	public:
-
 		/** シングルトンなインスタンスを取得.*/
-		static System& Single()
+		static bool& IsEnd()
 		{
-			static System single;
-			return single;
+			static bool isEnd;
+			return isEnd;
 		}
+	public:
 
 		/** ライブラリの初期化.*/
 		/**    初期化に失敗した場合、ソフトを強制的に終了する。\n
@@ -60,13 +59,13 @@ namespace SDX
 			Mix_OpenAudio(44100, AUDIO_S16, 2, 1024);
 			Mix_AllocateChannels(16);
 
-			Single().isEnd = false;
+			IsEnd() = false;
 
 			Window::Single().Create(ウィンドウ名,幅,高さ,フルスクリーンフラグ);
 
-			Single().defaultRenderer.Create(Window::GetHandle());
+			Renderer::defaultRenderer.Create(Window::GetHandle());
 
-			Screen::SetRenderer(Single().defaultRenderer);
+			Screen::SetRenderer(Renderer::defaultRenderer);
 
 			//タブレットと画面サイズを合わせる
 #ifdef TABLET
@@ -87,7 +86,7 @@ namespace SDX
 			Mix_CloseAudio();
 			Mix_Quit();
 			SDL_Quit();
-			Single().isEnd = true;
+			IsEnd() = true;
 			return true;
 		}
 
@@ -130,7 +129,7 @@ namespace SDX
 				}
 				else if (event.type == SDL_QUIT)
 				{
-					Single().isEnd = true;
+					IsEnd() = true;
 				}
 				else
 				{
@@ -138,12 +137,7 @@ namespace SDX
 				}
 			}
 
-			return !Single().isEnd;
-		}
-
-		static void ResetRenderer()
-		{
-			Screen::SetRenderer(Single().defaultRenderer);
+			return !IsEnd();
 		}
 	};
 }

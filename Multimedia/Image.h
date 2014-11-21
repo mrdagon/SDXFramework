@@ -43,6 +43,7 @@ namespace SDX
 		friend class Anime;
 		friend class ImagePack;
 		friend class Font;
+		//friend class HashFont;
 		friend class Drawing;
 	private:
 		bool isScreen = false;
@@ -51,7 +52,7 @@ namespace SDX
 
 		SDL_Rect part;
 
-		ImageHandle handle = 0;
+		ImageHandle handle = nullptr;
 
 		// 透過状態を計算する
 		void RGBACulculate() const
@@ -87,6 +88,12 @@ namespace SDX
 		{
 			Copy(コピー元, X頂点, Y頂点, 幅, 高さ);
 		}
+
+
+		Image(ImageHandle 画像ハンドル,int 幅,int 高さ):
+			handle(画像ハンドル),
+			part({0,0,幅,高さ})
+		{}
 
 		/** 空のイメージを作成.*/
 		Image(int 幅, int 高さ, bool スクリーン用フラグ, bool αチャンネルフラグ = true, bool 透過フラグ = true)

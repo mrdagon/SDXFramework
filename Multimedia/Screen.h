@@ -21,13 +21,12 @@ namespace SDX
 	/** ScreenにSetして使う.*/
 	/** \include ScreenSample.*/
 	class Renderer
-	{
+	{	
 	private:
-
-	
-	public:
 		RendererHandle handle = nullptr;
 		SurfaceHandle surface = nullptr;
+	public:
+		static Renderer defaultRenderer;
 
 		BlendMode nowBlendMode = BlendMode::NoBlend;
 		int blendParam = 0;//!<αブレンドの比率 0～255
@@ -66,12 +65,19 @@ namespace SDX
 		}
 
 		/**対象RenderHandleにコピー.*/
-		void Draw(RendererHandle コピー先 , int X座標 , int Y座標)
+		bool Draw( const Rect& 領域 , Renderer& コピー先 = Renderer::defaultRenderer)
 		{
+			if (surface == nullptr) return false;
+
 			ImageHandle image;
-			image = SDL_CreateTextureFromSurface(コピー先, surface);
-			SDL_RenderCopy(コピー先, image, 0, 0);
+			image = SDL_CreateTextureFromSurface(コピー先.GetHandle(), surface);
+
+			SDL_Rect srcrect = { 0, 0, (int)領域.GetW(), (int)領域.GetH() };
+			SDL_Rect dsrect = { (int)領域.GetX(), (int)領域.GetY(), (int)領域.GetW(), (int)領域.GetH() };
+			SDL_RenderCopy(コピー先.GetHandle(), image, &srcrect, &dsrect);
 			SDL_DestroyTexture(image);
+
+			return true;
 		}
 
 		/*Rendererを削除.*/
@@ -90,6 +96,24 @@ namespace SDX
 
 			return true;
 		}
+
+		/** 透過色を設定.*/
+		bool SetTransColor(Color 透過色)
+		{
+			return !SDL_SetColorKey(surface, SDL_TRUE, SDL_MapRGB(surface->format, 透過色.GetRed(), 透過色.GetBlue(), 透過色.GetGreen()));
+		}
+
+		/** 透過色を解除.*/
+		bool ResetTransColor()
+		{
+			return !SDL_SetColorKey(surface, false , 0);
+		}
+
+		/** BMP形式で保存.*/
+		bool SaveBMP(const char* ファイル名)
+		{
+			return !SDL_SaveBMP(surface, ファイル名);
+		}
 	};
 
 	/** 現在の描画先を操作するクラス.*/
@@ -101,7 +125,6 @@ namespace SDX
 		~Screen(){};
 		Renderer *handle = nullptr;
 	public:
-
 		/** シングルトンなインスタンスを取得.*/
 		static Screen& Single()
 		{
@@ -122,7 +145,7 @@ namespace SDX
 		}
 
 		/** Rendererを設定.*/
-		static void SetRenderer(Renderer &描画先Renderer)
+		static void SetRenderer(Renderer &描画先Renderer = Renderer::defaultRenderer)
 		{
 			Single().handle = &描画先Renderer;
 		}
@@ -214,12 +237,6 @@ namespace SDX
 		{
 			Single().GetRenderer()->rgba.SetColor(輝度.GetRed(), 輝度.GetGreen(), 輝度.GetBlue());
 			return true;
-		}
-
-		/** 透過色を設定[未実装].*/
-		static bool SetTransColor(Color 輝度)
-		{
-			return false;
 		}
 	};
 }

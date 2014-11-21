@@ -12,15 +12,6 @@
 
 namespace SDX
 {
-	/** フォントの種類.*/
-	enum class FontType
-	{
-		Normal,//!<
-		Edge,//!<
-		AntiAliase,//!<
-		AntiAliaseEdge,//!<
-	};
-
 	/** フォントデータを表すクラス.*/
 	/**    \include FontSample.h*/
 	class Font : public IFont
@@ -28,27 +19,23 @@ namespace SDX
 	private:
 		FontHandle handle = NULL_HANDLE;
 		int size = 0;
-		int thick = 0;
 		int enterHeight = 0;
 	public:
 		Font(){}
 
-		Font(const char *フォント名, int 大きさ, int 太さ = 1, int 改行高さ = 0, FontType フォントタイプ = FontType::Normal)
+		Font(const char *フォント名, int 大きさ, int 改行高さ = 0)
 		{
-			Font::Load(フォント名, 大きさ, 太さ, 改行高さ, フォントタイプ);
+			Font::Load(フォント名, 大きさ, 改行高さ);
 		}
 
 		/** メモリ上にフォントを作成する.*/
 		/**    太さは0～9で指定、大きさと太さは-1にするとデフォルトになる\n
-			改行高さは0の場合、改行後の文字が上下くっつく。
-			SDLとDXLIBではフォント名の指定方法が違うので注意。
-			SDLでは太さとフォントタイプが無効*/
-		bool Load(const char *フォント名, int 大きさ, int 太さ = 1, int 改行高さ = 0, FontType フォントタイプ = FontType::Normal)
+			改行高さは0の場合、改行後の文字が上下くっつく。*/
+		bool Load(const char *フォント名, int 大きさ, int 改行高さ = 0)
 		{
 			Release();
 			this->size = 大きさ;
 			this->enterHeight = 改行高さ + 大きさ;
-			this->thick = 太さ;
 
 			handle = TTF_OpenFont(フォント名, 大きさ);
 			return (handle != nullptr);
@@ -118,12 +105,6 @@ namespace SDX
 		int GetSize() const
 		{
 			return this->size;
-		}
-
-		/** 太さを取得.*/
-		int Getthick() const
-		{
-			return this->thick;
 		}
 
 		/** 描画時の幅を取得[未実装].*/
