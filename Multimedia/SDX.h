@@ -46,8 +46,6 @@ using StickHandle = SDL_Joystick*;
 using FontHandle = TTF_Font*;
 using ColorData = SDL_Color;
 
-#define NULL_HANDLE nullptr
-
 #ifdef __ANDROID__
 #define TABLET
 #elif defined(__IPHONEOS__)

@@ -5,6 +5,9 @@
 今後の変更予定はSorceForgeの
 \n
 <HR>
+<B>ver 0.10</B>\n
+NULL_HANDLEマクロを削除\n
+Fontクラスから太さと書体の引数を削除\n
 <B>ver 0.09</B>\n
 ライセンスをAGPL Ver3に変更\n
 DXLIB版を開発終了、以降はSDL2.0版の開発に注力して行きます。\n

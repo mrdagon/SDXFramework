@@ -17,7 +17,7 @@ namespace SDX
 	class Font : public IFont
 	{
 	private:
-		FontHandle handle = NULL_HANDLE;
+		FontHandle handle = nullptr;
 		int size = 0;
 		int enterHeight = 0;
 	public:

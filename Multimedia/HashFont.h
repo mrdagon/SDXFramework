@@ -20,7 +20,7 @@ namespace SDX
 	class HashFont : public IFont
 	{
 	private:
-		FontHandle handle = NULL_HANDLE;
+		FontHandle handle = nullptr;
 		int size = 0;
 		int enterHeight = 0;
 		mutable std::map<std::string, Image*> hash;
@@ -49,7 +49,7 @@ namespace SDX
 		/** フォントをメモリから開放する.*/
 		bool Release() const
 		{
-			if (handle != NULL_HANDLE) return false;
+			if (handle != nullptr) return false;
 			TTF_CloseFont(handle);
 			for (auto && it : hash)
 			{
