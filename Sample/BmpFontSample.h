@@ -19,7 +19,7 @@ bool    SampleBmpFont()
 	bmpFont.SetAlphabetLow(&engSmall);
 
 	//インターフェースはFontと共通
-	Font    font("明朝", 10, 1, 10);
+	Font    font("明朝", 10, 10);
 
 	IFont*    ifont[2];
 	ifont[0] = &font;
