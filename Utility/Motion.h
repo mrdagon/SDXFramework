@@ -29,8 +29,7 @@ namespace SDX
 		*/
 
 		/**前方に移動.*/
-		template <class TSpeed>
-		class ToFront : public IMotion
+		template <class TSpeed>	class ToFront : public IMotion
 		{
 		private:
 			TSpeed speed;
@@ -46,8 +45,7 @@ namespace SDX
 		};
 
 		/**範囲内で跳ね返る.*/
-		template <class TSpeed>
-		class Bound : public IMotion
+		template <class TSpeed> class Bound : public IMotion
 		{
 		private:
 			TSpeed speed;
@@ -100,8 +98,7 @@ namespace SDX
 		};
 
 		/**目標座標に移動.*/
-		template <class TSpeed>
-		class ToPoint : public IMotion
+		template <class TSpeed>	class ToPoint : public IMotion
 		{
 		private:
 			TSpeed speed;
@@ -131,8 +128,7 @@ namespace SDX
 		};
 
 		/**円周上を移動.*/
-		template <class TSpeed>
-		class Orbit : public IMotion
+		template <class TSpeed> class Orbit : public IMotion
 		{
 		private:
 			TSpeed speed;

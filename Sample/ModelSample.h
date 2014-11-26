@@ -1,8 +1,10 @@
 ﻿//Copyright © 2014 SDXFramework
 //[License]GNU Affero General Public License, version 3
 //[Contact]http://sourceforge.jp/projects/dxframework/
+
 //初期化を行い何かキーを押すと終了する
-//\todo 未実装
+#include <SDXFramework.h>
+
 bool SampleModel()
 {
 	using namespace SDX;
@@ -32,7 +34,7 @@ bool SampleModel()
 	if (Input::key.X.hold)      Camera::Now()->SetZoomForcus(0.5);
 	if (Input::key.C.hold)      Camera::Now()->SetZoomForcus(1);
 
-	if (Input::key.Return.on) break;//Enterで終了
+	if (Input::key.Return.on){ break;}//Enterで終了
 	}
 
 	System::End();

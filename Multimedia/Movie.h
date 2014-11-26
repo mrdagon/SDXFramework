@@ -7,12 +7,12 @@
 
 namespace SDX
 {
-	/** 動画を表すクラス[未実装].*/
-	/**    \include MovieSample.h*/
+	/** 動画を表すクラス[未実装].@todo*/ 
+	/** \include MovieSample.h*/
 	class Movie
 	{
 	private:
-		std::string fileName;
+		std::string fileName;//!<
 	public:
 
 		/** 動画ファイルの登録.*/
@@ -37,17 +37,18 @@ namespace SDX
 		}
 	};
 
-	/** Imageクラスの動画版[未実装].*/
-	/**    \include*/
+	/** Imageクラスの動画版[未実装].@todo*/ 
+	/** \include*/
 	class MovieImage
 	{
 	private:
-		int handle;
-		bool isTrans;
 		MovieImage(const MovieImage &movie);
 		MovieImage& operator =(const MovieImage &movie);
-		int width;
-		int height;
+
+		int handle;//!<
+		bool isTrans;//!<
+		int width;//!<
+		int height;//!<
 	public:
 		MovieImage() :
 			isTrans(false)

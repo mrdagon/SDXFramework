@@ -3,14 +3,12 @@
 //[Contact]http://sourceforge.jp/projects/dxframework/
 #pragma once
 //多重定義の関係でプリコンパイル済みヘッダーにのみインクルードするヘッダー
-#include <Framework/Hit.h>
+#include <Framework/ShapeHit.h>
 #include <Framework/ShapeDraw.h>
 
 namespace SDX
 {
 	Camera* Camera::cameraNow;
-
-	std::mt19937 Rand::engine;
 
 	const Color Color::Black(0x00, 0x00, 0x00);
 	const Color Color::Dilver(0xc0, 0xc0, 0xc0);
@@ -29,18 +27,11 @@ namespace SDX
 	const Color Color::Teal(0x00, 0x80, 0x80);
 	const Color Color::Aqua(0x00, 0xff, 0xff);
 
-	int Input::handle;
 	Joypad Input::pad;
 	Mouse Input::mouse;
 	Keyboard Input::key;
 	Touch Input::touch[10];
 	Gesture Input::gesture;
-
-	Font Drawing::defaultFont;
-
-	Renderer Renderer::defaultRenderer;
-
-	Time Time::singleton;
 
 	int Music::nowVolume;
 }

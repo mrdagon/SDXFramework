@@ -9,7 +9,7 @@ namespace SDX
 {
 	/** 時間と日付を取得する関数群.*/
 	/** わりと標準ライブラリで良い感じはある.*/
-	/**    \include TimerSample.h*/
+	/** \include TimerSample.h*/
 	class Time
 	{
 	private:
@@ -25,11 +25,11 @@ namespace SDX
 
 		~Time(void){};
 
-		static Time singleton;
 
 		static Time& Single()
 		{
-			return singleton;
+			static Time single;
+			return single;
 		}
 
 	public:
@@ -83,8 +83,8 @@ namespace SDX
 		}
 
 		/** 処理時間計測終了.*/
-		/**    StartWatchからの経過時間をミリ秒単位で描画\n
-			続けてDrawWatchする事も可能*/
+		/** StartWatchからの経過時間をミリ秒単位で描画\n*/
+		/**	続けてDrawWatchする事も可能*/
 		static void DrawWatch(const Point &座標, const char* 描画文字列)
 		{
 			std::string buf = 描画文字列;

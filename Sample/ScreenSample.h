@@ -1,7 +1,10 @@
 ﻿//Copyright © 2014 SDXFramework
 //[License]GNU Affero General Public License, version 3
 //[Contact]http://sourceforge.jp/projects/dxframework/
+
 //初期化を行い何かキーを押すと終了する
+#include <SDXFramework.h>
+
 bool SampleScreen()
 {
 	using namespace SDX;
@@ -25,7 +28,7 @@ bool SampleScreen()
 		image.Draw({ 0, 200 });
 		Screen::SetBlendMode(BlendMode::NoBlend, 0);
 
-		if (Input::key.Return.on) break;//Enterで終了
+		if (Input::key.Return.on){ break;}//Enterで終了
 	}
 
 	System::End();

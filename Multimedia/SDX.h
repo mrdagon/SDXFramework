@@ -11,13 +11,13 @@
 #include <list>
 #include <iomanip>
 
-#include<vector>
+#include <vector>
 
 /** SDXFramework共通の名前空間.*/
 namespace SDX
 {
-	const double PAI = 3.1415926535897931;
-	const double DEG = PAI / 180;
+	const double PAI = 3.1415926535897931;//!<
+	const double DEG = PAI / 180;//!<
 }
 
 #pragma comment(lib, "SDL2.lib")
@@ -37,14 +37,16 @@ namespace SDX
 #include <SDL_mixer.h>
 #include <SDL_ttf.h>
 
-using ImageHandle = SDL_Texture*;
-using SoundHandle = Mix_Chunk*;
-using RendererHandle = SDL_Renderer*;
-using SurfaceHandle = SDL_Surface*;
-using WindowHandle = SDL_Window*;
-using StickHandle = SDL_Joystick*;
-using FontHandle = TTF_Font*;
-using ColorData = SDL_Color;
+/*
+using Image:Handle = SDL_Texture*;
+using Sound:Handle = Mix_Chunk*;
+using Renderer:Handle = SDL_Renderer*;
+using Surface:Handle = SDL_Surface*;
+using Window:Handle = SDL_Window*;
+using Stick:Handle = SDL_Joystick*;
+using Font:Handle = TTF_Font*;
+using Color:Data = SDL_Color;
+*/
 
 #ifdef __ANDROID__
 #define TABLET

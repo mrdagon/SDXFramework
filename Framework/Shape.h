@@ -16,11 +16,11 @@ namespace SDX
 	class Color;
 
 	/** 複合図形を表すクラス.*/
-	/**    \include ShapeSample.h*/
+	/** \include ShapeSample.h*/
 	class Complex : public IShape
 	{
 	public:
-		std::vector<IShape*> shapes;
+		std::vector<IShape*> shapes;//!<
 
 		Complex(){};
 
@@ -127,12 +127,12 @@ namespace SDX
 	};
 
 	/** 点を表す図形クラス.*/
-	/**    \include ShapeSample.h*/
+	/** \include ShapeSample.h*/
 	class Point : public IShape
 	{
 	public:
-		double x;
-		double y;
+		double x;//!<
+		double y;//!<
 
 		Point() :
 			x(0),
@@ -224,7 +224,7 @@ namespace SDX
 	};
 
 	/** 太さのある線を表す図形クラス.*/
-	/**    \include ShapeSample.h*/
+	/** \include ShapeSample.h*/
 	class Line : public IShape
 	{
 	private:
@@ -249,27 +249,27 @@ namespace SDX
 			this->maxY = std::max(yA, yB);
 		}
 
-		double x;
-		double y;
-		double xA;
-		double yA;
-		double xB;
-		double yB;
-		double thick;//半径
+		double x;//!<
+		double y;//!<
+		double xA;//!<
+		double yA;//!<
+		double xB;//!<
+		double yB;//!<
+		double thick;//!<半径
 
-		double angle;//角度
+		double angle;//!<角度
 
-		double lengthA;
-		double lengthB;
+		double lengthA;//!<
+		double lengthB;//!<
 
-		double width;
-		double height;
-		double thickHarf;//半径の二条
-		double thickPow;
-		double minX;
-		double minY;
-		double maxX;
-		double maxY;
+		double width;//!<
+		double height;//!<
+		double thickHarf;//!<半径の二条
+		double thickPow;//!<
+		double minX;//!<
+		double minY;//!<
+		double maxX;//!<
+		double maxY;//!<
 
 	public:
 
@@ -534,18 +534,18 @@ namespace SDX
 	};
 
 	/** 矩形を表す図形クラス.*/
-	/**    \include ShapeSample.h*/
+	/** \include ShapeSample.h*/
 	class Rect : public IShape
 	{
 	public:
-		double x;
-		double y;
+		double x;//!<
+		double y;//!<
 
-		double widthLeft;
-		double widthRight;
+		double widthLeft;//!<
+		double widthRight;//!<
 
-		double heightUp;
-		double heightDown;
+		double heightUp;//!<
+		double heightDown;//!<
 
 		/*座標と大きさを指定*/
 		/*デフォルト引数だと左上座標と大きさを指定*/
@@ -772,13 +772,13 @@ namespace SDX
 	};
 
 	/** 円を表す図形クラス.*/
-	/**    \include ShapeSample.h*/
+	/** \include ShapeSample.h*/
 	class Circle : public IShape
 	{
 	public:
-		double x;
-		double y;
-		double radius;
+		double x;//!<
+		double y;//!<
+		double radius;//!<
 
 		Circle(double X座標, double Y座標, double 半径) :
 			x(X座標),

@@ -19,9 +19,7 @@ namespace SDX
 		Drawing();
 		~Drawing();
 
-		static Font defaultFont;//!< SDL用のフォントハンドル
-
-		/**透過状態を計算する[SDL].*/
+		/**透過状態を計算する.*/
 		static void RGBACulculate(int 赤, int 緑, int 青)
 		{
 			SDL_SetRenderDrawBlendMode(Screen::GetHandle(), (SDL_BlendMode)Screen::Single().GetRenderer()->nowBlendMode);
@@ -72,9 +70,10 @@ namespace SDX
 
 	public:
 
-		/** デフォルトのフォントを取得する[SDL].*/
+		/** デフォルトのフォントを取得する.*/
 		static Font& GetFont()
 		{
+			static Font defaultFont;
 			return defaultFont;
 		}
 
@@ -85,7 +84,7 @@ namespace SDX
 		}
 
 		/** 始点と終点を結ぶ直線を描画.*/
-		/** SDLは太さ指定不可*/
+		/** @todo SDLは太さ指定不可*/
 		static bool Line(const Point &始点, const Point &終点, Color 色, int 太さ)
 		{
 			RGBACulculate(色.GetRed(), 色.GetGreen(), 色.GetBlue());
@@ -107,7 +106,7 @@ namespace SDX
 		}
 
 		/** 中心と半径を指定して円を描画.*/
-		/** SDLは仮実装*/
+		/** @todo SDLは仮実装*/
 		static void Circle(const Circle &円形, Color 色, bool 塗りつぶしフラグ)
 		{
 			SDL_SetRenderDrawColor(Screen::GetHandle(), 色.GetRed(), 色.GetGreen(), 色.GetBlue(), 0);
@@ -115,7 +114,7 @@ namespace SDX
 		}
 
 		/** 中心と外接する四角形の大きさを指定して楕円を描画.*/
-		/** SDLは仮実装*/
+		/** @todo SDLは仮実装*/
 		static void Oval(const Point &中心, int 幅, int 高さ, Color 色, bool 塗りつぶしフラグ)
 		{
 			SDL_SetRenderDrawColor(Screen::GetHandle(), 色.GetRed(), 色.GetGreen(), 色.GetBlue(), 0);
@@ -123,8 +122,8 @@ namespace SDX
 		}
 
 		/** 頂点を３つ指定して三角形を描画.*/
-		/** SDLは塗りつぶし不可*/
-		static void Triangle(const Point &頂点A, const Point &頂点B, const Point &頂点C, Color 色, bool 塗りつぶしフラグ)
+		/** @todo SDLは塗りつぶし不可*/
+		static void Triangle(const Point &頂点A, const Point &頂点B, const Point &頂点C, Color 色, bool 塗りつぶしフラグ = false)
 		{
 			RGBACulculate(色.GetRed(), 色.GetGreen(), 色.GetBlue());
 			SDL_RenderDrawLine(Screen::GetHandle(), (int)頂点A.x, (int)頂点A.y, (int)頂点B.x, (int)頂点B.y);
@@ -139,9 +138,10 @@ namespace SDX
 			SDL_RenderDrawPoint(Screen::GetHandle(), (int)座標.x, (int)座標.y);
 		}
 
-		/** 指定座標の色を取得[未実装].*/
-		static ColorData GetPixel(const Point &座標)
+		/** 指定座標の色を取得 [未実装].@todo*/		
+		static SDL_Color GetPixel(const Point &座標)
 		{
+			//SDL_RenderReadPixelsで実装可能
 			return SDL_Color{ 0, 0, 0 };
 		}
 
@@ -158,7 +158,7 @@ namespace SDX
 		/** フォントはデフォルトでゴシック体*/
 		static void String(const Point &座標, Color 色, VariadicStream 描画する文字列)
 		{
-			defaultFont.Draw(座標, 色, 描画する文字列);
+			GetFont().Draw(座標, 色, 描画する文字列);
 		}
 	};
 }

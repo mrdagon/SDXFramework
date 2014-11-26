@@ -10,7 +10,7 @@
 namespace SDX
 {
 	/** 描画用枠のインターフェース.*/
-	/**    \include BmpFrameSample.h*/
+	/** \include BmpFrameSample.h*/
 	class IFrame
 	{
 	public:
@@ -18,12 +18,12 @@ namespace SDX
 	};
 
 	/** 描画用枠を表すクラス.*/
-	/**    \include BmpFrameSample.h*/
+	/** \include BmpFrameSample.h*/
 	class BmpFrame : public IFrame
 	{
 	private:
-		bool isMake;
-		ImagePack *frame;
+		bool isMake;//!<
+		ImagePack *frame;//!<
 	public:
 		/** フレームを作成する.*/
 		/** ３×３分割したImagePackを元にフレームを作成*/

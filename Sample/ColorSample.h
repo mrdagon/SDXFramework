@@ -1,7 +1,10 @@
 ﻿//Copyright © 2014 SDXFramework
 //[License]GNU Affero General Public License, version 3
 //[Contact]http://sourceforge.jp/projects/dxframework/
+
 //図形を異なる色で描画
+#include <SDXFramework.h>
+
 bool SampleColor()
 {
 	using namespace SDX;
@@ -18,8 +21,8 @@ bool SampleColor()
 		//青い●を描画、定数を使う
 		Drawing::Circle({ 110, 300, 50 }, Color::Blue, true);
 
-		if (Input::key.Return.on) break;//Enterで終了
+		if (Input::key.Return.on){ break;}//Enterで終了
 	}
 	System::End();
-	return    true;
+	return true;
 }

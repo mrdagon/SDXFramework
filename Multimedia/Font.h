@@ -13,13 +13,13 @@
 namespace SDX
 {
 	/** フォントデータを表すクラス.*/
-	/**    \include FontSample.h*/
+	/** \include FontSample.h*/
 	class Font : public IFont
 	{
 	private:
-		FontHandle handle = nullptr;
-		int size = 0;
-		int enterHeight = 0;
+		TTF_Font* handle = nullptr;//!<
+		int size = 0;//!<
+		int enterHeight = 0;//!<
 	public:
 		Font(){}
 
@@ -29,8 +29,8 @@ namespace SDX
 		}
 
 		/** メモリ上にフォントを作成する.*/
-		/**    太さは0～9で指定、大きさと太さは-1にするとデフォルトになる\n
-			改行高さは0の場合、改行後の文字が上下くっつく。*/
+		/** 太さは0～9で指定、大きさと太さは-1にするとデフォルトになる\n*/
+		/**	改行高さは0の場合、改行後の文字が上下くっつく。*/
 		bool Load(const char *フォント名, int 大きさ, int 改行高さ = 0)
 		{
 			Release();
@@ -51,7 +51,7 @@ namespace SDX
 		}
 
 		/** フォントのハンドルを取得.*/
-		FontHandle GetHandle() const
+		TTF_Font* GetHandle() const
 		{
 			return handle;
 		}
@@ -59,7 +59,6 @@ namespace SDX
 		/** フォントから画像を生成*/
 		Image MakeImage(Color 文字色, bool 反転フラグ, VariadicStream 描画する文字列) const
 		{
-			Image image;
 			int 幅 = GetDrawStringWidth(描画する文字列);
 			int 高さ = ((int)描画する文字列.StringS.size() - 1) * enterHeight + size;
 			int Y座標 = 0;
@@ -88,13 +87,8 @@ namespace SDX
 				SDL_FreeSurface(it);
 				SDL_DestroyTexture(texture);
 			}
-			//描画先を戻す
-			image.handle = SDL_CreateTextureFromSurface(Screen::GetHandle(), toRend);
-			image.part.x = 0;
-			image.part.y = 0;
-			image.part.w = 幅;
-			image.part.h = 高さ;
 
+			Image image = Image(SDL_CreateTextureFromSurface(Screen::GetHandle(), toRend), 幅, 高さ);
 			SDL_FreeSurface(toRend);
 			SDL_DestroyRenderer(render);
 
@@ -107,7 +101,7 @@ namespace SDX
 			return this->size;
 		}
 
-		/** 描画時の幅を取得[未実装].*/
+		/** 描画時の幅を取得[未実装].@todo*/ 
 		int GetDrawStringWidth(VariadicStream 幅を計算する文字列) const
 		{
 			int 幅 = 0;
@@ -144,6 +138,7 @@ namespace SDX
 			return true;
 		}
 
+		/** 文字を回転して描画.*/
 		bool DrawShadow(const Point &座標, Color 表色, Color 影色, VariadicStream 描画する文字列) const
 		{
 			Draw({ 座標.x + 1, 座標.y + 1 }, 影色, 描画する文字列);

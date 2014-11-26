@@ -1,6 +1,7 @@
 ﻿//Copyright © 2014 SDXFramework
 //[License]GNU Affero General Public License, version 3
 //[Contact]http://sourceforge.jp/projects/dxframework/
+
 namespace SDX
 {
 #include <Sample/AnimeSample.h>

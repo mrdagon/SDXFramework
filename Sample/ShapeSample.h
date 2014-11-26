@@ -1,7 +1,10 @@
 ﻿//Copyright © 2014 SDXFramework
 //[License]GNU Affero General Public License, version 3
 //[Contact]http://sourceforge.jp/projects/dxframework/
+
 //図形の当たり判定をする
+#include <SDXFramework.h>
+
 bool SampleShape()
 {
 	using namespace SDX;
@@ -42,7 +45,7 @@ bool SampleShape()
 			}
 		}
 
-		if (Input::key.Return.on) break;//Enterで終了
+		if (Input::key.Return.on){ break;}//Enterで終了
 	}
 
 	System::End();

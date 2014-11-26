@@ -11,30 +11,30 @@
 namespace SDX
 {
 	/** マウスの状態を表すクラス.*/
-	/**    \include InputSample.h*/
+	/** \include InputSample.h*/
 	class Mouse
 	{
 		friend class Input;
 	private:
 		Mouse(const Mouse &mouse){};
 		Mouse operator =(const Mouse &mouse) = delete;
-		int xBuffer;
-		int yBuffer;
+		int xBuffer;//!<
+		int yBuffer;//!<
 	public:
 		Mouse()
 		{
 			Reset();
 		}
 
-		int x;
-		int y;
+		int x;//!<
+		int y;//!<
 
-		int moveX;
-		int moveY;
+		int moveX;//!<
+		int moveY;//!<
 
-		int Whell;
+		int Whell;//!<
 
-		bool press[8];
+		bool press[8];//!<
 
 		Key Left;
 		Key Right;
@@ -45,8 +45,6 @@ namespace SDX
 		Key Button6;
 		Key Button7;
 		Key Button8;
-
-		int maxButton;
 
 		/** 状態のリセット.*/
 		void Reset()
@@ -88,10 +86,19 @@ namespace SDX
 			Whell = 0;
 		}
 
-		/** カーソルの表示設定[未実装].*/
+		/** カーソルの表示設定.*/ 
 		bool SetVisible(bool 表示フラグ)
 		{
-			return false;
+			if (表示フラグ)
+			{
+				SDL_ShowCursor( 1 );
+			}
+			else
+			{
+				SDL_ShowCursor( 0 );
+			}
+
+			return true;
 		}
 
 		/** カーソル位置を移動.*/

@@ -1,7 +1,10 @@
 ﻿//Copyright © 2014 SDXFramework
 //[License]GNU Affero General Public License, version 3
 //[Contact]http://sourceforge.jp/projects/dxframework/
+
 //フォントを使って文字列を描画する
+#include <SDXFramework.h>
+
 bool SampleFont()
 {
 	using namespace SDX;
@@ -23,7 +26,7 @@ bool SampleFont()
 		fontA.DrawRotate({ 300, 200 }, 1, angle, Color::White, false, "文字の回転\nてすとしますよ~~~");
 		fontB.DrawRotate({ 300, 200 }, 1, angle / 2, Color::White, false, "文字の回転\nてすとしますよ~~~");
 
-		if (Input::key.Return.on)    break;//Enterで終了
+		if (Input::key.Return.on){ break;}//Enterで終了
 	}
 
 	System::End();

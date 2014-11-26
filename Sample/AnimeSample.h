@@ -1,7 +1,10 @@
 ﻿//Copyright © 2014 SDXFramework
 //[License]GNU Affero General Public License, version 3
 //[Contact]http://sourceforge.jp/projects/dxframework/
+
 //画像をアニメーションさせる
+#include <SDXFramework.h>
+
 bool SampleAnime()
 {
 	using namespace SDX;
@@ -28,7 +31,7 @@ bool SampleAnime()
 
 		countB.GetFrame()->Draw({ 100, 10 });
 
-		if (Input::key.Return.on) break;//Enterで終了
+		if (Input::key.Return.on){ break;}//Enterで終了
 	}
 
 	System::End();

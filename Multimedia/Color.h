@@ -2,6 +2,7 @@
 //[License]GNU Affero General Public License, version 3
 //[Contact]http://sourceforge.jp/projects/dxframework/
 #pragma once
+#include <Multimedia/SDX.h>
 
 namespace SDX
 {
@@ -10,7 +11,7 @@ namespace SDX
 	class Color
 	{
 	private:
-		ColorData data;
+		SDL_Color data;//!<
 	public:
 		/** RGB値から色に変換.*/
 		/** 赤、緑、青の各要素は0～255で指定する*/
@@ -48,7 +49,7 @@ namespace SDX
 			return data.a;
 		}
 
-		operator ColorData()
+		operator SDL_Color()
 		{
 			return data;
 		}

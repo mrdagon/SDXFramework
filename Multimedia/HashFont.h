@@ -14,16 +14,16 @@
 
 namespace SDX
 {
-	/** フォントデータを表すクラス[未実装].*/
+	/** フォントデータを表すクラス[未実装].@todo*/ 
 	/** 毎回レンダリングせず、ハッシュマップにデータを格納する*/
-	/**    \include FontSample.h*/
+	/** \include FontSample.h*/
 	class HashFont : public IFont
 	{
 	private:
-		FontHandle handle = nullptr;
-		int size = 0;
-		int enterHeight = 0;
-		mutable std::map<std::string, Image*> hash;
+		TTF_Font* handle = nullptr;//!<
+		int size = 0;//!<
+		int enterHeight = 0;//!<
+		mutable std::map<std::string, Image*> hash;//!<
 
 	public:
 
@@ -35,8 +35,8 @@ namespace SDX
 		}
 
 		/** メモリ上にフォントを作成する.*/
-		/**    太さは0～9で指定、大きさと太さは-1にするとデフォルトになる\n
-			改行高さは0の場合、改行後の文字が上下くっつく。*/
+		/** 太さは0～9で指定、大きさと太さは-1にするとデフォルトになる\n*/
+		/**	改行高さは0の場合、改行後の文字が上下くっつく。*/
 		bool Load(const char *フォント名, int 大きさ, int 改行高さ = 0)
 		{
 			Release();
@@ -59,11 +59,12 @@ namespace SDX
 		}
 
 		/** フォントのハンドルを取得.*/
-		FontHandle GetHandle() const
+		TTF_Font* GetHandle() const
 		{
 			return handle;
 		}
 
+		/**.*/
 		Image MakeImage(Color 文字色, bool 反転フラグ, VariadicStream 描画する文字列) const
 		{
 			int 幅 = GetDrawStringWidth(描画する文字列);
@@ -72,7 +73,7 @@ namespace SDX
 
 			std::vector<SDL_Surface*> surfaces;
 			SDL_Surface* surface;
-			
+
 			for (auto it : 描画する文字列.StringS)
 			{
 				surface = TTF_RenderUTF8_Blended(handle, it.c_str(), 文字色);
@@ -96,7 +97,7 @@ namespace SDX
 				SDL_DestroyTexture(texture);
 			}
 			//描画先を戻す
-			Image image(SDL_CreateTextureFromSurface(Screen::GetHandle(), toRend),幅,高さ );
+			Image image(SDL_CreateTextureFromSurface(Screen::GetHandle(), toRend), 幅, 高さ);
 
 			SDL_FreeSurface(toRend);
 			SDL_DestroyRenderer(render);
@@ -104,6 +105,7 @@ namespace SDX
 			return image;
 		}
 
+		/**.*/
 		Image* GetHash(const char* 文字) const
 		{
 			auto it = hash.find(文字);
@@ -148,7 +150,8 @@ namespace SDX
 
 			return 幅;
 		}
-
+		
+		/**.*/
 		void DrawUTFString(const Point &座標, const std::string &文字列) const
 		{
 			Point 位置 = 座標;
@@ -164,7 +167,7 @@ namespace SDX
 				else                    charSize = 4;
 
 				Image* str = GetHash(文字列.substr(std::distance(文字列.begin(), it), charSize).c_str());
-				str->Draw( 位置 );
+				str->Draw(位置);
 				位置.x += str->GetWidth();
 			}
 		}

@@ -1,7 +1,10 @@
 ﻿//Copyright © 2014 SDXFramework
 //[License]GNU Affero General Public License, version 3
 //[Contact]http://sourceforge.jp/projects/dxframework/
+
 //速度オブジェクトを使う
+#include <SDXFramework.h>
+
 bool SampleSpeed()
 {
 	using namespace SDX;
@@ -33,7 +36,7 @@ bool SampleSpeed()
 			shapes[a]->Draw(Color::White, 255);
 		}
 
-		if (Input::key.Return.on) break;//Enterで終了
+		if (Input::key.Return.on){ break;}//Enterで終了
 	}
 
 	System::End();

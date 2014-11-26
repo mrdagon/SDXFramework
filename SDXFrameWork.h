@@ -3,24 +3,22 @@
 //[Contact]http://sourceforge.jp/projects/dxframework/
 #pragma once
 
-#include <Multimedia/ThreadLoad.h>
-#include <Multimedia/Blend.h>
+//#include <Multimedia/ThreadLoad.h>
+//#include <Multimedia/Blend.h>
+//#include <Multimedia/Filter.h>
 #include <Multimedia/Color.h>
 #include <Multimedia/Drawing.h>
-#include <Multimedia/Filter.h>
 
-#include <Multimedia/Filter.h>
 #include <Multimedia/Font.h>
 #include <Multimedia/Image.h>
 #include <Multimedia/Input.h>
 
-#include <Multimedia/Movie.h>
+//#include <Multimedia/Movie.h>
 #include <Multimedia/Music.h>
 
 #include <Multimedia/Screen.h>
 #include <Multimedia/Sound.h>
 #include <Multimedia/System.h>
-#include <Multimedia/Wait.h>
 
 #include <Multimedia/Window.h>
 

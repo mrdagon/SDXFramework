@@ -10,31 +10,31 @@
 namespace SDX
 {
 	/** ビットマップフォントを表すクラス.*/
-	/**    \include BmpFontSample.h*/
+	/** \include BmpFontSample.h*/
 	class BmpFont : public IFont
 	{
 	private:
-		ImagePack *divImageNumber;
-		ImagePack *divImageAlphabetCapital;
-		ImagePack *divImageAlphabetLow;
+		ImagePack *divImageNumber;//!<
+		ImagePack *divImageAlphabetCapital;//!<
+		ImagePack *divImageAlphabetLow;//!<
 
-		bool isNumber;
-		bool isAlphabetCapital;
-		bool isAlphabetLow;
-		int numberHeight;
-		int numberWidth;
+		bool isNumber;//!<
+		bool isAlphabetCapital;//!<
+		bool isAlphabetLow;//!<
+		int numberHeight;//!<
+		int numberWidth;//!<
 
-		int alphabetCapitalHeight;
-		int alphabetCapitalWidth;
+		int alphabetCapitalHeight;//!<
+		int alphabetCapitalWidth;//!<
 
-		int alphabetLowHeight;
-		int alphabetLowWidth;
+		int alphabetLowHeight;//!<
+		int alphabetLowWidth;//!<
 
-		int maxHeight;
+		int maxHeight;//!<
 
-		int enterSpace;
+		int enterSpace;//!<
 
-		int spaceWidth;
+		int spaceWidth;//!<
 	public:
 		BmpFont() :
 			isNumber(false),
@@ -52,15 +52,15 @@ namespace SDX
 		}
 
 		/** 改行の高さを設定.*/
-		/**0の場合、改行後の上下がくっつく*/
+		/** 0の場合、改行後の上下がくっつく*/
 		void SetEnterHeight(int 改行の高さ)
 		{
 			this->enterSpace = 改行の高さ;
 		}
 
 		/** 数字フォントを設定.*/
-		/**    数字描画に使うImagePackを設定する\n
-			0～9の順に10個並べた画像を使う*/
+		/** 数字描画に使うImagePackを設定する\n*/
+		/**	0～9の順に10個並べた画像を使う*/
 		bool SetNumber(ImagePack* 数字用イメージ)
 		{
 			if (数字用イメージ->GetSize() < 10) return false;
@@ -78,8 +78,8 @@ namespace SDX
 		}
 
 		/** 英大文字フォントをセット.*/
-		/**    英大文字に使うImagePackを設定する\n
-			A～Zの順に26個並べた画像を使う*/
+		/** 英大文字に使うImagePackを設定する\n*/
+		/**	A～Zの順に26個並べた画像を使う*/
 		bool SetAlphabetCapital(ImagePack* 大文字用イメージ)
 		{
 			if (大文字用イメージ->GetSize() < 26) return false;
@@ -178,7 +178,7 @@ namespace SDX
 			return true;
 		}
 
-		/** 文字を回転して描画[未実装].*/
+		/** 文字を回転して描画[未実装].@todo*/ 
 		bool DrawRotate(const Point &座標, double 拡大率, double 角度, Color 描画色, bool 反転フラグ, VariadicStream 描画する文字列) const override
 		{
 			return false;

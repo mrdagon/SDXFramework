@@ -1,7 +1,10 @@
 ﻿//Copyright © 2014 SDXFramework
 //[License]GNU Affero General Public License, version 3
 //[Contact]http://sourceforge.jp/projects/dxframework/
+
 //音楽を再生する
+#include <SDXFramework.h>
+
 bool SampleMusic()
 {
 	using namespace SDX;
@@ -13,7 +16,7 @@ bool SampleMusic()
 
 	while (System::Update())
 	{
-		if (Input::key.Return.on) break;//Enterで終了
+		if (Input::key.Return.on){ break;}//Enterで終了
 	}
 
 	System::End();

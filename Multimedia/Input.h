@@ -12,21 +12,20 @@
 namespace SDX
 {
 	/** キーやマウスによる入力をまとめて管理するクラス.*/
-	/**    \include InputSample.h*/
+	/** \include InputSample.h*/
 	class Input
 	{
 	private:
 		Input(){}
 		~Input();
-		static int handle;
 
 	public:
 
-		static Joypad pad;
-		static Mouse mouse;
-		static Keyboard key;
-		static Touch touch[10];
-		static Gesture gesture;
+		static Joypad pad;//!<
+		static Mouse mouse;//!<
+		static Keyboard key;//!<
+		static Touch touch[10];//!<
+		static Gesture gesture;//!<
 
 		/** 状態をリセット.*/
 		static void Reset()
@@ -54,7 +53,7 @@ namespace SDX
 			gesture.Update();
 		}
 
-		/** 入力の状態を更新[SDL].*/
+		/** 入力の状態を更新.*/
 		static void GetState(SDL_Event &event)
 		{
 			bool isPush = true;

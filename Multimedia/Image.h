@@ -37,13 +37,12 @@ namespace SDX
 	};
 
 	/** 画像データを表すクラス.*/
-	/**    \include ImageSample.h*/
+	/** \include ImageSample.h*/
 	class Image
 	{
 		friend class Anime;
 		friend class ImagePack;
-		friend class Font;
-		//friend class HashFont;
+		//friend class Font;
 		friend class Drawing;
 	private:
 		bool isScreen = false;
@@ -52,7 +51,7 @@ namespace SDX
 
 		SDL_Rect part;
 
-		ImageHandle handle = nullptr;
+		SDL_Texture* handle = nullptr;
 
 		// 透過状態を計算する
 		void RGBACulculate() const
@@ -90,7 +89,7 @@ namespace SDX
 		}
 
 
-		Image(ImageHandle 画像ハンドル,int 幅,int 高さ):
+		Image(SDL_Texture* 画像ハンドル,int 幅,int 高さ):
 			handle(画像ハンドル),
 			part({0,0,幅,高さ})
 		{}
@@ -132,7 +131,7 @@ namespace SDX
 		}
 
 		/** 空のイメージを作成.*/
-		ImageHandle Make(int 幅, int 高さ, bool スクリーン用フラグ = false, bool αチャンネルフラグ = true, bool 透過フラグ = true)
+		SDL_Texture* Make(int 幅, int 高さ, bool スクリーン用フラグ = false, bool αチャンネルフラグ = true, bool 透過フラグ = true)
 		{
 			Release();
 
@@ -150,7 +149,7 @@ namespace SDX
 		}
 
 		/** 元イメージの一部をコピーして、別イメージを作成.*/
-		ImageHandle Copy(const Image& 元イメージ, int X原点, int Y原点, int 幅, int 高さ)
+		SDL_Texture* Copy(const Image& 元イメージ, int X原点, int Y原点, int 幅, int 高さ)
 		{
 			this->handle = 元イメージ.handle;
 			part.x = X原点;
@@ -166,7 +165,7 @@ namespace SDX
 		}
 
 		/** ハンドルを取得.*/
-		ImageHandle GetHandle() const
+		SDL_Texture* GetHandle() const
 		{
 			return handle;
 		}
@@ -227,7 +226,7 @@ namespace SDX
 			return !SDL_RenderCopyEx(Screen::GetHandle(), handle, &part, &temp, 角度 * 180 / PAI, &point, SDL_RendererFlip(反転フラグ));
 		}
 
-		/** 四角形に変形描画[未実装].*/
+		/** 四角形に変形描画[未実装].@todo*/ 
 		bool DrawModify(const Point &頂点A, const Point &頂点B, const Point &頂点C, const Point &頂点D) const
 		{
 			return false;
@@ -243,7 +242,7 @@ namespace SDX
 			return !SDL_RenderCopyEx(Screen::GetHandle(), handle, &part, &temp, 0, &point, SDL_RendererFlip(反転フラグ));
 		}
 
-		/** スクリーンの一部をイメージに取り込む[未実装].*/
+		/** スクリーンの一部をイメージに取り込む[未実装].@todo*/ 
 		/** 指定した座標を右上にして、スクリーンからImageと同じ大きさコピーする*/
 		int LoadScreen(int X座標, int Y座標)
 		{
@@ -280,7 +279,7 @@ namespace SDX
 			return this->isTrans;
 		}
 
-		/** 描画先にこのイメージに指定[未実装].*/
+		/** 描画先にこのイメージに指定[未実装].@todo*/ 
 		/** Image::Makeでスクリーンフラグをtrueにした場合成功。*/
 		bool SetDrawScreen()
 		{

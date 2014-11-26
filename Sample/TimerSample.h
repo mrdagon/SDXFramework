@@ -1,7 +1,10 @@
 ﻿//Copyright © 2014 SDXFramework
 //[License]GNU Affero General Public License, version 3
 //[Contact]http://sourceforge.jp/projects/dxframework/
+
 //時間を取得したり計測する
+#include <SDXFramework.h>
+
 bool SampleTime()
 {
 	using namespace SDX;
@@ -27,7 +30,7 @@ bool SampleTime()
 
 		Time::DrawWatch({ 10, 200 }, "処理時間:");//StartWatchかDrawWatchを呼んでからかかった時間をミリ秒で表示
 
-		if (Input::key.Return.on) break;//Enterで終了
+		if (Input::key.Return.on){ break;}//Enterで終了
 	}
 
 	System::End();

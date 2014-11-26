@@ -1,7 +1,10 @@
 ﻿//Copyright © 2014 SDXFramework
 //[License]GNU Affero General Public License, version 3
 //[Contact]http://sourceforge.jp/projects/dxframework/
+
 //色々描画してみる
+#include <SDXFramework.h>
+
 bool SampleDrawing()
 {
 	using namespace SDX;
@@ -17,7 +20,7 @@ bool SampleDrawing()
 
 		Drawing::Circle({ 300, 200, 50 }, Color::Red, true);
 
-		if (Input::key.Return.on) break;//Enterで終了
+		if (Input::key.Return.on){ break;}//Enterで終了
 	}
 
 	System::End();

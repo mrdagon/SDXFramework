@@ -8,7 +8,7 @@
 namespace SDX
 {
 	/** ウィンドウを表すクラス.*/
-	/**    \include WindowSample.h*/
+	/** \include WindowSample.h*/
 	class Window
 	{
 		friend class System;
@@ -16,13 +16,13 @@ namespace SDX
 		friend class Gesture;
 		friend class Touch;
 	private:
-		bool isFullScreen = false;
-		int width;
-		int height;
-		double aspect;
+		bool isFullScreen = false;//!<
+		int width;//!<
+		int height;//!<
+		double aspect;//!<
 
 		Window(){}
-		WindowHandle handle = nullptr;
+		SDL_Window* handle = nullptr;//!<
 
 		static Window& Single()
 		{
@@ -48,7 +48,7 @@ namespace SDX
 
 	public:
 
-		static WindowHandle GetHandle()
+		static SDL_Window* GetHandle()
 		{
 			return Single().handle;
 		}

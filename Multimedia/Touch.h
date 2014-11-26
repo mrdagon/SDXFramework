@@ -7,10 +7,16 @@
 
 namespace SDX
 {
+	/** タッチ操作の各種ジェスチャー.*/
+	/** \include .*/
 	class Gesture
 	{
 		friend class Input;
 	private:
+		bool press = false;//!<
+		double xBuffer;//!<
+		double yBuffer;//!<
+
 		void Position(double X座標, double Y座標)
 		{
 			const double aspA = Window::Single().aspect;
@@ -36,20 +42,16 @@ namespace SDX
 				yBuffer = int(pos * Window::GetHeight());
 			}
 		}
-
-		bool press = false;
-		double xBuffer;
-		double yBuffer;
 	public:
-		bool on = false;
+		bool on = false;//!<
 
-		double rotate = 0;//回転ジェスチャー
-		double pinche = 0;//ピンチ操作
+		double rotate = 0;//!<回転ジェスチャー
+		double pinche = 0;//!<ピンチ操作
 
-		double x = 0;//ジェスチャー操作の中心点
-		double y = 0;
+		double x = 0;//!<ジェスチャー操作の中心点
+		double y = 0;//!<
 
-		int fingerCount = 0;//ジェスチャーに使った指の本数
+		int fingerCount = 0;//!<ジェスチャーに使った指の本数
 
 		void Update()
 		{
@@ -69,13 +71,15 @@ namespace SDX
 		}
 	};
 
+	/** タッチ操作.*/
+	/** \include .*/
 	class Touch
 	{
 		friend class Input;
 	private:
-		bool press = false;
-		double xBuffer;
-		double yBuffer;
+		bool press = false;//!<
+		double xBuffer;//!<
+		double yBuffer;//!<
 
 		void Position(double X座標, double Y座標)
 		{
@@ -104,32 +108,17 @@ namespace SDX
 		}
 
 	public:
-		double x = 0;
-		double y = 0;
+		double x = 0;//!<
+		double y = 0;//!<
 
-		double moveX = 0;
-		double moveY = 0;
+		double moveX = 0;//!<
+		double moveY = 0;//!<
 
-		bool on = false;
-		bool off = false;
-		bool hold = false;
+		bool on = false;//!<
+		bool off = false;//!<
+		bool hold = false;//!<
 
-		unsigned int  holdCount = 0;//押されている時間
-
-		/** 状態のリセット.*/
-		void Reset()
-		{
-			x = 0;
-			y = 0;
-
-			moveX = 0;
-			moveY = 0;
-
-			on = false;
-			off = false;
-			hold = false;
-			press = false;
-		}
+		unsigned int  holdCount = 0;//!<押されている時間
 
 		/** 状態の更新.*/
 		void Update()
@@ -159,5 +148,21 @@ namespace SDX
 			x = xBuffer;
 			y = yBuffer;
 		}
+
+		/** 状態のリセット.*/
+		void Reset()
+		{
+			x = 0;
+			y = 0;
+
+			moveX = 0;
+			moveY = 0;
+
+			on = false;
+			off = false;
+			hold = false;
+			press = false;
+		}
+
 	};
 }

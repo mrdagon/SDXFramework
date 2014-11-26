@@ -6,7 +6,6 @@
 <tr style="background:#ccccff"> <td>システムの処理</td><td> </td></tr>
 <tr>                            <td>SDX::System</td>        <td>ライブラリの初期化やシステム的な処理を行う関数群</td></tr>
 <tr>                            <td>SDX::Window</td>        <td>ウィンドウを表すクラス</td></tr>
-<tr>                            <td>SDX::Wait</td>          <td>一時停止処理する関数群</td></tr>
 <tr style="background:#ccccff"> <td>描画</td>               <td> </td></tr>
 <tr>                            <td>SDX::Drawing            <td>リソースを読み込まずに描画を行う関数群</td></tr>
 <tr>                            <td>SDX::Image              <td>画像データを表すクラス</td></tr>

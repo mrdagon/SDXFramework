@@ -7,17 +7,18 @@
 namespace SDX
 {
 	/** Imageスプライト.*/
-	/**    \include ModelSample.h*/
+	/** \include ModelSample.h*/
 	class SpImage : public ISprite
 	{
 	private:
-		const Image *image;
+		const Image *image;//!<
 
 	public:
 		SpImage(const Image *描画Image) :
 			image(描画Image)
 		{}
 
+		/**.*/
 		void Draw(const Point &座標, bool Cameraフラグ) override
 		{
 			if (Cameraフラグ)
@@ -40,27 +41,30 @@ namespace SDX
 	};
 
 	/** ImagePackスプライト.*/
-	/**    \include ModelSample.h*/
+	/** \include ModelSample.h*/
 	class SpImageS : public ISprite
 	{
 	private:
-		const ImagePack *imageS;
-		int index = 0;
+		const ImagePack *imageS;//!<
+		int index = 0;//!<
 	public:
 		SpImageS(const ImagePack *描画ImagePack) :
 			imageS(描画ImagePack)
 		{}
 
+		/**.*/
 		void SetIndex(int コマ番号)
 		{
 			index = コマ番号;
 		}
 
+		/**.*/
 		int GetIndex()
 		{
 			return index;
 		}
 
+		/**.*/
 		void Draw(const Point &座標, bool Cameraフラグ) override
 		{
 			const auto image = imageS->operator[](index);
@@ -92,13 +96,13 @@ namespace SDX
 	};
 
 	/** Animeスプライト.*/
-	/**    \include */
+	/** \include */
 	class SpAnime : public ISprite
 	{
 	private:
-		const Anime *anime;
-		Anime::Player counter;
-		double aniSpeed;
+		const Anime *anime;//!<
+		Anime::Player counter;//!<
+		double aniSpeed;//!<
 
 	public:
 
@@ -143,15 +147,15 @@ namespace SDX
 	};
 
 	/** Fontスプライト.*/
-	/**    \include */
+	/** \include */
 	class SpFont : public ISprite
 	{
 	private:
-		const IFont *font;
-		std::string& refStr;
-		std::string  str;
-		bool isReference;
-		Color rgb;
+		const IFont *font;//!<
+		std::string& refStr;//!<
+		std::string str;//!<
+		bool isReference;//!<
+		Color rgb;//!<
 
 	public:
 		SpFont(const IFont *フォント, Color 描画色, double 縦倍率, double 横倍率, const char* 描画する文字列) :
@@ -206,13 +210,13 @@ namespace SDX
 	};
 
 	/** IFrameスプライト.*/
-	/**    \include */
+	/** \include */
 	class SpFrame : public ISprite
 	{
 	private:
-		const IFrame *bmpFrame;
-		double width;
-		double height;
+		const IFrame *bmpFrame;//!<
+		double width;//!<
+		double height;//!<
 
 	public:
 		SpFrame(const IFrame *描画する枠, double 幅, double 高さ) :
@@ -253,15 +257,15 @@ namespace SDX
 	};
 
 	/** マップチップスプライト.*/
-	/**    \include */
+	/** \include */
 	class SpMap : public ISprite
 	{
 	private:
-		ImagePack &chip;
-		int width;
-		int height;
-		int rotate;
-		std::vector< std::vector<int> > data;
+		ImagePack &chip;//!<
+		int width;//!<
+		int height;//!<
+		int rotate;//!<
+		std::vector< std::vector<int> > data;//!<
 	public:
 
 		SpMap(ImagePack& マップチップ, const char* ファイル名, int 幅, int 高さ, int 角度) :
@@ -335,7 +339,7 @@ namespace SDX
 	};
 
 	/** Nullスプライト.*/
-	/**    \include */
+	/** \include */
 	class SpNull : public ISprite
 	{
 	public:

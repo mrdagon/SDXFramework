@@ -3,19 +3,21 @@
 //[Contact]http://sourceforge.jp/projects/dxframework/
 #pragma once
 #include <Multimedia/SDX.h>
+#include <Multimedia/Sound.h>
 
 namespace SDX
 {
 	/** BGM用音声を表すクラス.*/
-	/**    \include MusicSample.h*/
+	/** \include MusicSample.h*/
 	class Music
 	{
 		friend class System;
 	private:
-		std::string fileName;
-		int volume;
-		Mix_Music* handle;
-		static int nowVolume;
+		std::string fileName;//!<
+		int volume;//!<
+		Mix_Music* handle;//!<
+		static int nowVolume;//!<
+
 	public:
 		Music(){};
 		~Music(){};
@@ -38,8 +40,8 @@ namespace SDX
 		}
 
 		/** 音声ファイルを再生.*/
-		/** Musicファイルは複数同時に再生する事は出来ない。\n
-			現在再生中の音声は停止する。*/
+		/** Musicファイルは複数同時に再生する事は出来ない。\n*/
+		/**	現在再生中の音声は停止する。*/
 		bool Play(PlayType 再生方法 = PlayType::Loop)
 		{
 			switch (再生方法)

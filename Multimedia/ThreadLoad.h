@@ -10,7 +10,7 @@
 namespace SDX
 {
 	/** リソースの非同期読み込み設定関数群[非実装].*/
-	/**    \include ThreadLoadSample.h*/
+	/** \include ThreadLoadSample.h*/
 	class ThreadLoad
 	{
 	private:
@@ -24,8 +24,7 @@ namespace SDX
 		}
 
 		/** Image,Sound,Movie,Font等の読み込みが完了しているか取得.*/
-		template<typename T>
-		static bool CheckData(const T &リソース)
+		template<typename T> static bool CheckData(const T &リソース)
 		{
 			return false;
 		}

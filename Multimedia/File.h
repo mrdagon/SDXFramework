@@ -27,19 +27,18 @@ namespace SDX
 	};
 
 	/** 入出力可能なテキストかバイナリファイルを表すクラス.*/
-	/**    \include FileSample.h*/
+	/** \include FileSample.h*/
 	class File
 	{
 	private:
-		SDL_RWops *handle = nullptr;
-		bool canRead;
-		bool canWrite;
-		bool canAdd;
-		bool isBinary;
-		std::string fileName;
+		SDL_RWops *handle = nullptr;//!<
+		bool canRead;//!<
+		bool canWrite;//!<
+		bool canAdd;//!<
+		bool isBinary;//!<
+		std::string fileName;//!<
 	public:
 
-		/** ファイル名とモードを指定して、ファイルを開く.*/
 		File(const char* ファイル名, FileMode 読み書きモード, bool バイナリファイル = false, SaveMode Androidの保存先 = SaveMode::Asset)
 		{
 			File::Open(ファイル名, 読み書きモード, バイナリファイル, Androidの保存先);
@@ -50,7 +49,7 @@ namespace SDX
 			Close();
 		}
 
-		/** ファイルを開く.*/
+		/** ファイル名とモードを指定して、ファイルを開く.*/
 		bool Open(const char* ファイル名, FileMode 読み書きモード, bool バイナリファイル = false, SaveMode Androidの保存先 = SaveMode::Asset)
 		{
 #ifdef __ANDROID__
@@ -142,10 +141,8 @@ namespace SDX
 		}
 
 		/** データを読み込む.*/
-		/**    FileMode::Readの場合成功。\n
-			読込先変数にデータを読み込む。*/
-		template< class T>
-		bool Read(T &読み込み先変数)
+		/** FileMode::Readの場合成功、読込先変数にデータを読み込む。*/
+		template< class T> bool Read(T &読み込み先変数)
 		{
 			if (!canRead) return false;
 
@@ -165,9 +162,7 @@ namespace SDX
 
 			return true;
 		}
-
-		template< class T >
-		bool Read(T *読み込み先配列, int 要素数)
+		template< class T > bool Read(T *読み込み先配列, int 要素数)
 		{
 			if (!canRead) return false;
 
@@ -180,8 +175,7 @@ namespace SDX
 		}
 
 		/**型変換をしつつ読み込む.*/
-		template <class TSaveType, class TOutput>
-		bool Read(TOutput *読み込み先配列, int 要素数, int 分母)
+		template <class TSaveType, class TOutput> bool Read(TOutput *読み込み先配列, int 要素数, int 分母)
 		{
 			if (!canRead) return false;
 
@@ -195,9 +189,7 @@ namespace SDX
 
 			return true;
 		}
-
-		template< class TSaveType, class TOutput>
-		bool Read(TOutput &読み込み先変数)
+		template< class TSaveType, class TOutput> bool Read(TOutput &読み込み先変数)
 		{
 			if (!canRead) return false;
 
@@ -210,10 +202,9 @@ namespace SDX
 		}
 
 		/** データを書き込む.*/
-		/**    FileModeがWriteかAddの場合成功。\n
-			書込元変数をファイルに書き込む。*/
-		template< class T>
-		bool Write(T& 書込み元変数)
+		/** FileModeがWriteかAddの場合成功。\n*/
+		/**	書込元変数をファイルに書き込む。*/
+		template< class T> bool Write(T& 書込み元変数)
 		{
 			if (!canWrite) return false;
 
@@ -235,8 +226,7 @@ namespace SDX
 
 		/**型変換をして書き込む.*/
 		/**double型をfloatに変換して保存する時用*/
-		template <class TSaveType, class TInput>
-		bool Write(TInput *書き込み元配列, int 要素数)
+		template <class TSaveType, class TInput> bool Write(TInput *書き込み元配列, int 要素数)
 		{
 			if (!canWrite) return false;
 

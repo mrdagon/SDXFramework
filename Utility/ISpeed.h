@@ -9,7 +9,7 @@ namespace SDX
 	namespace SPEED
 	{
 		/** 変化する数値を表す抽象クラス.*/
-		///    \include SpeedSample.h
+		/// \include SpeedSample.h
 		class ISpeed
 		{
 		public:

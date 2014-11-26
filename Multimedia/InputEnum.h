@@ -9,12 +9,12 @@ namespace SDX
 	/** ゲームパッドの種類.*/
 	enum class PadType
 	{
-		KeyAndPad1,//!<
-		Pad1,//!<
-		Pad2,//!<
-		Pad3,//!<
-		Pad4,//!<
-		KeyBord//!<
+		KeyAndPad1,
+		Pad1,
+		Pad2,
+		Pad3,
+		Pad4,
+		KeyBord
 	};
 
 	/** ゲームパッドコード.*/

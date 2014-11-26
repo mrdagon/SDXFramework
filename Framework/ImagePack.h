@@ -8,13 +8,13 @@
 namespace SDX
 {
 	/** 複数のImageをまとめるクラス.*/
-	/**    \include ImageSample.h*/
+	/** \include ImageSample.h*/
 	class ImagePack
 	{
 	protected:
-		std::vector<Image*> images;
-		int widthMax;
-		int heightMax;
+		std::vector<Image*> images;//!<
+		int widthMax;//!<
+		int heightMax;//!<
 	public:
 		ImagePack() :
 			widthMax(0),
@@ -59,7 +59,7 @@ namespace SDX
 		}
 
 		/** 連番ファイルを一括して読み込む.*/
-		/**    ファイル名の後に三桁の連番が付いたファイルを連続して読み込む\n
+		/** ファイル名の後に三桁の連番が付いたファイルを連続して読み込む\n
 			例:「ファイル名***.拡張子」*/
 		bool Load(const char *ファイル名, const char *拡張子, int 総コマ数, const char* 書式 = "%03d.")
 		{

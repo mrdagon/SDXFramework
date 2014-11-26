@@ -6,10 +6,10 @@
 
 namespace SDX
 {
+	/* @todo 英語にする */
 	namespace SPEED
 	{
 		/** 常に同じ速度.*/
-		///    \include SpeedSample.h
 		class Liner : public ISpeed
 		{
 		private:
@@ -31,7 +31,6 @@ namespace SDX
 		};
 
 		/** 加速する.*/
-		///    \include SpeedSample.h
 		class Accel : public ISpeed
 		{
 		private:
@@ -56,7 +55,6 @@ namespace SDX
 		};
 
 		/** 0～速度で周期的に変化.*/
-		///    \include SpeedSample.h
 		class Wave : public ISpeed
 		{
 		private:

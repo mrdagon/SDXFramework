@@ -1,7 +1,10 @@
 ﻿//Copyright © 2014 SDXFramework
 //[License]GNU Affero General Public License, version 3
 //[Contact]http://sourceforge.jp/projects/dxframework/
+
 //ライブラリの初期化等を行う
+#include <SDXFramework.h>
+
 bool SampleSystem()
 {
 	using namespace SDX;
@@ -10,7 +13,7 @@ bool SampleSystem()
 
 	while (System::Update())//ウィンドウの更新や、入力の更新等を行う
 	{
-		if (Input::key.Return.on) break;//Enterで終了
+		if (Input::key.Return.on){ break;}//Enterで終了
 	}
 
 	System::End();//ライブラリの終了処理を行う

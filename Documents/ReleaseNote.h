@@ -6,9 +6,17 @@
 \n
 <HR>
 <B>ver 0.10</B>\n
+DXLib版と分離したので～Handleのusing宣言を削除\n
 NULL_HANDLEマクロを削除\n
 FontとBmpFontから太さと書体の引数を削除\n
-Screenクラスの機能を追加\n
+Screenクラスの機能をRendererクラスに分割して追加\n
+Waitクラスを削除してSystemに統合\n
+一部Get関数のconst漏れを修正\n
+Mouse::SetVisible実装\n
+Joypadの振動関数削除\n
+"Hit.h"を"ShapeHit.h"に変更\n
+不要なファイルを削除\n
+\n
 <B>ver 0.09</B>\n
 ライセンスをAGPL Ver3に変更\n
 DXLIB版を開発終了、以降はSDL2.0版の開発に注力して行きます。\n

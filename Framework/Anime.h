@@ -27,7 +27,7 @@ namespace SDX
 	};
 
 	/** Imageをまとめてコマ送りアニメとして表すクラス.*/
-	/**    \include AnimeSample.h */
+	/** \include AnimeSample.h */
 	class Anime : public ImagePack
 	{
 	private:
@@ -38,10 +38,10 @@ namespace SDX
 		class Player
 		{
 		private:
-			const Anime* anime;//対応アニメ
-			int direct = 1;//進行方向
-			int frameNumber = 0;//現在のコマ
-			double timer = 0;//経過時間
+			const Anime* anime;//!<対応アニメ
+			int direct = 1;//!<進行方向
+			int frameNumber = 0;//!<現在のコマ
+			double timer = 0;//!<経過時間
 		public:
 
 			Player(const Anime* 親アニメ) :
@@ -141,13 +141,14 @@ namespace SDX
 			return true;
 		}
 
-		/** 末尾にImageを追加する。.*/
+		/** 末尾にImageを追加する.*/
 		void Add(Image *追加イメージ, int 再生フレーム数 = 1)
 		{
 			ImagePack::Add(追加イメージ);
 			times.push_back(再生フレーム数);
 			nexts.push_back((int)NextFrame::Normal);
 		}
+		/** 末尾にImageを追加する.*/
 		void Add(const char *ファイル名, int 再生フレーム数 = 1)
 		{
 			Add(new Image(ファイル名), 再生フレーム数);
@@ -188,12 +189,12 @@ namespace SDX
 				break;
 			}
 		}
-
 		/** 指定コマの次フレームを設定する.*/
 		void SetType(int コマ番号, int 次フレーム)
 		{
 			nexts[コマ番号] = 次フレーム;
 		}
+		/** 指定コマの次フレームを設定する.*/
 		void SetType(int コマ番号, NextFrame 次フレーム)
 		{
 			nexts[コマ番号] = (int)次フレーム;
@@ -211,7 +212,7 @@ namespace SDX
 
 			return totalTime;
 		}
-
+		
 		Image* operator[](int index) const
 		{
 			return images[index];

@@ -4,118 +4,11 @@
 #pragma once
 #include <Multimedia/SDX.h>
 #include <Multimedia/Color.h>
+#include <Multimedia/Renderer.h>
 #include <Framework/Shape.h>
 
 namespace SDX
 {
-	/** ブレンドモード.*/
-	enum class BlendMode
-	{
-		NoBlend = SDL_BLENDMODE_NONE,//!<
-		Alpha = SDL_BLENDMODE_BLEND,//!<
-		Add = SDL_BLENDMODE_ADD,//!<
-		Mula = SDL_BLENDMODE_MOD,//!<
-	};
-
-	/** 描画先を表すクラス.*/
-	/** ScreenにSetして使う.*/
-	/** \include ScreenSample.*/
-	class Renderer
-	{	
-	private:
-		RendererHandle handle = nullptr;
-		SurfaceHandle surface = nullptr;
-	public:
-		static Renderer defaultRenderer;
-
-		BlendMode nowBlendMode = BlendMode::NoBlend;
-		int blendParam = 0;//!<αブレンドの比率 0～255
-		Color clearColor = Color(0, 0, 0);//!<消去時の色
-		Color rgba = Color(255, 255, 255, 0);//!<描画輝度と透明度
-
-		/*描画ハンドルを取得*/
-		RendererHandle GetHandle()
-		{
-			return handle;
-		}
-
-		~Renderer()
-		{
-			Destroy();
-		}
-
-		/*Surfaceに対応した、Rendererを生成.*/
-		bool Create(int 幅,int 高さ)
-		{
-			if (handle != nullptr) return false;
-			surface = SDL_CreateRGBSurface(0, 幅, 高さ, 32, 0, 0, 0, 0);
-			handle = SDL_CreateSoftwareRenderer(surface);
-
-			return true;
-		}
-
-		/*Windowに対応した、Rendererを生成.*/
-		bool Create(WindowHandle 元Window)
-		{
-			if (handle != nullptr) return false;
-
-			handle = SDL_CreateRenderer(元Window, -1, SDL_RENDERER_PRESENTVSYNC);
-
-			return true;
-		}
-
-		/**対象RenderHandleにコピー.*/
-		bool Draw( const Rect& 領域 , Renderer& コピー先 = Renderer::defaultRenderer)
-		{
-			if (surface == nullptr) return false;
-
-			ImageHandle image;
-			image = SDL_CreateTextureFromSurface(コピー先.GetHandle(), surface);
-
-			SDL_Rect srcrect = { 0, 0, (int)領域.GetW(), (int)領域.GetH() };
-			SDL_Rect dsrect = { (int)領域.GetX(), (int)領域.GetY(), (int)領域.GetW(), (int)領域.GetH() };
-			SDL_RenderCopy(コピー先.GetHandle(), image, &srcrect, &dsrect);
-			SDL_DestroyTexture(image);
-
-			return true;
-		}
-
-		/*Rendererを削除.*/
-		bool Destroy()
-		{
-			if (handle == 0) return false;
-			if (surface != nullptr)
-			{
-				SDL_FreeSurface(surface);
-			}
-
-			SDL_DestroyRenderer(handle);
-
-			surface = nullptr;
-			handle = nullptr;
-
-			return true;
-		}
-
-		/** 透過色を設定.*/
-		bool SetTransColor(Color 透過色)
-		{
-			return !SDL_SetColorKey(surface, SDL_TRUE, SDL_MapRGB(surface->format, 透過色.GetRed(), 透過色.GetBlue(), 透過色.GetGreen()));
-		}
-
-		/** 透過色を解除.*/
-		bool ResetTransColor()
-		{
-			return !SDL_SetColorKey(surface, false , 0);
-		}
-
-		/** BMP形式で保存.*/
-		bool SaveBMP(const char* ファイル名)
-		{
-			return !SDL_SaveBMP(surface, ファイル名);
-		}
-	};
-
 	/** 現在の描画先を操作するクラス.*/
 	/** \include ScreenSample.h*/
 	class Screen
@@ -123,7 +16,7 @@ namespace SDX
 	private:
 		Screen(){};
 		~Screen(){};
-		Renderer *handle = nullptr;
+		Renderer *handle = nullptr;//!<
 	public:
 		/** シングルトンなインスタンスを取得.*/
 		static Screen& Single()
@@ -133,7 +26,7 @@ namespace SDX
 		}
 
 		/** スクリーンハンドルを取得.*/
-		static RendererHandle GetHandle()
+		static SDL_Renderer* GetHandle()
 		{
 			return Single().handle->GetHandle();
 		}
@@ -145,7 +38,7 @@ namespace SDX
 		}
 
 		/** Rendererを設定.*/
-		static void SetRenderer(Renderer &描画先Renderer = Renderer::defaultRenderer)
+		static void SetRenderer(Renderer &描画先Renderer = Renderer::DefaultRenderer())
 		{
 			Single().handle = &描画先Renderer;
 		}
@@ -182,7 +75,6 @@ namespace SDX
 		static bool SetBackColor(Color 背景色)
 		{
 			Single().GetRenderer()->clearColor.SetColor(背景色.GetRed(), 背景色.GetGreen(), 背景色.GetBlue());
-
 			return true;
 		}
 
@@ -226,9 +118,10 @@ namespace SDX
 			return true;
 		}
 
-		/** 描画対象になっている画面の一部をBMP形式で保存[未実装].*/
+		/** 描画対象になっている画面の一部をBMP形式で保存[未実装].@todo*/ 
 		static bool SaveBmp(const Rect &領域, const char *ファイル名)
 		{
+			//SDL_RenderReadPixelsで実装出来るはず
 			return false;
 		}
 

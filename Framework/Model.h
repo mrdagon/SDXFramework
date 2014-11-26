@@ -14,16 +14,16 @@ namespace SDX
 	class IModel
 	{
 	private:
-		double zoomX = 1;
-		double zoomY = 1;
-		double angle = 0;
-		double shadowSize = 1;
-		bool isCamera = true;
+		double zoomX = 1;//!<
+		double zoomY = 1;//!<
+		double angle = 0;//!<
+		double shadowSize = 1;//!<
+		bool isCamera = true;//!<
 	protected:
-		bool isRemove = false;
+		bool isRemove = false;//!<
 	public:
-		IShape &iShape;
-		ISprite &iSprite;
+		IShape &iShape;//!<
+		ISprite &iSprite;//!<
 
 		IModel(IShape &図形, ISprite &描画方法) :
 			iShape(図形),
@@ -244,8 +244,8 @@ namespace SDX
 	class Model : public IModel
 	{
 	public:
-		TShape shape;
-		TSprite sprite;
+		TShape shape;//!<
+		TSprite sprite;//!<
 
 		Model(TShape &&図形と位置, TSprite &&描画方法) :
 			IModel(shape, sprite),

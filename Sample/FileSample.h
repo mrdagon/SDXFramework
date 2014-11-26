@@ -1,7 +1,10 @@
 ﻿//Copyright © 2014 SDXFramework
 //[License]GNU Affero General Public License, version 3
 //[Contact]http://sourceforge.jp/projects/dxframework/
+
 //ファイルに書き込みと読み込みを行う
+#include <SDXFramework.h>
+
 bool SampleFile()
 {
 	using namespace SDX;
@@ -29,9 +32,9 @@ bool SampleFile()
 	{
 		Drawing::String({ 10, 10 }, Color::White, { "書き込んだ数字は:", b, "\n書き込んだ文字は:", str2 });
 
-		if (Input::key.Return.on) break;//Enterで終了
+		if (Input::key.Return.on){ break;}//Enterで終了
 	}
 
 	System::End();
-	return    true;
+	return true;
 }

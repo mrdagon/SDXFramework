@@ -15,23 +15,23 @@ namespace SDX
 	};
 
 	/** 2D用に座標変換を行うカメラを表すクラス.*/
-	/**    \include ModelSample.h*/
+	/** \include ModelSample.h*/
 	class Camera
 	{
 	private:
 		double x;//!< 現在の位置
-		double y;
-		double zoom;
+		double y;//!<
+		double zoom;//!<
 
 		double forcusX;//!< 移動目標
-		double forcusY;
-		double forcusZ;
+		double forcusY;//!<
+		double forcusZ;//!<
 
 		double speed;//!< 移動速度
-		double speedZ;
+		double speedZ;//!<
 
 		double centerX;//!< 焦点位置
-		double centerY;
+		double centerY;//!<
 
 		static Camera* cameraNow;//!< 現在アクティブなカメラ
 
@@ -157,6 +157,7 @@ namespace SDX
 			return centerY + (Y座標変換前 - this->y) * zoom;
 		}
 
+		/** 座標を画面上のどこに表示されるか変換.*/
 		Point Trans(const Point &変換前座標)
 		{
 			return Point(centerX + (変換前座標.x - this->x) * zoom, centerY + (変換前座標.y - this->y) * zoom);

@@ -10,7 +10,7 @@
 namespace SDX
 {
 	/** ライブラリの初期化やシステム的な処理を行う関数群.*/
-	/**    \include SystemSample.h*/
+	/** \include SystemSample.h*/
 	class System
 	{
 		friend class Window;
@@ -18,6 +18,7 @@ namespace SDX
 	private:
 		System(){};
 		~System(){};
+
 		/** シングルトンなインスタンスを取得.*/
 		static bool& IsEnd()
 		{
@@ -27,7 +28,7 @@ namespace SDX
 	public:
 
 		/** ライブラリの初期化.*/
-		/**    初期化に失敗した場合、ソフトを強制的に終了する。\n
+		/** 初期化に失敗した場合、ソフトを強制的に終了する。\n
 			一部の設定関数は初期化前に呼び出す必要がある。*/
 		static void Initialise(const char* ウィンドウ名, int 幅, int 高さ , bool フルスクリーンフラグ = false)
 		{
@@ -63,9 +64,9 @@ namespace SDX
 
 			Window::Single().Create(ウィンドウ名,幅,高さ,フルスクリーンフラグ);
 
-			Renderer::defaultRenderer.Create(Window::GetHandle());
+			Renderer::DefaultRenderer().Create(Window::GetHandle());
 
-			Screen::SetRenderer(Renderer::defaultRenderer);
+			Screen::SetRenderer(Renderer::DefaultRenderer());
 
 			//タブレットと画面サイズを合わせる
 #ifdef TABLET
@@ -104,7 +105,7 @@ namespace SDX
 		}
 
 		/** OSのメッセージ処理を行う.*/
-		/**    目安として1/60秒に一回程度、この関数を呼び出す必要があり。
+		/** 目安として1/60秒に一回程度、この関数を呼び出す必要があり。
 			falseを返した場合、速やかにプログラムを終了させなければならない。*/
 		static bool ProcessMessage()
 		{
@@ -139,5 +140,18 @@ namespace SDX
 
 			return !IsEnd();
 		}
+
+		/** 指定ミリ秒実行を停止.*/
+		static void Wait(int 停止ミリ秒)
+		{
+			SDL_Delay(停止ミリ秒);
+		}
+
+		/** キーを入力を待つ.*/
+		static void WaitKey()
+		{
+			while (!Keyboard::HoldAnyKey() && System::ProcessMessage()){}
+		}
+
 	};
 }

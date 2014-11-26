@@ -1,7 +1,10 @@
 ﻿//Copyright © 2014 SDXFramework
 //[License]GNU Affero General Public License, version 3
 //[Contact]http://sourceforge.jp/projects/dxframework/
+
 //乱数で取得して表示する
+#include <SDXFramework.h>
+
 bool SampleRand()
 {
 	using namespace SDX;
@@ -25,7 +28,7 @@ bool SampleRand()
 		Drawing::String({ 10, 90 }, Color::White, { "c:", c });
 		Drawing::String({ 10, 130 }, Color::White, { "d:", d });
 
-		if (Input::key.Return.on) break;//Enterで終了
+		if (Input::key.Return.on){ break; }//Enterで終了
 	}
 
 	System::End();

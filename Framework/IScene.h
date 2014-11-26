@@ -5,11 +5,11 @@
 namespace SDX
 {
 	/** シーンのインターフェース.*/
-	/**    \include DirectorSample.h*/
+	/** \include DirectorSample.h*/
 	class IScene
 	{
 	public:
-		bool isEnd = false;
+		bool isEnd = false;//!<
 
 		virtual void Update() = 0;
 		virtual void Draw() = 0;
@@ -18,6 +18,7 @@ namespace SDX
 		virtual void Final(){};
 		virtual void Event(){};
 
+		/**.*/
 		bool IsEnd()
 		{
 			return isEnd;

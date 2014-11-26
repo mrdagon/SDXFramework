@@ -7,14 +7,14 @@
 namespace SDX
 {
 	/** 各ボタンとキーを表すクラス.*/
-	/**    \include InputSample.h*/
+	/** \include InputSample.h*/
 	class Key
 	{
 	public:
-		bool on = false;//押した瞬間
-		bool off = false;//離した瞬間
-		bool hold = false;//押されている
-		unsigned int  holdCount = 0;//押されている時間
+		bool on = false;//!< 押した瞬間
+		bool off = false;//!< 離した瞬間
+		bool hold = false;//!< 押されている
+		unsigned int  holdCount = 0;//!< 押されている時間
 
 		/** キーのリセット.*/
 		void Reset()

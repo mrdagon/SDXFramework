@@ -7,7 +7,7 @@
 namespace SDX
 {
 	/**列挙型を直接添字に使える配列.*/
-	/**エラー処理など未実装*/
+	/**@todo エラー処理など未実装*/
 	template <class TData, class TType>
 	class EnumArray
 	{

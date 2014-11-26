@@ -13,23 +13,23 @@
 namespace SDX
 {
 	/** 2Dモデルに貼り付けるスプライトを表す抽象クラス.*/
-	/**    \include ModelSample.h */
+	/** \include ModelSample.h */
 	class ISprite
 	{
 		friend class IModel;
 
 	protected:
-		double    zoomX = 1;
-		double    zoomY = 1;
+		double    zoomX = 1;//!<
+		double    zoomY = 1;//!<
 
-		double    gapX = 0;//中心モデルとの位置差
-		double    gapY = 0;
+		double    gapX = 0;//!<中心モデルとの位置差
+		double    gapY = 0;//!<
 
-		double    axisX = 0;//回転軸
-		double    axisY = 0;
+		double    axisX = 0;//!<回転軸
+		double    axisY = 0;//!<
 
-		Color    color = { 255, 255, 255, 255 };
-		double    angle = 0;
+		Color    color = { 255, 255, 255, 255 };//!<
+		double    angle = 0;//!<
 
 	public:
 		bool isTurn = false;

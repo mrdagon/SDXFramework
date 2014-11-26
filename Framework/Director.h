@@ -10,11 +10,11 @@
 namespace SDX
 {
 	/** シーンを管理するクラス.*/
-	/**    \include DirectorSample.h*/
+	/** \include DirectorSample.h*/
 	class Director
 	{
 	private:
-		std::vector< std::shared_ptr<IScene> > scenes;
+		std::vector< std::shared_ptr<IScene> > scenes;//!<
 
 		Director(){};
 
@@ -87,6 +87,7 @@ namespace SDX
 			return Single().scenes[Single().scenes.size() - インデックス - 1].get();
 		}
 
+		/** 描画更新フラグを設定.*/
 		static bool& IsDraw()
 		{
 			static bool isDraw = true;

@@ -1,10 +1,13 @@
 ﻿//Copyright © 2014 SDXFramework
 //[License]GNU Affero General Public License, version 3
 //[Contact]http://sourceforge.jp/projects/dxframework/
+
 //初期化を行い何かキーを押すと終了する
-bool    SampleBmpFrame()
+#include <SDXFramework.h>
+
+bool SampleBmpFrame()
 {
-	using    namespace    SDX;
+	using namespace SDX;
 	System::Initialise("sample", 600, 400);
 
 	//BmpFrame用の画像を読み込む
@@ -17,9 +20,9 @@ bool    SampleBmpFrame()
 	while (System::Update())
 	{
 		bmpFrame.Draw({ 10, 10, 500, 300 });
-		if (Input::key.Return.on)    break;//Enterで終了
+		if (Input::key.Return.on){ break; }//Enterで終了
 	}
 
 	System::End();
-	return    true;
+	return true;
 }

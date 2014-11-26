@@ -16,12 +16,12 @@ namespace SDX
 	class Camera;
 	class Color;
 	/** 位置情報を持つ図形の抽象クラス.*/
-	/**    \include ShapeSample.h */
+	/** \include ShapeSample.h */
 	class IShape
 	{
 	protected:
-		double zoomX;
-		double zoomY;
+		double zoomX;//!<
+		double zoomY;//!<
 
 		/** 矩形の交差判定.*/
 		static bool RectRect(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4)
@@ -138,13 +138,13 @@ namespace SDX
 		virtual void SetAngle(double 指定角度) = 0;
 
 		/** 対象との角度を取得.*/
-		double GetDirect(IShape* 比較対象)
+		double GetDirect(IShape* 比較対象) const
 		{
 			return atan2(比較対象->GetY() - this->GetY(), 比較対象->GetX() - this->GetX());
 		}
 
 		/** 対象との相対座標を取得.*/
-		double GetDistance(IShape* 比較対象)
+		double GetDistance(IShape* 比較対象) const
 		{
 			const double xd = this->GetX() - 比較対象->GetX();
 			const double yd = this->GetY() - 比較対象->GetY();

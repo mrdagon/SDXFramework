@@ -5,19 +5,18 @@ SDXFrameworkの使用には\n
 ｢SDXFramework｣\n
 「VisualStudio2013」\n
 が必要です。\n
-Windows環境の場合、コンパイラは「VisualC++ 2013 Express Edition for Desktop」を推奨しています。\n
+Windows環境の場合、コンパイラは「Visual Studio 2013 Community」を推奨しています。\n
 識別子にUnicodeを使用している関係で基本的にgccでコンパイルする事は出来ません。\n
 VisualStudio2013以前の環境については、サポートしていません。
 <HR>
 <B>1 VisualStudioをインストールする</B>\n
 C++の規格準拠具合の関係で、VisualStudio2012以前のコンパイラは使用できません。\n
 <a href="http://www.visualstudio.com/downloads/download-visual-studio-vs" target="_blank"><B>Visual Studio のダウンロード</B></a>\n
-「Visual Studio Express 2013 for Windows」と\n
-「Visual Studio Express 2013 for Windows Desktop」がありますが\n
-Desktopの方しか使えないので、注意して下さい。\n
-また使用しているOSがWindowsXPやVistaの場合、VisualStudio2013がインストール出来ないため、SDXは使用できません。\n
+ライブラリがAGPLなので「Visual Studio 2013 Community」の利用条件を満たします。\n
+機能的に優位なのでExpressエディションでなくCommunityエディションの利用を推奨しています。\n
+使用しているOSがWindowsXPやVistaの場合、VisualStudio2013がインストール出来ないため、SDXは使用できません。\n
 \n
-詳細なインストール方法やライセンス登録については、「VisualStudio 2013 インストール」でGoogle検索するといくつかキャプチャ付きの記事が見つかると思うので\n
+詳細なインストール方法やライセンス登録については、「VisualStudio 2013 インストール」等でGoogle検索するといくつかキャプチャ付きの記事が見つかると思うので\n
 それらを参考にしてください\n
 <HR>
 <B>2 SDXFrameworkをダウンロードする</B>\n
@@ -214,6 +213,5 @@ VisualStudioでは一度作成したプロジェクトを雛形として保存�
 C++用のテンプレートが追加されていれば成功です。次回以降はこれを選択してプロジェクトを作成する事が出来ます。
 <HR>
 <B>9 完成したソフトを配布する。</B>\n
-DXLib版の場合Releaseビルドして、exeファイルと必要なリソースを配布して下さい\n
-SDL版の場合Releaseビルドして、exeファイルとdllファイルと必要なリソースを配布して下さい
+Releaseビルドして、exeファイルとdllファイルと必要なリソースを配布して下さい
 */

@@ -9,19 +9,20 @@
 namespace SDX
 {
 	/** ジョイパッドの状態を表すクラス.*/
-	/**    \include InputSample.h*/
+	/** \include InputSample.h*/
 	class Joypad
 	{
 	private:
-		PadType inputType = PadType::KeyAndPad1;
-		StickHandle handle;
+		PadType inputType = PadType::KeyAndPad1;//!<
+		SDL_Joystick* handle;//!<
+
 		Joypad(const Joypad &joypad){};
 		Joypad operator =(const Joypad &joypad) = delete;
 	public:
-		int StickX = 0;
-		int StickY = 0;
+		int StickX = 0;//!<
+		int StickY = 0;//!<
 
-		bool press[32];
+		bool press[32];//!<
 
 		Key Down;
 		Key Left;
@@ -58,6 +59,7 @@ namespace SDX
 
 		Joypad(){}
 
+		/**.*/
 		void Open()
 		{
 			handle = SDL_JoystickOpen(0);
@@ -158,19 +160,23 @@ namespace SDX
 			inputType = 入力タイプ;
 		}
 
-		/** パッドを振動させる[未実装].*/
-		/**    指定した強さ(0.0～1.0)で指定ミリ秒パッドを振動させる\n
+		/** パッドを振動させる[未実装].*/ 
+		/** 指定した強さ(0.0～1.0)で指定ミリ秒パッドを振動させる\n
 			時間が-1の場合、StopVibration関数を呼ぶまで振動させる*/
+		/*
 		bool StartVibration(double 強さ, int 振動ミリ秒)
 		{
 			return false;
 		}
+		*/
 
-		/** パッドの振動を停止する[未実装].*/
+		/** パッドの振動を停止する[未実装].*/ 
+		/*
 		bool StopVibration()
 		{
 			return false;
 		}
+		*/
 
 		/** 接続中のパッド数を取得.*/
 		static int GetCount()

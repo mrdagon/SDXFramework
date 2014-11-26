@@ -15,11 +15,11 @@ namespace SDX
 	};
 
 	/** 効果音用音声を表すクラス.*/
-	/**    \include SoundSample.h*/
+	/** \include SoundSample.h*/
 	class Sound
 	{
 	private:
-		SoundHandle handle;
+		Mix_Chunk* handle;//!<
 	public:
 
 		Sound(){}
@@ -34,7 +34,7 @@ namespace SDX
 		int Load(const char *ファイル名, double 音量 = 1.0)
 		{
 			handle = Mix_LoadWAV(ファイル名);
-			if (!handle) return false;
+			if (!handle){ return false; }
 
 			Mix_VolumeChunk(handle, int(音量 * 128));
 			return true;
@@ -48,7 +48,7 @@ namespace SDX
 		}
 
 		/** ハンドルを取得.*/
-		SoundHandle GetHandle() const
+		Mix_Chunk* GetHandle() const
 		{
 			return this->handle;
 		}
@@ -56,28 +56,10 @@ namespace SDX
 		/** 音声ファイルを再生.*/
 		bool Play(PlayType 再生方法 = PlayType::Back, bool 先頭から再生 = true) const
 		{
-			static int channel = 0;
+			//static int channel = 0;
+			//channel = (++channel) % 2;
 			Mix_PlayChannel(0, handle, (int)再生方法);
-			channel = (++channel) % 2;
 			return true;
-		}
-
-		/** 再生中か判定[未実装].*/
-		bool Check() const
-		{
-			return false;
-		}
-
-		/** 再生を停止[未実装].*/
-		bool Stop()
-		{
-			return false;
-		}
-
-		/** 音声パンを設定[未実装].*/
-		bool SetPan(int 音声パン)
-		{
-			return false;
 		}
 
 		/** 音量を0～1.0の範囲で設定.*/
@@ -87,20 +69,38 @@ namespace SDX
 			return true;
 		}
 
-		/** 再生周波数を設定[未実装].*/
+		/** 再生中か判定[未実装].@todo*/ 
+		bool Check() const
+		{
+			return false;
+		}
+
+		/** 再生を停止[未実装].@todo*/ 
+		bool Stop()
+		{
+			return false;
+		}
+
+		/** 音声パンを設定[未実装].@todo*/ 
+		bool SetPan(int 音声パン)
+		{
+			return false;
+		}
+
+		/** 再生周波数を設定[未実装].@todo*/ 
 		/** 単位はHzで範囲は100～100,000*/
 		bool SetFrequency(int 再生周波数)
 		{
 			return false;
 		}
 
-		/** ミリ秒単位でループ位置を設定[未実装].*/
+		/** ミリ秒単位でループ位置を設定[未実装].@todo*/ 
 		bool SetLoopPos(int ループ位置)
 		{
 			return false;
 		}
 
-		/** サンプリング周波数でループ位置を設定[未実装].*/
+		/** サンプリング周波数でループ位置を設定[未実装].@todo*/ 
 		/** 周期が44.1KHzの場合、44,100を渡すと1秒の位置でループする*/
 		bool SetLoopSamplePos(int ループ周波数)
 		{
