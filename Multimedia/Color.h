@@ -20,6 +20,7 @@ namespace SDX
 			SetColor(赤, 緑, 青, 透過率);
 		}
 
+		/** 色の各要素を設定.*/
 		void SetColor(int 赤, int 緑, int 青, int 透過率 = 255)
 		{
 			data = { (Uint8)赤, (Uint8)緑, (Uint8)青, (Uint8)透過率 };

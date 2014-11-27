@@ -104,7 +104,7 @@ namespace SDX
 		/** カーソル位置を移動.*/
 		bool SetPoint(int 移動先X, int 移動先Y)
 		{
-			SDL_WarpMouseInWindow(Window::Single().handle, x, y);
+			SDL_WarpMouseInWindow(Window::activeWindow->handle, x, y);
 			return true;
 		}
 	};

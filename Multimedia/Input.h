@@ -7,6 +7,7 @@
 #include <Multimedia/Mouse.h>
 #include <Multimedia/Joypad.h>
 #include <Multimedia/Touch.h>
+#include <Multimedia/Gesture.h>
 #include <Multimedia/Window.h>
 
 namespace SDX

@@ -42,7 +42,6 @@ namespace SDX
 	{
 		friend class Anime;
 		friend class ImagePack;
-		//friend class Font;
 		friend class Drawing;
 	private:
 		bool isScreen = false;
@@ -56,22 +55,22 @@ namespace SDX
 		// 透過状態を計算する
 		void RGBACulculate() const
 		{
-			if (Screen::Single().GetRenderer()->nowBlendMode == BlendMode::NoBlend)
+			if (Screen::activeRenderer->nowBlendMode == BlendMode::NoBlend)
 			{
 				SDL_SetTextureBlendMode(handle, (SDL_BlendMode)BlendMode::Alpha);
 				SDL_SetTextureAlphaMod(handle, 255);
 			}
 			else{
-				SDL_SetTextureBlendMode(handle, (SDL_BlendMode)Screen::Single().GetRenderer()->nowBlendMode);
-				SDL_SetTextureAlphaMod(handle, Screen::Single().GetRenderer()->blendParam);
+				SDL_SetTextureBlendMode(handle, (SDL_BlendMode)Screen::activeRenderer->nowBlendMode);
+				SDL_SetTextureAlphaMod(handle, Screen::activeRenderer->blendParam);
 			}
 
 			SDL_SetTextureColorMod
 				(
 				handle,
-				Screen::Single().GetRenderer()->rgba.GetRed(),
-				Screen::Single().GetRenderer()->rgba.GetGreen(),
-				Screen::Single().GetRenderer()->rgba.GetBlue()
+				Screen::activeRenderer->rgba.GetRed(),
+				Screen::activeRenderer->rgba.GetGreen(),
+				Screen::activeRenderer->rgba.GetBlue()
 				);
 		}
 

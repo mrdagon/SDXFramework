@@ -28,13 +28,13 @@ namespace SDX
 	public:
 
 		/** ライブラリの初期化.*/
-		/** 初期化に失敗した場合、ソフトを強制的に終了する。\n
-			一部の設定関数は初期化前に呼び出す必要がある。*/
+		/** 初期化に失敗した場合、ソフトを強制的に終了する。\n*/
+		/**	一部の設定関数は初期化前に呼び出す必要がある。*/
 		static void Initialise(const char* ウィンドウ名, int 幅, int 高さ , bool フルスクリーンフラグ = false)
 		{
 			if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_AUDIO | SDL_INIT_VIDEO) < 0)
 			{
-				fprintf(stderr, "SDLの初期化に失敗しました：%s\n", SDL_GetError());
+				//fprintf(stderr, "SDLの初期化に失敗しました：%s \n", SDL_GetError());
 				exit(1);
 				return;
 			}
@@ -62,11 +62,11 @@ namespace SDX
 
 			IsEnd() = false;
 
-			Window::Single().Create(ウィンドウ名,幅,高さ,フルスクリーンフラグ);
+			SubWindow::mainWindow.Create(ウィンドウ名,幅,高さ,フルスクリーンフラグ);
 
-			Renderer::DefaultRenderer().Create(Window::GetHandle());
+			Screen::SetRenderer(Renderer::mainRenderer);
+			Window::SetWindow(SubWindow::mainWindow);
 
-			Screen::SetRenderer(Renderer::DefaultRenderer());
 
 			//タブレットと画面サイズを合わせる
 #ifdef TABLET
@@ -105,8 +105,8 @@ namespace SDX
 		}
 
 		/** OSのメッセージ処理を行う.*/
-		/** 目安として1/60秒に一回程度、この関数を呼び出す必要があり。
-			falseを返した場合、速やかにプログラムを終了させなければならない。*/
+		/** 目安として1/60秒に一回程度、この関数を呼び出す必要があり。*/
+		/**	falseを返した場合、速やかにプログラムを終了させなければならない。*/
 		static bool ProcessMessage()
 		{
 			SDL_Event event;
@@ -116,17 +116,30 @@ namespace SDX
 				/* QUIT イベントが発生したら終了する*/
 				if (event.type == SDL_WINDOWEVENT)
 				{
-#ifdef TABLET
 					switch (event.window.event)
 					{
+					case SDL_WINDOWEVENT_CLOSE:
+						//ここでIDに応じてDestroy等する
+						SubWindow::CheckWindowID(event.window.windowID);
+						if (SubWindow::mainWindow.handle == nullptr)
+						{
+							IsEnd() = true;
+							for (auto it : SubWindow::windows)
+							{
+								it->Destroy();
+							}
+						}
+						break;
+#ifdef TABLET
 					case SDL_WINDOWEVENT_MINIMIZED:
 						Mix_VolumeMusic(0);
 						break;
 					case SDL_WINDOWEVENT_RESTORED:
 						Mix_VolumeMusic(Music::nowVolume);
 						break;
-					}
 #endif
+					}
+
 				}
 				else if (event.type == SDL_QUIT)
 				{
@@ -153,5 +166,18 @@ namespace SDX
 			while (!Keyboard::HoldAnyKey() && System::ProcessMessage()){}
 		}
 
+		/** スクリーンセーバーの動作制限のON/OFF.*/
+		static bool SetScreenSaver(bool スクリーンセーバー有効フラグ)
+		{
+			if (スクリーンセーバー有効フラグ)
+			{
+				SDL_EnableScreenSaver();
+			}
+			else
+			{
+				SDL_DisableScreenSaver();
+			}
+
+		}
 	};
 }

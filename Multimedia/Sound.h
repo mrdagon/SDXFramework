@@ -20,6 +20,11 @@ namespace SDX
 	{
 	private:
 		Mix_Chunk* handle;//!<
+		int leftPan = 255;//!<
+		int rightPan = 255;//!<
+
+		int angle = 0;
+		int distance = -1;
 	public:
 
 		Sound(){}
@@ -54,11 +59,21 @@ namespace SDX
 		}
 
 		/** 音声ファイルを再生.*/
-		bool Play(PlayType 再生方法 = PlayType::Back, bool 先頭から再生 = true) const
+		bool Play(PlayType 再生方法 = PlayType::Back) const
 		{
 			//static int channel = 0;
 			//channel = (++channel) % 2;
 			Mix_PlayChannel(0, handle, (int)再生方法);
+
+			if (distance != -1)
+			{
+				Mix_SetPosition(0, angle, distance);
+			}
+			else if (leftPan < 255 || rightPan < 255)
+			{
+				Mix_SetPanning(0, leftPan, rightPan);
+			}
+
 			return true;
 		}
 
@@ -69,42 +84,27 @@ namespace SDX
 			return true;
 		}
 
-		/** 再生中か判定[未実装].@todo*/ 
-		bool Check() const
+		/** 音声パンを設定.*/
+		/** スピーカー左右の音量を変える、0.0～1.0*/
+		void SetPanning(double 左パン, double 右パン)
 		{
-			return false;
+			leftPan = std::min(int(左パン*255),255);
+			rightPan = std::min(int(右パン*255),255);
 		}
 
-		/** 再生を停止[未実装].@todo*/ 
-		bool Stop()
+		/** 3D音声再生効果を付ける.*/
+		/** 距離は[近]0～1.0[遠]、角度は[正面]0[左]-PAI/2[右]PAI/2で指定*/
+		/** 距離を-1以下にすると無効になる*/
+		/** SetPanよりこっちが優先される*/
+		void Set3DEffect(double 距離, double 角度 = 0)
 		{
-			return false;
+			distance = std::min((int)距離*255,255);
+			angle = int(角度 * 180 / PAI);//℃に変換
+			if (angle < 0)
+			{
+				angle = 360 -(std::abs(angle) % 360);
+			}
 		}
 
-		/** 音声パンを設定[未実装].@todo*/ 
-		bool SetPan(int 音声パン)
-		{
-			return false;
-		}
-
-		/** 再生周波数を設定[未実装].@todo*/ 
-		/** 単位はHzで範囲は100～100,000*/
-		bool SetFrequency(int 再生周波数)
-		{
-			return false;
-		}
-
-		/** ミリ秒単位でループ位置を設定[未実装].@todo*/ 
-		bool SetLoopPos(int ループ位置)
-		{
-			return false;
-		}
-
-		/** サンプリング周波数でループ位置を設定[未実装].@todo*/ 
-		/** 周期が44.1KHzの場合、44,100を渡すと1秒の位置でループする*/
-		bool SetLoopSamplePos(int ループ周波数)
-		{
-			return false;
-		}
 	};
 }

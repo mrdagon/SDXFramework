@@ -33,5 +33,14 @@ namespace SDX
 	Touch Input::touch[10];
 	Gesture Input::gesture;
 
+
+	Renderer &Renderer::mainRenderer = SubWindow::mainWindow.renderer;
+	SubWindow SubWindow::mainWindow;
+
+	std::list<SubWindow*> SubWindow::windows;
+
+	Renderer* Screen::activeRenderer;
+	SubWindow* Window::activeWindow;
+
 	int Music::nowVolume;
 }

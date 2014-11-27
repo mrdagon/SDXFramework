@@ -856,8 +856,7 @@ namespace SDX
 		{
 			return
 				(
-				(point->x - this->x) * (point->x - this->x) +
-				(point->y - this->y) * (point->y - this->y)
+				(point->x - this->x) * (point->x - this->x) + (point->y - this->y) * (point->y - this->y)
 				<=
 				(this->radius * this->radius)
 				);
@@ -868,9 +867,9 @@ namespace SDX
 		}
 		bool Hit(const Circle *circle) const
 		{
-			return(
-				(this->x - circle->x) * (this->x - circle->x) +
-				(this->y - circle->y) * (this->y - circle->y)
+			return
+				(
+				(this->x - circle->x) * (this->x - circle->x) + (this->y - circle->y) * (this->y - circle->y)
 				<=
 				(this->radius + circle->radius) * (this->radius + circle->radius)
 				);
@@ -908,21 +907,13 @@ namespace SDX
 				)
 				)
 				) || (//四角形の四隅と円の判定
-				(this->x - rect->GetLeft()) * (this->x - rect->GetLeft()) +
-				(this->y - rect->GetTop()) * (this->y - rect->GetTop()) <=
-				(this->radius * this->radius)
+				(this->x - rect->GetLeft()) * (this->x - rect->GetLeft()) + (this->y - rect->GetTop()) * (this->y - rect->GetTop()) <= (this->radius * this->radius)
 				) || (
-				(this->x - rect->GetRight()) * (this->x - rect->GetRight()) +
-				(this->y - rect->GetTop()) * (this->y - rect->GetTop()) <=
-				(this->radius * this->radius)
+				(this->x - rect->GetRight()) * (this->x - rect->GetRight()) + (this->y - rect->GetTop()) * (this->y - rect->GetTop()) <= (this->radius * this->radius)
 				) || (
-				(this->x - rect->GetLeft()) * (this->x - rect->GetLeft()) +
-				(this->y - rect->GetBottom()) * (this->y - rect->GetBottom()) <=
-				(this->radius * this->radius)
+				(this->x - rect->GetLeft()) * (this->x - rect->GetLeft()) + (this->y - rect->GetBottom()) * (this->y - rect->GetBottom()) <= (this->radius * this->radius)
 				) || (
-				(this->x - rect->GetRight()) * (this->x - rect->GetRight()) +
-				(this->y - rect->GetBottom()) * (this->y - rect->GetBottom()) <=
-				(this->radius * this->radius)
+				(this->x - rect->GetRight()) * (this->x - rect->GetRight()) + (this->y - rect->GetBottom()) * (this->y - rect->GetBottom()) <= (this->radius * this->radius)
 				)
 				);
 		}

@@ -15,14 +15,12 @@
 
 //#include <Multimedia/Movie.h>
 #include <Multimedia/Music.h>
-
 #include <Multimedia/Screen.h>
 #include <Multimedia/Sound.h>
 #include <Multimedia/System.h>
-
 #include <Multimedia/Window.h>
-
 #include <Multimedia/File.h>
+
 #include <Utility/Rand.h>
 #include <Utility/Timer.h>
 #include <Utility/Speed.h>

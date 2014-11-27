@@ -4,10 +4,12 @@
 #pragma once
 #include <Multimedia/SDX.h>
 #include <Multimedia/Screen.h>
+#include <Multimedia/SubWindow.h>
 
 namespace SDX
 {
-	/** ウィンドウを表すクラス.*/
+	/** アクティブなSubWindowを操作するクラス.*/
+	/** WindowにあってSubWindowに無い関数は[Window専用]と表記.*/
 	/** \include WindowSample.h*/
 	class Window
 	{
@@ -16,88 +18,65 @@ namespace SDX
 		friend class Gesture;
 		friend class Touch;
 	private:
-		bool isFullScreen = false;//!<
-		int width;//!<
-		int height;//!<
-		double aspect;//!<
-
-		Window(){}
-		SDL_Window* handle = nullptr;//!<
-
-		static Window& Single()
-		{
-			static Window single;
-			return single;
-		}
-
-		static void Create( const char* ウィンドウ名, int 幅, int 高さ , bool フルスクリーンフラグ = false)
-		{
-			Single().width = 幅;
-			Single().height = 高さ;
-			Single().isFullScreen = フルスクリーンフラグ;
-
-			int flag = 0;
-			if (Window::Single().isFullScreen)
-			{
-				flag = SDL_WINDOW_FULLSCREEN;
-			}
-
-			Window::Single().handle = SDL_CreateWindow(ウィンドウ名, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 幅, 高さ, flag);
-
-		}
-
+		Window() = default;
+		~Window() = default;
 	public:
+
+		static SubWindow *activeWindow;
 
 		static SDL_Window* GetHandle()
 		{
-			return Single().handle;
+			return activeWindow->GetHandle();
+		}
+
+		/** SubWindowをアクティブにする.*/
+		/**[Window専用]*/
+		static void SetWindow(SubWindow &アクティブにするSubWindow = SubWindow::mainWindow)
+		{
+			activeWindow = &アクティブにするSubWindow;
 		}
 
 		/** スクリーンモードを設定する.*/
-		static bool SetFullScreen(bool フルスクリーンフラグ)
+		static bool SetFullscreen(bool フルスクリーンフラグ)
 		{
-			Single().isFullScreen = フルスクリーンフラグ;
-
-			if (Single().isFullScreen)
-			{
-				SDL_RenderSetLogicalSize(Screen::GetHandle(), GetWidth(), GetHeight());
-				SDL_SetWindowFullscreen(Single().handle, SDL_WINDOW_FULLSCREEN_DESKTOP);
-			}
-			else
-			{
-				SDL_SetWindowFullscreen(Single().handle, 0);
-				SDL_SetWindowSize(Single().handle, GetWidth(), GetHeight());
-			}
-			return false;
+			return activeWindow->SetFullscreen( フルスクリーンフラグ );
 		}
 
 		/** ウィンドウタイトルを設定.*/
 		static bool SetTitle(const char *タイトル名)
 		{
-			SDL_SetWindowTitle(Single().handle, タイトル名);
-			return true;
+			return activeWindow->SetTitle(タイトル名);
 		}
 
 		/** ウィンドウサイズの設定.*/
 		static void SetSize(int 幅, int 高さ)
 		{
-			Window::Single().width = 幅;
-			Window::Single().height = 高さ;
-
-			SDL_RenderSetLogicalSize(Screen::GetHandle(), 幅, 高さ);
-			SDL_SetWindowSize(Single().handle, 幅, 高さ);
+			activeWindow->SetSize(幅,高さ);
 		}
 
 		/** ウィンドウ幅の取得.*/
 		static int GetWidth()
 		{
-			return Single().width;
+			return activeWindow->width;
 		}
 
 		/** ウィンドウ高さの取得.*/
 		static int GetHeight()
 		{
-			return Single().height;
+			return activeWindow->height;
 		}
+
+		/** ウィンドウの位置と座標を取得.*/
+		static Rect GetSize()
+		{
+			return activeWindow->GetSize();
+		}
+
+		/** ウィンドウのアイコンを設定.*/
+		static bool SetIcon(const char *ファイル名)
+		{
+			return activeWindow->SetIcon(ファイル名);
+		}
+
 	};
 }

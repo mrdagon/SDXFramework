@@ -7,9 +7,9 @@
 
 namespace SDX
 {
-	/** タッチ操作.*/
+	/** タッチ操作の各種ジェスチャー.*/
 	/** \include .*/
-	class Touch
+	class Gesture
 	{
 		friend class Input;
 	private:
@@ -42,63 +42,32 @@ namespace SDX
 				yBuffer = int(pos * Window::GetHeight());
 			}
 		}
-
 	public:
-		double x = 0;//!<
+		bool on = false;//!<
+
+		double rotate = 0;//!<回転ジェスチャー
+		double pinche = 0;//!<ピンチ操作
+
+		double x = 0;//!<ジェスチャー操作の中心点
 		double y = 0;//!<
 
-		double moveX = 0;//!<
-		double moveY = 0;//!<
+		int fingerCount = 0;//!<ジェスチャーに使った指の本数
 
-		bool on = false;//!<
-		bool off = false;//!<
-		bool hold = false;//!<
-
-		unsigned int  holdCount = 0;//!<押されている時間
-
-		/** 状態の更新.*/
 		void Update()
 		{
-			on = (!hold && press);
-			off = (hold && !press);
-			hold = press;
-			if (press)
-			{
-				++holdCount;
-			}
-			else{
-				holdCount = 0;
-			}
-
-			if (!on)
-			{
-				moveX = xBuffer - x;
-				moveY = yBuffer - y;
-			}
-			else
-			{
-				moveX = 0;
-				moveY = 0;
-			}
-
-			x = xBuffer;
-			y = yBuffer;
-		}
-
-		/** 状態のリセット.*/
-		void Reset()
-		{
-			x = 0;
-			y = 0;
-
-			moveX = 0;
-			moveY = 0;
-
-			on = false;
-			off = false;
-			hold = false;
+			on = press;
 			press = false;
 		}
 
+		void Reset()
+		{
+			press = false;
+			on = false;
+			rotate = 0;
+			pinche = 0;
+			x = 0;
+			y = 0;
+			fingerCount = 0;
+		}
 	};
 }

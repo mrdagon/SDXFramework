@@ -15,6 +15,7 @@ namespace SDX
 	};
 
 	/** 2D用に座標変換を行うカメラを表すクラス.*/
+	/** @todo */
 	/** \include ModelSample.h*/
 	class Camera
 	{

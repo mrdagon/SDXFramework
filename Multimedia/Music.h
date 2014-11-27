@@ -15,12 +15,19 @@ namespace SDX
 	private:
 		std::string fileName;//!<
 		int volume;//!<
-		Mix_Music* handle;//!<
+		Mix_Music* handle = nullptr;//!<
 		static int nowVolume;//!<
 
+		//!<前回の再生時刻
+		//!<前回の停止時刻
+		//!<再生中のMusic
+
 	public:
-		Music(){};
-		~Music(){};
+		Music() = default;
+		~Music()
+		{
+			Destroy();
+		}
 
 		/** 音声ファイルを登録.*/
 		Music(const char *ファイル名, double 音量 = 1.0)
@@ -30,13 +37,25 @@ namespace SDX
 
 		/** 音声ファイルを登録.*/
 		/** 音量は 0～1.0で指定、ファイルはメモリには読み込まない。*/
-		void Load(const char *ファイル名, double 音量 = 1.0)
+		bool Load(const char *ファイル名, double 音量 = 1.0)
 		{
+			if (handle != nullptr){ return false; }
+
 			this->fileName = ファイル名;
-
 			handle = Mix_LoadMUS(ファイル名);
-
 			volume = int(音量 * 255);
+
+			return true;
+		}
+
+		/** 音声ファイルを解放.*/
+		bool Destroy()
+		{
+			if (handle == nullptr){ return false; }
+
+
+			Mix_FreeMusic(handle);
+			return true;
 		}
 
 		/** 音声ファイルを再生.*/
@@ -44,6 +63,8 @@ namespace SDX
 		/**	現在再生中の音声は停止する。*/
 		bool Play(PlayType 再生方法 = PlayType::Loop)
 		{
+			if (handle == nullptr){ return false; }
+
 			switch (再生方法)
 			{
 			case PlayType::Back:
@@ -59,6 +80,8 @@ namespace SDX
 			return true;
 		}
 
+
+
 		/**0～1.0で音量を設定.*/
 		void SetVolume(double 音量)
 		{
@@ -73,9 +96,21 @@ namespace SDX
 		}
 
 		/** 再生中のMusicを停止.*/
-		static bool Stop()
+		/** フェードアウト時間(ミリ秒)が1以上の場合、徐々に音量を下げて停止する*/
+		static bool Stop(int フェードアウト時間 = 0)
 		{
-			return !Mix_HaltMusic();
+			if (!Check()){ return false; }
+
+			if (フェードアウト時間 <= 0)
+			{
+				Mix_HaltMusic();
+			}
+			else
+			{
+				Mix_FadeOutMusic(フェードアウト時間);
+			}
+
+			return true;
 		}
 
 		/** 再生中の音量を変更.*/

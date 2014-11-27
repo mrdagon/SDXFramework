@@ -22,14 +22,14 @@ namespace SDX
 		/**透過状態を計算する.*/
 		static void RGBACulculate(int 赤, int 緑, int 青)
 		{
-			SDL_SetRenderDrawBlendMode(Screen::GetHandle(), (SDL_BlendMode)Screen::Single().GetRenderer()->nowBlendMode);
+			SDL_SetRenderDrawBlendMode(Screen::GetHandle(), (SDL_BlendMode)Screen::activeRenderer->nowBlendMode);
 			SDL_SetRenderDrawColor
 				(
 				Screen::GetHandle(),
-				Screen::Single().GetRenderer()->rgba.GetRed() * 赤 / 255,
-				Screen::Single().GetRenderer()->rgba.GetGreen() * 緑 / 255,
-				Screen::Single().GetRenderer()->rgba.GetBlue() * 青 / 255,
-				Screen::Single().GetRenderer()->blendParam
+				Screen::activeRenderer->rgba.GetRed() * 赤 / 255,
+				Screen::activeRenderer->rgba.GetGreen() * 緑 / 255,
+				Screen::activeRenderer->rgba.GetBlue() * 青 / 255,
+				Screen::activeRenderer->blendParam
 				);
 		}
 		/**円のデータを作成する.*/

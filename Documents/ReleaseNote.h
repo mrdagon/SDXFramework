@@ -8,13 +8,18 @@
 <B>ver 0.10</B>\n
 DXLib版と分離したので～Handleのusing宣言を削除\n
 NULL_HANDLEマクロを削除\n
+Fontクラスの内部仕様を変更\n
 FontとBmpFontから太さと書体の引数を削除\n
-Screenクラスの機能をRendererクラスに分割して追加\n
+Screenクラスの機能をRendererクラスに分割して再設計＆機能強化\n
+Windowクラスの機能をSubWindowクラスに分割して再設計＆機能強化\n
 Waitクラスを削除してSystemに統合\n
 一部Get関数のconst漏れを修正\n
-Mouse::SetVisible実装\n
-Joypadの振動関数削除\n
+Mouse::SetVisibleを実装\n
+Joypadの振動関数を削除\n
 "Hit.h"を"ShapeHit.h"に変更\n
+SetFullScreenをSetFullscreenに変更\n
+Screen::Copyを削除\n
+Soundクラスの非実装関数を一部削除、残りを実装\n
 不要なファイルを削除\n
 \n
 <B>ver 0.09</B>\n
