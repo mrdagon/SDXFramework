@@ -9,6 +9,7 @@ namespace SDX
 {
 	/** 動画を表すクラス[未実装].@todo*/ 
 	/** \include MovieSample.h*/
+	/** @todo 全く実装していない.*/
 	class Movie
 	{
 	private:
@@ -37,8 +38,9 @@ namespace SDX
 		}
 	};
 
-	/** Imageクラスの動画版[未実装].@todo*/ 
+	/** Imageクラスの動画版[未実装].*/ 
 	/** \include*/
+	/** @todo 全く実装していない.*/
 	class MovieImage
 	{
 	private:

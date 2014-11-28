@@ -79,23 +79,6 @@ namespace SDX
 			return true;
 		}
 
-		/**対象RenderHandleにコピー.*/
-		/** [Renderer専用]*/
-		bool Draw(const Rect& 領域, Renderer& コピー先 = Renderer::mainRenderer)
-		{
-			if (!surface){ return false; }
-
-			SDL_Texture* image;
-			image = SDL_CreateTextureFromSurface(コピー先.GetHandle(), surface);
-
-			SDL_Rect srcrect = { 0, 0, (int)領域.GetW(), (int)領域.GetH() };
-			SDL_Rect dsrect = { (int)領域.GetX(), (int)領域.GetY(), (int)領域.GetW(), (int)領域.GetH() };
-			SDL_RenderCopy(コピー先.GetHandle(), image, &srcrect, &dsrect);
-			SDL_DestroyTexture(image);
-
-			return true;
-		}
-
 		/** Rendererを削除.*/
 		/** Windowに対応して生成したRendererは削除不可.*/
 		/** [Renderer専用]*/
@@ -130,6 +113,23 @@ namespace SDX
 		{
 			if (!surface){ return false; }
 			return !SDL_SetColorKey(surface, false, 0);
+		}
+
+		/**対象RenderHandleにコピー.*/
+		/** [Renderer専用]*/
+		bool Draw(const Rect& 領域, Renderer& コピー先 = Renderer::mainRenderer)
+		{
+			if (!surface){ return false; }
+
+			SDL_Texture* image;
+			image = SDL_CreateTextureFromSurface(コピー先.GetHandle(), surface);
+
+			SDL_Rect srcrect = { 0, 0, (int)領域.GetW(), (int)領域.GetH() };
+			SDL_Rect dsrect = { (int)領域.GetX(), (int)領域.GetY(), (int)領域.GetW(), (int)領域.GetH() };
+			SDL_RenderCopy(コピー先.GetHandle(), image, &srcrect, &dsrect);
+			SDL_DestroyTexture(image);
+
+			return true;
 		}
 
 		/** 画面を消去する.*/

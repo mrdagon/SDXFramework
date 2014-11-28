@@ -138,12 +138,14 @@ namespace SDX
 			SDL_RenderDrawPoint(Screen::GetHandle(), (int)座標.x, (int)座標.y);
 		}
 
-		/** 指定座標の色を取得 [未実装].@todo*/		
+		/** 指定座標の色を取得[未実装].*/
+		/*
 		static SDL_Color GetPixel(const Point &座標)
 		{
 			//SDL_RenderReadPixelsで実装可能
 			return SDL_Color{ 0, 0, 0 };
 		}
+		*/
 
 		/** 画像を一時的にメモリに読み込んで描画.*/
 		/** この処理は重いので、通常はImageクラスを利用する*/

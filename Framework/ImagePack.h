@@ -28,12 +28,12 @@ namespace SDX
 		}
 
 		/** １つの画像を分割して読み込む.*/
-		/** 総コマ数=14,コマ割り横=4,コマ割り縦=4の場合\n
-			[ 0][ 1][ 2][ 3]\n
-			[ 4][ 5][ 6][ 7]\n
-			[ 8][ 9][10][11]\n
-			[12][13][  ][  ]\n
-			のように分割して、ImagePackのサイズは14になる */
+		/** 総コマ数=14,コマ割り横=4,コマ割り縦=4の場合\n*/
+		/**	[ 0][ 1][ 2][ 3]\n*/
+		/**	[ 4][ 5][ 6][ 7]\n*/
+		/**	[ 8][ 9][10][11]\n*/
+		/**	[12][13][  ][  ]\n*/
+		/**	のように分割して、ImagePackのサイズは14になる */
 		bool Load(const char *ファイル名, int 総コマ数, int コマ割り横, int コマ割り縦)
 		{
 			int x = 0, y = 0, count = 0;
@@ -59,8 +59,8 @@ namespace SDX
 		}
 
 		/** 連番ファイルを一括して読み込む.*/
-		/** ファイル名の後に三桁の連番が付いたファイルを連続して読み込む\n
-			例:「ファイル名***.拡張子」*/
+		/** ファイル名の後に三桁の連番が付いたファイルを連続して読み込む\n*/
+		/**	例:「ファイル名***.拡張子」*/
 		bool Load(const char *ファイル名, const char *拡張子, int 総コマ数, const char* 書式 = "%03d.")
 		{
 			for (int a = 0; a < 総コマ数; ++a)
@@ -127,5 +127,27 @@ namespace SDX
 		{
 			return images[index];
 		}
+
+		auto begin() ->decltype(images.begin())
+		{
+			return images.begin();
+		}
+
+		auto end() ->decltype(images.end())
+		{
+			return images.end();
+		}
+
+		auto begin() const ->decltype(images.begin())
+		{
+			return images.begin();
+		}
+
+		auto end() const ->decltype(images.end())
+		{
+			return images.end();
+		}
+
+
 	};
 }

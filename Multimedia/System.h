@@ -124,7 +124,7 @@ namespace SDX
 						if (SubWindow::mainWindow.handle == nullptr)
 						{
 							IsEnd() = true;
-							for (auto it : SubWindow::windows)
+							for (auto it : SubWindow::windowS)
 							{
 								it->Destroy();
 							}
@@ -132,10 +132,13 @@ namespace SDX
 						break;
 #ifdef TABLET
 					case SDL_WINDOWEVENT_MINIMIZED:
+						//スリープに入る
 						Mix_VolumeMusic(0);
 						break;
 					case SDL_WINDOWEVENT_RESTORED:
-						Mix_VolumeMusic(Music::nowVolume);
+						//スリープ解除
+						if( Music::active == nullptr ){break;}
+						Mix_VolumeMusic(Music::active->volume / 2);
 						break;
 #endif
 					}

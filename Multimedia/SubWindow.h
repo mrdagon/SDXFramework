@@ -25,11 +25,11 @@ namespace SDX
 		int width;//!<ウィンドウの幅
 		int height;//!<ウィンドウの高さ
 		double aspect;//!<タッチ用の画面の縦横比
-		static std::list<SubWindow*> windows;
+		static std::list<SubWindow*> windowS;
 
 		static void CheckWindowID(int 削除するWindowのID)
 		{
-			for (auto it : windows)
+			for (auto it : windowS)
 			{
 				if (SDL_GetWindowID(it->handle) == 削除するWindowのID)
 				{
@@ -87,7 +87,7 @@ namespace SDX
 
 			renderer.Create(handle);
 
-			windows.push_back(this);
+			windowS.push_back(this);
 
 			return true;
 		}
@@ -102,9 +102,9 @@ namespace SDX
 			renderer.Destroy();
 			SDL_DestroyWindow(handle);
 
-			if (windows.size() >= 2)
+			if (windowS.size() >= 2)
 			{
-				windows.remove(this);
+				windowS.remove(this);
 			}
 			handle = nullptr;
 

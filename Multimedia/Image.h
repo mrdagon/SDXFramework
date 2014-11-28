@@ -37,22 +37,19 @@ namespace SDX
 	};
 
 	/** 画像データを表すクラス.*/
+	/** デストラクタでリソース解放周りは調整中*/
 	/** \include ImageSample.h*/
 	class Image
 	{
 		friend class Anime;
+		friend class Renderer;
 		friend class ImagePack;
 		friend class Drawing;
 	private:
-		bool isScreen = false;
-		bool isAlphaChannel = false;
-		bool isTrans = true;//png等の透過フラグ
-
 		SDL_Rect part;
-
 		SDL_Texture* handle = nullptr;
 
-		// 透過状態を計算する
+		/**透過状態を計算する.*/
 		void RGBACulculate() const
 		{
 			if (Screen::activeRenderer->nowBlendMode == BlendMode::NoBlend)
@@ -75,7 +72,8 @@ namespace SDX
 		}
 
 	public:
-		Image(){}
+		Image() = default;
+		~Image() = default;
 
 		Image(const char *ファイル名)
 		{
@@ -87,16 +85,15 @@ namespace SDX
 			Copy(コピー元, X頂点, Y頂点, 幅, 高さ);
 		}
 
-
 		Image(SDL_Texture* 画像ハンドル,int 幅,int 高さ):
 			handle(画像ハンドル),
 			part({0,0,幅,高さ})
 		{}
 
 		/** 空のイメージを作成.*/
-		Image(int 幅, int 高さ, bool スクリーン用フラグ, bool αチャンネルフラグ = true, bool 透過フラグ = true)
+		Image(int 幅, int 高さ)
 		{
-			Make(幅, 高さ, スクリーン用フラグ, αチャンネルフラグ, 透過フラグ);
+			Make(幅, 高さ);
 		}
 
 		/** 画像をメモリへ読み込む.*/
@@ -130,24 +127,21 @@ namespace SDX
 		}
 
 		/** 空のイメージを作成.*/
-		SDL_Texture* Make(int 幅, int 高さ, bool スクリーン用フラグ = false, bool αチャンネルフラグ = true, bool 透過フラグ = true)
+		SDL_Texture* Make(int 幅, int 高さ)
 		{
 			Release();
 
-			handle = SDL_CreateTexture(Screen::GetHandle(), SDL_TEXTUREACCESS_TARGET * スクリーン用フラグ, 0, 幅, 高さ);
+			handle = SDL_CreateTexture(Screen::GetHandle(), 0, 0, 幅, 高さ);
 			part.x = 0;
 			part.y = 0;
 			part.w = 幅;
 			part.h = 高さ;
 
-			isTrans = 透過フラグ;
-			isScreen = スクリーン用フラグ;
-			isAlphaChannel = αチャンネルフラグ;
-
 			return handle;
 		}
 
-		/** 元イメージの一部をコピーして、別イメージを作成.*/
+		/** 別のImageの一部をコピーして、Imageを初期化.*/
+		/** handleは同一*/
 		SDL_Texture* Copy(const Image& 元イメージ, int X原点, int Y原点, int 幅, int 高さ)
 		{
 			this->handle = 元イメージ.handle;
@@ -156,11 +150,27 @@ namespace SDX
 			part.w = 幅;
 			part.h = 高さ;
 
-			this->isTrans = 元イメージ.isTrans;
-			this->isScreen = false;
-			this->isAlphaChannel = false;
-
 			return handle;
+		}
+
+		/** 同じImageを作成[未実装].*/
+		/** handleは別*/
+		/** @todo 実装中*/
+		Image Clone() const
+		{
+			Image image(part.w, part.h);
+
+			return image;
+		}
+
+		/** Imageの一部から別Imageを作成[未実装].*/
+		/** handleは別*/
+		/** @todo 実装中*/
+		Image Clone(int X原点, int Y原点, int 幅, int 高さ) const
+		{
+			Image image(幅, 高さ);
+
+			return image;
 		}
 
 		/** ハンドルを取得.*/
@@ -225,7 +235,8 @@ namespace SDX
 			return !SDL_RenderCopyEx(Screen::GetHandle(), handle, &part, &temp, 角度 * 180 / PAI, &point, SDL_RendererFlip(反転フラグ));
 		}
 
-		/** 四角形に変形描画[未実装].@todo*/ 
+		/** 四角形に変形描画[未実装].*/ 
+		/** @todo 実装予定無し*/
 		bool DrawModify(const Point &頂点A, const Point &頂点B, const Point &頂点C, const Point &頂点D) const
 		{
 			return false;
@@ -241,13 +252,6 @@ namespace SDX
 			return !SDL_RenderCopyEx(Screen::GetHandle(), handle, &part, &temp, 0, &point, SDL_RendererFlip(反転フラグ));
 		}
 
-		/** スクリーンの一部をイメージに取り込む[未実装].@todo*/ 
-		/** 指定した座標を右上にして、スクリーンからImageと同じ大きさコピーする*/
-		int LoadScreen(int X座標, int Y座標)
-		{
-			return false;
-		}
-
 		/** 幅を取得.*/
 		int GetWidth() const
 		{
@@ -258,31 +262,6 @@ namespace SDX
 		int GetHeight() const
 		{
 			return part.h;
-		}
-
-		/** 説明.*/
-		bool GetIsScreen() const
-		{
-			return this->isScreen;
-		}
-
-		/** αチャンネルフラグを取得.*/
-		bool GetIsAlphaChannel() const
-		{
-			return this->isAlphaChannel;
-		}
-
-		/** 透過フラグを取得.*/
-		bool GetIsTrans() const
-		{
-			return this->isTrans;
-		}
-
-		/** 描画先にこのイメージに指定[未実装].@todo*/ 
-		/** Image::Makeでスクリーンフラグをtrueにした場合成功。*/
-		bool SetDrawScreen()
-		{
-			return false;
 		}
 	};
 }

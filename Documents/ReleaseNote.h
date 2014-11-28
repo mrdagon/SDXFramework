@@ -20,6 +20,9 @@ Joypadの振動関数を削除\n
 SetFullScreenをSetFullscreenに変更\n
 Screen::Copyを削除\n
 Soundクラスの非実装関数を一部削除、残りを実装\n
+ImageからisScreen,isAlpha,isTransフラグ関係を削除\n
+BlendBltとFilterBltをそれぞれBlend,Filterに統合(ただし未実装)\n
+SoundとMusicのPlayTypeを削除\n
 不要なファイルを削除\n
 \n
 <B>ver 0.09</B>\n

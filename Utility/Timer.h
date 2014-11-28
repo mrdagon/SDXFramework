@@ -2,7 +2,7 @@
 //[License]GNU Affero General Public License, version 3
 //[Contact]http://sourceforge.jp/projects/dxframework/
 #pragma once
-#include <Multimedia/Color.h>
+//#include <Multimedia/Color.h>
 #include <chrono>
 
 namespace SDX
@@ -24,7 +24,6 @@ namespace SDX
 		}
 
 		~Time(void){};
-
 
 		static Time& Single()
 		{

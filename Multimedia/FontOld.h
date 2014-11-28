@@ -102,7 +102,7 @@ namespace SDX
 			return this->size;
 		}
 
-		/** 描画時の幅を取得[未実装].@todo*/ 
+		/** 描画時の幅を取得[未実装].*/ 
 		int GetDrawStringWidth(VariadicStream 幅を計算する文字列) const
 		{
 			int 幅 = 0;

@@ -6,14 +6,6 @@
 
 namespace SDX
 {
-	/** 音声の再生方式.*/
-	enum class PlayType
-	{
-		Normal = 0,//!< 再生中、他の処理を止める
-		Back = 0,//!< 再生中、他の処理を止めない
-		Loop = -1,//!< 他の処理を止めず、繰り返す
-	};
-
 	/** 効果音用音声を表すクラス.*/
 	/** \include SoundSample.h*/
 	class Sound
@@ -59,11 +51,11 @@ namespace SDX
 		}
 
 		/** 音声ファイルを再生.*/
-		bool Play(PlayType 再生方法 = PlayType::Back) const
+		bool Play() const
 		{
 			//static int channel = 0;
 			//channel = (++channel) % 2;
-			Mix_PlayChannel(0, handle, (int)再生方法);
+			Mix_PlayChannel(0, handle, 0);
 
 			if (distance != -1)
 			{
