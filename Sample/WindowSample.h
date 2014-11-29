@@ -19,9 +19,9 @@ bool SampleWindow()
 
 		if (Input::key._2.on) { Window::SetSize(300, 200); }//ウィンドウの大きさを変更
 
-		if (Input::key._3.on) { Window::SetFullScreen(true); }
+		if (Input::key._3.on) { Window::SetFullscreen(true); }
 
-		if (Input::key._4.on) { Window::SetFullScreen(false); }
+		if (Input::key._4.on) { Window::SetFullscreen(false); }
 
 		if (Input::key.Return.on){ break; }//Enterで終了
 	}

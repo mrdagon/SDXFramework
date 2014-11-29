@@ -27,6 +27,5 @@ namespace SDX
 #include <Sample/SpeedSample.h>
 #include <Sample/SystemSample.h>
 #include <Sample/TimerSample.h>
-#include <Sample/WaitSample.h>
 #include <Sample/WindowSample.h>
 }

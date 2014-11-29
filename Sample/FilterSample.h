@@ -7,6 +7,7 @@
 
 bool SampleFilter()
 {
+	/*
 	using namespace SDX;
 	System::Initialise("sample", 600, 400);
 
@@ -21,5 +22,6 @@ bool SampleFilter()
 	}
 
 	System::End();
+	*/
 	return true;
 }

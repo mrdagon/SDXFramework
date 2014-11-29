@@ -7,6 +7,7 @@
 
 bool SampleBlend()
 {
+	/*
 	//サンプルコード作成途中です。
 	using namespace SDX;
 	System::Initialise("sample", 600, 400);
@@ -27,5 +28,6 @@ bool SampleBlend()
 	}
 
 	System::End();
+	*/
 	return true;
 }

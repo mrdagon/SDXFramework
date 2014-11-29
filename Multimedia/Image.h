@@ -48,6 +48,7 @@ namespace SDX
 	private:
 		SDL_Rect part;
 		SDL_Texture* handle = nullptr;
+		Color color = { 255, 255, 255 };
 
 		/**透過状態を計算する.*/
 		void RGBACulculate() const
@@ -57,7 +58,8 @@ namespace SDX
 				SDL_SetTextureBlendMode(handle, (SDL_BlendMode)BlendMode::Alpha);
 				SDL_SetTextureAlphaMod(handle, 255);
 			}
-			else{
+			else
+			{
 				SDL_SetTextureBlendMode(handle, (SDL_BlendMode)Screen::activeRenderer->nowBlendMode);
 				SDL_SetTextureAlphaMod(handle, Screen::activeRenderer->blendParam);
 			}
@@ -65,12 +67,11 @@ namespace SDX
 			SDL_SetTextureColorMod
 				(
 				handle,
-				Screen::activeRenderer->rgba.GetRed(),
-				Screen::activeRenderer->rgba.GetGreen(),
-				Screen::activeRenderer->rgba.GetBlue()
+				Screen::activeRenderer->rgba.GetRed() * color.GetRed() / 255,
+				Screen::activeRenderer->rgba.GetGreen() * color.GetRed() / 255,
+				Screen::activeRenderer->rgba.GetBlue() * color.GetRed() / 255
 				);
 		}
-
 	public:
 		Image() = default;
 		~Image() = default;
@@ -237,7 +238,7 @@ namespace SDX
 
 		/** 四角形に変形描画[未実装].*/ 
 		/** @todo 実装予定無し*/
-		bool DrawModify(const Point &頂点A, const Point &頂点B, const Point &頂点C, const Point &頂点D) const
+		bool DrawModify(const Point &頂点A, const Point &頂点B, const Point &頂点C, const Point &頂点D , bool 反転フラグ = 0) const
 		{
 			return false;
 		}
@@ -262,6 +263,12 @@ namespace SDX
 		int GetHeight() const
 		{
 			return part.h;
+		}
+
+		/** 描画色を指定.*/
+		void SetColor(const Color &描画色)
+		{
+			color.SetColor(描画色.GetRed(), 描画色.GetGreen(), 描画色.GetBlue(), 255);
 		}
 	};
 }
