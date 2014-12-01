@@ -13,8 +13,8 @@
 namespace SDX
 {
 	/** フォントデータを表すクラス.*/
-	/** 描画の度にImageを生成する旧実装.*/
-	/** \include FontSample.h*/
+	/** 描画の度にImageを生成する旧実装、MixFontの使用を推奨.*/
+	/** \include Font.h*/
 	class Font : public IFont
 	{
 	private:
@@ -24,19 +24,26 @@ namespace SDX
 	public:
 		Font(){}
 
-		Font(const char *フォント名, int 大きさ, int 改行高さ = 0)
+		Font(const char *フォント名, int 大きさ, int 行間 = 0)
 		{
-			Font::Load(フォント名, 大きさ, 改行高さ);
+			Font::Load(フォント名, 大きさ, 行間);
 		}
 
 		/** メモリ上にフォントを作成する.*/
 		/** 太さは0～9で指定、大きさと太さは-1にするとデフォルトになる\n*/
-		/**	改行高さは0の場合、改行後の文字が上下くっつく。*/
-		bool Load(const char *フォント名, int 大きさ, int 改行高さ = 0)
+		/**	行間は0の場合、改行後の文字が上下くっつく。*/
+		bool Load(const char *フォント名, int 大きさ, int 行間 = 0)
 		{
-			Release();
+			if (Loading::isLoading)
+			{
+				Loading::AddLoading([=]{ Load(フォント名,大きさ,行間); });
+				return true;
+			}
+
+			if (handle != nullptr){ return false; }
+
 			this->size = 大きさ;
-			this->enterHeight = 改行高さ + 大きさ;
+			this->enterHeight = 行間 + 大きさ;
 
 			handle = TTF_OpenFont(フォント名, 大きさ);
 			return (handle != nullptr);

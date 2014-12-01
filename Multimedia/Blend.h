@@ -9,7 +9,7 @@ namespace SDX
 	/** Image同士の合成処理を行う関数群[未実装].*/ 
 	/** 合成元のイメージに入力イメージを合成し、画像編集ソフトにあるような合成処理を施す。\n*/
 	/**	合成率は0.0～1.0の範囲で指定し、率が高い程入力の影響が強くなる。\n*/
-	/**	\include BlendSample.h*/
+	/**	\include Blend.h*/
 	/** @todo OpenGLが必要なので、実装予定無し*/
 	class Blend
 	{

@@ -27,7 +27,7 @@ namespace SDX
 	};
 
 	/** 入出力可能なテキストかバイナリファイルを表すクラス.*/
-	/** \include FileSample.h*/
+	/** \include File.h*/
 	class File
 	{
 	private:

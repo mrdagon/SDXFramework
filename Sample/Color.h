@@ -3,8 +3,6 @@
 //[Contact]http://sourceforge.jp/projects/dxframework/
 
 //図形を異なる色で描画
-#include <SDXFramework.h>
-
 bool SampleColor()
 {
 	using namespace SDX;

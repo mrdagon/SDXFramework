@@ -9,7 +9,7 @@ namespace SDX
 {
 	/** ウィンドウを表すクラス.*/
 	/** Windowに無くてSubWindowにある関数は[SubWindow専用]と表記.*/
-	/** \include WindowSample.h*/
+	/** \include Window.h*/
 	class SubWindow
 	{
 		friend class System;
@@ -201,10 +201,19 @@ namespace SDX
 			if (handle == nullptr){ return false; }
 
 			SDL_Surface* icon = IMG_Load(ファイル名);
-			SDL_SetWindowIcon(handle, icon);
+			if (icon == nullptr){ return false; }
 
-			// その後はアイコンのピクセルデータを持つサーフェイスはもう必要ない
+			SDL_SetWindowIcon(handle, icon);
 			SDL_FreeSurface(icon);
+
+			return true;
+		}
+
+		/** 描画処理を反映する.*/
+		void Update()
+		{
+			SDL_RenderPresent(renderer.GetHandle());
+			renderer.Clear();
 		}
 
 	};

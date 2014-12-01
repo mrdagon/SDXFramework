@@ -3,11 +3,12 @@
 //[Contact]http://sourceforge.jp/projects/dxframework/
 #pragma once
 #include <Framework/ISprite.h>
+#include <Framework/Anime.h>
 
 namespace SDX
 {
 	/** Imageスプライト.*/
-	/** \include ModelSample.h*/
+	/** \include Model.h*/
 	class SpImage : public ISprite
 	{
 	private:

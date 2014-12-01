@@ -7,7 +7,7 @@
 namespace SDX
 {
 	/** 乱数生成関数群.*/
-	/** \include RandSample.h*/
+	/** \include Rand.h*/
 	class Rand
 	{
 	private:

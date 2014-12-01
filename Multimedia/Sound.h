@@ -7,7 +7,7 @@
 namespace SDX
 {
 	/** 効果音用音声を表すクラス.*/
-	/** \include SoundSample.h*/
+	/** \include Sound.h*/
 	class Sound
 	{
 	private:
@@ -28,8 +28,16 @@ namespace SDX
 		}
 
 		/** 音声ファイルをメモリに読み込む.*/
-		int Load(const char *ファイル名, double 音量 = 1.0)
+		bool Load(const char *ファイル名, double 音量 = 1.0)
 		{
+			if (Loading::isLoading)
+			{
+				Loading::AddLoading([=]{ Load(ファイル名,音量); });
+				return true;
+			}
+
+			if (handle != nullptr){ return false; }
+
 			handle = Mix_LoadWAV(ファイル名);
 			if (!handle){ return false; }
 
@@ -40,6 +48,7 @@ namespace SDX
 		/** 音声ファイルをメモリから開放.*/
 		bool Release()
 		{
+			if (handle == nullptr){ return false; }
 			Mix_FreeChunk(handle);
 			return true;
 		}

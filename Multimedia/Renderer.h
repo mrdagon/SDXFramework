@@ -12,15 +12,15 @@ namespace SDX
 	/** ブレンドモード.*/
 	enum class BlendMode
 	{
-		NoBlend = SDL_BLENDMODE_NONE,//!<
-		Alpha = SDL_BLENDMODE_BLEND,//!<
-		Add = SDL_BLENDMODE_ADD,//!<
-		Mula = SDL_BLENDMODE_MOD,//!<
+		NoBlend = SDL_BLENDMODE_NONE,//!< ブレンドしない
+		Alpha = SDL_BLENDMODE_BLEND,//!< αブレンド
+		Add = SDL_BLENDMODE_ADD,//!< 加算ブレンド
+		Mula = SDL_BLENDMODE_MOD,//!< 積算ブレンド
 	};
 
 	/** 描画先を表すクラス.*/
 	/** Screenに無くてRendereにある関数は[Renderer専用]と表記.*/
-	/** \include ScreenSample.*/
+	/** \include Screen.*/
 	class Renderer
 	{
 		friend class SubWindow;
@@ -44,9 +44,8 @@ namespace SDX
 		static Renderer &mainRenderer;
 
 		BlendMode nowBlendMode = BlendMode::NoBlend;//!<
-		int blendParam = 0;//!<αブレンドの比率 0～255
 		Color clearColor = Color(0, 0, 0);//!<消去時の色
-		Color rgba = Color(255, 255, 255, 0);//!<描画輝度と透明度
+		Color rgba = Color(255, 255, 255, 255);//!<描画輝度とα値
 
 		/*描画ハンドルを取得*/
 		SDL_Renderer* GetHandle()
@@ -188,18 +187,27 @@ namespace SDX
 		}
 
 		/** 描画輝度を設定.*/
+		/** α値は変更しない*/
 		void SetBright(const Color &輝度)
 		{
 			rgba.SetColor(輝度.GetRed(), 輝度.GetGreen(), 輝度.GetBlue());
 		}
 
-		/** ブレンド描画のモードを設定.*/
-		void SetBlendMode(BlendMode ブレンドモード, int 設定値)
+		/** 描画モードを設定.*/
+		void SetBlendMode(BlendMode ブレンドモード, int α値)
 		{
 			nowBlendMode = ブレンドモード;
-			if (設定値 > 255){ blendParam = 255; }
-			else if (設定値 < 0){ blendParam = 0; }
-			else { blendParam = 設定値; }
+			if (α値 > 255){ α値 = 255; }
+			else if (α値 < 0){ α値 = 0; }
+
+			rgba.SetColor(rgba.GetRed(),rgba.GetGreen(),rgba.GetBlue(),α値);
+		}
+
+		/** 描画輝度と描画モードをまとめて設定*/
+		void SetDrawMode(const Color &輝度＋α値 = Color::White, BlendMode ブレンドモード = BlendMode::NoBlend)
+		{
+			nowBlendMode = ブレンドモード;
+			rgba = 輝度＋α値;
 		}
 
 		/** BMP形式で保存.*/

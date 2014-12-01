@@ -3,8 +3,6 @@
 //[Contact]http://sourceforge.jp/projects/dxframework/
 
 //画像をアニメーションさせる
-#include <SDXFramework.h>
-
 bool SampleAnime()
 {
 	using namespace SDX;

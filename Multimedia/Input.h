@@ -13,7 +13,7 @@
 namespace SDX
 {
 	/** キーやマウスによる入力をまとめて管理するクラス.*/
-	/** \include InputSample.h*/
+	/** \include Input.h*/
 	class Input
 	{
 	private:

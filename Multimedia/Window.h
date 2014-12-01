@@ -10,7 +10,7 @@ namespace SDX
 {
 	/** アクティブなSubWindowを操作するクラス.*/
 	/** WindowにあってSubWindowに無い関数は[Window専用]と表記.*/
-	/** \include WindowSample.h*/
+	/** \include Window.h*/
 	class Window
 	{
 		friend class System;

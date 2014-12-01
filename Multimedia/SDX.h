@@ -12,6 +12,8 @@
 #include <iomanip>
 
 #include <vector>
+#include <thread>
+#include <mutex>
 
 /** SDXFramework共通の名前空間.*/
 namespace SDX

@@ -2,9 +2,7 @@
 //[License]GNU Affero General Public License, version 3
 //[Contact]http://sourceforge.jp/projects/dxframework/
 
-//[未実装].*/ 
-#include <SDXFramework.h>
-
+//[未実装]
 bool SampleCamera()
 {
 	using namespace SDX;

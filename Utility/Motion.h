@@ -29,6 +29,7 @@ namespace SDX
 		*/
 
 		/**前方に移動.*/
+		/** \include Motion.h */
 		template <class TSpeed>	class ToFront : public IMotion
 		{
 		private:
@@ -45,6 +46,7 @@ namespace SDX
 		};
 
 		/**範囲内で跳ね返る.*/
+		/** \include Motion.h */
 		template <class TSpeed> class Bound : public IMotion
 		{
 		private:
@@ -98,6 +100,7 @@ namespace SDX
 		};
 
 		/**目標座標に移動.*/
+		/** \include Motion.h */
 		template <class TSpeed>	class ToPoint : public IMotion
 		{
 		private:
@@ -128,6 +131,7 @@ namespace SDX
 		};
 
 		/**円周上を移動.*/
+		/** \include Motion.h */
 		template <class TSpeed> class Orbit : public IMotion
 		{
 		private:
@@ -159,6 +163,7 @@ namespace SDX
 		};
 
 		/**範囲内で振動.*/
+		/** \include Motion.h */
 		class  Vibrate : public IMotion
 		{
 		private:

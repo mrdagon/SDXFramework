@@ -2,23 +2,13 @@
 //[License]GNU Affero General Public License, version 3
 //[Contact]http://sourceforge.jp/projects/dxframework/
 #pragma once
-#include <Multimedia/Image.h>
-#include <Multimedia/Font.h>
-#include <Framework/BmpFont.h>
-#include <Framework/Anime.h>
+#include <Framework/ImagePack.h>
+#include <Framework/IFrame.h>
 
 namespace SDX
 {
-	/** 描画用枠のインターフェース.*/
-	/** \include BmpFrameSample.h*/
-	class IFrame
-	{
-	public:
-		virtual void Draw(const Rect &領域) const = 0;
-	};
-
 	/** 描画用枠を表すクラス.*/
-	/** \include BmpFrameSample.h*/
+	/** \include BmpFrame.h*/
 	class BmpFrame : public IFrame
 	{
 	private:

@@ -2,32 +2,25 @@
 //[License]GNU Affero General Public License, version 3
 //[Contact]http://sourceforge.jp/projects/dxframework/
 
-//色んな画像を合成してみる
-#include <SDXFramework.h>
-
-bool SampleBlend()
+//初期化を行い何かキーを押すと終了する
+bool SampleBmpFrame()
 {
-	/*
-	//サンプルコード作成途中です。
 	using namespace SDX;
 	System::Initialise("sample", 600, 400);
 
-	Image imageA("image.bmp");
-	Image imageB("image.bmp");
+	//BmpFrame用の画像を読み込む
+	ImagePack    frameImage("image.bmp", 9, 3, 3);
 
-	Image imageC = BlendBlt::Add(&imageA, &imageB, 128);
+	//BmpFrameを作成
+	BmpFrame    bmpFrame;
+	bmpFrame.Make(&frameImage);
 
 	while (System::Update())
 	{
-		imageA.Draw({ 10, 10 });
-		imageB.Draw({ 10, 200 });
-
-		imageC.Draw({ 200, 10 });
-
+		bmpFrame.Draw({ 10, 10, 500, 300 });
 		if (Input::key.Return.on){ break; }//Enterで終了
 	}
 
 	System::End();
-	*/
 	return true;
 }

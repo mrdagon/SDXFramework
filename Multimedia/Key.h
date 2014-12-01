@@ -7,7 +7,7 @@
 namespace SDX
 {
 	/** 各ボタンとキーを表すクラス.*/
-	/** \include InputSample.h*/
+	/** \include Input.h*/
 	class Key
 	{
 	public:

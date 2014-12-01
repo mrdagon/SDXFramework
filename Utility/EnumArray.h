@@ -7,6 +7,7 @@
 namespace SDX
 {
 	/**列挙型を直接添字に使える配列.*/
+	/** \include EnumArray.h */
 	/**@todo エラー処理など未実装*/
 	template <class TData, class TType>
 	class EnumArray

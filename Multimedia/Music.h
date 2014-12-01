@@ -8,9 +8,9 @@
 
 namespace SDX
 {
-
 	/** BGM用音声を表すクラス.*/
-	/** \include MusicSample.h*/
+	/** \include Music.h*/
+	/**@todo 中途再生周りのテスト*/
 	class Music
 	{
 		friend class System;
@@ -42,6 +42,12 @@ namespace SDX
 		/** 音量は 0～1.0で指定、ファイルはメモリには読み込まない。*/
 		bool Load(const char *ファイル名, double 音量 = 1.0)
 		{
+			if (Loading::isLoading)
+			{
+				Loading::AddLoading([=]{ Load(ファイル名, 音量); });
+				return true;
+			}
+
 			if (handle != nullptr){ return false; }
 
 			this->fileName = ファイル名;

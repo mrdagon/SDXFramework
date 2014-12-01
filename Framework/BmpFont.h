@@ -10,8 +10,8 @@
 namespace SDX
 {
 	/** ビットマップフォントを表すクラス.*/
-	/** \include BmpFontSample.h*/
-	/** @todo 全体的に再設計*/
+	/** MixFontクラスの利用を推奨*/
+	/** \include BmpFont.h*/
 	class BmpFont : public IFont
 	{
 	private:

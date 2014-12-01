@@ -16,7 +16,7 @@ namespace SDX
 	class Camera;
 	class Color;
 	/** 位置情報を持つ図形の抽象クラス.*/
-	/** \include ShapeSample.h */
+	/** \include Shape.h */
 	class IShape
 	{
 	protected:

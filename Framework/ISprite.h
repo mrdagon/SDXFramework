@@ -13,7 +13,7 @@
 namespace SDX
 {
 	/** 2Dモデルに貼り付けるスプライトを表す抽象クラス.*/
-	/** \include ModelSample.h */
+	/** \include Sprite.h */
 	class ISprite
 	{
 		friend class IModel;

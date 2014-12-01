@@ -10,7 +10,7 @@
 namespace SDX
 {
 	/** シーンを管理するクラス.*/
-	/** \include DirectorSample.h*/
+	/** \include Director.h*/
 	class Director
 	{
 	private:

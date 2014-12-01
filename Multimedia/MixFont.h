@@ -18,7 +18,7 @@ namespace SDX
 	/** 文字フォントを扱うクラス.*/
 	/** 毎回レンダリングせず、ハッシュマップにImageを格納する*/
 	/** 一度も表示していない文字が必要になった場合生成する*/
-	/** \include FontSample.h*/
+	/** \include Font.h*/
 	class MixFont : public IFont
 	{
 	private:
@@ -134,21 +134,27 @@ namespace SDX
 
 		MixFont() = default;
 
-		MixFont(const char *フォント名, int 大きさ, int 改行高さ = 0)
+		MixFont(const char *フォント名, int 大きさ, int 行間 = 0)
 		{
-			Load(フォント名, 大きさ, 改行高さ);
+			Load(フォント名, 大きさ, 行間);
 		}
 
 		/** メモリ上にフォントを作成する.*/
 		/** 太さは0～9で指定、大きさと太さは-1にするとデフォルトになる\n*/
-		/**	改行高さは0の場合、改行後の文字が上下くっつく。*/
-		bool Load(const char *フォント名, int 大きさ, int 改行高さ = 0)
+		/**	行間は0の場合、改行後の文字が上下くっつく。*/
+		bool Load(const char *フォント名, int 大きさ, int 行間 = 0)
 		{
+			if (Loading::isLoading)
+			{
+				Loading::AddLoading([=]{ Load(フォント名,大きさ,行間); });
+				return true;
+			}
+
 			if (handle != nullptr){ return false; }
 
 			Release();
 			this->size = 大きさ;
-			this->enterHeight = 改行高さ + 大きさ;
+			this->enterHeight = 行間 + 大きさ;
 			handle = TTF_OpenFont(フォント名, 大きさ);
 			return true;
 		}

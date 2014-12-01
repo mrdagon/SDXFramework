@@ -3,8 +3,6 @@
 //[Contact]http://sourceforge.jp/projects/dxframework/
 
 //フォントを使って文字列を描画する
-#include <SDXFramework.h>
-
 bool SampleFont()
 {
 	using namespace SDX;

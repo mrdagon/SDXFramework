@@ -3,7 +3,7 @@
 //[Contact]http://sourceforge.jp/projects/dxframework/
 #pragma once
 
-#include <Multimedia/ThreadLoad.h>
+#include <Multimedia/Loading.h>
 //#include <Multimedia/Blend.h>
 //#include <Multimedia/Filter.h>
 #include <Multimedia/Color.h>
