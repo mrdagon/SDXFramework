@@ -9,7 +9,7 @@
 namespace SDX
 {
 	/** ジョイパッドの状態を表すクラス.*/
-	/** \include InputSample.h*/
+	/** \include Input.h*/
 	class Joypad
 	{
 	private:

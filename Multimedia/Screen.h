@@ -11,7 +11,7 @@ namespace SDX
 {
 	/** アクティブなRendererを操作するクラス.*/
 	/** ScreenにあってRendereに無い関数は[Screen専用]と表記.*/
-	/** \include ScreenSample.h*/
+	/** \include Screen.h*/
 	class Screen
 	{
 	private:
@@ -95,6 +95,12 @@ namespace SDX
 		static void SetBlendMode(BlendMode ブレンドモード, int 設定値)
 		{
 			activeRenderer->SetBlendMode(ブレンドモード,設定値);
+		}
+
+		/** 描画輝度と描画モードをまとめて設定*/
+		static void SetDrawMode(const Color &輝度＋α値 = Color::White, BlendMode ブレンドモード = BlendMode::NoBlend)
+		{
+			activeRenderer->SetDrawMode(輝度＋α値,ブレンドモード);
 		}
 
 		/** 画面全体をBMP形式で保存.*/ 

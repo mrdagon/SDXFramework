@@ -9,7 +9,7 @@ namespace SDX
 {
 	/** 時間と日付を取得する関数群.*/
 	/** わりと標準ライブラリで良い感じはある.*/
-	/** \include TimerSample.h*/
+	/** \include Timer.h*/
 	class Time
 	{
 	private:

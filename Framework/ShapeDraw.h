@@ -4,6 +4,7 @@
 #pragma once
 #include <Multimedia/Drawing.h>
 
+//Shape系の描画関数の実装
 namespace SDX
 {
 	void Complex::Draw(Color 描画色, int 透過率, Camera *座標変換Camera) const

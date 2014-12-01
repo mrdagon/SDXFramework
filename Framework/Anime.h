@@ -27,7 +27,7 @@ namespace SDX
 	};
 
 	/** Imageをまとめてコマ送りアニメとして表すクラス.*/
-	/** \include AnimeSample.h */
+	/** \include Anime.h */
 	class Anime : public ImagePack
 	{
 	private:

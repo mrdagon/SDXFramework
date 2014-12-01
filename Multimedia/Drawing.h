@@ -12,7 +12,7 @@
 namespace SDX
 {
 	/** リソースを読み込まずに描画を行う関数群.*/
-	/** \include DrawingSample.h*/
+	/** \include Drawing.h*/
 	class Drawing
 	{
 	private:
@@ -29,7 +29,7 @@ namespace SDX
 				Screen::activeRenderer->rgba.GetRed() * 赤 / 255,
 				Screen::activeRenderer->rgba.GetGreen() * 緑 / 255,
 				Screen::activeRenderer->rgba.GetBlue() * 青 / 255,
-				Screen::activeRenderer->blendParam
+				Screen::activeRenderer->rgba.GetAlpha()
 				);
 		}
 		/**円のデータを作成する.*/

@@ -10,7 +10,7 @@ namespace SDX
 {
 	/** Imageにフィルター処理を行う関数群[未実装].*/ 
 	/** ImageやImagePackに対して画像編集ソフトにあるようなフィルター処理を施す。*/
-	/** \include FilterSample.h*/
+	/** \include Filter.h*/
 	/** @todo OpenGLが必要なので、実装予定無し*/
 	class Filter
 	{

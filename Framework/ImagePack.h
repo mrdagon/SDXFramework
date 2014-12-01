@@ -4,11 +4,12 @@
 #pragma once
 #include<Multimedia/SDX.h>
 #include<Multimedia/Image.h>
+#include <Multimedia/Loading.h>
 
 namespace SDX
 {
 	/** 複数のImageをまとめるクラス.*/
-	/** \include ImageSample.h*/
+	/** \include ImagePack.h*/
 	class ImagePack
 	{
 	protected:
@@ -36,6 +37,12 @@ namespace SDX
 		/**	のように分割して、ImagePackのサイズは14になる */
 		bool Load(const char *ファイル名, int 総コマ数, int コマ割り横, int コマ割り縦)
 		{
+			if (Loading::isLoading)
+			{
+				Loading::AddLoading([=]{ Load(ファイル名,総コマ数,コマ割り横,コマ割り縦); });
+				return true;
+			}
+
 			int x = 0, y = 0, count = 0;
 			Image image(ファイル名);
 
@@ -63,6 +70,12 @@ namespace SDX
 		/**	例:「ファイル名***.拡張子」*/
 		bool Load(const char *ファイル名, const char *拡張子, int 総コマ数, const char* 書式 = "%03d.")
 		{
+			if (Loading::isLoading)
+			{
+				Loading::AddLoading([=]{ Load(ファイル名, 拡張子 ,総コマ数, 書式); });
+				return true;
+			}
+
 			for (int a = 0; a < 総コマ数; ++a)
 			{
 				char fileBuf[8];

@@ -3,8 +3,6 @@
 //[Contact]http://sourceforge.jp/projects/dxframework/
 
 //ビットマップフォントを使った描画を行う
-#include <SDXFramework.h>
-
 bool SampleBmpFont()
 {
 	using namespace SDX;

@@ -3,8 +3,6 @@
 //[Contact]http://sourceforge.jp/projects/dxframework/
 
 //入力を取得する
-#include <SDXFramework.h>
-
 bool SampleInput()
 {
 	using namespace SDX;

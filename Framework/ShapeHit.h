@@ -2,6 +2,8 @@
 //[License]GNU Affero General Public License, version 3
 //[Contact]http://sourceforge.jp/projects/dxframework/
 #pragma once
+
+//Shape系の衝突判定の実装
 namespace SDX
 {
 	bool Complex::Hit(const Point *point) const

@@ -9,7 +9,7 @@
 namespace SDX
 {
 	/** キーボードの状態を表すクラス.*/
-	/** \include InputSample.h*/
+	/** \include Input.h*/
 	class Keyboard
 	{
 	private:

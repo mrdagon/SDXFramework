@@ -5,40 +5,13 @@
 #include <Multimedia/SDX.h>
 #include <Multimedia/Screen.h>
 #include <Framework/Shape.h>
+#include <Multimedia/Loading.h>
 
 namespace SDX
 {
-	/** Zマスクの種類.*/
-	enum class ZMaskType
-	{
-		Clear,//!< マスクを切り取る
-		Mask,//!< マスクする
-	};
-
-	/** 説明.*/
-	enum class RGBA
-	{
-		SrcR,//!<
-		SrcG,//!<
-
-		SrcB,//!<
-		SrcA,//!<
-		BlendR,//!<
-		BlendG,//!<
-		BlendB,//!<
-		BlendA,//!<
-	};
-
-	/** 説明.*/
-	enum class ClipType
-	{
-		Less,//!<
-		Greater,//!<
-	};
-
 	/** 画像データを表すクラス.*/
 	/** デストラクタでリソース解放周りは調整中*/
-	/** \include ImageSample.h*/
+	/** \include Image.h*/
 	class Image
 	{
 		friend class Anime;
@@ -48,20 +21,21 @@ namespace SDX
 	private:
 		SDL_Rect part;
 		SDL_Texture* handle = nullptr;
-		Color color = { 255, 255, 255 };
+		Color color = { 255, 255, 255 ,255};
 
 		/**透過状態を計算する.*/
 		void RGBACulculate() const
 		{
 			if (Screen::activeRenderer->nowBlendMode == BlendMode::NoBlend)
 			{
+				//pngの透過部分があるのでNoBlendで描画はしない
 				SDL_SetTextureBlendMode(handle, (SDL_BlendMode)BlendMode::Alpha);
-				SDL_SetTextureAlphaMod(handle, 255);
+				SDL_SetTextureAlphaMod(handle, color.GetAlpha());
 			}
 			else
 			{
 				SDL_SetTextureBlendMode(handle, (SDL_BlendMode)Screen::activeRenderer->nowBlendMode);
-				SDL_SetTextureAlphaMod(handle, Screen::activeRenderer->blendParam);
+				SDL_SetTextureAlphaMod(handle, Screen::activeRenderer->rgba.GetAlpha() * color.GetAlpha() / 255);
 			}
 
 			SDL_SetTextureColorMod
@@ -100,7 +74,14 @@ namespace SDX
 		/** 画像をメモリへ読み込む.*/
 		bool Load(const char *ファイル名)
 		{
-			Release();
+			if (Loading::isLoading)
+			{
+				Loading::AddLoading([=]{ Load(ファイル名);});
+				return true;
+			}
+
+			if (this->handle != nullptr){ return false; }
+			
 			SDL_Surface* temp = IMG_Load(ファイル名);
 
 			if (temp == nullptr) return false;
@@ -268,7 +249,7 @@ namespace SDX
 		/** 描画色を指定.*/
 		void SetColor(const Color &描画色)
 		{
-			color.SetColor(描画色.GetRed(), 描画色.GetGreen(), 描画色.GetBlue(), 255);
+			color.SetColor(描画色.GetRed(), 描画色.GetGreen(), 描画色.GetBlue(), 描画色.GetAlpha());
 		}
 	};
 }

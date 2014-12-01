@@ -8,7 +8,7 @@
 namespace SDX
 {
 	/** タッチ操作.*/
-	/** \include .*/
+	/** \include Touch.h*/
 	class Touch
 	{
 		friend class Input;

@@ -42,4 +42,10 @@ namespace SDX
 	SubWindow* Window::activeWindow;
 
 	Music* Music::active = nullptr;
+
+	bool Loading::isLoading = false;
+	int Loading::loadingCount = 0;
+	int Loading::succesCount = 0;
+	std::mutex Loading::mtx;
+	std::vector<std::function<void(void)>> Loading::funcS;
 }

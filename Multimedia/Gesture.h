@@ -8,7 +8,7 @@
 namespace SDX
 {
 	/** タッチ操作の各種ジェスチャー.*/
-	/** \include .*/
+	/** \include Gesture.h*/
 	class Gesture
 	{
 		friend class Input;

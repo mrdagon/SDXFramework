@@ -3,8 +3,6 @@
 //[Contact]http://sourceforge.jp/projects/dxframework/
 
 //画像を描画する
-#include <SDXFramework.h>
-
 bool SampleImage()
 {
 	using namespace SDX;

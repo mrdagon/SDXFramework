@@ -3,8 +3,6 @@
 //[Contact]http://sourceforge.jp/projects/dxframework/
 
 //ファイルに書き込みと読み込みを行う
-#include <SDXFramework.h>
-
 bool SampleFile()
 {
 	using namespace SDX;

@@ -8,7 +8,7 @@
 namespace SDX
 {
 	/** Font,BmpFont等のインターフェース.*/
-	/** \include FontSample.h*/
+	/** \include Font.h*/
 	class IFont
 	{
 	public:

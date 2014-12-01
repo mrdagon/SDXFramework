@@ -10,7 +10,7 @@
 namespace SDX
 {
 	/** ライブラリの初期化やシステム的な処理を行う関数群.*/
-	/** \include SystemSample.h*/
+	/** \include System.h*/
 	class System
 	{
 		friend class Window;

@@ -15,7 +15,7 @@
 <tr>                            <td>SDX::IFont              <td>Font,BmpFont等のインターフェース</td></tr>
 <tr>                            <td>SDX::Font               <td>フォントデータを表すクラス</td></tr>
 <tr>                            <td>SDX::Color              <td>色を表すクラス</td></tr>
-<tr>                            <td>SDX::ThreadLoad         <td>リソースの非同期読み込み設定関数群[未実装]</td></tr>
+<tr>                            <td>SDX::Loading         <td>リソースの非同期読み込み設定関数群[未実装]</td></tr>
 <tr style="background:#ccccff"> <td>画像処理[未実装]</td><td> </td></tr>
 <tr>                            <td>SDX::Blend              <td>Image同士の合成処理を行う関数群[未実装]</td></tr>
 <tr>                            <td>SDX::Filter             <td>Imageにフィルター処理を行う関数群[未実装]</td></tr>

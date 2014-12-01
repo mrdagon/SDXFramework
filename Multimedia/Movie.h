@@ -8,7 +8,7 @@
 namespace SDX
 {
 	/** 動画を表すクラス[未実装].@todo*/ 
-	/** \include MovieSample.h*/
+	/** \include Movie.h*/
 	/** @todo 全く実装していない.*/
 	class Movie
 	{

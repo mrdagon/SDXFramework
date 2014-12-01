@@ -9,6 +9,7 @@
 namespace SDX
 {
 	/**Modelの移動パターンのポリシー.*/
+	/** \include Motion.h */
 	namespace MOTION
 	{
 		/**Modelの移動方法.*/

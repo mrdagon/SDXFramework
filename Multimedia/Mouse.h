@@ -11,7 +11,7 @@
 namespace SDX
 {
 	/** マウスの状態を表すクラス.*/
-	/** \include InputSample.h*/
+	/** \include Input.h*/
 	class Mouse
 	{
 		friend class Input;

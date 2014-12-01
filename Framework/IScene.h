@@ -5,7 +5,7 @@
 namespace SDX
 {
 	/** シーンのインターフェース.*/
-	/** \include DirectorSample.h*/
+	/** \include Director.h*/
 	class IScene
 	{
 	public:
