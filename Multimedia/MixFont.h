@@ -29,6 +29,7 @@ namespace SDX
 
 		static bool GetUTFSize(unsigned char 一文字目,int &文字長さ )
 		{
+
 			if (一文字目 < 0x20)
 			{
 				文字長さ = 1;
@@ -51,8 +52,15 @@ namespace SDX
 			for (auto it = 文字列.begin(); it != 文字列.end(); it += charSize)
 			{
 				if (!GetUTFSize(*it, charSize)){ continue; }
+				if (*it == ' ')
+				{
+					位置.x += size;
+					continue;
+				}
 
 				Image* str = GetHash(文字列.substr(std::distance(文字列.begin(), it), charSize).c_str() , charSize);
+				if (str == nullptr){ continue; }
+
 				str->SetColor(描画色);
 				str->Draw(位置);
 				位置.x += str->GetWidth();
@@ -67,10 +75,17 @@ namespace SDX
 			for (auto it = 文字列.begin(); it != 文字列.end(); it += charSize)
 			{
 				if (!GetUTFSize(*it, charSize)){ continue; }
+				if (*it == ' ')
+				{
+					位置.x += size * X拡大率;
+					continue;
+				}
 
 				Image* str = GetHash(文字列.substr(std::distance(文字列.begin(), it), charSize).c_str(),charSize);
+				if (str == nullptr){ continue; }
+
 				str->SetColor(描画色);
-				str->DrawExtend(位置, { 位置.x + str->GetWidth()*X拡大率, 位置.y + str->GetWidth()*Y拡大率 });
+				str->DrawExtend(位置, { 位置.x + str->GetWidth()*X拡大率, 位置.y + str->GetHeight()*Y拡大率 });
 				位置.x += str->GetWidth() * X拡大率;
 			}
 		}
@@ -83,8 +98,14 @@ namespace SDX
 			for (auto it = 文字列.begin(); it != 文字列.end(); it += charSize)
 			{
 				if (!GetUTFSize(*it, charSize)){ continue; }
+				if (*it == ' ')
+				{
+					位置.x += size * 拡大率;
+					continue;
+				}
 
 				Image* str = GetHash(文字列.substr(std::distance(文字列.begin(), it), charSize).c_str(),charSize);
+				if (str == nullptr){ continue; }
 
 				double x = 位置.x + std::cos(角度) * X補正 + std::cos(角度 + PAI / 2) * Y補正;
 				double y = 位置.y + std::sin(角度) * X補正 + std::sin(角度 + PAI / 2) * Y補正;
@@ -98,8 +119,6 @@ namespace SDX
 		/** 文字イメージが生成されているか確認し、無ければ新規に生成する.*/
 		Image* GetHash(const char* 文字 , int 文字長さ) const
 		{
-			if (handle == nullptr){ return nullptr; }
-
 			int ID = 文字[0];
 			if (文字長さ >= 2){ ID += 文字[1]*256; }
 			if (文字長さ >= 3){ ID += 文字[2]*256*256; }
@@ -109,6 +128,8 @@ namespace SDX
 
 			if (it == hash.end())
 			{
+				if (handle == nullptr){ return nullptr; }
+
 				SDL_Surface* surface = TTF_RenderUTF8_Blended(handle, 文字, { 255, 255, 255 });
 				SDL_Texture* moji = SDL_CreateTextureFromSurface(Screen::GetHandle(), surface);
 				Image* image = new Image(moji, surface->w, surface->h);
@@ -133,22 +154,20 @@ namespace SDX
 	public:
 
 		MixFont() = default;
-
-		MixFont(const char *フォント名, int 大きさ, int 改行高さ = 0)
+		MixFont(const char *フォント名, int 大きさ, int 行間 = 0)
 		{
-			Load(フォント名, 大きさ, 改行高さ);
+			Load(フォント名, 大きさ, 行間);
 		}
 
 		/** メモリ上にフォントを作成する.*/
 		/** 太さは0～9で指定、大きさと太さは-1にするとデフォルトになる\n*/
-		/**	改行高さは0の場合、改行後の文字が上下くっつく。*/
-		bool Load(const char *フォント名, int 大きさ, int 改行高さ = 0)
+		/**	行間は0の場合、改行後の文字が上下くっつく。*/
+		bool Load(const char *フォント名, int 大きさ, int 行間 = 0)
 		{
 			if (handle != nullptr){ return false; }
 
-			Release();
 			this->size = 大きさ;
-			this->enterHeight = 改行高さ + 大きさ;
+			this->enterHeight = 行間 + 大きさ;
 			handle = TTF_OpenFont(フォント名, 大きさ);
 			return true;
 		}
@@ -253,8 +272,6 @@ namespace SDX
 		/** 文字を描画.*/
 		bool Draw(const Point &座標, Color 描画色, VariadicStream 描画する文字列) const override
 		{
-			if (handle == nullptr){ return false; }
-
 			Point 位置 = 座標;
 
 			for (auto it : 描画する文字列.StringS)
@@ -276,8 +293,6 @@ namespace SDX
 		/** 文字を回転して描画.*/
 		bool DrawRotate(const Point &座標, double 拡大率, double 角度, Color 描画色, bool 反転フラグ, VariadicStream 描画する文字列) const override
 		{
-			if (handle == nullptr){ return false; }
-
 			int 行数 = 描画する文字列.StringS.size();
 
 			int X補正 = int(-GetDrawStringWidth(描画する文字列) * 拡大率 * 0.5);
@@ -295,8 +310,6 @@ namespace SDX
 		/** 拡大率を指定して文字を描画.*/
 		bool DrawExtend(const Point &座標, double X拡大率, double Y拡大率, Color 描画色, VariadicStream 描画する文字列) const override
 		{
-			if (handle == nullptr){ return false; }
-
 			Point 位置 = 座標;
 
 			for (auto it : 描画する文字列.StringS)
@@ -308,8 +321,19 @@ namespace SDX
 			return true;
 		}
 
+		/** 指定した文字に対応するImageを設定.*/
+		/** 文字列が2文字以上なら2文字目以降は無視*/
+		void SetImage(const std::string &文字列, Image *対応画像)
+		{
+			int charSize;
+			auto it = 文字列.begin();
+			
+			if (!GetUTFSize(*it, charSize)){ return; }
+			SetHash(文字列.substr(std::distance(文字列.begin(), it), charSize).c_str(), charSize, 対応画像);
+		}
+
 		/** 指定した文字に対応するImageをまとめて設定.*/
-		void SetFont(const std::string &文字列, ImagePack &対応画像)
+		void SetImageS(const std::string &文字列, ImagePack &対応画像)
 		{
 			int charSize;
 			int a = 0;
@@ -322,7 +346,9 @@ namespace SDX
 		}
 
 		/** 指定した文字から連続してに対応するImageをまとめて設定.*/
-		void SetFont(const std::string &文字列, ImagePack &対応画像 , int 登録数)
+		/** 例えば文字列="0"で登録数=10なら0～9までを登録*/
+		/** アルファベットや数字用*/
+		void SetImageS(const std::string &文字列, ImagePack &対応画像, int 登録数)
 		{
 			int charSize;
 			int a = 0;
@@ -346,15 +372,6 @@ namespace SDX
 			}
 		}
 
-		/** 指定した文字に対応するImageを設定.*/
-		/** 文字列が2文字以上なら2文字目以降は無視*/
-		void SetFont(const std::string &文字列, Image *対応画像)
-		{
-			int charSize;
-			auto it = 文字列.begin();
-			
-			if (!GetUTFSize(*it, charSize)){ return; }
-			SetHash(文字列.substr(std::distance(文字列.begin(), it), charSize).c_str(), charSize, 対応画像);
-		}
+
 	};
 }

@@ -111,7 +111,7 @@ namespace SDX
 		}
 
 		/** 文字を描画.*/
-		bool Draw(const Point &座標, Color 色, VariadicStream 描画する文字列) const override
+		bool Draw(const Point &座標, Color 描画色, VariadicStream 描画する文字列) const override
 		{
 			if (!handle) return false;
 
@@ -124,7 +124,7 @@ namespace SDX
 			{
 				if (it.size() > 0)
 				{
-					image = TTF_RenderUTF8_Blended(handle, it.c_str(), 色);
+					image = TTF_RenderUTF8_Blended(handle, it.c_str(), 描画色);
 
 					moji = SDL_CreateTextureFromSurface(Screen::GetHandle(), image);
 					temp = { (int)座標.x, Y座標, image->w, image->h };
@@ -139,8 +139,8 @@ namespace SDX
 			return true;
 		}
 
-		/** 文字を回転して描画.*/
-		bool DrawShadow(const Point &座標, Color 表色, Color 影色, VariadicStream 描画する文字列) const
+		/** 文字を影付きで描画.*/
+		bool DrawShadow(const Point &座標, Color &表色, Color 影色, VariadicStream 描画する文字列) const
 		{
 			Draw({ 座標.x + 1, 座標.y + 1 }, 影色, 描画する文字列);
 			return Draw(座標, 表色, 描画する文字列);

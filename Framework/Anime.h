@@ -77,8 +77,8 @@ namespace SDX
 						break;
 					}
 
-					if ((unsigned int)frameNumber >= anime->images.size()) frameNumber = 0;
-					if (frameNumber < 0)    frameNumber = (int)anime->images.size() - 1;
+					if ((unsigned int)frameNumber >= anime->imageS.size()) frameNumber = 0;
+					if (frameNumber < 0)    frameNumber = (int)anime->imageS.size() - 1;
 				}
 
 				return true;
@@ -211,11 +211,6 @@ namespace SDX
 			}
 
 			return totalTime;
-		}
-		
-		Image* operator[](int index) const
-		{
-			return images[index];
 		}
 	};
 }

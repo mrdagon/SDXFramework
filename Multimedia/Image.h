@@ -68,8 +68,8 @@ namespace SDX
 				(
 				handle,
 				Screen::activeRenderer->rgba.GetRed() * color.GetRed() / 255,
-				Screen::activeRenderer->rgba.GetGreen() * color.GetRed() / 255,
-				Screen::activeRenderer->rgba.GetBlue() * color.GetRed() / 255
+				Screen::activeRenderer->rgba.GetGreen() * color.GetGreen() / 255,
+				Screen::activeRenderer->rgba.GetBlue() * color.GetBlue() / 255
 				);
 		}
 	public:

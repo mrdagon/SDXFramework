@@ -12,7 +12,7 @@ namespace SDX
 	class ImagePack
 	{
 	protected:
-		std::vector<Image*> images;//!<
+		std::vector<Image*> imageS;//!<
 		int widthMax;//!<
 		int heightMax;//!<
 	public:
@@ -80,7 +80,7 @@ namespace SDX
 		/** Imageを末尾に追加.*/
 		void Add(Image *追加イメージ)
 		{
-			images.push_back(追加イメージ);
+			imageS.push_back(追加イメージ);
 			this->widthMax = std::max(this->widthMax, 追加イメージ->GetWidth());
 			this->heightMax = std::max(this->heightMax, 追加イメージ->GetHeight());
 		}
@@ -92,18 +92,18 @@ namespace SDX
 		/** Imageをメモリから開放.*/
 		virtual void Release()
 		{
-			for (auto it : images)
+			for (auto it : imageS)
 			{
 				it->Release();
 			}
 
-			images.clear();
+			imageS.clear();
 		}
 
 		/** 要素数を取得.*/
 		int GetSize() const
 		{
-			return (int)images.size();
+			return (int)imageS.size();
 		}
 
 		/** 最大幅を取得.*/
@@ -117,35 +117,46 @@ namespace SDX
 		{
 			return this->heightMax;
 		}
+		
+		/** 先頭からimageの幅を差分修正.*/
+		/** BMPフォント用の画像を文字幅を調整する時に使う*/
+		/** 分割読み込み時*/
+		void AdjustWidth(std::vector<int> 幅)
+		{
+			for (int a = 0; a < 幅.size();++a)
+			{ 
+				imageS[a]->part.w -= 幅[a];
+			}
+		}
 
 		Image* operator[](int index)
 		{
-			return images[index];
+			return imageS[index];
 		}
 
 		Image* operator[](int index) const
 		{
-			return images[index];
+			return imageS[index];
 		}
 
-		auto begin() ->decltype(images.begin())
+		auto begin() ->decltype(imageS.begin())
 		{
-			return images.begin();
+			return imageS.begin();
 		}
 
-		auto end() ->decltype(images.end())
+		auto end() ->decltype(imageS.end())
 		{
-			return images.end();
+			return imageS.end();
 		}
 
-		auto begin() const ->decltype(images.begin())
+		auto begin() const ->decltype(imageS.begin())
 		{
-			return images.begin();
+			return imageS.begin();
 		}
 
-		auto end() const ->decltype(images.end())
+		auto end() const ->decltype(imageS.end())
 		{
-			return images.end();
+			return imageS.end();
 		}
 
 
