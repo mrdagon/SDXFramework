@@ -14,6 +14,12 @@ namespace SDX
 	class Blend
 	{
 	private:
+		//生成、削除、コピー等を禁止
+		Blend() = default;
+		~Blend() = default;
+		void operator =(const Blend& src){}
+		Blend(const Blend& src){}
+
 		/** 同じ大きさでないと合成失敗.*/
 		static bool CheckSize(const Image *A, const Image *B)
 		{
@@ -120,10 +126,18 @@ namespace SDX
 			return false;
 		}
 
+		enum class RGBA
+		{
+			Red,
+			Green,
+			Blue,
+			Alpha
+		};
+
 		/** RGBAの要素を選択して合成.*/
 		/** 合成後の画像として赤・緑・青・アルファの各成分を 合成元、入力のどちらのどの要素から取るかを指定する。\n*/
 		/**	例えば、赤要素 に RGBA::BlendR を指定した場合は、合成後の画像の赤成分は、入力イメージの緑成分になる。*/
-		bool RgbaSelectMix(Image* 合成イメージ, const Image *入力イメージ, RGBA 赤要素, RGBA 緑要素, RGBA 青要素, RGBA 透明要素, double 合成率 = 1.0)
+		bool RgbaSelectMix(Image* 合成イメージ, const Image *入力イメージ, RGBA 赤要素, RGBA 緑要素, RGBA 青要素, RGBA α要素, double 合成率 = 1.0)
 		{
 			return false;
 		}

@@ -9,23 +9,23 @@ namespace SDX
 	/**列挙型を直接添字に使える配列.*/
 	/** \include EnumArray.h */
 	/**@todo エラー処理など未実装*/
-	template <class TData, class TType>
+	template <class TType, class TEnum>
 	class EnumArray
 	{
 	private:
-		std::array<TData, (int)TType::COUNT> Array;
+		std::array<TType, (int)TEnum::COUNT> Array;
 	public:
 		size_t size() const
 		{
 			return Array.size();
 		}
 
-		TData& operator[](const TType index)
+		TType& operator[](const TEnum index)
 		{
 			return Array[(int)index];
 		}
 
-		const TData& operator[](const TType index) const
+		const TType& operator[](const TEnum index) const
 		{
 			return Array[(int)index];
 		}

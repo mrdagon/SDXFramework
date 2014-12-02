@@ -16,7 +16,9 @@ bool SampleDrawing()
 
 		Drawing::Rect({ 60, 200, 100, 250 }, Color::Red, true);
 
-		Drawing::Circle({ 300, 200, 50 }, Color::Red, true);
+		Drawing::Circle({ 100, 200, 50 }, Color::Black );
+
+		Drawing::Circle({ 300, 200, 50 }, Color::Red, 5);
 
 		if (Input::key.Return.on){ break;}//Enterで終了
 	}

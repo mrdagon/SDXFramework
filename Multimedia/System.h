@@ -16,8 +16,10 @@ namespace SDX
 		friend class Window;
 
 	private:
-		System(){};
-		~System(){};
+		System() = default;
+		~System() = default;
+		void operator =(const System& src){}
+		System(const System& src){}
 
 		/** シングルトンなインスタンスを取得.*/
 		static bool& IsEnd()
@@ -87,6 +89,7 @@ namespace SDX
 			Mix_CloseAudio();
 			Mix_Quit();
 			SDL_Quit();
+			Window::activeWindow->Destroy();
 			IsEnd() = true;
 			return true;
 		}

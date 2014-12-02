@@ -9,7 +9,7 @@
 
 namespace SDX
 {
-	/** ビットマップフォントを表すクラス.*/
+	/** ビットマップフォントを表すクラス[非推奨].*/
 	/** MixFontクラスの利用を推奨*/
 	/** \include BmpFont.h*/
 	class BmpFont : public IFont
@@ -99,8 +99,8 @@ namespace SDX
 		}
 
 		/** 英小文字フォントをセット.*/
-		/** 英小文字に使うImagePackを設定する\n
-			A～Zの順に26個並べた画像を使う*/
+		/** 英小文字に使うImagePackを設定する\n*/
+		/**	A～Zの順に26個並べた画像を使う*/
 		bool SetAlphabetLow(ImagePack* 小文字用イメージ)
 		{
 			if (小文字用イメージ->GetSize() < 26) return false;

@@ -18,7 +18,7 @@ namespace SDX
 		int angle = 0;
 		int distance = -1;
 	public:
-
+		/** デフォルトコンストラクタ.*/
 		Sound(){}
 
 		/** 音声ファイルをメモリに読み込む.*/

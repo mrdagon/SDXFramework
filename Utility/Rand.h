@@ -13,6 +13,8 @@ namespace SDX
 	private:
 		Rand();
 		~Rand();
+		void operator =(const Rand& src){}
+		Rand(const Rand& src){}
 
 		static std::mt19937& Engine()
 		{

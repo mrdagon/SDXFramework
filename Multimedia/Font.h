@@ -12,7 +12,7 @@
 
 namespace SDX
 {
-	/** フォントデータを表すクラス.*/
+	/** フォントデータを表すクラス[非推奨].*/
 	/** 描画の度にImageを生成する旧実装、MixFontの使用を推奨.*/
 	/** \include Font.h*/
 	class Font : public IFont
@@ -96,7 +96,7 @@ namespace SDX
 				SDL_DestroyTexture(texture);
 			}
 
-			Image image = Image(SDL_CreateTextureFromSurface(Screen::GetHandle(), toRend), 幅, 高さ);
+			Image image(SDL_CreateTextureFromSurface(Screen::GetHandle(), toRend), 幅, 高さ);
 			SDL_FreeSurface(toRend);
 			SDL_DestroyRenderer(render);
 

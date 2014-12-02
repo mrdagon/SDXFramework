@@ -15,17 +15,26 @@
 
 namespace SDX
 {
-	/** 文字フォントを扱うクラス.*/
+	enum class FontRender
+	{
+		Solid,//!<ベタ、高速
+		Blended,//!<混合、最高品質
+	};
+
+	/** TrueTypeFontとBMPFontをまとめて扱うクラス.*/
 	/** 毎回レンダリングせず、ハッシュマップにImageを格納する*/
-	/** 一度も表示していない文字が必要になった場合生成する*/
+	/** 一度も表示していない文字が必要になった場合生成し以後使いまわす*/
 	/** \include Font.h*/
 	class MixFont : public IFont
 	{
 	private:
 		TTF_Font* handle = nullptr;//!<
+		FontRender fontRender;
 		int size = 0;//!<
 		int enterHeight = 0;//!<
 		mutable std::map<int, Image*> hash;//!<
+
+		int style = TTF_STYLE_NORMAL;
 
 		static bool GetUTFSize(unsigned char 一文字目,int &文字長さ )
 		{
@@ -130,7 +139,17 @@ namespace SDX
 			{
 				if (handle == nullptr){ return nullptr; }
 
-				SDL_Surface* surface = TTF_RenderUTF8_Blended(handle, 文字, { 255, 255, 255 });
+				SDL_Surface* surface;
+				switch (fontRender)
+				{
+				case FontRender::Solid:
+					surface = TTF_RenderUTF8_Solid(handle, 文字, { 255, 255, 255 });
+					break;
+				case FontRender::Blended:
+					surface = TTF_RenderUTF8_Blended(handle, 文字, { 255, 255, 255 });
+					break;
+				}
+
 				SDL_Texture* moji = SDL_CreateTextureFromSurface(Screen::GetHandle(), surface);
 				Image* image = new Image(moji, surface->w, surface->h);
 				hash[ID] = image;
@@ -155,19 +174,19 @@ namespace SDX
 
 		MixFont() = default;
 
-		MixFont(const char *フォント名, int 大きさ, int 行間 = 0)
+		MixFont(const char *フォント名, int 大きさ, int 行間 , FontRender 品質 )
 		{
-			Load(フォント名, 大きさ, 行間);
+			Load(フォント名, 大きさ, 行間,品質);
 		}
 
 		/** メモリ上にフォントを作成する.*/
 		/** 太さは0～9で指定、大きさと太さは-1にするとデフォルトになる\n*/
 		/**	行間は0の場合、改行後の文字が上下くっつく。*/
-		bool Load(const char *フォント名, int 大きさ, int 行間 = 0)
+		bool Load(const char *フォント名, int 大きさ, int 行間 , FontRender 品質 )
 		{
 			if (Loading::isLoading)
 			{
-				Loading::AddLoading([=]{ Load(フォント名,大きさ,行間); });
+				Loading::AddLoading([=]{ Load(フォント名,大きさ,行間,品質); });
 				return true;
 			}
 
@@ -175,7 +194,9 @@ namespace SDX
 
 			this->size = 大きさ;
 			this->enterHeight = 行間 + 大きさ;
+			fontRender = 品質;
 			handle = TTF_OpenFont(フォント名, 大きさ);
+
 			return true;
 		}
 
@@ -211,7 +232,16 @@ namespace SDX
 
 			for (auto it : 描画する文字列.StringS)
 			{
-				surface = TTF_RenderUTF8_Blended(handle, it.c_str(), 文字色);
+				switch (fontRender)
+				{
+				case FontRender::Solid:
+					surface = TTF_RenderUTF8_Solid(handle, it.c_str(), 文字色);
+					break;
+				case FontRender::Blended:
+					surface = TTF_RenderUTF8_Blended(handle, it.c_str(), 文字色);
+					break;
+				}
+
 				幅 = std::max(幅, surface->w);
 				surfaces.push_back(surface);
 			}
@@ -378,7 +408,5 @@ namespace SDX
 				}
 			}
 		}
-
-
 	};
 }

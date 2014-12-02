@@ -4,25 +4,76 @@
 #pragma once
 #include <Multimedia/SDX.h>
 #include <Multimedia/Key.h>
-#include <Multimedia/InputEnum.h>
+#include <Utility/EnumArray.h>
 
 namespace SDX
 {
+	/** ゲームパッドの種類.*/
+	enum class PadType
+	{
+		KeyAndPad1,
+		Pad1,
+		Pad2,
+		Pad3,
+		Pad4,
+		KeyBord
+	};
+
+	/** ゲームパッドコード.*/
+	enum class PadCode :unsigned int
+	{
+		Button1,
+		Button2,
+		Button3,
+		Button4,
+		Button5,
+		Button6,
+		Button7,
+		Button8,
+		Button9,
+		Button10,
+		Button11,
+		Button12,
+		Button13,
+		Button14,
+		Button15,
+		Button16,
+		Button17,
+		Button18,
+		Button19,
+		Button20,
+		Button21,
+		Button22,
+		Button23,
+		Button24,
+		Button25,
+		Button26,
+		Button27,
+		Button28,
+		Down,
+		Left,
+		Right,
+		Up,
+		COUNT,
+	};
+
 	/** ジョイパッドの状態を表すクラス.*/
+	/** @todo 2つ目以降のjoypad対応未実装*/
 	/** \include Input.h*/
 	class Joypad
 	{
+		friend class Input;
 	private:
 		PadType inputType = PadType::KeyAndPad1;//!<
 		SDL_Joystick* handle;//!<
+
+		EnumArray<bool, PadCode> press;
 
 		Joypad(const Joypad &joypad){};
 		Joypad operator =(const Joypad &joypad) = delete;
 	public:
 		int StickX = 0;//!<
 		int StickY = 0;//!<
-
-		bool press[32];//!<
 
 		Key Down;
 		Key Left;
@@ -114,38 +165,38 @@ namespace SDX
 		/** 状態の更新.*/
 		void Update()
 		{
-			Down.Update(press[(int)PadCode::Down]);
-			Left.Update(press[(int)PadCode::Left]);
-			Right.Update(press[(int)PadCode::Right]);
-			Up.Update(press[(int)PadCode::Up]);
-			Button1.Update(press[(int)PadCode::Button1]);
-			Button2.Update(press[(int)PadCode::Button2]);
-			Button3.Update(press[(int)PadCode::Button3]);
-			Button4.Update(press[(int)PadCode::Button4]);
-			Button5.Update(press[(int)PadCode::Button5]);
-			Button6.Update(press[(int)PadCode::Button6]);
-			Button7.Update(press[(int)PadCode::Button7]);
-			Button8.Update(press[(int)PadCode::Button8]);
-			Button9.Update(press[(int)PadCode::Button9]);
-			Button10.Update(press[(int)PadCode::Button10]);
-			Button11.Update(press[(int)PadCode::Button11]);
-			Button12.Update(press[(int)PadCode::Button12]);
-			Button13.Update(press[(int)PadCode::Button13]);
-			Button14.Update(press[(int)PadCode::Button14]);
-			Button15.Update(press[(int)PadCode::Button15]);
-			Button16.Update(press[(int)PadCode::Button16]);
-			Button17.Update(press[(int)PadCode::Button17]);
-			Button18.Update(press[(int)PadCode::Button18]);
-			Button19.Update(press[(int)PadCode::Button19]);
-			Button20.Update(press[(int)PadCode::Button20]);
-			Button21.Update(press[(int)PadCode::Button21]);
-			Button22.Update(press[(int)PadCode::Button22]);
-			Button23.Update(press[(int)PadCode::Button23]);
-			Button24.Update(press[(int)PadCode::Button24]);
-			Button25.Update(press[(int)PadCode::Button25]);
-			Button26.Update(press[(int)PadCode::Button26]);
-			Button27.Update(press[(int)PadCode::Button27]);
-			Button28.Update(press[(int)PadCode::Button28]);
+			Down.Update(press[PadCode::Down]);
+			Left.Update(press[PadCode::Left]);
+			Right.Update(press[PadCode::Right]);
+			Up.Update(press[PadCode::Up]);
+			Button1.Update(press[PadCode::Button1]);
+			Button2.Update(press[PadCode::Button2]);
+			Button3.Update(press[PadCode::Button3]);
+			Button4.Update(press[PadCode::Button4]);
+			Button5.Update(press[PadCode::Button5]);
+			Button6.Update(press[PadCode::Button6]);
+			Button7.Update(press[PadCode::Button7]);
+			Button8.Update(press[PadCode::Button8]);
+			Button9.Update(press[PadCode::Button9]);
+			Button10.Update(press[PadCode::Button10]);
+			Button11.Update(press[PadCode::Button11]);
+			Button12.Update(press[PadCode::Button12]);
+			Button13.Update(press[PadCode::Button13]);
+			Button14.Update(press[PadCode::Button14]);
+			Button15.Update(press[PadCode::Button15]);
+			Button16.Update(press[PadCode::Button16]);
+			Button17.Update(press[PadCode::Button17]);
+			Button18.Update(press[PadCode::Button18]);
+			Button19.Update(press[PadCode::Button19]);
+			Button20.Update(press[PadCode::Button20]);
+			Button21.Update(press[PadCode::Button21]);
+			Button22.Update(press[PadCode::Button22]);
+			Button23.Update(press[PadCode::Button23]);
+			Button24.Update(press[PadCode::Button24]);
+			Button25.Update(press[PadCode::Button25]);
+			Button26.Update(press[PadCode::Button26]);
+			Button27.Update(press[PadCode::Button27]);
+			Button28.Update(press[PadCode::Button28]);
 		}
 
 		/** パッドタイプの取得.*/
@@ -160,28 +211,52 @@ namespace SDX
 			inputType = 入力タイプ;
 		}
 
-		/** パッドを振動させる[未実装].*/ 
-		/** 指定した強さ(0.0～1.0)で指定ミリ秒パッドを振動させる\n
-			時間が-1の場合、StopVibration関数を呼ぶまで振動させる*/
-		/*
-		bool StartVibration(double 強さ, int 振動ミリ秒)
-		{
-			return false;
-		}
-		*/
-
-		/** パッドの振動を停止する[未実装].*/ 
-		/*
-		bool StopVibration()
-		{
-			return false;
-		}
-		*/
-
 		/** 接続中のパッド数を取得.*/
 		static int GetCount()
 		{
 			return SDL_NumJoysticks();
+		}
+
+		/** PadCodeでアクセス.*/
+		/** PadCode::COUNTや範囲外の場合Button1を返す*/
+		Key& operator[](PadCode index)
+		{
+			switch (index)
+			{
+			case PadCode::Button1:return Button1;
+			case PadCode::Button2: return Button2;
+			case PadCode::Button3: return Button3;
+			case PadCode::Button4: return Button4;
+			case PadCode::Button5: return Button5;
+			case PadCode::Button6: return Button6;
+			case PadCode::Button7: return Button7;
+			case PadCode::Button8: return Button8;
+			case PadCode::Button9: return Button9;
+			case PadCode::Button10: return Button10;
+			case PadCode::Button11: return Button11;
+			case PadCode::Button12: return Button12;
+			case PadCode::Button13: return Button13;
+			case PadCode::Button14: return Button14;
+			case PadCode::Button15: return Button15;
+			case PadCode::Button16: return Button16;
+			case PadCode::Button17: return Button17;
+			case PadCode::Button18: return Button18;
+			case PadCode::Button19: return Button19;
+			case PadCode::Button20: return Button20;
+			case PadCode::Button21: return Button21;
+			case PadCode::Button22: return Button22;
+			case PadCode::Button23: return Button23;
+			case PadCode::Button24: return Button24;
+			case PadCode::Button25: return Button25;
+			case PadCode::Button26: return Button26;
+			case PadCode::Button27: return Button27;
+			case PadCode::Button28: return Button28;
+			case PadCode::Down: return Down;
+			case PadCode::Left: return Left;
+			case PadCode::Right: return Right;
+			case PadCode::Up: return Up;
+			default: return Button1;
+			}
 		}
 	};
 }

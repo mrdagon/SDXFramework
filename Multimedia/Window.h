@@ -20,6 +20,8 @@ namespace SDX
 	private:
 		Window() = default;
 		~Window() = default;
+		void operator =(const Window& src){}
+		Window(const Window& src){}
 	public:
 
 		static SubWindow *activeWindow;

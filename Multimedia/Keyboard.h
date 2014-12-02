@@ -1,24 +1,132 @@
 ﻿//Copyright © 2014 SDXFramework
-//[License]GNU Affero General Public License, version 3
+//[License]GNU Affero General Public License:return ; version 3
 //[Contact]http://sourceforge.jp/projects/dxframework/
 #pragma once
 #include <Multimedia/SDX.h>
 #include <Multimedia/Key.h>
-#include <Multimedia/InputEnum.h>
+#include <Utility/EnumArray.h>
 
 namespace SDX
 {
+	/** キーボードコード.*/
+	enum class KeyCode
+	{
+		Back,
+		Tab,
+		Return,
+		LShift,
+		RShift,
+		LControl,
+		RControl,
+		Escape,
+		Space,
+		PageUp,
+		PageDown,
+		End,
+		Home,
+		Left,
+		Up,
+		Right,
+		Down,
+		Insert,
+		Delete,
+		Minus,
+		Yen,
+		PrevTrack,
+		Period,
+		Slash,
+		LAlt,
+		RAlt,
+		Scroll,
+		Semicolon,
+		Colon,
+		LBracket,
+		RBracket,
+		At,
+		Backslash,
+		Comma,
+		Capslock,
+		Pause,
+		Numpad0,
+		Numpad1,
+		Numpad2,
+		Numpad3,
+		Numpad4,
+		Numpad5,
+		Numpad6,
+		Numpad7,
+		Numpad8,
+		Numpad9,
+		Multiply,
+		Add,
+		Subtract,
+		Decimal,
+		Divide,
+		NUMPADEnter,
+
+		F1,
+		F2,
+		F3,
+		F4,
+		F5,
+		F6,
+		F7,
+		F8,
+		F9,
+		F10,
+		F11,
+		F12,
+		A,
+		B,
+		C,
+		D,
+		E,
+		F,
+		G,
+		H,
+		I,
+		J,
+		K,
+		L,
+		M,
+		N,
+		O,
+		P,
+		Q,
+		R,
+		S,
+		T,
+		U,
+		V,
+		W,
+		X,
+		Y,
+		Z,
+		_0,
+		_1,
+		_2,
+		_3,
+		_4,
+		_5,
+		_6,
+		_7,
+		_8,
+		_9,
+
+		COUNT,
+	};
+
 	/** キーボードの状態を表すクラス.*/
 	/** \include Input.h*/
 	class Keyboard
 	{
+		friend class Input;
 	private:
+		EnumArray<bool, KeyCode> press;
+
 		Keyboard(const Keyboard &key){};
 		Keyboard& operator =(const Keyboard &key) = delete;
 	public:
-		Keyboard(){};
-		bool press[256];
-
 		Key Back;
 		Key Tab;
 		Key Return;
@@ -123,6 +231,8 @@ namespace SDX
 		Key _7;
 		Key _8;
 		Key _9;
+
+		Keyboard() = default;
 
 		/** 状態のリセット.*/
 		void Reset()
@@ -236,223 +346,236 @@ namespace SDX
 		/** 状態の更新.*/
 		void Update()
 		{
-			Back.Update(press[(int)KeyCode::Back]);
-			Tab.Update(press[(int)KeyCode::Tab]);
-			Return.Update(press[(int)KeyCode::Return]);
-			LShift.Update(press[(int)KeyCode::LShift]);
-			RShift.Update(press[(int)KeyCode::RShift]);
-			LControl.Update(press[(int)KeyCode::LControl]);
-			RControl.Update(press[(int)KeyCode::RControl]);
-			Escape.Update(press[(int)KeyCode::Escape]);
-			Space.Update(press[(int)KeyCode::Space]);
-			PageUp.Update(press[(int)KeyCode::PageUp]);
-			PageDown.Update(press[(int)KeyCode::PageDown]);
-			End.Update(press[(int)KeyCode::End]);
-			Home.Update(press[(int)KeyCode::Home]);
-			Left.Update(press[(int)KeyCode::Left]);
-			Up.Update(press[(int)KeyCode::Up]);
-			Right.Update(press[(int)KeyCode::Right]);
-			Down.Update(press[(int)KeyCode::Down]);
-			Insert.Update(press[(int)KeyCode::Insert]);
-			Delete.Update(press[(int)KeyCode::Delete]);
+			Back.Update(press[KeyCode::Back]);
+			Tab.Update(press[KeyCode::Tab]);
+			Return.Update(press[KeyCode::Return]);
+			LShift.Update(press[KeyCode::LShift]);
+			RShift.Update(press[KeyCode::RShift]);
+			LControl.Update(press[KeyCode::LControl]);
+			RControl.Update(press[KeyCode::RControl]);
+			Escape.Update(press[KeyCode::Escape]);
+			Space.Update(press[KeyCode::Space]);
+			PageUp.Update(press[KeyCode::PageUp]);
+			PageDown.Update(press[KeyCode::PageDown]);
+			End.Update(press[KeyCode::End]);
+			Home.Update(press[KeyCode::Home]);
+			Left.Update(press[KeyCode::Left]);
+			Up.Update(press[KeyCode::Up]);
+			Right.Update(press[KeyCode::Right]);
+			Down.Update(press[KeyCode::Down]);
+			Insert.Update(press[KeyCode::Insert]);
+			Delete.Update(press[KeyCode::Delete]);
 
-			Minus.Update(press[(int)KeyCode::Minus]);
-			Yen.Update(press[(int)KeyCode::Yen]);
-			PrevTrack.Update(press[(int)KeyCode::PrevTrack]);
-			Period.Update(press[(int)KeyCode::Period]);
-			Slash.Update(press[(int)KeyCode::Slash]);
-			LAlt.Update(press[(int)KeyCode::LAlt]);
-			RAlt.Update(press[(int)KeyCode::RAlt]);
-			Scroll.Update(press[(int)KeyCode::Scroll]);
-			Semicolon.Update(press[(int)KeyCode::Semicolon]);
-			Colon.Update(press[(int)KeyCode::Colon]);
-			LBracket.Update(press[(int)KeyCode::LBracket]);
-			RBracket.Update(press[(int)KeyCode::RBracket]);
-			At.Update(press[(int)KeyCode::At]);
-			Backslash.Update(press[(int)KeyCode::Backslash]);
-			Comma.Update(press[(int)KeyCode::Comma]);
-			Capslock.Update(press[(int)KeyCode::Capslock]);
-			Pause.Update(press[(int)KeyCode::Pause]);
+			Minus.Update(press[KeyCode::Minus]);
+			Yen.Update(press[KeyCode::Yen]);
+			PrevTrack.Update(press[KeyCode::PrevTrack]);
+			Period.Update(press[KeyCode::Period]);
+			Slash.Update(press[KeyCode::Slash]);
+			LAlt.Update(press[KeyCode::LAlt]);
+			RAlt.Update(press[KeyCode::RAlt]);
+			Scroll.Update(press[KeyCode::Scroll]);
+			Semicolon.Update(press[KeyCode::Semicolon]);
+			Colon.Update(press[KeyCode::Colon]);
+			LBracket.Update(press[KeyCode::LBracket]);
+			RBracket.Update(press[KeyCode::RBracket]);
+			At.Update(press[KeyCode::At]);
+			Backslash.Update(press[KeyCode::Backslash]);
+			Comma.Update(press[KeyCode::Comma]);
+			Capslock.Update(press[KeyCode::Capslock]);
+			Pause.Update(press[KeyCode::Pause]);
 
-			Numpad0.Update(press[(int)KeyCode::Numpad0]);
-			Numpad1.Update(press[(int)KeyCode::Numpad1]);
-			Numpad2.Update(press[(int)KeyCode::Numpad2]);
-			Numpad3.Update(press[(int)KeyCode::Numpad3]);
-			Numpad4.Update(press[(int)KeyCode::Numpad4]);
-			Numpad5.Update(press[(int)KeyCode::Numpad5]);
-			Numpad6.Update(press[(int)KeyCode::Numpad6]);
-			Numpad7.Update(press[(int)KeyCode::Numpad7]);
-			Numpad8.Update(press[(int)KeyCode::Numpad8]);
-			Numpad9.Update(press[(int)KeyCode::Numpad9]);
-			Multiply.Update(press[(int)KeyCode::Multiply]);
-			Add.Update(press[(int)KeyCode::Add]);
-			Subtract.Update(press[(int)KeyCode::Subtract]);
-			Decimal.Update(press[(int)KeyCode::Decimal]);
-			Divide.Update(press[(int)KeyCode::Divide]);
-			NUMPADEnter.Update(press[(int)KeyCode::NUMPADEnter]);
+			Numpad0.Update(press[KeyCode::Numpad0]);
+			Numpad1.Update(press[KeyCode::Numpad1]);
+			Numpad2.Update(press[KeyCode::Numpad2]);
+			Numpad3.Update(press[KeyCode::Numpad3]);
+			Numpad4.Update(press[KeyCode::Numpad4]);
+			Numpad5.Update(press[KeyCode::Numpad5]);
+			Numpad6.Update(press[KeyCode::Numpad6]);
+			Numpad7.Update(press[KeyCode::Numpad7]);
+			Numpad8.Update(press[KeyCode::Numpad8]);
+			Numpad9.Update(press[KeyCode::Numpad9]);
+			Multiply.Update(press[KeyCode::Multiply]);
+			Add.Update(press[KeyCode::Add]);
+			Subtract.Update(press[KeyCode::Subtract]);
+			Decimal.Update(press[KeyCode::Decimal]);
+			Divide.Update(press[KeyCode::Divide]);
+			NUMPADEnter.Update(press[KeyCode::NUMPADEnter]);
 
-			F1.Update(press[(int)KeyCode::F1]);
-			F2.Update(press[(int)KeyCode::F2]);
-			F3.Update(press[(int)KeyCode::F3]);
-			F4.Update(press[(int)KeyCode::F4]);
-			F5.Update(press[(int)KeyCode::F5]);
-			F6.Update(press[(int)KeyCode::F6]);
-			F7.Update(press[(int)KeyCode::F7]);
-			F8.Update(press[(int)KeyCode::F8]);
-			F9.Update(press[(int)KeyCode::F9]);
-			F10.Update(press[(int)KeyCode::F10]);
-			F11.Update(press[(int)KeyCode::F11]);
-			F12.Update(press[(int)KeyCode::F12]);
+			F1.Update(press[KeyCode::F1]);
+			F2.Update(press[KeyCode::F2]);
+			F3.Update(press[KeyCode::F3]);
+			F4.Update(press[KeyCode::F4]);
+			F5.Update(press[KeyCode::F5]);
+			F6.Update(press[KeyCode::F6]);
+			F7.Update(press[KeyCode::F7]);
+			F8.Update(press[KeyCode::F8]);
+			F9.Update(press[KeyCode::F9]);
+			F10.Update(press[KeyCode::F10]);
+			F11.Update(press[KeyCode::F11]);
+			F12.Update(press[KeyCode::F12]);
 
-			A.Update(press[(int)KeyCode::A]);
-			B.Update(press[(int)KeyCode::B]);
-			C.Update(press[(int)KeyCode::C]);
-			D.Update(press[(int)KeyCode::D]);
-			E.Update(press[(int)KeyCode::E]);
-			F.Update(press[(int)KeyCode::F]);
-			G.Update(press[(int)KeyCode::G]);
-			H.Update(press[(int)KeyCode::H]);
-			I.Update(press[(int)KeyCode::I]);
-			J.Update(press[(int)KeyCode::J]);
-			K.Update(press[(int)KeyCode::K]);
-			L.Update(press[(int)KeyCode::L]);
-			M.Update(press[(int)KeyCode::M]);
-			N.Update(press[(int)KeyCode::N]);
-			O.Update(press[(int)KeyCode::O]);
-			P.Update(press[(int)KeyCode::P]);
-			Q.Update(press[(int)KeyCode::Q]);
-			R.Update(press[(int)KeyCode::R]);
-			S.Update(press[(int)KeyCode::S]);
-			T.Update(press[(int)KeyCode::T]);
-			U.Update(press[(int)KeyCode::U]);
-			V.Update(press[(int)KeyCode::V]);
-			W.Update(press[(int)KeyCode::W]);
-			X.Update(press[(int)KeyCode::X]);
-			Y.Update(press[(int)KeyCode::Y]);
-			Z.Update(press[(int)KeyCode::Z]);
-			_0.Update(press[(int)KeyCode::_0]);
-			_1.Update(press[(int)KeyCode::_1]);
-			_2.Update(press[(int)KeyCode::_2]);
-			_3.Update(press[(int)KeyCode::_3]);
-			_4.Update(press[(int)KeyCode::_4]);
-			_5.Update(press[(int)KeyCode::_5]);
-			_6.Update(press[(int)KeyCode::_6]);
-			_7.Update(press[(int)KeyCode::_7]);
-			_8.Update(press[(int)KeyCode::_8]);
-			_9.Update(press[(int)KeyCode::_9]);
+			A.Update(press[KeyCode::A]);
+			B.Update(press[KeyCode::B]);
+			C.Update(press[KeyCode::C]);
+			D.Update(press[KeyCode::D]);
+			E.Update(press[KeyCode::E]);
+			F.Update(press[KeyCode::F]);
+			G.Update(press[KeyCode::G]);
+			H.Update(press[KeyCode::H]);
+			I.Update(press[KeyCode::I]);
+			J.Update(press[KeyCode::J]);
+			K.Update(press[KeyCode::K]);
+			L.Update(press[KeyCode::L]);
+			M.Update(press[KeyCode::M]);
+			N.Update(press[KeyCode::N]);
+			O.Update(press[KeyCode::O]);
+			P.Update(press[KeyCode::P]);
+			Q.Update(press[KeyCode::Q]);
+			R.Update(press[KeyCode::R]);
+			S.Update(press[KeyCode::S]);
+			T.Update(press[KeyCode::T]);
+			U.Update(press[KeyCode::U]);
+			V.Update(press[KeyCode::V]);
+			W.Update(press[KeyCode::W]);
+			X.Update(press[KeyCode::X]);
+			Y.Update(press[KeyCode::Y]);
+			Z.Update(press[KeyCode::Z]);
+			_0.Update(press[KeyCode::_0]);
+			_1.Update(press[KeyCode::_1]);
+			_2.Update(press[KeyCode::_2]);
+			_3.Update(press[KeyCode::_3]);
+			_4.Update(press[KeyCode::_4]);
+			_5.Update(press[KeyCode::_5]);
+			_6.Update(press[KeyCode::_6]);
+			_7.Update(press[KeyCode::_7]);
+			_8.Update(press[KeyCode::_8]);
+			_9.Update(press[KeyCode::_9]);
 		}
 
 		/** いずれかのキーが押されているか取得.*/
 		static bool HoldAnyKey()
 		{
-			const Uint8 *press = SDL_GetKeyboardState(NULL);
+			int size;
+			const Uint8 *press = SDL_GetKeyboardState(&size);
 
-			return(
-				press[(int)KeyCode::Back] ||
-				press[(int)KeyCode::Tab] ||
-				press[(int)KeyCode::Return] ||
-				press[(int)KeyCode::LShift] ||
-				press[(int)KeyCode::RShift] ||
-				press[(int)KeyCode::LControl] ||
-				press[(int)KeyCode::RControl] ||
-				press[(int)KeyCode::Escape] ||
-				press[(int)KeyCode::Space] ||
-				press[(int)KeyCode::PageUp] ||
-				press[(int)KeyCode::PageDown] ||
-				press[(int)KeyCode::End] ||
-				press[(int)KeyCode::Home] ||
-				press[(int)KeyCode::Left] ||
-				press[(int)KeyCode::Up] ||
-				press[(int)KeyCode::Right] ||
-				press[(int)KeyCode::Down] ||
-				press[(int)KeyCode::Insert] ||
-				press[(int)KeyCode::Delete] ||
+			for (int a = 0; a < size; ++a)
+			{
+				if (press[a]) return true;
+			}
 
-				press[(int)KeyCode::Minus] ||
-				press[(int)KeyCode::Yen] ||
-				press[(int)KeyCode::PrevTrack] ||
-				press[(int)KeyCode::Period] ||
-				press[(int)KeyCode::Slash] ||
-				press[(int)KeyCode::LAlt] ||
-				press[(int)KeyCode::RAlt] ||
-				press[(int)KeyCode::Scroll] ||
-				press[(int)KeyCode::Semicolon] ||
-				press[(int)KeyCode::Colon] ||
-				press[(int)KeyCode::LBracket] ||
-				press[(int)KeyCode::RBracket] ||
-				press[(int)KeyCode::At] ||
-				press[(int)KeyCode::Backslash] ||
-				press[(int)KeyCode::Comma] ||
-				press[(int)KeyCode::Capslock] ||
-				press[(int)KeyCode::Pause] ||
-
-				press[(int)KeyCode::Numpad0] ||
-				press[(int)KeyCode::Numpad1] ||
-				press[(int)KeyCode::Numpad2] ||
-				press[(int)KeyCode::Numpad3] ||
-				press[(int)KeyCode::Numpad4] ||
-				press[(int)KeyCode::Numpad5] ||
-				press[(int)KeyCode::Numpad6] ||
-				press[(int)KeyCode::Numpad7] ||
-				press[(int)KeyCode::Numpad8] ||
-				press[(int)KeyCode::Numpad9] ||
-				press[(int)KeyCode::Multiply] ||
-				press[(int)KeyCode::Add] ||
-				press[(int)KeyCode::Subtract] ||
-				press[(int)KeyCode::Decimal] ||
-				press[(int)KeyCode::Divide] ||
-				press[(int)KeyCode::NUMPADEnter] ||
-
-				press[(int)KeyCode::F1] ||
-				press[(int)KeyCode::F2] ||
-				press[(int)KeyCode::F3] ||
-				press[(int)KeyCode::F4] ||
-				press[(int)KeyCode::F5] ||
-				press[(int)KeyCode::F6] ||
-				press[(int)KeyCode::F7] ||
-				press[(int)KeyCode::F8] ||
-				press[(int)KeyCode::F9] ||
-				press[(int)KeyCode::F10] ||
-				press[(int)KeyCode::F11] ||
-				press[(int)KeyCode::F12] ||
-
-				press[(int)KeyCode::A] ||
-				press[(int)KeyCode::B] ||
-				press[(int)KeyCode::C] ||
-				press[(int)KeyCode::D] ||
-				press[(int)KeyCode::E] ||
-				press[(int)KeyCode::F] ||
-				press[(int)KeyCode::G] ||
-				press[(int)KeyCode::H] ||
-				press[(int)KeyCode::I] ||
-				press[(int)KeyCode::J] ||
-				press[(int)KeyCode::K] ||
-				press[(int)KeyCode::L] ||
-				press[(int)KeyCode::M] ||
-				press[(int)KeyCode::N] ||
-				press[(int)KeyCode::O] ||
-				press[(int)KeyCode::P] ||
-				press[(int)KeyCode::Q] ||
-				press[(int)KeyCode::R] ||
-				press[(int)KeyCode::S] ||
-				press[(int)KeyCode::T] ||
-				press[(int)KeyCode::U] ||
-				press[(int)KeyCode::V] ||
-				press[(int)KeyCode::W] ||
-				press[(int)KeyCode::X] ||
-				press[(int)KeyCode::Y] ||
-				press[(int)KeyCode::Z] ||
-				press[(int)KeyCode::_0] ||
-				press[(int)KeyCode::_1] ||
-				press[(int)KeyCode::_2] ||
-				press[(int)KeyCode::_3] ||
-				press[(int)KeyCode::_4] ||
-				press[(int)KeyCode::_5] ||
-				press[(int)KeyCode::_6] ||
-				press[(int)KeyCode::_7] ||
-				press[(int)KeyCode::_8] ||
-				press[(int)KeyCode::_9]);
 			return false;
 		}
+
+		/** KeyCodeでアクセス.*/
+		/** KeyCode::COUNTや範囲外の場合Returnを返す*/
+		Key& operator[](KeyCode index)
+		{
+			switch (index)
+			{
+			case KeyCode::Back:return Back;
+			case KeyCode::Tab:return Tab;
+			case KeyCode::Return:return Return;
+			case KeyCode::LShift:return LShift;
+			case KeyCode::RShift:return RShift;
+			case KeyCode::LControl:return LControl;
+			case KeyCode::RControl:return RControl;
+			case KeyCode::Escape:return Escape;
+			case KeyCode::Space:return Space;
+			case KeyCode::PageUp:return PageUp;
+			case KeyCode::PageDown:return PageDown;
+			case KeyCode::End:return End;
+			case KeyCode::Home:return Home;
+			case KeyCode::Left:return Left;
+			case KeyCode::Up:return Up;
+			case KeyCode::Right:return Right;
+			case KeyCode::Down:return Down;
+			case KeyCode::Insert:return Insert;
+			case KeyCode::Delete:return Delete;
+			case KeyCode::Minus:return Minus;
+			case KeyCode::Yen:return Yen;
+			case KeyCode::PrevTrack:return PrevTrack;
+			case KeyCode::Period:return Period;
+			case KeyCode::Slash:return Slash;
+			case KeyCode::LAlt:return LAlt;
+			case KeyCode::RAlt:return RAlt;
+			case KeyCode::Scroll:return Scroll;
+			case KeyCode::Semicolon:return Semicolon;
+			case KeyCode::Colon:return Colon;
+			case KeyCode::LBracket:return LBracket;
+			case KeyCode::RBracket:return RBracket;
+			case KeyCode::At:return At;
+			case KeyCode::Backslash:return Backslash;
+			case KeyCode::Comma:return Comma;
+			case KeyCode::Capslock:return Capslock;
+			case KeyCode::Pause:return Pause;
+			case KeyCode::Numpad0:return Numpad0;
+			case KeyCode::Numpad1:return Numpad1;
+			case KeyCode::Numpad2:return Numpad2;
+			case KeyCode::Numpad3:return Numpad3;
+			case KeyCode::Numpad4:return Numpad4;
+			case KeyCode::Numpad5:return Numpad5;
+			case KeyCode::Numpad6:return Numpad6;
+			case KeyCode::Numpad7:return Numpad7;
+			case KeyCode::Numpad8:return Numpad8;
+			case KeyCode::Numpad9:return Numpad9;
+			case KeyCode::Multiply:return Multiply;
+			case KeyCode::Add:return Add;
+			case KeyCode::Subtract:return Subtract;
+			case KeyCode::Decimal:return Decimal;
+			case KeyCode::Divide:return Divide;
+			case KeyCode::NUMPADEnter:return NUMPADEnter;
+
+			case KeyCode::F1:return F1;
+			case KeyCode::F2:return F2;
+			case KeyCode::F3:return F3;
+			case KeyCode::F4:return F4;
+			case KeyCode::F5:return F5;
+			case KeyCode::F6:return F6;
+			case KeyCode::F7:return F7;
+			case KeyCode::F8:return F8;
+			case KeyCode::F9:return F9;
+			case KeyCode::F10:return F10;
+			case KeyCode::F11:return F11;
+			case KeyCode::F12:return F12;
+			case KeyCode::A:return A;
+			case KeyCode::B:return B;
+			case KeyCode::C:return C;
+			case KeyCode::D:return D;
+			case KeyCode::E:return E;
+			case KeyCode::F:return F;
+			case KeyCode::G:return G;
+			case KeyCode::H:return H;
+			case KeyCode::I:return I;
+			case KeyCode::J:return J;
+			case KeyCode::K:return K;
+			case KeyCode::L:return L;
+			case KeyCode::M:return M;
+			case KeyCode::N:return N;
+			case KeyCode::O:return O;
+			case KeyCode::P:return P;
+			case KeyCode::Q:return Q;
+			case KeyCode::R:return R;
+			case KeyCode::S:return S;
+			case KeyCode::T:return T;
+			case KeyCode::U:return U;
+			case KeyCode::V:return V;
+			case KeyCode::W:return W;
+			case KeyCode::X:return X;
+			case KeyCode::Y:return Y;
+			case KeyCode::Z:return Z;
+			case KeyCode::_0:return _0;
+			case KeyCode::_1:return _1;
+			case KeyCode::_2:return _2;
+			case KeyCode::_3:return _3;
+			case KeyCode::_4:return _4;
+			case KeyCode::_5:return _5;
+			case KeyCode::_6:return _6;
+			case KeyCode::_7:return _7;
+			case KeyCode::_8:return _8;
+			case KeyCode::_9:return _9;
+			default: return Return;
+			}
+		}
+
 	};
 }

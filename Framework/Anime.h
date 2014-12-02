@@ -27,6 +27,7 @@ namespace SDX
 	};
 
 	/** Imageをまとめてコマ送りアニメとして表すクラス.*/
+	/** @todo リソース解放周り色々未実装*/
 	/** \include Anime.h */
 	class Anime : public ImagePack
 	{
@@ -98,7 +99,7 @@ namespace SDX
 			}
 		};
 
-		Anime(){};
+		Anime() = default;
 
 		Anime(const char *ファイル名, int 総コマ数, int コマ割り横, int コマ割り縦, int 再生フレーム数 = 1) :
 			ImagePack(ファイル名, 総コマ数, コマ割り横, コマ割り縦)
@@ -113,7 +114,7 @@ namespace SDX
 		/** 画像ファイルを分割してメモリへ読み込む.*/
 		bool Load(const char *ファイル名, int 総コマ数, int コマ割り横, int コマ割り縦, int 再生フレーム数 = 1)
 		{
-			ImagePack::Load(ファイル名, 総コマ数, コマ割り横, コマ割り縦);
+			if (!ImagePack::Load(ファイル名, 総コマ数, コマ割り横, コマ割り縦)) { return false; }
 
 			for (int a = 0; a < 総コマ数; ++a)
 			{
@@ -163,7 +164,6 @@ namespace SDX
 		}
 
 		/** 各コマのフレーム数を設定する.*/
-		/** 先頭コマのフレーム数を配列で渡す*/
 		void SetFrameTime(int フレーム時間[])
 		{
 			for (unsigned int a = 0; a < times.size(); ++a)
@@ -172,7 +172,8 @@ namespace SDX
 			}
 		}
 
-		/** アニメの再生方法を指定する.*/
+		/** 全体の再生方法を指定する.*/
+		/** 初期は全コマNextFrame*/
 		void SetType(AnimeType 再生方法)
 		{
 			switch (再生方法)
@@ -189,12 +190,15 @@ namespace SDX
 				break;
 			}
 		}
+
 		/** 指定コマの次フレームを設定する.*/
+		/** 初期は全コマNextFrame*/
 		void SetType(int コマ番号, int 次フレーム)
 		{
 			nexts[コマ番号] = 次フレーム;
 		}
 		/** 指定コマの次フレームを設定する.*/
+		/** 初期は全コマNextFrame*/
 		void SetType(int コマ番号, NextFrame 次フレーム)
 		{
 			nexts[コマ番号] = (int)次フレーム;

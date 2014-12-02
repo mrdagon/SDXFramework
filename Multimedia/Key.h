@@ -26,19 +26,19 @@ namespace SDX
 		}
 
 		/** 押下状態の更新.*/
-		void Update(int 押下フラグ)
+		void Update(bool 押下フラグ)
 		{
-			if (!hold && 押下フラグ)    on = true;
-			else                        on = false;
-			if (hold && !押下フラグ)    off = true;
-			else                        off = false;
+			on = (!hold && 押下フラグ);
+			off = (hold && !押下フラグ);
 
-			if (押下フラグ){
-				hold = true;
+			hold = 押下フラグ;
+
+			if (押下フラグ)
+			{
 				holdCount++;
 			}
-			else{
-				hold = false;
+			else
+			{
 				holdCount = 0;
 			}
 		}

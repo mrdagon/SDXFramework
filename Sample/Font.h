@@ -8,7 +8,6 @@ bool SampleFont()
 	using namespace SDX;
 	System::Initialise("sample", 600, 400);
 
-	//SDLとDXLIBでフォント指定方法が違うので注意が必要
 	Font fontA(SystemFont::Gothic, 20, 10);
 	Font fontB(SystemFont::Mincho, 20, 10);
 

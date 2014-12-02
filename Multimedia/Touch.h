@@ -61,12 +61,14 @@ namespace SDX
 		{
 			on = (!hold && press);
 			off = (hold && !press);
+
 			hold = press;
 			if (press)
 			{
 				++holdCount;
 			}
-			else{
+			else
+			{
 				holdCount = 0;
 			}
 
@@ -94,10 +96,12 @@ namespace SDX
 			moveX = 0;
 			moveY = 0;
 
+			press = false;
+
 			on = false;
 			off = false;
 			hold = false;
-			press = false;
+			holdCount = 0;
 		}
 
 	};

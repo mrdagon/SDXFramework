@@ -39,7 +39,6 @@ namespace SDX
 			surface = SDL_GetWindowSurface(元Window);
 			return true;
 		}
-
 	public:
 		static Renderer &mainRenderer;
 
@@ -125,6 +124,21 @@ namespace SDX
 
 			SDL_Rect srcrect = { 0, 0, (int)領域.GetW(), (int)領域.GetH() };
 			SDL_Rect dsrect = { (int)領域.GetX(), (int)領域.GetY(), (int)領域.GetW(), (int)領域.GetH() };
+			SDL_RenderCopy(コピー先.GetHandle(), image, &srcrect, &dsrect);
+			SDL_DestroyTexture(image);
+
+			return true;
+		}
+
+		bool DrawExtend(const Rect& 元範囲, const Rect& コピー先範囲, Renderer& コピー先 = Renderer::mainRenderer)
+		{
+			if (!surface){ return false; }
+
+			SDL_Texture* image;
+			image = SDL_CreateTextureFromSurface(コピー先.GetHandle(), surface);
+
+			SDL_Rect srcrect = { (int)元範囲.GetX(), (int)元範囲.GetY(), (int)元範囲.GetW(), (int)元範囲.GetH() };
+			SDL_Rect dsrect = { (int)コピー先範囲.GetX(), (int)コピー先範囲.GetY(), (int)コピー先範囲.GetW(), (int)コピー先範囲.GetH() };
 			SDL_RenderCopy(コピー先.GetHandle(), image, &srcrect, &dsrect);
 			SDL_DestroyTexture(image);
 

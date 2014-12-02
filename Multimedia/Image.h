@@ -14,10 +14,7 @@ namespace SDX
 	/** \include Image.h*/
 	class Image
 	{
-		friend class Anime;
-		friend class Renderer;
-		friend class ImagePack;
-		friend class Drawing;
+		friend class ImagePack;//AdjustWidthで必要
 	private:
 		SDL_Rect part;
 		SDL_Texture* handle = nullptr;

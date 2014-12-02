@@ -6,7 +6,7 @@
 #include <vector>
 #include <string>
 #include <memory>
-#include <math.h>
+#include <math>
 #include <algorithm>
 #include <list>
 #include <iomanip>

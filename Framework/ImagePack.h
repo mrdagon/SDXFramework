@@ -9,6 +9,7 @@
 namespace SDX
 {
 	/** 複数のImageをまとめるクラス.*/
+	/** @todo リソース解放周り色々未実装*/
 	/** \include ImagePack.h*/
 	class ImagePack
 	{
@@ -136,7 +137,7 @@ namespace SDX
 		/** 分割読み込み時*/
 		void AdjustWidth(std::vector<int> 幅)
 		{
-			for (int a = 0; a < 幅.size();++a)
+			for (unsigned int a = 0; a < 幅.size();++a)
 			{ 
 				imageS[a]->part.w -= 幅[a];
 			}

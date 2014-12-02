@@ -14,6 +14,11 @@ namespace SDX
 	/** @todo OpenGLが必要なので、実装予定無し*/
 	class Filter
 	{
+	private:
+		Filter() = default;
+		~Filter() = default;
+		void operator =(const Filter& src){}
+		Filter(const Filter& src){}
 	public:
 		/** モノトーンフィルタ.*/
 		/** 画像をモノトーン調に変化させる。\n*/
@@ -75,14 +80,14 @@ namespace SDX
 
 		/** 明るさクリップフィルタ.*/
 		/** 画像の各ピクセルを輝度に応じて引数で渡す色で塗りつぶす。\n*/
-		/** クリップタイプがClipType::Lessの場合、クリップパラメータより輝度が小さいピクセル、\n */
-		/** クリップタイプがClipType::Graterの場合、輝度が大きいピクセルをクリップ処理する。\n */
+		/** isLessがtrue場合、クリップパラメータより輝度が小さいピクセル、\n */
+		/** isLessがfalseの場合、輝度が大きいピクセルをクリップ処理する。\n */
 		/** クリップ判定されたピクセルは、クリップ色で塗られ、αチャンネルがある場合α値をクリップαにする。*/
-		static bool BrightClip(Image* 処理イメージ, ClipType cmpType, int cmpParam, int clipFillColor, int clipFillAlpha)
+		static bool BrightClip(Image* 処理イメージ, bool isLess, int cmpParam, int clipFillColor, int clipFillAlpha)
 		{
 			return false;
 		}
-		static bool BrightClip(ImagePack *処理イメージ郡, ClipType cmpType, int cmpParam, int clipFillColor, int clipFillAlpha)
+		static bool BrightClip(ImagePack *処理イメージ郡, bool isLess, int cmpParam, int clipFillColor, int clipFillAlpha)
 		{
 			return false;
 		}

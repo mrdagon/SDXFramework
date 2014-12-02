@@ -16,8 +16,11 @@ namespace SDX
 	class Drawing
 	{
 	private:
-		Drawing();
-		~Drawing();
+		//生成、削除、コピー等を禁止
+		Drawing() = default;
+		~Drawing() = default;
+		void operator =(const Drawing& src){}
+		Drawing(const Drawing& src){}
 
 		/**透過状態を計算する.*/
 		static void RGBACulculate(int 赤, int 緑, int 青)
@@ -33,41 +36,93 @@ namespace SDX
 				);
 		}
 		/**円のデータを作成する.*/
-		static Image& circleTexture(bool 塗りつぶしフラグ)
+		static Image& circleTexture( const Color &描画色 , int X座標 = 0, int Y座標 = 0, int 幅 = 0, int 高さ = 0 , int 太さ = 0)
 		{
 			static Image circleA;
 			static Image circleB;
+			static Renderer renderer;
 
-			if (circleA.handle == nullptr)
+			if (circleA.GetHandle() == nullptr)
 			{
+				renderer.Create(320, 320);
+				renderer.SetBackColor(Color::Black);
+				renderer.SetTransColor(Color::Black);
+				renderer.Clear();
+
 				Font font;
-				font.Load(SystemFont::Gothic, 1000);
+				font.Load(SystemFont::Gothic, 320);
 
-				SDL_Surface* surfaceA = TTF_RenderUTF8_Blended(font.GetHandle(), "●", { 255, 255, 255, 255 });
-				circleA.handle = SDL_CreateTextureFromSurface(Screen::GetHandle(), surfaceA);
-				circleA.part.w = surfaceA->w;
-				circleA.part.h = surfaceA->h;
-				SDL_FreeSurface(surfaceA);
-
-				SDL_Surface* surfaceB = TTF_RenderUTF8_Blended(font.GetHandle(), "○", { 255, 255, 255, 255 });
-				circleB.handle = SDL_CreateTextureFromSurface(Screen::GetHandle(), surfaceB);
-				circleB.part.w = surfaceB->w;
-				circleB.part.h = surfaceB->h;
-				SDL_FreeSurface(surfaceB);
+				SDL_Surface* surface = TTF_RenderUTF8_Solid(font.GetHandle(), "●", { 255, 255, 255, 255 });
+				circleA = Image(SDL_CreateTextureFromSurface(Screen::GetHandle(), surface), surface->w, surface->h);
+				circleB = Image(SDL_CreateTextureFromSurface(renderer.GetHandle(), surface), surface->w, surface->h);
+				SDL_FreeSurface(surface);
 
 				font.Release();
 			}
 
-			if (塗りつぶしフラグ)
+			if (太さ <= 0)
 			{
+				circleA.SetColor(描画色);
 				return circleA;
 			}
 			else
 			{
+				太さ = std::max( 太さ * 640 / (幅 + 高さ) , 2);//最低2
+
+				SDL_Rect rect = { 0, 0, 320, 320 };
+				SDL_Rect in = { 太さ, 太さ, 320 - 太さ*2, 320 - 太さ*2 };
+
+				if (Screen::activeRenderer->nowBlendMode == BlendMode::NoBlend)
+				{
+					//pngの透過部分があるのでNoBlendで描画はしない
+					SDL_SetTextureBlendMode(circleB.GetHandle(), (SDL_BlendMode)BlendMode::Alpha);
+					SDL_SetTextureAlphaMod(circleB.GetHandle(), 255);
+				}
+				else
+				{
+					SDL_SetTextureBlendMode(circleB.GetHandle(), (SDL_BlendMode)Screen::activeRenderer->nowBlendMode);
+					SDL_SetTextureAlphaMod(circleB.GetHandle(), Screen::activeRenderer->rgba.GetAlpha());
+				}
+
+				int r = Screen::activeRenderer->rgba.GetRed() * 描画色.GetRed() / 255;
+				int g = Screen::activeRenderer->rgba.GetGreen() * 描画色.GetGreen() / 255;
+				int b = Screen::activeRenderer->rgba.GetBlue() * 描画色.GetBlue() / 255;
+				int r2 = 0;
+
+				//真っ白だと上手くいかないので補正
+				if (r == 255 && g == 255 && b == 255)
+				{
+					r = 254;
+					g = 254;
+					b = 254;
+				}
+
+				if (r == 0 && g == 0 && b == 0)
+				{			
+					renderer.SetTransColor(Color::Red);
+					renderer.SetBackColor(Color::Red);
+					renderer.Clear();
+					r2 = 255;
+				}
+				else
+				{
+					renderer.SetTransColor(Color::Black);
+					renderer.SetBackColor(Color::Black);
+					renderer.Clear();
+				}
+
+				//まず外側を描画				
+				SDL_SetTextureColorMod(circleB.GetHandle(), r, g, b);		
+				SDL_RenderCopy(renderer.GetHandle(), circleB.GetHandle(), &rect, &rect);
+				//内側を黒で
+				SDL_SetTextureColorMod(circleB.GetHandle(), r2, 0, 0);
+				SDL_RenderCopy(renderer.GetHandle(), circleB.GetHandle(), &rect, &in);
+				//色を戻す			
+				renderer.DrawExtend({ 0, 0, 320, 320 }, {X座標,Y座標,幅,高さ});
+
 				return circleB;
 			}
 		}
-
 	public:
 
 		/** デフォルトのフォントを取得する.*/
@@ -106,19 +161,32 @@ namespace SDX
 		}
 
 		/** 中心と半径を指定して円を描画.*/
+		/**/
 		/** @todo SDLは仮実装*/
-		static void Circle(const Circle &円形, Color 色, bool 塗りつぶしフラグ)
+		static void Circle(const Circle &円形, const Color& 色, int 太さ = 0)
 		{
-			SDL_SetRenderDrawColor(Screen::GetHandle(), 色.GetRed(), 色.GetGreen(), 色.GetBlue(), 0);
-			circleTexture(塗りつぶしフラグ).DrawExtend({ 円形.x - 円形.radius, 円形.y - 円形.radius }, { 円形.x + 円形.radius, 円形.y + 円形.radius });
+			if (太さ == 0)
+			{
+				circleTexture(色).DrawExtend({ 円形.x - 円形.radius, 円形.y - 円形.radius }, { 円形.x + 円形.radius, 円形.y + 円形.radius });
+			} 
+			else
+			{
+				circleTexture(色, int(円形.x - 円形.radius), int(円形.y - 円形.radius) ,int(円形.radius*2) , int(円形.radius*2) , 太さ);
+			}
 		}
 
 		/** 中心と外接する四角形の大きさを指定して楕円を描画.*/
 		/** @todo SDLは仮実装*/
-		static void Oval(const Point &中心, int 幅, int 高さ, Color 色, bool 塗りつぶしフラグ)
+		static void Oval(const Point &中心, int 幅, int 高さ, const Color& 色, int 太さ)
 		{
-			SDL_SetRenderDrawColor(Screen::GetHandle(), 色.GetRed(), 色.GetGreen(), 色.GetBlue(), 0);
-			circleTexture(塗りつぶしフラグ).DrawExtend({ 中心.x - 幅 / 2, 中心.y - 高さ / 2 }, { 中心.x + 幅 / 2, 中心.y + 高さ / 2 });
+			if (太さ == 0)
+			{
+				circleTexture(色).DrawExtend({ 中心.x - 幅 / 2, 中心.y - 高さ / 2 }, { 中心.x + 幅 / 2, 中心.y + 高さ / 2 });
+			}
+			else
+			{
+				circleTexture(色,int(中心.x - 幅 / 2), int(中心.y - 高さ / 2), int(中心.x + 幅 / 2), int(中心.y + 高さ / 2), 太さ);
+			}
 		}
 
 		/** 頂点を３つ指定して三角形を描画.*/
@@ -137,15 +205,6 @@ namespace SDX
 			RGBACulculate(色.GetRed(), 色.GetGreen(), 色.GetBlue());
 			SDL_RenderDrawPoint(Screen::GetHandle(), (int)座標.x, (int)座標.y);
 		}
-
-		/** 指定座標の色を取得[未実装].*/
-		/*
-		static SDL_Color GetPixel(const Point &座標)
-		{
-			//SDL_RenderReadPixelsで実装可能
-			return SDL_Color{ 0, 0, 0 };
-		}
-		*/
 
 		/** 画像を一時的にメモリに読み込んで描画.*/
 		/** この処理は重いので、通常はImageクラスを利用する*/

@@ -23,6 +23,8 @@ Windowクラスの機能をSubWindowクラスに分割して再設計＆機能�
 Mouse::SetVisibleを実装\n
 Soundクラスにエフェクト系関数追加\n
 ThreadLoadクラスをLoadingクラスに名称変更して実装完了\n
+Mouse,Joypad,Keyboardで列挙子からキーの状態を取る機能を追加\n
+Drawingの円描画の太さ指定を仮実装\n
 \n
 [その他の変更]\n
 一部Get関数のconst漏れを修正\n
@@ -33,6 +35,7 @@ Sampleコードの分割粒度やファイル名を変更\n
 Soundクラスの非実装関数を一部削除\n
 ImageからisScreen,isAlpha,isTransフラグ関係を削除\n
 BlendBltとFilterBltをそれぞれBlend,Filterに統合(ただし未実装)\n
+Copyコンストラクタを色々禁止\n
 \n
 <B>ver 0.09</B>\n
 ライセンスをAGPL Ver3に変更\n

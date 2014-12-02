@@ -17,6 +17,9 @@ namespace SDX
 		std::vector< std::shared_ptr<IScene> > scenes;//!<
 
 		Director(){};
+		~Director() = default;
+		void operator =(const Director& src) = delete;
+		Director(const Director& src) = delete;
 
 		static Director& Single()
 		{

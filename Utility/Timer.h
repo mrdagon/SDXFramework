@@ -22,8 +22,10 @@ namespace SDX
 		{
 			this->ResetCount();
 		}
-
 		~Time(void){};
+		void operator =(const Time& src){}
+		Time(const Time& src){}
+
 
 		static Time& Single()
 		{

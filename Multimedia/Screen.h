@@ -17,6 +17,9 @@ namespace SDX
 	private:
 		Screen() = default;
 		~Screen() = default;
+		void operator =(const Screen& src){}
+		Screen(const Screen& src){}
+
 	public:
 		static Renderer *activeRenderer;//!<アクティブなRenderer
 
