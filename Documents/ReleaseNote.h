@@ -9,7 +9,8 @@
 [破壊的変更]\n
 DXLib版と分離したので～Handleのusing宣言を削除\n
 NULL_HANDLEマクロを削除\n
-FontとBmpFontから太さと書体の引数を削除\n
+Font初期化時の引数を変更\n
+BmpFontをFontに統合して廃止\n
 Waitクラスを削除してSystemに統合\n
 Window::SetFullScreenをWindow::SetFullscreenに変更\n
 SoundとMusicのPlayTypeを削除、及び引数をPlayTypeからboolに変更\n
@@ -17,14 +18,14 @@ SoundとMusicのPlayTypeを削除、及び引数をPlayTypeからboolに変更\n
 Load済みのImageに対してLoadした場合失敗するように仕様変更\n
 \n
 [新機能追加]\n
-MixFontクラスを実装\n
+Fontクラスを改善、機能強化\n
 Screenクラスの機能をRendererクラスに分割して再設計＆機能強化\n
 Windowクラスの機能をSubWindowクラスに分割して再設計＆機能強化\n
 Mouse::SetVisibleを実装\n
 Soundクラスにエフェクト系関数追加\n
 ThreadLoadクラスをLoadingクラスに名称変更して実装完了\n
 Mouse,Joypad,Keyboardで列挙子からキーの状態を取る機能を追加\n
-Drawingの円描画の太さ指定を仮実装\n
+Drawingの円描画と正三角形描画を実装\n
 \n
 [その他の変更]\n
 一部Get関数のconst漏れを修正\n

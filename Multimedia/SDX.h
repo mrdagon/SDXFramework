@@ -6,7 +6,7 @@
 #include <vector>
 #include <string>
 #include <memory>
-#include <math>
+#include <math.h>
 #include <algorithm>
 #include <list>
 #include <iomanip>
@@ -39,17 +39,6 @@ namespace SDX
 #include <SDL_mixer.h>
 #include <SDL_ttf.h>
 
-/*
-using Image:Handle = SDL_Texture*;
-using Sound:Handle = Mix_Chunk*;
-using Renderer:Handle = SDL_Renderer*;
-using Surface:Handle = SDL_Surface*;
-using Window:Handle = SDL_Window*;
-using Stick:Handle = SDL_Joystick*;
-using Font:Handle = TTF_Font*;
-using Color:Data = SDL_Color;
-*/
-
 #ifdef __ANDROID__
 #define TABLET
 #elif defined(__IPHONEOS__)
@@ -60,6 +49,6 @@ using Color:Data = SDL_Color;
 #include<xutility>
 #else
 #include <locale.h>
-#define sprintf_s(a,b,c,d) sprintf(a,c,d) //boost::formatにしたい
+#define sprintf_s(a,b,c,d) sprintf(a,c,d)
 #define localtime_s(a,b) a = localtime(b)
 #endif

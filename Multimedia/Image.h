@@ -14,6 +14,7 @@ namespace SDX
 	/** \include Image.h*/
 	class Image
 	{
+		friend class Drawing;
 		friend class ImagePack;//AdjustWidthで必要
 	private:
 		SDL_Rect part;
@@ -110,7 +111,7 @@ namespace SDX
 		{
 			Release();
 
-			handle = SDL_CreateTexture(Screen::GetHandle(), 0, 0, 幅, 高さ);
+			handle = SDL_CreateTexture(Screen::GetHandle(), 0, SDL_TEXTUREACCESS_TARGET, 幅, 高さ);
 			part.x = 0;
 			part.y = 0;
 			part.w = 幅;
@@ -212,13 +213,6 @@ namespace SDX
 			SDL_Point point = { int(回転軸座標.x*拡大率X), int(回転軸座標.y*拡大率Y) };
 			RGBACulculate();
 			return !SDL_RenderCopyEx(Screen::GetHandle(), handle, &part, &temp, 角度 * 180 / PAI, &point, SDL_RendererFlip(反転フラグ));
-		}
-
-		/** 四角形に変形描画[未実装].*/ 
-		/** @todo 実装予定無し*/
-		bool DrawModify(const Point &頂点A, const Point &頂点B, const Point &頂点C, const Point &頂点D , bool 反転フラグ = 0) const
-		{
-			return false;
 		}
 
 		/** 一部を指定して描画.*/

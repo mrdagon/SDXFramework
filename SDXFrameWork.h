@@ -10,11 +10,10 @@
 #include <Multimedia/Drawing.h>
 
 #include <Multimedia/Font.h>
-#include <Multimedia/MixFont.h>
 #include <Multimedia/Image.h>
 #include <Multimedia/Input.h>
 
-#include <Multimedia/Movie.h>
+//#include <Multimedia/Movie.h>
 #include <Multimedia/Music.h>
 #include <Multimedia/Screen.h>
 #include <Multimedia/Sound.h>
@@ -30,7 +29,6 @@
 #include <Utility/Speed.h>
 
 #include <Framework/Anime.h>
-#include <Framework/BmpFont.h>
 #include <Framework/BmpFrame.h>
 #include <Framework/Model.h>
 #include <Framework/Sprite.h>

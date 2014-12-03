@@ -9,6 +9,7 @@
 
 namespace SDX
 {
+	class Image;
 	/** アクティブなRendererを操作するクラス.*/
 	/** ScreenにあってRendereに無い関数は[Screen専用]と表記.*/
 	/** \include Screen.h*/
@@ -42,6 +43,14 @@ namespace SDX
 		static void SetRenderer(Renderer &描画先Renderer = Renderer::mainRenderer)
 		{
 			activeRenderer = &描画先Renderer;
+		}
+
+		/** 描画先を変更.*/
+		/** 引数がnullptrの場合、デフォルトに戻す*/
+		/** Image::Makeで作成したTextureのみ有効.*/
+		static bool SetTarget(Image *描画対象 = nullptr)
+		{		
+			activeRenderer->SetTarget(描画対象);
 		}
 
 		/** 描画内容を反映.*/

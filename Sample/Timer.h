@@ -15,7 +15,6 @@ bool SampleTimer()
 
 	int count = 0;
 
-	Time::StartWatch();//処理時間の計測開始
 
 	while (System::Update())
 	{
@@ -26,9 +25,24 @@ bool SampleTimer()
 		tm date;
 		Time::GetDate(&date);
 
-		Drawing::String({ 10, 100 }, Color::White, { date.tm_year + 1900, "年    ", date.tm_mon + 1, "月    ", date.tm_mday, "日" });
+		//Drawing::String({ 10, 100 }, Color::White, { date.tm_year + 1900, "年    ", date.tm_mon + 1, "月    ", date.tm_mday, "日" });
 
-		Time::DrawWatch({ 10, 200 }, "処理時間:");//StartWatchかDrawWatchを呼んでからかかった時間をミリ秒で表示
+		Time::StartWatch();//処理時間の計測開始
+
+		for (int a = 0; a < 100; ++a)
+		{
+			Drawing::Circle({ 100, 100, 20 }, Color::White);
+		}
+
+		Time::DrawWatch({ 10, 220 }, "処理時間:");//StartWatchかDrawWatchを呼んでからかかった時間をミリ秒で表示
+
+		for (int a = 0; a < 100; ++a)
+		{
+			Drawing::Circle({ 110, 110, 20 }, Color::White,5);
+		}
+
+		Time::DrawWatch({ 10, 240 }, "処理時間:");//StartWatchかDrawWatchを呼んでからかかった時間をミリ秒で表示
+
 
 		if (Input::key.Return.on){ break;}//Enterで終了
 	}

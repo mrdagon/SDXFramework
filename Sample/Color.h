@@ -6,7 +6,7 @@
 bool SampleColor()
 {
 	using namespace SDX;
-	System::Initialise("sample", 600, 400);
+	System::Initialise("Color", 640, 480);
 
 	while (System::Update())
 	{
@@ -16,8 +16,8 @@ bool SampleColor()
 		//緑の四角を描画、省略してみる
 		Drawing::Rect({ 10, 100, 200, 200 }, { 0, 255, 0 }, true);
 
-		//青い●を描画、定数を使う
-		Drawing::Circle({ 110, 300, 50 }, Color::Blue, true);
+		//青い●を描画、塗りつぶし有り
+		Drawing::Circle({ 110, 300, 50 }, Color::Blue);
 
 		if (Input::key.Return.on){ break;}//Enterで終了
 	}

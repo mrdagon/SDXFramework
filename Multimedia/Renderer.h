@@ -18,12 +18,15 @@ namespace SDX
 		Mula = SDL_BLENDMODE_MOD,//!< 積算ブレンド
 	};
 
+	class Image;
+
 	/** 描画先を表すクラス.*/
 	/** Screenに無くてRendereにある関数は[Renderer専用]と表記.*/
 	/** \include Screen.*/
 	class Renderer
 	{
 		friend class SubWindow;
+		friend class Drawing;
 	private:
 		SDL_Renderer* handle = nullptr;//!<
 		SDL_Surface* surface = nullptr;//!<
@@ -35,7 +38,7 @@ namespace SDX
 			if (handle != nullptr) return false;
 
 			isWindow = true;
-			handle = SDL_CreateRenderer(元Window, -1, SDL_RENDERER_PRESENTVSYNC);
+			handle = SDL_CreateRenderer(元Window, -1, SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_TARGETTEXTURE);
 			surface = SDL_GetWindowSurface(元Window);
 			return true;
 		}
@@ -72,8 +75,8 @@ namespace SDX
 
 			isWindow = false;
 			surface = SDL_CreateRGBSurface(0, 幅, 高さ, 32, 0, 0, 0, 0);
+			
 			handle = SDL_CreateSoftwareRenderer(surface);
-
 			return true;
 		}
 
@@ -114,6 +117,7 @@ namespace SDX
 		}
 
 		/**対象RenderHandleにコピー.*/
+		/** 処理が重い*/
 		/** [Renderer専用]*/
 		bool Draw(const Rect& 領域, Renderer& コピー先 = Renderer::mainRenderer)
 		{
@@ -130,15 +134,20 @@ namespace SDX
 			return true;
 		}
 
+		/** 対象RenderHandleにコピー.*/
+		/** 処理が重い*/
+		/** [Renderer専用]*/
 		bool DrawExtend(const Rect& 元範囲, const Rect& コピー先範囲, Renderer& コピー先 = Renderer::mainRenderer)
 		{
 			if (!surface){ return false; }
 
-			SDL_Texture* image;
-			image = SDL_CreateTextureFromSurface(コピー先.GetHandle(), surface);
+			SDL_Texture* image = SDL_CreateTextureFromSurface(コピー先.GetHandle(), surface);
 
 			SDL_Rect srcrect = { (int)元範囲.GetX(), (int)元範囲.GetY(), (int)元範囲.GetW(), (int)元範囲.GetH() };
 			SDL_Rect dsrect = { (int)コピー先範囲.GetX(), (int)コピー先範囲.GetY(), (int)コピー先範囲.GetW(), (int)コピー先範囲.GetH() };
+
+			int a = SDL_BlitScaled(surface, &srcrect, コピー先.surface, &dsrect);
+
 			SDL_RenderCopy(コピー先.GetHandle(), image, &srcrect, &dsrect);
 			SDL_DestroyTexture(image);
 
@@ -156,11 +165,16 @@ namespace SDX
 				clearColor.GetRed(),
 				clearColor.GetGreen(),
 				clearColor.GetBlue(),
-				0
+				clearColor.GetAlpha()
 				);
 			SDL_RenderClear(handle);
 			return true;
 		}
+
+		/** 描画先を変更.*/
+		/** 引数がnullptrの場合、デフォルトに戻す*/
+		/** Image::Makeで作成したTextureのみ有効.*/
+		bool SetTarget(Image *描画対象 = nullptr);
 
 		/** 描画領域を設定する、設定範囲外には描画されない.*/
 		bool SetArea(const Rect &描画領域)

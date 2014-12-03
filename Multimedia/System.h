@@ -46,7 +46,7 @@ namespace SDX
 			TTF_Init();
 
 			//デフォルトフォントの設定
-			Drawing::SetDefaultFont(SystemFont::Gothic, 16);
+			Drawing::SetDefaultFont(SystemFont::Gothic, 16 , 2 );
 
 			SDL_InitSubSystem(SDL_INIT_JOYSTICK | SDL_INIT_GAMECONTROLLER | SDL_INIT_EVERYTHING);
 

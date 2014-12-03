@@ -7,36 +7,189 @@
 #include <Multimedia/IFont.h>
 #include <Multimedia/SystemFont.h>
 #include <Multimedia/Image.h>
+#include <Framework/ImagePack.h>
 #include <Multimedia/Window.h>
-#include <Framework/Shape.h>
+
+#include <map>
+#include <iomanip>
 
 namespace SDX
 {
-	/** フォントデータを表すクラス[非推奨].*/
-	/** 描画の度にImageを生成する旧実装、MixFontの使用を推奨.*/
+	enum class FontRender
+	{
+		Solid,//!<ベタ、高速
+		Blended,//!<混合、最高品質
+	};
+
+	/** TrueTypeFontとBMPFontをまとめて扱うクラス.*/
+	/** 毎回レンダリングせず、ハッシュマップにImageを格納する*/
+	/** 一度も表示していない文字が必要になった場合生成し以後使いまわす*/
+	/** @todo 高さが違う文字が混ざった場合の仕様が未定、現状上揃え*/
+	/** @todo 指定書式で色替えや強調混じり、打ち消し線を可能にするか*/
 	/** \include Font.h*/
 	class Font : public IFont
 	{
 	private:
 		TTF_Font* handle = nullptr;//!<
+		FontRender fontRender;
 		int size = 0;//!<
 		int enterHeight = 0;//!<
-	public:
-		Font(){}
+		mutable std::map<int, Image*> hash;//!<
 
-		Font(const char *フォント名, int 大きさ, int 行間 = 0)
+		int style = TTF_STYLE_NORMAL;
+
+		static bool GetUTFSize(unsigned char 一文字目,int &文字長さ )
 		{
-			Font::Load(フォント名, 大きさ, 行間);
+
+			if (一文字目 < 0x20)
+			{
+				文字長さ = 1;
+				return false;
+			}
+
+			if (一文字目 < 0x80){ 文字長さ = 1; }
+			else if (一文字目 < 0xE0){ 文字長さ = 2; }
+			else if (一文字目 < 0xF0){ 文字長さ = 3; }
+			else { 文字長さ = 4; }
+			return true;
+		}
+
+		/** UTFの文字列を一文字ずつ描画.*/
+		void DrawUTFString(const Point &座標, const std::string &文字列 , const Color &描画色) const
+		{
+			Point 位置 = 座標;
+
+			int charSize;
+			for (auto it = 文字列.begin(); it != 文字列.end(); it += charSize)
+			{
+				if (!GetUTFSize(*it, charSize)){ continue; }
+				if (*it == ' ')
+				{
+					位置.x += size;
+					continue;
+				}
+
+				Image* str = GetHash(文字列.substr(std::distance(文字列.begin(), it), charSize).c_str() , charSize);
+				if (str == nullptr){ continue; }
+
+				str->SetColor(描画色);
+				str->Draw(位置);
+				位置.x += str->GetWidth();
+			}
+		}
+		/** UTFの文字列を一文字ずつ拡大描画.*/
+		void DrawUTFString(const Point &座標, double X拡大率, double Y拡大率, const std::string &文字列, const Color &描画色) const
+		{
+			Point 位置 = 座標;
+
+			int charSize = 0;
+			for (auto it = 文字列.begin(); it != 文字列.end(); it += charSize)
+			{
+				if (!GetUTFSize(*it, charSize)){ continue; }
+				if (*it == ' ')
+				{
+					位置.x += size * X拡大率;
+					continue;
+				}
+
+				Image* str = GetHash(文字列.substr(std::distance(文字列.begin(), it), charSize).c_str(),charSize);
+				if (str == nullptr){ continue; }
+
+				str->SetColor(描画色);
+				str->DrawExtend(位置, { 位置.x + str->GetWidth()*X拡大率, 位置.y + str->GetHeight()*Y拡大率 });
+				位置.x += str->GetWidth() * X拡大率;
+			}
+		}
+		/** UTFの文字列を一文字ずつ回転拡大描画.*/
+		void DrawRotateUTFString(const Point &座標, int X補正, int Y補正, double 拡大率, double 角度, const std::string &文字列, const Color &描画色) const
+		{
+			Point 位置 = 座標;
+
+			int charSize = 0;
+			for (auto it = 文字列.begin(); it != 文字列.end(); it += charSize)
+			{
+				if (!GetUTFSize(*it, charSize)){ continue; }
+				if (*it == ' ')
+				{
+					位置.x += size * 拡大率;
+					continue;
+				}
+
+				Image* str = GetHash(文字列.substr(std::distance(文字列.begin(), it), charSize).c_str(),charSize);
+				if (str == nullptr){ continue; }
+
+				double x = 位置.x + std::cos(角度) * X補正 + std::cos(角度 + PAI / 2) * Y補正;
+				double y = 位置.y + std::sin(角度) * X補正 + std::sin(角度 + PAI / 2) * Y補正;
+
+				str->SetColor(描画色);
+				str->DrawRotate({ x, y }, 拡大率, 角度);
+				X補正 += int(str->GetWidth() * 拡大率);
+			}
+		}
+
+		/** 文字イメージが生成されているか確認し、無ければ新規に生成する.*/
+		Image* GetHash(const char* 文字 , int 文字長さ) const
+		{
+			int ID = 文字[0];
+			if (文字長さ >= 2){ ID += 文字[1]*256; }
+			if (文字長さ >= 3){ ID += 文字[2]*256*256; }
+			if (文字長さ >= 4){ ID += 文字[3] * 256 * 256 * 256; }
+
+			auto it = hash.find(ID);
+
+			if (it == hash.end())
+			{
+				if (handle == nullptr){ return nullptr; }
+
+				SDL_Surface* surface;
+				switch (fontRender)
+				{
+				case FontRender::Solid:
+					surface = TTF_RenderUTF8_Solid(handle, 文字, { 255, 255, 255 });
+					break;
+				case FontRender::Blended:
+					surface = TTF_RenderUTF8_Blended(handle, 文字, { 255, 255, 255 });
+					break;
+				}
+
+				SDL_Texture* moji = SDL_CreateTextureFromSurface(Screen::GetHandle(), surface);
+				Image* image = new Image(moji, surface->w, surface->h);
+				hash[ID] = image;
+				SDL_FreeSurface(surface);
+				return image;
+			}
+			return it->second;
+		}
+
+		/** 指定した文字に対応する画像を設定.*/
+		void SetHash(const char* 文字, int 文字長さ, Image *対応Image)
+		{
+			int ID = 文字[0];
+			if (文字長さ >= 2){ ID += 文字[1] * 256; }
+			if (文字長さ >= 3){ ID += 文字[2] * 256 * 256; }
+			if (文字長さ >= 4){ ID += 文字[3] * 256 * 256 * 256; }
+
+			hash[ID] = 対応Image;
+		}
+
+	public:
+
+		Font() = default;
+
+		Font(const char *フォント名, int 大きさ, int 行間 , FontRender 品質 = FontRender::Solid)
+		{
+			Load(フォント名, 大きさ, 行間,品質);
 		}
 
 		/** メモリ上にフォントを作成する.*/
 		/** 太さは0～9で指定、大きさと太さは-1にするとデフォルトになる\n*/
-		/**	行間は0の場合、改行後の文字が上下くっつく。*/
-		bool Load(const char *フォント名, int 大きさ, int 行間 = 0)
+		/**	行間は0の場合、改行後の文字が上下くっつく。\n*/
+		/** BMPフォント専用にしたい場合、フォント名は無効な物を入れる*/
+		bool Load(const char *フォント名, int 大きさ, int 行間 , FontRender 品質 = FontRender::Solid )
 		{
 			if (Loading::isLoading)
 			{
-				Loading::AddLoading([=]{ Load(フォント名,大きさ,行間); });
+				Loading::AddLoading([=]{ Load(フォント名,大きさ,行間,品質); });
 				return true;
 			}
 
@@ -44,17 +197,21 @@ namespace SDX
 
 			this->size = 大きさ;
 			this->enterHeight = 行間 + 大きさ;
-
+			fontRender = 品質;
 			handle = TTF_OpenFont(フォント名, 大きさ);
-			return (handle != nullptr);
+
+			return true;
 		}
 
-		/** フォントをメモリから開放する.*/
+		/** フォントハンドルをメモリから開放する.*/
 		bool Release() const
 		{
-			if (handle != nullptr) return false;
-
+			if (handle != nullptr){ return false; }
 			TTF_CloseFont(handle);
+			for (auto && it : hash)
+			{
+				it.second->Release();
+			}
 			return true;
 		}
 
@@ -64,23 +221,35 @@ namespace SDX
 			return handle;
 		}
 
-		/** フォントから画像を生成*/
+		/** FontからImageを生成.*/
 		Image MakeImage(Color 文字色, bool 反転フラグ, VariadicStream 描画する文字列) const
 		{
+			if (handle == nullptr){ return Image(); }
+
 			int 幅 = GetDrawStringWidth(描画する文字列);
 			int 高さ = ((int)描画する文字列.StringS.size() - 1) * enterHeight + size;
 			int Y座標 = 0;
 
 			std::vector<SDL_Surface*> surfaces;
+			SDL_Surface* surface;
 
 			for (auto it : 描画する文字列.StringS)
 			{
-				SDL_Surface* surface = TTF_RenderUTF8_Blended(handle, it.c_str(), 文字色);
+				switch (fontRender)
+				{
+				case FontRender::Solid:
+					surface = TTF_RenderUTF8_Solid(handle, it.c_str(), 文字色);
+					break;
+				case FontRender::Blended:
+					surface = TTF_RenderUTF8_Blended(handle, it.c_str(), 文字色);
+					break;
+				}
+
 				幅 = std::max(幅, surface->w);
 				surfaces.push_back(surface);
 			}
 
-			SDL_Surface* toRend = SDL_CreateRGBSurface(0, 幅, 高さ, 32, 0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff);
+			SDL_Surface* toRend = SDL_CreateRGBSurface(0, 幅, 高さ, 32, 0, 0, 0, 0);
 			SDL_Renderer* render = SDL_CreateSoftwareRenderer(toRend);
 
 			for (auto it : surfaces)
@@ -95,8 +264,9 @@ namespace SDX
 				SDL_FreeSurface(it);
 				SDL_DestroyTexture(texture);
 			}
-
+			//描画先を戻す
 			Image image(SDL_CreateTextureFromSurface(Screen::GetHandle(), toRend), 幅, 高さ);
+
 			SDL_FreeSurface(toRend);
 			SDL_DestroyRenderer(render);
 
@@ -109,88 +279,137 @@ namespace SDX
 			return this->size;
 		}
 
-		/** 描画時の幅を取得[未実装].*/ 
+		/** 描画時の幅を取得.*/
 		int GetDrawStringWidth(VariadicStream 幅を計算する文字列) const
 		{
-			int 幅 = 0;
+			if (handle == nullptr){ return 0; }
 
-			return 幅;
+			int 最大幅 = 0;
+
+			for (auto 文字列 : 幅を計算する文字列.StringS)
+			{
+				unsigned char lead;
+				int charSize = 0;
+				int 幅 = 0;
+
+				for (auto it = 文字列.begin(); it != 文字列.end(); it += charSize)
+				{
+					lead = *it;
+					if (lead < 0x20){ continue; }
+					else if (lead < 0x80){ charSize = 1; }
+					else if (lead < 0xE0){ charSize = 2; }
+					else if (lead < 0xF0){ charSize = 3; }
+					else { charSize = 4; }
+
+					幅 += GetHash(文字列.substr(std::distance(文字列.begin(), it), charSize).c_str(),charSize)->GetWidth();
+				}
+
+				最大幅 = std::max(幅, 最大幅);
+			}
+			return 最大幅;
 		}
 
 		/** 文字を描画.*/
 		bool Draw(const Point &座標, Color 描画色, VariadicStream 描画する文字列) const override
 		{
-			if (!handle) return false;
-
-			SDL_Surface* image;
-			SDL_Texture* moji;
-			SDL_Rect temp;
-			int Y座標 = (int)座標.y;
+			Point 位置 = 座標;
 
 			for (auto it : 描画する文字列.StringS)
 			{
-				if (it.size() > 0)
-				{
-					image = TTF_RenderUTF8_Blended(handle, it.c_str(), 描画色);
-
-					moji = SDL_CreateTextureFromSurface(Screen::GetHandle(), image);
-					temp = { (int)座標.x, Y座標, image->w, image->h };
-					SDL_RenderCopy(Screen::GetHandle(), moji, 0, &temp);
-
-					SDL_FreeSurface(image);
-					SDL_DestroyTexture(moji);
-				}
-				Y座標 += this->enterHeight;
+				DrawUTFString(位置, it, 描画色);
+				位置.y += this->enterHeight;
 			}
 
 			return true;
 		}
 
 		/** 文字を影付きで描画.*/
-		bool DrawShadow(const Point &座標, Color &表色, Color 影色, VariadicStream 描画する文字列) const
+		bool DrawShadow(const Point &座標, Color 表色, Color 影色, VariadicStream 描画する文字列) const
 		{
 			Draw({ 座標.x + 1, 座標.y + 1 }, 影色, 描画する文字列);
 			return Draw(座標, 表色, 描画する文字列);
 		}
 
 		/** 文字を回転して描画.*/
-		/** 呼び出す度に画像イメージを作成するので処理は重い*/
 		bool DrawRotate(const Point &座標, double 拡大率, double 角度, Color 描画色, bool 反転フラグ, VariadicStream 描画する文字列) const override
 		{
-			Image 文字イメージ = MakeImage(描画色, 反転フラグ, 描画する文字列);
-			文字イメージ.DrawRotate(座標, 拡大率, 角度, 反転フラグ);
-			文字イメージ.Release();
+			int 行数 = 描画する文字列.StringS.size();
+
+			int X補正 = int(-GetDrawStringWidth(描画する文字列) * 拡大率 * 0.5);
+			int Y補正 = int(-enterHeight * 拡大率 * 0.5*行数);
+
+			for (auto it : 描画する文字列.StringS)
+			{
+				DrawRotateUTFString(座標, X補正, Y補正, 拡大率, 角度, it, 描画色);
+				Y補正 += int(enterHeight * 拡大率);
+			}
+
 			return true;
 		}
 
 		/** 拡大率を指定して文字を描画.*/
 		bool DrawExtend(const Point &座標, double X拡大率, double Y拡大率, Color 描画色, VariadicStream 描画する文字列) const override
 		{
-			if (!handle) return false;
-
-			SDL_Surface* image;
-			SDL_Texture* moji;
-			SDL_Rect temp;
-			int Y座標 = (int)座標.y;
+			Point 位置 = 座標;
 
 			for (auto it : 描画する文字列.StringS)
 			{
-				if (it.size() > 0)
-				{
-					image = TTF_RenderUTF8_Blended(handle, it.c_str(), 描画色);
-
-					moji = SDL_CreateTextureFromSurface(Screen::GetHandle(), image);
-					temp = { (int)座標.x, Y座標, int(image->w * X拡大率), int(image->h * Y拡大率) };
-
-					SDL_RenderCopy(Screen::GetHandle(), moji, 0, &temp);
-					SDL_FreeSurface(image);
-					SDL_DestroyTexture(moji);
-				}
-
-				Y座標 += int(this->enterHeight * Y拡大率);
+				DrawUTFString(位置, X拡大率, Y拡大率, it, 描画色);
+				位置.y += this->enterHeight * Y拡大率;
 			}
 
 			return true;
+		}
+
+		/** 指定した文字に対応するImageを設定.*/
+		/** 文字列が2文字以上なら2文字目以降は無視*/
+		void SetImage(const std::string &文字, Image *対応画像)
+		{
+			int charSize;
+			auto it = 文字.begin();
+
+			if (!GetUTFSize(*it, charSize)){ return; }
+			SetHash(文字.substr(std::distance(文字.begin(), it), charSize).c_str(), charSize, 対応画像);
+		}
+
+		/** 指定した文字に対応するImageをまとめて設定.*/
+		void SetImageS(const std::string &文字列, ImagePack &対応画像)
+		{
+			int charSize;
+			int a = 0;
+			for (auto it = 文字列.begin(); it != 文字列.end(); it += charSize)
+			{
+				if (!GetUTFSize(*it, charSize)){ continue; }
+
+				SetHash(文字列.substr(std::distance(文字列.begin(), it), charSize).c_str(), charSize , 対応画像[a]);
+			}
+		}
+
+		/** 指定した文字から連続してに対応するImageをまとめて設定.*/
+		/** 例えば文字列="0"で登録数=10なら0～9までを登録*/
+		/** アルファベットや数字用*/
+		void SetImageS(const std::string &文字列, ImagePack &対応画像, int 登録数)
+		{
+			int charSize;
+			int a = 0;
+			auto it = 文字列.begin();
+			if (!GetUTFSize(*it, charSize)){ return; }
+			std::string str = 文字列.substr(0, charSize);
+				
+			for (int a = 0; a < 登録数;++a)
+			{
+				if (!GetUTFSize(*it, charSize)){ continue; }
+				SetHash(str.c_str(),charSize,対応画像[a]);
+				if (str[charSize - 1] == 0xff)
+				{
+					str[charSize - 2]++;
+					str[charSize - 1] = 0;
+				}
+				else
+				{
+					str[charSize - 1]++;
+				}
+			}
 		}
 	};
 }

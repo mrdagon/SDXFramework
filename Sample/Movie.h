@@ -7,6 +7,7 @@
 
 bool SampleMovie()
 {
+	/*
 	using namespace SDX;
 	System::Initialise("sample", 600, 400);
 
@@ -28,5 +29,6 @@ bool SampleMovie()
 	}
 
 	System::End();
-	return true;
+	*/
+	return false;
 }

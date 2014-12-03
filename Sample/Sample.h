@@ -5,7 +5,7 @@
 namespace SDX
 {
 //必要な画像ファイル等
-//Anime
+//Anime //四コマぐらいのパラパラと数字
 //BmpFont
 //BmpFrame
 //File
@@ -19,13 +19,12 @@ namespace SDX
 //Loading
 
 //Multimedia
-#include <Sample/Blend.h>
+#include <Sample/Blend.h>//機能未実装
 #include <Sample/Color.h>
 #include <Sample/Drawing.h>
 #include <Sample/File.h>
-#include <Sample/Filter.h>
+#include <Sample/Filter.h>//機能未実装
 #include <Sample/Font.h>
-#include <Sample/MixFont.h>
 #include <Sample/Image.h>
 #include <Sample/Input.h>
 #include <Sample/Touch.h>
@@ -39,7 +38,6 @@ namespace SDX
 #include <Sample/Loading.h>
 //Framework
 #include <Sample/Anime.h>
-#include <Sample/BmpFont.h>
 #include <Sample/BmpFrame.h>
 #include <Sample/Camera.h>
 #include <Sample/Director.h>

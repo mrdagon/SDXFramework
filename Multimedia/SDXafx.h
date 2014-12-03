@@ -48,4 +48,10 @@ namespace SDX
 	int Loading::succesCount = 0;
 	std::mutex Loading::mtx;
 	std::vector<std::function<void(void)>> Loading::funcS;
+
+	bool Renderer::SetTarget(Image *描画対象)
+	{
+		return (SDL_SetRenderTarget(handle, 描画対象->GetHandle()) == 0);
+	}
+
 }
