@@ -25,19 +25,19 @@ namespace SDX
 		/**透過状態を計算する.*/
 		static void RGBACulculate(int 赤, int 緑, int 青)
 		{
-			SDL_SetRenderDrawBlendMode(Screen::GetHandle(), (SDL_BlendMode)Screen::activeRenderer->nowBlendMode);
+			SDL_SetRenderDrawBlendMode(Screen::GetHandle(), (SDL_BlendMode)Screen::GetRenderer()->blendMode);
 			SDL_SetRenderDrawColor
 				(
 				Screen::GetHandle(),
-				Screen::activeRenderer->rgba.GetRed() * 赤 / 255,
-				Screen::activeRenderer->rgba.GetGreen() * 緑 / 255,
-				Screen::activeRenderer->rgba.GetBlue() * 青 / 255,
-				Screen::activeRenderer->rgba.GetAlpha()
+				Screen::GetRenderer()->rgba.GetRed() * 赤 / 255,
+				Screen::GetRenderer()->rgba.GetGreen() * 緑 / 255,
+				Screen::GetRenderer()->rgba.GetBlue() * 青 / 255,
+				Screen::GetRenderer()->rgba.GetAlpha()
 				);
 		}
 
 		/** Rendererに円を描画、処理はかなり重い.*/
-		static void MakeCircle(SDL_Renderer* renderer,int x1, int y1,int x2, int y2 , int alpha)
+		static void MakeCircle(SDL_Renderer* renderer,int x1, int y1,int x2, int y2)
 		{
 			//実装参考[http://hp.vector.co.jp/authors/VA028002/sdl/]
 			//パブリックドメインなのでわりとコピペしてます
@@ -47,7 +47,7 @@ namespace SDX
 			int f;
 
 			SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
-			SDL_SetRenderDrawColor(renderer,255,255,255,alpha);
+			SDL_SetRenderDrawColor(renderer,255,255,255,255);
 
 			dx = x2 - x1 < 0 ? x1 - x2 : x2 - x1;
 			dy = y2 - y1 < 0 ? y1 - y2 : y2 - y1;
@@ -84,18 +84,20 @@ namespace SDX
 			static Image circleA;
 			static Image circleB;
 			static Image circleC;
+			const int CIRCLE_SIZE = 512;
 
 			if (circleA.GetHandle() == nullptr)
 			{
-				circleA.Make(320, 320);
-				circleB.Make(320, 320);
-				circleC.Make(320, 320);
+				circleA.Make(CIRCLE_SIZE, CIRCLE_SIZE);
+				circleB.Make(CIRCLE_SIZE, CIRCLE_SIZE);
+				circleC.Make(CIRCLE_SIZE, CIRCLE_SIZE);
 
-				SDL_SetRenderTarget(Screen::GetHandle(), circleA.GetHandle());
-				MakeCircle(Screen::GetHandle(), 0, 0, 320, 320,255);
-				SDL_SetRenderTarget(Screen::GetHandle(), circleC.GetHandle());
-				Drawing::Rect({ 0, 0, 320, 320 }, Color::White, true);
-				SDL_SetRenderTarget(Screen::GetHandle(), nullptr);
+				auto prev = Screen::GetTarget();
+				Screen::SetTarget(&circleA);
+				MakeCircle(Screen::GetHandle(), 0, 0, CIRCLE_SIZE, CIRCLE_SIZE);
+				Screen::SetTarget(&circleC);
+				Drawing::Rect({ 0, 0, CIRCLE_SIZE, CIRCLE_SIZE }, Color::White, true);
+				Screen::SetTarget(prev);
 			}
 
 			if (太さ <= 0)
@@ -105,34 +107,46 @@ namespace SDX
 			}
 			else
 			{
-				太さ = std::max(太さ * 640 / (幅 + 高さ), 2);//最低2
+				太さ = std::max(太さ * CIRCLE_SIZE * 2 / (幅 + 高さ), 2);//最低2
 
-				SDL_SetRenderTarget(Screen::GetHandle(),circleB.GetHandle());
+				SDL_Rect rect2 = { X座標, Y座標, 幅, 高さ };
+				auto prev = Screen::GetTarget();
+				auto mode = Screen::GetRenderer()->blendMode;
+				auto col = Screen::GetRenderer()->rgba;
+				int alpha = Screen::GetRenderer()->rgba.GetAlpha();//Alpha値の場合ここの減算率が変化する
+
+				Screen::SetDrawMode();
+
+				Screen::SetTarget(&circleB);
 				circleA.SetColor(Color::White);
 				circleA.Draw({ 0, 0 });
 				circleA.SetColor(Color::Black);
-				circleA.DrawExtend({ 太さ, 太さ },{ 320 - 太さ, 320 - 太さ });
-				//白の場合乗算処理が不要
-				if (描画色.GetRed() != 255 || 描画色.GetGreen() || 255 && 描画色.GetBlue() || 255)
-				{
-					SDL_SetRenderTarget(Screen::GetHandle(), circleC.GetHandle());
-					circleA.SetColor(Color::Black);
-					circleA.Draw({ 0, 0 });
-					circleA.SetColor(Color::White);
-					circleA.DrawExtend({ 太さ, 太さ }, { 320 - 太さ, 320 - 太さ });
-				}
-				SDL_SetRenderTarget(Screen::GetHandle(), nullptr);
+				circleA.DrawExtend({ 太さ, 太さ },{ CIRCLE_SIZE - 太さ, CIRCLE_SIZE - 太さ });
+				Screen::SetTarget(&circleC);
+				circleA.SetColor({255-alpha,255-alpha,255-alpha});
+				circleA.Draw({ 0, 0 });
+				circleA.SetColor(Color::White);
+				circleA.DrawExtend({ 太さ, 太さ }, { CIRCLE_SIZE - 太さ, CIRCLE_SIZE - 太さ });
+				Screen::SetTarget(prev);
 
-				SDL_Rect rect2 = { X座標, Y座標, 幅, 高さ };
-				if (描画色.GetRed() != 255 || 描画色.GetGreen() || 255 && 描画色.GetBlue() || 255)
+				Screen::SetDrawMode(col,mode);
+
+				if (Screen::GetRenderer()->blendMode != BlendMode::Add)
 				{
+					//円の部分を乗算描画し暗くする
 					SDL_SetTextureBlendMode(circleC.GetHandle(), (SDL_BlendMode)BlendMode::Mula);
+					SDL_SetTextureAlphaMod(circleC.GetHandle(), alpha);
 					SDL_RenderCopy(Screen::GetHandle(), circleC.GetHandle(), nullptr, &rect2);
 				}
-				SDL_SetTextureBlendMode(circleB.GetHandle(), (SDL_BlendMode)BlendMode::Add);
-				SDL_SetTextureAlphaMod(circleB.GetHandle(), 255 );
-				SDL_SetTextureColorMod(circleB.GetHandle(), 描画色.GetRed(), 描画色.GetGreen(), 描画色.GetBlue());
-				SDL_RenderCopy(Screen::GetHandle(), circleB.GetHandle(), nullptr, &rect2);		
+				if (Screen::GetRenderer()->blendMode != BlendMode::Mula)
+				{
+					//円の部分を加算描画し明るくする
+					SDL_SetTextureBlendMode(circleB.GetHandle(), (SDL_BlendMode)BlendMode::Add);
+					SDL_SetTextureAlphaMod(circleB.GetHandle(), alpha );
+					SDL_SetTextureColorMod(circleB.GetHandle(), 描画色.GetRed(), 描画色.GetGreen(), 描画色.GetBlue());
+					SDL_RenderCopy(Screen::GetHandle(), circleB.GetHandle(), nullptr, &rect2);
+				}
+
 				return circleB;
 			}
 		}
@@ -153,19 +167,27 @@ namespace SDX
 				imageB.Make(WSIZE, HSIZE);
 				imageC.Make(WSIZE, HSIZE);
 
-				SDL_SetRenderTarget(Screen::GetHandle(), imageA.GetHandle());
-				SDL_SetRenderDrawBlendMode(Screen::GetHandle(), SDL_BLENDMODE_NONE);
+				auto prev = Screen::GetTarget();
+				auto mode = Screen::GetRenderer()->blendMode;
+				auto col = Screen::GetRenderer()->rgba;
+
+				Screen::SetDrawMode();
+
+				Screen::SetTarget(&imageA);
+				//横向きの三角形を描画
+				SDL_SetRenderDrawBlendMode(Screen::GetHandle(), SDL_BLENDMODE_BLEND);
 				SDL_SetRenderDrawColor(Screen::GetHandle(), 255, 255, 255, 255);
 				for (int y = 0; y < HSIZE/2; ++y)
 				{
 					int x = WSIZE * y * 2 / HSIZE;
-					SDL_RenderDrawLine(Screen::GetHandle(), 0, y, x, y); /*A*/
-					SDL_RenderDrawLine(Screen::GetHandle(), 0, HSIZE-y-1, x, HSIZE-y-1); /*A*/
+					SDL_RenderDrawLine(Screen::GetHandle(), 0, y, x, y);
+					SDL_RenderDrawLine(Screen::GetHandle(), 0, HSIZE-y-1, x, HSIZE-y-1);
 				}
-
-				SDL_SetRenderTarget(Screen::GetHandle(), imageC.GetHandle());
+				Screen::SetTarget(&imageC);
 				Drawing::Rect({ 0, 0, WSIZE, HSIZE }, Color::White, true);
-				SDL_SetRenderTarget(Screen::GetHandle(), nullptr);
+				Screen::SetTarget(prev);
+
+				Screen::SetDrawMode(col, mode);
 			}
 
 			const double 拡大率 = double(辺の長さ) / HSIZE;
@@ -178,37 +200,53 @@ namespace SDX
 			{
 				imageA.SetColor(描画色);
 				imageA.RGBACulculate();
-				SDL_RenderCopyEx(Screen::GetHandle(), imageA.GetHandle(), nullptr, &rect2, 角度 / DEG, &center, SDL_RendererFlip(false));
+				imageA.DrawRotateAxis({ 中心座標.x ,中心座標.y}, { width *2 / 3, height }, 拡大率, 角度);
 			}
 			else
 			{
 				太さ = std::max(太さ * WSIZE* 2  / (辺の長さ), 2);//最低2
 
-				SDL_SetRenderTarget(Screen::GetHandle(), imageB.GetHandle());
+				auto prev = Screen::GetTarget();
+				int alpha = Screen::GetRenderer()->rgba.GetAlpha();//Alpha値によりここの減算率が変化する
+				auto mode = Screen::GetRenderer()->blendMode;
+				auto col = Screen::GetRenderer()->rgba;
+
+				Screen::SetDrawMode();
+
+				Screen::SetTarget(&imageB);
 				imageA.SetColor(Color::White);
 				imageA.Draw({ 0, 0 });
 				imageA.SetColor(Color::Black);
 				imageA.DrawExtend({ 太さ/2, 太さ }, { WSIZE - 太さ, HSIZE - 太さ });
-				//白の場合乗算処理が不要
-				if (描画色.GetRed() != 255 || 描画色.GetGreen() || 255 && 描画色.GetBlue() || 255)
-				{
-					SDL_SetRenderTarget(Screen::GetHandle(), imageC.GetHandle());
-					imageA.SetColor(Color::Black);
-					imageA.Draw({ 0, 0 });
-					imageA.SetColor(Color::White);
-					imageA.DrawExtend({ 太さ/2, 太さ }, { WSIZE - 太さ, HSIZE - 太さ });
-				}
-				SDL_SetRenderTarget(Screen::GetHandle(), nullptr);
+				Screen::SetTarget(&imageC);
+				imageA.SetColor({ 255 - alpha, 255 - alpha, 255 - alpha });
+				imageA.Draw({ 0, 0 });
+				imageA.SetColor(Color::White);
+				imageA.DrawExtend({ 太さ/2, 太さ }, { WSIZE - 太さ, HSIZE - 太さ });
+				Screen::SetTarget(prev);
 
-				if (描画色.GetRed() != 255 || 描画色.GetGreen() || 255 && 描画色.GetBlue() || 255)
+				Screen::SetDrawMode(col, mode);
+
+				if (Screen::GetRenderer()->blendMode == BlendMode::Mula)
 				{
-					SDL_SetTextureBlendMode(imageC.GetHandle(), (SDL_BlendMode)BlendMode::Mula);
-					SDL_RenderCopyEx(Screen::GetHandle(), imageC.GetHandle(), nullptr, &rect2, 角度/DEG, &center, SDL_RendererFlip(false));
+					SDL_SetTextureBlendMode(imageB.GetHandle(), (SDL_BlendMode)BlendMode::Mula);
+					SDL_SetTextureAlphaMod(imageB.GetHandle(), alpha);
+					SDL_RenderCopyEx(Screen::GetHandle(), imageB.GetHandle(), nullptr, &rect2, 角度 / DEG, &center, SDL_RendererFlip(false));
 				}
-				SDL_SetTextureBlendMode(imageB.GetHandle(), (SDL_BlendMode)BlendMode::Add);
-				SDL_SetTextureAlphaMod(imageB.GetHandle(), 255);
-				SDL_SetTextureColorMod(imageB.GetHandle(), 描画色.GetRed(), 描画色.GetGreen(), 描画色.GetBlue());
-				SDL_RenderCopyEx(Screen::GetHandle(), imageB.GetHandle(), nullptr, &rect2, 角度/DEG, &center, SDL_RendererFlip(false));
+				else
+				{
+					if (Screen::GetRenderer()->blendMode != BlendMode::Add)
+					{
+						SDL_SetTextureBlendMode(imageC.GetHandle(), (SDL_BlendMode)BlendMode::Mula);
+						SDL_SetTextureAlphaMod(imageC.GetHandle(), alpha);
+						SDL_RenderCopyEx(Screen::GetHandle(), imageC.GetHandle(), nullptr, &rect2, 角度 / DEG, &center, SDL_RendererFlip(false));
+					}
+					
+					SDL_SetTextureBlendMode(imageB.GetHandle(), (SDL_BlendMode)BlendMode::Add);
+					SDL_SetTextureAlphaMod(imageB.GetHandle(), alpha);
+					SDL_SetTextureColorMod(imageB.GetHandle(), 描画色.GetRed(), 描画色.GetGreen(), 描画色.GetBlue());
+					SDL_RenderCopyEx(Screen::GetHandle(), imageB.GetHandle(), nullptr, &rect2, 角度 / DEG, &center, SDL_RendererFlip(false));					
+				}
 			}
 		}
 public:
@@ -226,8 +264,7 @@ public:
 		}
 
 		/** 始点と終点を結ぶ直線を描画.*/
-		/** @todo 太さ指定不可*/
-		static void Line(const Point &始点, const Point &終点, Color 色, int 太さ = 1)
+		static void Line(const Point &始点, const Point &終点, const Color &色, int 太さ = 1)
 		{
 			if (太さ <= 1)
 			{
@@ -236,12 +273,28 @@ public:
 			}
 			else
 			{
+				static Image image;
+				if (image.GetHandle() == nullptr)
+				{
+					image.Make(256, 256);
+					auto prev = Screen::GetRenderer()->target;
+					Screen::SetTarget(&image);
+					Drawing::Rect({ 0, 0, 256, 256 }, Color::White, true);
+					Screen::GetRenderer()->target = prev;
+				}
 
+				double rateX = std::sqrt((終点.x - 始点.x)*(終点.x - 始点.x) + (終点.y - 始点.y) + (終点.y - 始点.y));//太さ
+				double rateY = 太さ;//長さ
+				double angle = std::atan2( 終点.x - 始点.x , 終点.y - 始点.y);
+
+				image.SetColor(色);
+				image.RGBACulculate();
+				image.DrawRotateAxis({ (始点.x + 終点.x)/2, (始点.y + 終点.y)/2 }, { 128, 128 }, rateX/256, rateY/256, angle);
 			}
 		}
 
 		/** 左上の座標と大きさを指定して矩形を描画.*/
-		static void Rect(const Rect &領域, Color 色, bool 塗りつぶしフラグ)
+		static void Rect(const Rect &領域, const Color &色, bool 塗りつぶしフラグ)
 		{
 			SDL_Rect buf = { (int)領域.GetLeft(), (int)領域.GetTop(), (int)領域.GetW(), (int)領域.GetH() };
 			RGBACulculate(色.GetRed(), 色.GetGreen(), 色.GetBlue());
@@ -284,7 +337,7 @@ public:
 		}
 
 		/** 頂点を指定して多角形を描画.*/
-		static void Polygon(std::vector<Point> 頂点, Color 色)
+		static void Polygon(std::vector<Point> 頂点, const Color &色)
 		{
 			RGBACulculate(色.GetRed(), 色.GetGreen(), 色.GetBlue());
 			
@@ -304,7 +357,7 @@ public:
 
 		/** 正三角形を描画.*/
 		/** 太さに0を指定した場合塗りつぶし.*/
-		static void Triangle(const Point &中心座標,int 辺の長さ , double 角度 , Color 描画色 , int 太さ = 0)
+		static void Triangle(const Point &中心座標,int 辺の長さ , double 角度 , const Color &描画色 , int 太さ = 0)
 		{
 			if (太さ <= 0)
 			{
@@ -317,7 +370,7 @@ public:
 		}
 
 		/** 指定座標に点を描画.*/
-		static void Pixel(const Point &座標, Color 色)
+		static void Pixel(const Point &座標, const Color &色)
 		{
 			RGBACulculate(色.GetRed(), 色.GetGreen(), 色.GetBlue());
 			SDL_RenderDrawPoint(Screen::GetHandle(), (int)座標.x, (int)座標.y);
@@ -334,7 +387,7 @@ public:
 
 		/** 文字を描画.*/
 		/** フォントはデフォルトでゴシック体*/
-		static void String(const Point &座標, Color 色, VariadicStream 描画する文字列)
+		static void String(const Point &座標, const Color &色, const VariadicStream &描画する文字列)
 		{
 			GetFont().Draw(座標, 色, 描画する文字列);
 		}

@@ -11,7 +11,7 @@ namespace SDX
 	/** Imageにフィルター処理を行う関数群[未実装].*/ 
 	/** ImageやImagePackに対して画像編集ソフトにあるようなフィルター処理を施す。*/
 	/** \include Filter.h*/
-	/** @todo OpenGLが必要なので、実装予定無し*/
+	/** @todo 実装が面倒なので後回し*/
 	class Filter
 	{
 	private:
@@ -30,20 +30,6 @@ namespace SDX
 		{
 			return false;
 		}
-		static bool Mono(ImagePack &処理イメージ郡, int 青色差, int 赤色差)
-		{
-			for (auto it : 処理イメージ郡)
-			{
-				Mono(it, 青色差, 赤色差);
-			}
-			return false;
-		}
-		static Image MonoMake(Image *処理イメージ, int 青色差, int 赤色差)
-		{
-			Image image = 処理イメージ->Clone();
-			Mono( &image, 青色差, 赤色差);
-			return image;
-		}
 
 		/** ガウスフィルタ.*/
 		/** 画像にガウス関数を使用したぼかし効果を与える。\n*/
@@ -59,10 +45,6 @@ namespace SDX
 		{
 			return false;
 		}
-		static bool Gauss(ImagePack *処理イメージ郡, int 使用ピクセル幅, double ぼかし強さ)
-		{
-			return false;
-		}
 
 		/** 縮小フィルタ.*/
 		/** 分母は 2 か 4 か 8 を指定\n*/
@@ -70,10 +52,6 @@ namespace SDX
 		/**	DrawExtend でも縮小描画することができるが、それよりも綺麗に縮小した画像を得ることができる。\n*/
 		/**	主にFilter::Gaussの処理負荷を下げる目的で使用されることを想定している。*/
 		static bool DownScale(Image* 処理イメージ, int 分母)
-		{
-			return false;
-		}
-		static bool DownScale(ImagePack *処理イメージ郡, int 分母)
 		{
 			return false;
 		}
@@ -87,10 +65,6 @@ namespace SDX
 		{
 			return false;
 		}
-		static bool BrightClip(ImagePack *処理イメージ郡, bool isLess, int cmpParam, int clipFillColor, int clipFillAlpha)
-		{
-			return false;
-		}
 
 		/** 色相・彩度・明度フィルタ.*/
 		/** 画像の各ピクセルの、色相、彩度、明度を補正する。\n*/
@@ -98,10 +72,6 @@ namespace SDX
 		/**	彩度 -1.0～で指定し、相対的に変化させます、-1でグレー、0で変化なし。\n*/
 		/**	明度 -1.0～1.0で指定し、負の場合暗く、正の場合は明るくなる。*/
 		static bool Hsb(Image* 処理イメージ, int 色相, double 彩度, double 明度)
-		{
-			return false;
-		}
-		static bool Hsb(ImagePack *処理イメージ郡, int 色相, double 彩度, double 明度)
 		{
 			return false;
 		}
@@ -115,18 +85,10 @@ namespace SDX
 		{
 			return false;
 		}
-		static bool MonoHsb(ImagePack *処理イメージ郡, int 色相, double 彩度, double 明度)
-		{
-			return false;
-		}
 
 		/** 階調反転フィルタ.*/
 		/** 各ピクセルのRGB値を反転する。*/
-		bool Invert(Image* 処理イメージ)
-		{
-			return false;
-		}
-		bool Invert(ImagePack *処理イメージ郡)
+		static bool Invert(Image* 処理イメージ)
 		{
 			return false;
 		}
@@ -138,22 +100,14 @@ namespace SDX
 		/**	処理後下限、0以上にすると白っぽくなります。\n*/
 		/**	処理後上限、255以下にすると黒に近くなります\n*/
 		/**	ガンマ値は1以上にすると、明るくなり、1以下にすると暗くなります。*/
-		bool Level(Image* 処理イメージ, int 処理前下限, int 処理前上限, int 処理後下限, int 処理後上限, double ガンマ値)
-		{
-			return false;
-		}
-		bool Level(ImagePack *処理イメージ郡, int 処理前下限, int 処理前上限, int 処理後下限, int 処理後上限, double ガンマ値)
+		static bool Level(Image* 処理イメージ, int 処理前下限, int 処理前上限, int 処理後下限, int 処理後上限, double ガンマ値)
 		{
 			return false;
 		}
 
 		/** ２階調フィルタ.*/
 		/** 各ピクセルの輝度が閾値より暗いか明るいかで各ピクセルを変換する*/
-		bool TwoColor(Image* 処理イメージ, int 閾値, int 暗色, int 暗色α値, int 明色, int 明色α値)
-		{
-			return false;
-		}
-		bool TwoColor(ImagePack *処理イメージ郡, int 閾値, int 暗色, int 暗色α値, int 明色, int 明色α値)
+		static bool TwoColor(Image* 処理イメージ, int 閾値, int 暗色, int 暗色α値, int 明色, int 明色α値)
 		{
 			return false;
 		}
@@ -163,16 +117,10 @@ namespace SDX
 		/**	輝度が0の場合はグラデーションマップの一番左上のピクセルの色が( x:0 y:0 座標のピクセル )、\n*/
 		/**	輝度が255( 最大 )の場合、グラデーションマップの一番右上のピクセルの色が( x:255 y:0 座標のピクセル )*/
 		/**	出力結果の色になる。*/
-		bool GradientMap(Image* 処理イメージ, const Image *入力イメージ, bool 反転フラグ)
+		static bool GradientMap(Image* 処理イメージ, const Image *入力イメージ, bool 反転フラグ)
 		{
 			return false;
 		}
-		bool GradientMap(ImagePack *処理イメージ郡, const Image *入力イメージ, bool 反転フラグ)
-		{
-			
 
-
-			return false;
-		}
 	};
 }

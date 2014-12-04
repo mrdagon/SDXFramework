@@ -38,7 +38,7 @@ namespace SDX
 				Single().scenes.back()->Update();
 				if (IsDraw()){ Single().scenes.back()->Draw(); }
 				//更新処理
-				if (Camera::Now()){ Camera::Now()->Update(); }
+				if (Camera::Get()){ Camera::Get()->Update(); }
 				Time::CheckFPS();
 
 				Remove();

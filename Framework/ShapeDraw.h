@@ -7,7 +7,7 @@
 //Shape系の描画関数の実装
 namespace SDX
 {
-	void Complex::Draw(Color 描画色, int 透過率, Camera *座標変換Camera) const
+	void Complex::Draw(const Color &描画色, int 透過率, Camera *座標変換Camera) const
 	{
 		for (auto it : shapes)
 		{
@@ -15,7 +15,7 @@ namespace SDX
 		}
 	}
 
-	void Point::Draw(Color 描画色, int 透過率, Camera *座標変換Camera) const
+	void Point::Draw(const Color &描画色, int 透過率, Camera *座標変換Camera) const
 	{
 		Screen::SetBlendMode(BlendMode::Alpha, 透過率);
 		if (座標変換Camera)
@@ -29,7 +29,7 @@ namespace SDX
 		Screen::SetBlendMode(BlendMode::NoBlend, 透過率);
 	}
 
-	void Line::Draw(Color 描画色, int 透過率, Camera *座標変換Camera) const
+	void Line::Draw(const Color &描画色, int 透過率, Camera *座標変換Camera) const
 	{
 		Screen::SetBlendMode(BlendMode::Alpha, 透過率);
 		if (座標変換Camera)
@@ -47,7 +47,7 @@ namespace SDX
 		Screen::SetBlendMode(BlendMode::NoBlend, 透過率);
 	}
 
-	void Rect::Draw(Color 描画色, int 透過率, Camera *座標変換Camera) const
+	void Rect::Draw(const Color &描画色, int 透過率, Camera *座標変換Camera) const
 	{
 		Screen::SetBlendMode(BlendMode::Alpha, 透過率);
 		if (座標変換Camera)
@@ -81,7 +81,7 @@ namespace SDX
 		Screen::SetBlendMode(BlendMode::NoBlend, 透過率);
 	}
 
-	void Circle::Draw(Color 描画色, int 透過率, Camera *座標変換Camera) const
+	void Circle::Draw(const Color &描画色, int 透過率, Camera *座標変換Camera) const
 	{
 		Screen::SetBlendMode(BlendMode::Alpha, 透過率);
 		if (座標変換Camera)

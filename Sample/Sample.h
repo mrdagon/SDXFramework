@@ -5,18 +5,15 @@
 namespace SDX
 {
 //必要な画像ファイル等
-//Anime //四コマぐらいのパラパラと数字
-//BmpFont
-//BmpFrame
-//File
-//Image
-//ImagePack
-//MixFont
-//Model
-//Movie
-//Music
-//Sprite
-//Loading
+//Anime		// 四コマぐらいのパラパラと数字
+//Font		// アルファベットと数字
+//BmpFrame	// 枠として使えるの2種ぐらい
+//Image		// 適当な画像数枚
+//ImagePack // 連番アイコン、分割画像等
+//Music		// なんらかのBGM
+//Sound		// なんらかのWave
+//Sprite	// 適当な画像
+//Loading	// 上からの使い回し
 
 //Multimedia
 #include <Sample/Blend.h>//機能未実装
@@ -53,7 +50,7 @@ namespace SDX
 #include <Sample/Timer.h>
 #include <Sample/VariadicStream.h>
 
-//兼用
+//兼用orサンプル無し
 //Input関連
 //Window+SubWindow
 //Screen+Renderer

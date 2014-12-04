@@ -21,8 +21,8 @@ namespace SDX
 		void operator =(const Screen& src){}
 		Screen(const Screen& src){}
 
-	public:
 		static Renderer *activeRenderer;//!<アクティブなRenderer
+	public:
 
 		/** スクリーンハンドルを取得.*/
 		/** [Screen専用]*/
@@ -50,7 +50,14 @@ namespace SDX
 		/** Image::Makeで作成したTextureのみ有効.*/
 		static bool SetTarget(Image *描画対象 = nullptr)
 		{		
-			activeRenderer->SetTarget(描画対象);
+			return activeRenderer->SetTarget(描画対象);
+		}
+
+		/** 描画先Imageを取得.*/
+		/** 返り値がnullptrの場合、デフォルトの描画先*/
+		static Image* GetTarget()
+		{
+			return activeRenderer->GetTarget();
 		}
 
 		/** 描画内容を反映.*/
@@ -68,27 +75,17 @@ namespace SDX
 		}
 
 		/** 描画領域を設定する、設定範囲外には描画されない.*/
-		static bool SetArea(const Rect &描画領域)
+		/** Rectの幅を0にすると描画領域が全体になる.*/
+		static bool SetArea(const Rect &描画領域 = { 0, 0, 0, 0 })
 		{
 			return activeRenderer->SetArea(描画領域);
 		}
 
-		/**描画領域を解除する.*/
-		static bool ResetArea()
-		{
-			return activeRenderer->ResetArea();
-		}
-
 		/** 非描画領域を設定する、設定範囲内には描画されない.*/
-		static bool SetClip(const Rect &非描画領域)
+		/** Rectの幅を0にするとクリップ領域が解除される.*/
+		static bool SetClip(const Rect &非描画領域 = {0,0,0,0})
 		{
 			return activeRenderer->SetClip(非描画領域);
-		}
-
-		/** 非描画領域を解除する.*/
-		static bool ResetClip()
-		{
-			return activeRenderer->ResetClip();
 		}
 
 		/** Screen::Clear後の色を設定.*/
@@ -98,19 +95,19 @@ namespace SDX
 		}
 
 		/** 描画輝度を設定.*/
-		static void SetBright(const Color &輝度)
+		static void SetBright(const Color &輝度 = Color::White)
 		{
 			activeRenderer->SetBright(輝度);
 		}
 
 		/** ブレンド描画のモードを設定.*/
-		static void SetBlendMode(BlendMode ブレンドモード, int 設定値)
+		static void SetBlendMode(BlendMode ブレンドモード = BlendMode::NoBlend, int 設定値 = 255)
 		{
 			activeRenderer->SetBlendMode(ブレンドモード,設定値);
 		}
 
 		/** 描画輝度と描画モードをまとめて設定*/
-		static void SetDrawMode(const Color &輝度＋α値 = Color::White, BlendMode ブレンドモード = BlendMode::NoBlend)
+		static void SetDrawMode(const Color &輝度＋α値 = Color::White, BlendMode ブレンドモード = BlendMode::Alpha)
 		{
 			activeRenderer->SetDrawMode(輝度＋α値,ブレンドモード);
 		}

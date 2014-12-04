@@ -129,7 +129,7 @@ namespace SDX
 		}
 
 		/** 描画する.*/
-		virtual void Draw(Color 描画色, int 透過率, Camera *座標変換Camera = nullptr) const = 0;
+		virtual void Draw(const Color &描画色, int 透過率, Camera *座標変換Camera = nullptr) const = 0;
 
 		/** 回転する.*/
 		virtual void Rotate(double 回転する角度) = 0;

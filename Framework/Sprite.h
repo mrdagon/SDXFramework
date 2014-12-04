@@ -24,10 +24,10 @@ namespace SDX
 		{
 			if (Cameraフラグ)
 			{
-				image->DrawRotateAxis(Camera::Now()->Trans({ 座標.x + gapX, 座標.y + gapY }),
+				image->DrawRotateAxis(Camera::Get()->Trans({ 座標.x + gapX, 座標.y + gapY }),
 				{ axisX + image->GetWidth() / 2, axisY + image->GetHeight() / 2 },
-				zoomX * Camera::Now()->GetZoom(),
-				zoomY * Camera::Now()->GetZoom(),
+				zoomX * Camera::Get()->GetZoom(),
+				zoomY * Camera::Get()->GetZoom(),
 				angle, isTurn);
 			}
 			else{
@@ -74,10 +74,10 @@ namespace SDX
 			{
 				image->DrawRotateAxis
 					(
-					Camera::Now()->Trans({ 座標.x + gapX, 座標.y + gapY }),
+					Camera::Get()->Trans({ 座標.x + gapX, 座標.y + gapY }),
 					{ axisX + image->GetWidth() / 2, axisY + image->GetHeight() / 2 },
-					zoomX * Camera::Now()->GetZoom(),
-					zoomY * Camera::Now()->GetZoom(),
+					zoomX * Camera::Get()->GetZoom(),
+					zoomY * Camera::Get()->GetZoom(),
 					angle,
 					isTurn
 					);
@@ -124,10 +124,10 @@ namespace SDX
 			{
 				counter.GetFrame()->DrawRotateAxis
 					(
-					Camera::Now()->Trans({ 座標.x + gapX, 座標.y + gapY }),
+					Camera::Get()->Trans({ 座標.x + gapX, 座標.y + gapY }),
 					{ axisX + anime->GetWidth() / 2, axisY + anime->GetHeight() / 2 },
-					zoomX * Camera::Now()->GetZoom(),
-					zoomY * Camera::Now()->GetZoom(),
+					zoomX * Camera::Get()->GetZoom(),
+					zoomY * Camera::Get()->GetZoom(),
 					angle,
 					isTurn
 					);
@@ -159,7 +159,7 @@ namespace SDX
 		Color rgb;//!<
 
 	public:
-		SpFont(const IFont *フォント, Color 描画色, double 縦倍率, double 横倍率, const char* 描画する文字列) :
+		SpFont(const IFont *フォント, const Color &描画色, double 縦倍率, double 横倍率, const char* 描画する文字列) :
 			font(フォント),
 			rgb(描画色),
 			str(描画する文字列),
@@ -169,7 +169,7 @@ namespace SDX
 			this->SetZoom(縦倍率, 横倍率);
 		}
 
-		SpFont(const IFont *フォント, Color 描画色, double 縦倍率, double 横倍率, std::string& 参照する文字列) :
+		SpFont(const IFont *フォント, const Color &描画色, double 縦倍率, double 横倍率, std::string& 参照する文字列) :
 			font(フォント),
 			rgb(描画色),
 			refStr(参照する文字列),
@@ -184,9 +184,9 @@ namespace SDX
 			{
 				font->DrawExtend
 					(
-					Camera::Now()->Trans({ 座標.x + gapX, 座標.y + gapY }),
-					zoomX * Camera::Now()->GetZoom(),
-					zoomY * Camera::Now()->GetZoom(),
+					Camera::Get()->Trans({ 座標.x + gapX, 座標.y + gapY }),
+					zoomX * Camera::Get()->GetZoom(),
+					zoomY * Camera::Get()->GetZoom(),
 					rgb,
 					refStr.c_str()
 					);
@@ -230,15 +230,15 @@ namespace SDX
 		{
 			if (Cameraフラグ)
 			{
-				const Point 左上 = Camera::Now()->Trans({ 座標.x + gapX, 座標.y + gapY });
+				const Point 左上 = Camera::Get()->Trans({ 座標.x + gapX, 座標.y + gapY });
 
 				bmpFrame->Draw
 					(
 				{
 					左上.x,
 					左上.y,
-					width * zoomX * Camera::Now()->GetZoom(),
-					height * zoomY * Camera::Now()->GetZoom()
+					width * zoomX * Camera::Get()->GetZoom(),
+					height * zoomY * Camera::Get()->GetZoom()
 				}
 				);
 			}
@@ -302,8 +302,8 @@ namespace SDX
 
 			if (カメラ有りフラグ)
 			{
-				const int baseY = int(Camera::Now()->TransY(座標.y));
-				const int baseX = int(Camera::Now()->TransX(座標.x));
+				const int baseY = int(Camera::Get()->TransY(座標.y));
+				const int baseX = int(Camera::Get()->TransX(座標.x));
 
 				double posXA;
 				double posYA;
@@ -312,13 +312,13 @@ namespace SDX
 
 				for (int a = 0; a < width; ++a)
 				{
-					posXA = baseX + chipW * a * Camera::Now()->GetZoom();
-					posXB = baseX + chipW * (a + 1) * Camera::Now()->GetZoom();
+					posXA = baseX + chipW * a * Camera::Get()->GetZoom();
+					posXB = baseX + chipW * (a + 1) * Camera::Get()->GetZoom();
 
 					for (int b = 0; b < height; ++b)
 					{
-						posYA = baseY + chipH * b * Camera::Now()->GetZoom();
-						posYB = baseY + chipH * (b + 1) * Camera::Now()->GetZoom();
+						posYA = baseY + chipH * b * Camera::Get()->GetZoom();
+						posYB = baseY + chipH * (b + 1) * Camera::Get()->GetZoom();
 						const int no = data[a][b];
 						if (no == 0) continue;
 						chip[no]->DrawExtend({ posXA, posYA }, { posXB, posYB });

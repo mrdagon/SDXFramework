@@ -14,17 +14,22 @@ bool SampleDrawing()
 	{
 		Drawing::String({ 10, 10 }, Color::White, "こんにちは");
 
+		Drawing::Line({ 210, 100 }, { 100, 150 }, Color::Blue);
+
 		Drawing::Line({ 10, 100 }, { 100, 150 }, Color::Blue, 3);
 
 		Drawing::Rect({ 60, 200, 100, 250 }, Color::Red, true);
 
-		Drawing::Circle({ 100, 200, 50 }, Color::Blue, 5);
+
+		Screen::SetDrawMode({ 255, 255, 255, 128 } , BlendMode::Mula);
 
 		Drawing::Circle({ 150, 200, 50 }, Color::Red );
-
+		Drawing::Circle({ 100, 200, 50 }, Color::Blue, 5);
 		Drawing::Triangle({ 200, 200 }, 50, angle, Color::White);
+		Drawing::Triangle({ 150, 200 }, 100, angle, Color::Green, 5);
+		
+		Screen::SetDrawMode();
 
-		Drawing::Triangle({ 250, 200 }, 100, angle, Color::Green,5);
 		angle += 0.1;
 		if (Input::key.Return.on){ break;}//Enterで終了
 	}

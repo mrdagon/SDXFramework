@@ -160,19 +160,20 @@ namespace SDX
 			return !IsEnd();
 		}
 
-		/** 指定ミリ秒実行を停止.*/
+		/** 指定ミリ秒処理を停止する.*/
 		static void Wait(int 停止ミリ秒)
 		{
 			SDL_Delay(停止ミリ秒);
 		}
 
-		/** キーを入力を待つ.*/
+		/** なんらかのキーが入力されるまで処理を停止する.*/
 		static void WaitKey()
 		{
 			while (!Keyboard::HoldAnyKey() && System::ProcessMessage()){}
 		}
 
 		/** スクリーンセーバーの動作制限のON/OFF.*/
+		/** 初期状態ではスクリーンセーバーは動作しない*/
 		static bool SetScreenSaver(bool スクリーンセーバー有効フラグ)
 		{
 			if (スクリーンセーバー有効フラグ)

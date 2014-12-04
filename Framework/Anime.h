@@ -85,7 +85,7 @@ namespace SDX
 				return true;
 			}
 
-			/** 現在のコマ番号を取得.*/
+			/** 現在のコマを取得.*/
 			Image* GetFrame()
 			{
 				return anime[0][frameNumber];

@@ -103,7 +103,7 @@ namespace SDX
 			}
 		}
 
-		void Draw(Color 描画色, int 透過率, Camera *座標変換Camera = nullptr) const;
+		void Draw(const Color &描画色, int 透過率, Camera *座標変換Camera = nullptr) const;
 
 		bool Hit(const IShape *shape) const
 		{

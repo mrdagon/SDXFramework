@@ -8,13 +8,12 @@
 @ref QandA\n
 @ref PortaBility\n
 \n
-<B>クラス一覧</B>\n
+<B>[リファレンス]</B>\n
 @ref ClassGroup\n
 \n
-<B>その他</B>\n
+<B>[その他]</B>\n
 @ref CodingRule\n
 @ref ReleaseNote\n
-\n
 @ref todo "未実装関数とクラス一覧"\n
 \n
 @section    外部リンク

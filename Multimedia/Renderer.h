@@ -30,6 +30,7 @@ namespace SDX
 	private:
 		SDL_Renderer* handle = nullptr;//!<
 		SDL_Surface* surface = nullptr;//!<
+		Image* target = nullptr;//!< 描画先Imageのハンドル、nullptrならデフォルト
 		bool isWindow;//!< ウィンドウに対応しているかどうか
 
 		/*Windowに対応した、Rendererを生成.*/
@@ -45,7 +46,7 @@ namespace SDX
 	public:
 		static Renderer &mainRenderer;
 
-		BlendMode nowBlendMode = BlendMode::NoBlend;//!<
+		BlendMode blendMode = BlendMode::NoBlend;//!<
 		Color clearColor = Color(0, 0, 0);//!<消去時の色
 		Color rgba = Color(255, 255, 255, 255);//!<描画輝度とα値
 
@@ -102,7 +103,7 @@ namespace SDX
 
 		/** 透過色を設定.*/
 		/** [Renderer専用]*/
-		bool SetTransColor(Color 透過色)
+		bool SetTransColor(const Color &透過色)
 		{
 			if (!surface){ return false; }
 			return !SDL_SetColorKey(surface, SDL_TRUE, SDL_MapRGB(surface->format, 透過色.GetRed(), 透過色.GetBlue(), 透過色.GetGreen()));
@@ -176,36 +177,44 @@ namespace SDX
 		/** Image::Makeで作成したTextureのみ有効.*/
 		bool SetTarget(Image *描画対象 = nullptr);
 
-		/** 描画領域を設定する、設定範囲外には描画されない.*/
-		bool SetArea(const Rect &描画領域)
+		/** 現在の描画先を取得する.*/
+		/** デフォルトの場合nullptrを返す*/
+		Image* GetTarget()
 		{
+			return target;
+		}
+
+		/** 描画領域を設定する、設定範囲外には描画されない.*/
+		/** 幅を0にすると描画領域の制限を解除する.*/
+		bool SetArea(const Rect &描画領域 = {0,0,0,0})
+		{
+			if (handle == nullptr){ return false; }
+
+			if (描画領域.GetW() == 0)
+			{
+				return !SDL_RenderSetViewport(handle, 0);
+			}
+
 			if (handle == nullptr){ return false; }
 			SDL_Rect rect = { (int)描画領域.GetX(), (int)描画領域.GetY(), (int)描画領域.GetW(), (int)描画領域.GetH() };
 
 			return !SDL_RenderSetViewport(handle, &rect);
 		}
 
-		/**描画領域を解除する.*/
-		bool ResetArea()
-		{
-			if (handle == nullptr){ return false; }
-			return !SDL_RenderSetViewport(handle, 0);
-		}
-
 		/** 非描画領域を設定する、設定範囲内には描画されない.*/
-		bool SetClip(const Rect &非描画領域)
+		/** 幅を0にするとクリップ領域を解除する.*/
+		bool SetClip(const Rect &非描画領域 = {0,0,0,0})
 		{
 			if (handle == nullptr){ return false; }
+
+			if (非描画領域.GetW() == 0)
+			{
+				return !SDL_RenderSetClipRect(handle, 0);
+			}
+
 			SDL_Rect rect = { (int)非描画領域.GetX(), (int)非描画領域.GetY(), (int)非描画領域.GetW(), (int)非描画領域.GetH() };
 
-			return !SDL_RenderSetViewport(handle, &rect);
-		}
-
-		/** 非描画領域を解除する.*/
-		bool ResetClip()
-		{
-			if (handle == nullptr){ return false; }
-			return !SDL_RenderSetViewport(handle, 0);
+			return !SDL_RenderSetClipRect(handle, &rect);
 		}
 
 		/** Screen::Clear後の色を設定.*/
@@ -224,8 +233,8 @@ namespace SDX
 		/** 描画モードを設定.*/
 		void SetBlendMode(BlendMode ブレンドモード, int α値)
 		{
-			nowBlendMode = ブレンドモード;
-			if (α値 > 255){ α値 = 255; }
+			blendMode = ブレンドモード;
+			if (α値 > 255 || ブレンドモード == BlendMode::NoBlend){ α値 = 255; }
 			else if (α値 < 0){ α値 = 0; }
 
 			rgba.SetColor(rgba.GetRed(),rgba.GetGreen(),rgba.GetBlue(),α値);
@@ -234,8 +243,8 @@ namespace SDX
 		/** 描画輝度と描画モードをまとめて設定*/
 		void SetDrawMode(const Color &輝度＋α値 = Color::White, BlendMode ブレンドモード = BlendMode::NoBlend)
 		{
-			nowBlendMode = ブレンドモード;
-			rgba = 輝度＋α値;
+			SetBright(輝度＋α値);
+			SetBlendMode(ブレンドモード, 輝度＋α値.GetAlpha());
 		}
 
 		/** BMP形式で保存.*/

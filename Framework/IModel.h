@@ -57,19 +57,19 @@ namespace SDX
 		{
 			if (iSprite.GetColor() == Color::White)
 			{
-				iSprite.Draw({ GetX(), GetY() }, isCamera && Camera::Now());
+				iSprite.Draw({ GetX(), GetY() }, isCamera && Camera::Get());
 			}
 			else
 			{
 				Screen::SetBright(iSprite.GetColor());
 				Screen::SetBlendMode(BlendMode::Alpha, iSprite.GetColor().GetAlpha());
-				iSprite.Draw({ GetX(), GetY() }, isCamera && Camera::Now());
+				iSprite.Draw({ GetX(), GetY() }, isCamera && Camera::Get());
 				Screen::SetBlendMode(BlendMode::NoBlend, 0);
 				Screen::SetBright(Color::White);
 			}
 
 			//当たり判定を表示するならコメントアウト解除
-			//shape.get()->Draw(Color::Red,128,Camera::Now() );
+			//shape.get()->Draw(Color::Red,128,Camera::Get() );
 		}
 
 		/** 影を描画する.*/
@@ -84,7 +84,7 @@ namespace SDX
 			double zoomY = iSprite.zoomY;
 			iSprite.zoomX *= shadowSize;
 			iSprite.zoomY *= shadowSize;
-			iSprite.Draw({ GetX() + X座標ずれ, GetY() + Y座標ずれ }, isCamera && Camera::Now());
+			iSprite.Draw({ GetX() + X座標ずれ, GetY() + Y座標ずれ }, isCamera && Camera::Get());
 			iSprite.zoomX = zoomX;
 			iSprite.zoomY = zoomY;
 		}
@@ -162,7 +162,7 @@ namespace SDX
 		}
 
 		/** 色をまとめて変更する、透明度も含む.*/
-		void SetColor(Color 描画色)
+		void SetColor(const Color &描画色)
 		{
 			iSprite.SetColor(描画色);
 		}
@@ -210,8 +210,8 @@ namespace SDX
 
 			if (座標変換に使うCamera)
 			{
-				pt.x = 座標変換に使うCamera->TransX(Input::mouse.x + 座標変換に使うCamera->GetCenterX());
-				pt.y = 座標変換に使うCamera->TransY(Input::mouse.y + 座標変換に使うCamera->GetCenterY());
+				pt.x = 座標変換に使うCamera->TransX(Input::mouse.x + 座標変換に使うCamera->GetForcus().x);
+				pt.y = 座標変換に使うCamera->TransY(Input::mouse.y + 座標変換に使うCamera->GetForcus().y);
 			}
 			else{
 				pt.x = Input::mouse.x;

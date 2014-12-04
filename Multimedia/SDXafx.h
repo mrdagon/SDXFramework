@@ -8,8 +8,6 @@
 
 namespace SDX
 {
-	Camera* Camera::cameraNow;
-
 	const Color Color::Black(0x00, 0x00, 0x00);
 	const Color Color::Dilver(0xc0, 0xc0, 0xc0);
 	const Color Color::Gray(0x80, 0x80, 0x80);
@@ -26,6 +24,8 @@ namespace SDX
 	const Color Color::Blue(0x00, 0x00, 0xff);
 	const Color Color::Teal(0x00, 0x80, 0x80);
 	const Color Color::Aqua(0x00, 0xff, 0xff);
+
+	Camera* Camera::active;
 
 	Joypad Input::pad;
 	Mouse Input::mouse;
@@ -51,7 +51,23 @@ namespace SDX
 
 	bool Renderer::SetTarget(Image *描画対象)
 	{
-		return (SDL_SetRenderTarget(handle, 描画対象->GetHandle()) == 0);
+		bool a;
+
+		if (描画対象 == nullptr)
+		{
+			a = (SDL_SetRenderTarget(handle, nullptr) == 0);
+		}
+		else
+		{
+			a = (SDL_SetRenderTarget(handle, 描画対象->GetHandle()) == 0);
+		}
+
+		if ( a )
+		{
+			target = 描画対象;
+		}
+
+		return a;
 	}
 
 }

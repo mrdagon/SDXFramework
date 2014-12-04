@@ -12,10 +12,9 @@
 <tr style="background:#ccccff"> <td>描画</td>               <td> </td></tr>
 <tr>                            <td>SDX::Drawing            <td>リソースを読み込まずに描画を行う関数群</td></tr>
 <tr>                            <td>SDX::Image              <td>画像データを表すクラス</td></tr>
-<tr>                            <td>SDX::IFont              <td>Font,BmpFont等のインターフェース</td></tr>
 <tr>                            <td>SDX::Font               <td>フォントデータを表すクラス</td></tr>
 <tr>                            <td>SDX::Color              <td>色を表すクラス</td></tr>
-<tr>                            <td>SDX::Loading         <td>リソースの非同期読み込み設定関数群[未実装]</td></tr>
+<tr>                            <td>SDX::Loading			<td>リソースの非同期読み込み設定関数群</td></tr>
 <tr style="background:#ccccff"> <td>画像処理[未実装]</td><td> </td></tr>
 <tr>                            <td>SDX::Blend              <td>Image同士の合成処理を行う関数群[未実装]</td></tr>
 <tr>                            <td>SDX::Filter             <td>Imageにフィルター処理を行う関数群[未実装]</td></tr>
@@ -35,7 +34,6 @@
 <tr style="background:#ccccff"> <td>拡張描画機能</td><td> </td></tr>
 <tr>                            <td>SDX::ImagePack          <td>複数のImageをまとめるクラス</td></tr>
 <tr>                            <td>SDX::Anime              <td>Imageをまとめてコマ送りアニメとして表すクラス</td></tr>
-<tr>                            <td>SDX::BmpFont            <td>ビットマップフォントを表すクラス</td></tr>
 <tr>                            <td>SDX::IFrame             <td>描画用枠のインターフェース</td></tr>
 <tr>                            <td>SDX::BmpFrame           <td>描画用枠を表すクラス</td></tr>
 <tr>                            <td>SDX::Camera             <td>2D用に座標変換を行うカメラを表すクラス</td></tr>

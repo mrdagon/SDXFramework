@@ -7,18 +7,18 @@
 namespace SDX
 {
 	/** Image同士の合成処理を行う関数群[未実装].*/ 
-	/** 合成元のイメージに入力イメージを合成し、画像編集ソフトにあるような合成処理を施す。\n*/
+	/** 合成元のImageと入力Imageを合成し、画像編集ソフトにあるような合成処理を施す。\n*/
 	/**	合成率は0.0～1.0の範囲で指定し、率が高い程入力の影響が強くなる。\n*/
 	/**	\include Blend.h*/
-	/** @todo OpenGLが必要なので、実装予定無し*/
+	/** @todo 実装が面倒なので後回し*/
 	class Blend
 	{
 	private:
 		//生成、削除、コピー等を禁止
-		Blend() = default;
-		~Blend() = default;
-		void operator =(const Blend& src){}
-		Blend(const Blend& src){}
+		Blend() = delete;
+		~Blend() = delete;
+		void operator =(const Blend& src) = delete;
+		Blend(const Blend& src) = delete;
 
 		/** 同じ大きさでないと合成失敗.*/
 		static bool CheckSize(const Image *A, const Image *B)
@@ -28,16 +28,11 @@ namespace SDX
 	public:
 		/** 加算合成.*/
 		/** 合成イメージに入力イメージの色を足す。*/
-		static bool Add(Image* 合成イメージ, const Image *入力イメージ, double 合成率 = 1.0)
+		static bool Add(Image* 合成元, const Image *入力, double 合成率 = 1.0)
 		{
-			if (!CheckSize(合成イメージ, 入力イメージ)){ return false; }
+			if (!CheckSize(合成元, 入力)){ return false; }
 
 			return false;
-		}
-		static Image AddMake(const Image* 元イメージA, const Image *元イメージB, double 合成率 = 1.0)
-		{
-			Image image = 元イメージA->Clone();
-			return image;
 		}
 
 		/** 焼き込み合成.*/
@@ -45,21 +40,21 @@ namespace SDX
 		/**	[計算方法]\n*/
 		/**	合成後の色 = 1.0 - ( 1.0 -  合成元の色 ) / 入力の色\n*/
 		/**	※入力の色が0.0の時、合成後の色は0.0*/
-		bool Burn(Image* 合成イメージ, const Image *入力イメージ, double 合成率 = 1.0)
+		static bool Burn(Image* 合成元, const Image *入力, double 合成率 = 1.0)
 		{
 			return false;
 		}
 
 		/** 比較合成(暗).*/
 		/** 合成と入力の暗い方を合成後の色にする。*/
-		bool Darken(Image* 合成イメージ, const Image *入力イメージ, double 合成率 = 1.0)
+		static bool Darken(Image* 合成元, const Image *入力, double 合成率 = 1.0)
 		{
 			return false;
 		}
 
 		/** 減算合成.*/
 		/** 合成イメージから、入力イメージを減算する。*/
-		bool Difference(Image* 合成イメージ, const Image *入力イメージ, double 合成率 = 1.0)
+		static bool Difference(Image* 合成元, const Image *入力, double 合成率 = 1.0)
 		{
 			return false;
 		}
@@ -69,7 +64,7 @@ namespace SDX
 		/**	[計算方法]\n*/
 		/**	合成後の色 = 合成元の色 / (1.0 - 入力の色)\n*/
 		/**	※入力の色が1.0の場合、合成後の色は1.0*/
-		bool Dodge(Image* 合成イメージ, const Image *入力イメージ, double 合成率 = 1.0)
+		static bool Dodge(Image* 合成元, const Image *入力, double 合成率 = 1.0)
 		{
 			return false;
 		}
@@ -78,21 +73,21 @@ namespace SDX
 		/** 合成後、暗くする。\n*/
 		/**	[計算方法]\n*/
 		/**	合成後 = 合成元 + 入力 - 2.0 * 合成元 * 入力*/
-		bool Exclusion(Image* 合成イメージ, const Image *入力イメージ, double 合成率 = 1.0)
+		static bool Exclusion(Image* 合成元, const Image *入力, double 合成率 = 1.0)
 		{
 			return false;
 		}
 
 		/** ハードライト合成.*/
 		/** オーバーレイ合成の条件を、合成元から入力に変更して計算。*/
-		bool HardLight(Image* 合成イメージ, const Image *入力イメージ, double 合成率 = 1.0)
+		static bool HardLight(Image* 合成元, const Image *入力, double 合成率 = 1.0)
 		{
 			return false;
 		}
 
 		/** 比較合成(明).*/
 		/** 合成と入力の明るい方を合成後の色にする。*/
-		bool Lighten(Image* 合成イメージ, const Image *入力イメージ, double 合成率 = 1.0)
+		static bool Lighten(Image* 合成元, const Image *入力, double 合成率 = 1.0)
 		{
 			return false;
 		}
@@ -101,7 +96,7 @@ namespace SDX
 		/** 二つのイメージの色を乗算する。\n*/
 		/**	各成分は0.0～1.0の値に見立てて乗算を行うので、\n*/
 		/**	元の色より暗くなる事はあっても明るくなることはない。*/
-		bool Multiple(Image* 合成イメージ, const Image *入力イメージ, double 合成率 = 1.0)
+		static bool Multiple(Image* 合成元, const Image *入力, double 合成率 = 1.0)
 		{
 			return false;
 		}
@@ -109,7 +104,7 @@ namespace SDX
 		/** 通常合成.*/
 		/** 特殊な効果を付けずに合成\n*/
 		/**	合成率が1に近いほど、入力画像の不透明度が高くなる。*/
-		bool Normal(Image* 合成イメージ, const Image *入力イメージ, double 合成率 = 1.0)
+		static bool Normal(Image* 合成元, const Image *入力, double 合成率 = 1.0)
 		{
 			return false;
 		}
@@ -121,23 +116,16 @@ namespace SDX
 		/**	合成後の色 = 合成元の色 * 入力の色 * 2.0\n*/
 		/**	それ以外:\n*/
 		/**	合成後の色 = 2.0 * ( 合成元の色 + 入力の色 - 合成元の色 * 入力の色 ) - 1.0*/
-		bool OverLay(Image* 合成イメージ, const Image *入力イメージ, double 合成率 = 1.0)
+		static bool OverLay(Image* 合成元, const Image *入力, double 合成率 = 1.0)
 		{
 			return false;
 		}
 
-		enum class RGBA
-		{
-			Red,
-			Green,
-			Blue,
-			Alpha
-		};
-
 		/** RGBAの要素を選択して合成.*/
-		/** 合成後の画像として赤・緑・青・アルファの各成分を 合成元、入力のどちらのどの要素から取るかを指定する。\n*/
-		/**	例えば、赤要素 に RGBA::BlendR を指定した場合は、合成後の画像の赤成分は、入力イメージの緑成分になる。*/
-		bool RgbaSelectMix(Image* 合成イメージ, const Image *入力イメージ, RGBA 赤要素, RGBA 緑要素, RGBA 青要素, RGBA α要素, double 合成率 = 1.0)
+		/** 合成後の画像として赤・緑・青・αの各成分を 合成元、入力のどちらのどの要素から取るかを指定する。\n*/
+		/** どの色要素を使うかはRGBAのアルファベット4文字で指定し、大文字なら合成元、小文字なら入力から取る.*/
+		/**	例えば『gBAr』とした場合、赤=入力の緑、緑=合成元の青、青=合成元のα、α=入力のαとなる。*/
+		static bool RgbaSelectMix(Image* 合成元, const Image *入力, std::string 色要素指定, double 合成率 = 1.0)
 		{
 			return false;
 		}
@@ -146,7 +134,7 @@ namespace SDX
 		/** 加算合成のように明るくする。\n*/
 		/**	[計算方法]\n*/
 		/**	合成後の色 = 1.0f - ( ( 1.0f - 合成イメージの色 ) * ( 1.0f - 入力イメージの色 ) )*/
-		bool Screen(Image* 合成イメージ, const Image *入力イメージ, double 合成率 = 1.0)
+		static bool Screen(Image* 合成元, const Image *入力, double 合成率 = 1.0)
 		{
 			return false;
 		}
@@ -158,9 +146,10 @@ namespace SDX
 		/**	合成後の色 = pow( 合成元, ( 1.0f - 入力 ) * 2.0 )\n*/
 		/**	それ以外:\n*/
 		/**	合成後の色 = pow( 合成元, 0.5 / 入力 )*/
-		bool SoftLight(Image* 合成イメージ, const Image *入力イメージ, double 合成率)
+		static bool SoftLight(Image* 合成元, const Image *入力, double 合成率)
 		{
 			return false;
 		}
+
 	};
 }

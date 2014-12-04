@@ -1,13 +1,16 @@
+ï»¿//Copyright Â© 2014 SDXFramework
+//[License]GNU Affero General Public License, version 3
+//[Contact]http://sourceforge.jp/projects/dxframework/
 #pragma once
 #include <Framework/Shape.h>
 
 namespace SDX
 {
-	/** •`‰æ—p˜g‚ÌƒCƒ“ƒ^[ƒtƒF[ƒX.*/
+	/** æç”»ç”¨æ ã®ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹.*/
 	/** \include BmpFrame.h*/
 	class IFrame
 	{
 	public:
-		virtual void Draw(const Rect &—Ìˆæ) const = 0;
+		virtual void Draw(const Rect &é ˜åŸŸ) const = 0;
 	};
 }

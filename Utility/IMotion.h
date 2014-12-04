@@ -2,9 +2,6 @@
 //[License]GNU Affero General Public License, version 3
 //[Contact]http://sourceforge.jp/projects/dxframework/
 #pragma once
-#include <SDXFramework.h>
-#include <Framework/Model.h>
-#include <Utility/ISpeed.h>
 
 namespace SDX
 {
@@ -14,10 +11,12 @@ namespace SDX
 	{
 		/**Modelの移動方法.*/
 		/**ジェネリックな設計なら継承不要.*/
+		template <class TModel>
 		class IMotion
 		{
 		public:
-			virtual void Update(IModel* 移動対象) = 0;
+			/** Motion終了時はfalseを返す.*/
+			virtual bool Update(TModel* 移動対象) = 0;
 		};
 	}
 }

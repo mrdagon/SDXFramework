@@ -130,7 +130,7 @@ namespace SDX
 		}
 
 		/** 透明度を0～255で設定.*/
-		void SetColor(Color 描画色)
+		void SetColor(const Color &描画色)
 		{
 			color = 描画色;
 		}

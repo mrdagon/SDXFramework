@@ -1,6 +1,6 @@
 ﻿/*!
-@page PortaBility 移植性においての注意
-　SDXが利用しているSDLがWindows、Mac、GNU/Linux、iOS、Android等で動くため、ソースコードの修正作業等は殆ど必要ありません。\n
+@page PortaBility 移植においての注意
+　SDXはWindows、Mac、GNU/Linux、iOS、Android等に対応するソフトウェアを、ソースコードの修正を殆どせずに作成出来ます。\n
 \n
 　しかしながら実際は様々な理由でそのまま動かない事があるので、以下の点等に注意する必要があります。\n
 例えば特定のコンパイラの拡張文法や特定OSのAPIを使っている場合、当然移植性が下がります\n

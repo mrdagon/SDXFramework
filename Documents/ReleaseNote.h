@@ -16,6 +16,8 @@ Window::SetFullScreenをWindow::SetFullscreenに変更\n
 SoundとMusicのPlayTypeを削除、及び引数をPlayTypeからboolに変更\n
 必ずtrueを返す関数の戻り値をboolからvoidに変更\n
 Load済みのImageに対してLoadした場合失敗するように仕様変更\n
+Cameraクラスを再設計\n
+MOTIONの仕様を変更\n
 \n
 [新機能追加]\n
 Fontクラスを改善、機能強化\n
