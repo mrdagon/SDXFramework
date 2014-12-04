@@ -14,6 +14,7 @@ namespace SDX
 //Sound		// なんらかのWave
 //Sprite	// 適当な画像
 //Loading	// 上からの使い回し
+//Window    // ウィンドウアイコン
 
 //Multimedia
 #include <Sample/Blend.h>//機能未実装

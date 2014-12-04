@@ -142,14 +142,14 @@ namespace SDX
 				if (handle == nullptr){ return nullptr; }
 
 				SDL_Surface* surface;
-				switch (fontRender)
+
+				if (fontRender == FontRender::Solid)
 				{
-				case FontRender::Solid:
 					surface = TTF_RenderUTF8_Solid(handle, 文字, { 255, 255, 255 });
-					break;
-				case FontRender::Blended:
+				}
+				else
+				{
 					surface = TTF_RenderUTF8_Blended(handle, 文字, { 255, 255, 255 });
-					break;
 				}
 
 				SDL_Texture* moji = SDL_CreateTextureFromSurface(Screen::GetHandle(), surface);
@@ -235,14 +235,13 @@ namespace SDX
 
 			for (auto it : 描画する文字列.StringS)
 			{
-				switch (fontRender)
+				if (fontRender == FontRender::Solid)
 				{
-				case FontRender::Solid:
 					surface = TTF_RenderUTF8_Solid(handle, it.c_str(), 文字色);
-					break;
-				case FontRender::Blended:
+				}
+				else
+				{
 					surface = TTF_RenderUTF8_Blended(handle, it.c_str(), 文字色);
-					break;
 				}
 
 				幅 = std::max(幅, surface->w);
