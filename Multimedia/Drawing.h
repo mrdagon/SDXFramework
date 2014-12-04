@@ -92,12 +92,18 @@ namespace SDX
 				circleB.Make(CIRCLE_SIZE, CIRCLE_SIZE);
 				circleC.Make(CIRCLE_SIZE, CIRCLE_SIZE);
 
+				auto mode = Screen::GetRenderer()->blendMode;
+				auto col = Screen::GetRenderer()->rgba;
+				int alpha = Screen::GetRenderer()->rgba.GetAlpha();//Alpha値の場合ここの減算率が変化する
+
+				Screen::SetDrawMode();
 				auto prev = Screen::GetTarget();
 				Screen::SetTarget(&circleA);
 				MakeCircle(Screen::GetHandle(), 0, 0, CIRCLE_SIZE, CIRCLE_SIZE);
 				Screen::SetTarget(&circleC);
 				Drawing::Rect({ 0, 0, CIRCLE_SIZE, CIRCLE_SIZE }, Color::White, true);
 				Screen::SetTarget(prev);
+				Screen::SetDrawMode(col,mode);
 			}
 
 			if (太さ <= 0)
