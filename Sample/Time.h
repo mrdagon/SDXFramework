@@ -5,7 +5,7 @@
 //時間を取得したり計測する
 #include <SDXFramework.h>
 
-bool SampleTimer()
+bool SampleTime()
 {
 	using namespace SDX;
 	System::Initialise("sample", 600, 400);

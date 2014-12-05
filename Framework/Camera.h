@@ -10,29 +10,45 @@ namespace SDX
 	/** \include Camera.h*/
 	class Camera
 	{
-	//影響があるクラス
-	//[Renderer]SetArea,SetClip,回転が効かないので影響無しにしても良さそう
-	//[Drawing]色々
-	//[Image]色々
-	//[Input]影響無し
-	//[Font]imageから間接的に影響
-	//[BmpFrame]imageから間接的に影響(継ぎ目がある?)
-	//[Shape]Drawingから間接的に影響
-	//[Sprite]ImageやDrawingから間接的に影響(継ぎ目がある？)再実装が必要
+	//●影響があるクラスと関数
+	//[Renderer/Screen]<OK>
+	//SetArea
+	//SetClip
+	//[Drawing]<OK>
+	//Line
+	//Rect
+	//Circle
+	//Oval
+	//Polygon
+	//Triangle
+	//Pixel
+	//[Image]<OK>
+	//Draw～6種
+	//
+	//●間接的に影響
+	//[Font]<OK>
+	//Imageを利用
+	//[BmpFrame]
+	//Imageを利用
+	//[Shape]<OK>
+	//Drawingを利用
+	//[Sprite]<OK>
+	//ImageやDrawingを利用
 	private:
-		Point position;//!< 中心の位置
-		Point forcus;//!< Screen上の座標positonがWindow上のforcusに来るように補正をかける
-		double zoom;//!< 
 		double angle;//!< 
-
 		MOTION::IMotion<Point> *motion;
 
 		static Camera* active;//!< 現在アクティブなカメラ
 	public:
+		Point position;//!< 中心の位置
+		Point forcus;//!< Screen上の座標positonがWindow上のforcusに来るように補正をかける
+		double zoom;//!< 拡大率、マイナスになると上下左右反転
+
 		/** カメラの作成.*/
 		/** 初期座標と拡大率を指定してカメラを初期化*/
 		Camera(const Point &座標, double 拡大率) :
 			position(座標),
+			forcus(座標),
 			zoom(拡大率),
 			angle(0)
 		{};
@@ -49,54 +65,6 @@ namespace SDX
 			active = アクティブにするCamera;
 		}
 
-		/** 中心座標を設定.*/
-		void SetPos(const Point &座標)
-		{
-			position = 座標;
-		}
-
-		/** 中心座標を取得*/
-		Point GetPos()
-		{
-			return position;
-		}
-
-		/** 焦点座標を設定.*/
-		void SetForcus(const Point &座標)
-		{
-			forcus = 座標;
-		}
-
-		/** 焦点座標を設定.*/
-		Point GetForcus()
-		{
-			return forcus;
-		}
-
-		/** 拡大率を設定.*/
-		void SetZoom(double 拡大率)
-		{
-			zoom = 拡大率;
-		}
-
-		/** 拡大率を取得.*/
-		double GetZoom()
-		{
-			return this->zoom;
-		}
-
-		/** 焦点のX座標を取得.*/
-		double GetX()
-		{
-			return position.x;
-		}
-
-		/** 焦点のY座標を取得.*/
-		double GetY()
-		{
-			return position.y;
-		}
-
 		/** モーションに応じてカメラ位置の更新.*/
 		void Update()
 		{
@@ -107,27 +75,27 @@ namespace SDX
 		}
 
 		/** カメラの位置と拡大率に応じてX座標を変換.*/
-		double TransX(double X座標変換前)
+		double TransX(double X座標変換前) const
 		{
 			return forcus.x + (X座標変換前 - position.x) * zoom;
 		}
 
 		/** カメラの位置と拡大率に応じてY座標を変換.*/
-		double TransY(double Y座標変換前)
+		double TransY(double Y座標変換前) const
 		{
 			return forcus.y + (Y座標変換前 - position.y) * zoom;
 		}
 
 		/** 座標を画面上のどこに表示されるか変換.*/
-		Point Trans(const Point &変換前座標)
+		Point Trans(const Point &変換前座標) const
 		{
 			return{ TransX(変換前座標.x) , TransY(変換前座標.y) };
 		}
 
 		/** 領域を画面上のどこに相当するか変換.*/
-		SDL_Rect TransRect(const SDL_Rect &変換前矩形)
+		SDL_Rect TransRect(const SDL_Rect &変換前矩形) const
 		{
-			return{ 0, 0, 0, 0 };
+			return{ (int)TransX(変換前矩形.x), (int)TransY(変換前矩形.y), (int)(変換前矩形.w * zoom), (int)(変換前矩形.h *zoom) };
 		}
 	};
 }

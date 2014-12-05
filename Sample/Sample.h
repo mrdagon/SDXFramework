@@ -48,7 +48,7 @@ namespace SDX
 #include <Sample/Motion.h>
 #include <Sample/Speed.h>
 #include <Sample/Rand.h>
-#include <Sample/Timer.h>
+#include <Sample/Time.h>
 #include <Sample/VariadicStream.h>
 
 //兼用orサンプル無し

@@ -18,9 +18,20 @@
 /** SDXFramework共通の名前空間.*/
 namespace SDX
 {
-	const double PAI = 3.1415926535897931;//!<
-	const double DEG = PAI / 180;//!<
+	const double PAI = 3.1415926535897931;//!< 円周率
+	const double DEG = PAI / 180;//!< ラジアンにおける1℃
 }
+
+#define MONO_STATE(a) \
+a() = default;\
+~a() = default;\
+void operator =(const a& src) = delete;\
+a(const a& src) = delete;\
+void operator =(const a&& src) = delete;\
+a(const a&& src) = delete;
+
+#define INTERFACE(a) \
+vartual ~a() = default;
 
 #pragma comment(lib, "SDL2.lib")
 #pragma comment(lib, "SDL2main.lib")

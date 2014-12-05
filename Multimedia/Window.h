@@ -18,14 +18,12 @@ namespace SDX
 		friend class Gesture;
 		friend class Touch;
 	private:
-		Window() = default;
-		~Window() = default;
-		void operator =(const Window& src){}
-		Window(const Window& src){}
+		MONO_STATE(Window)
 	public:
 
-		static SubWindow *activeWindow;
+		static SubWindow *activeWindow;//!< 現在アクティブなウィンドウ
 
+		/** アクティブなWindowのハンドルを取得.*/
 		static SDL_Window* GetHandle()
 		{
 			return activeWindow->GetHandle();

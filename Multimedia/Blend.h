@@ -14,11 +14,7 @@ namespace SDX
 	class Blend
 	{
 	private:
-		//生成、削除、コピー等を禁止
-		Blend() = delete;
-		~Blend() = delete;
-		void operator =(const Blend& src) = delete;
-		Blend(const Blend& src) = delete;
+		MONO_STATE(Blend)
 
 		/** 同じ大きさでないと合成失敗.*/
 		static bool CheckSize(const Image *A, const Image *B)

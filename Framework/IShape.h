@@ -20,8 +20,8 @@ namespace SDX
 	class IShape
 	{
 	protected:
-		double zoomX;//!<
-		double zoomY;//!<
+		double zoomX = 1;//!< 図形の拡大率
+		double zoomY = 1;//!< 図形の拡大率
 
 		/** 矩形の交差判定.*/
 		static bool RectRect(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4)
@@ -85,17 +85,20 @@ namespace SDX
 		}
 
 	public:
-		IShape() :
-			zoomX(1),
-			zoomY(1)
-		{}
+
+		virtual ~IShape() = default;
 
 		/** 衝突判定.*/
 		virtual bool Hit(const IShape *IShape) const = 0;
+		/** 衝突判定.*/
 		virtual bool Hit(const Complex *complex) const = 0;
+		/** 衝突判定.*/
 		virtual bool Hit(const Point *point) const = 0;
+		/** 衝突判定.*/
 		virtual bool Hit(const Line *line) const = 0;
+		/** 衝突判定.*/
 		virtual bool Hit(const Rect *rect) const = 0;
+		/** 衝突判定.*/
 		virtual bool Hit(const Circle *circle) const = 0;
 
 		/** 指定座標に移動.*/
@@ -103,6 +106,9 @@ namespace SDX
 
 		/** 同じ形の図形を作る.*/
 		virtual IShape* Clone(double x, double y) const = 0;
+
+		/** 縦横別で拡大率を掛け算する.*/
+		virtual void MultiZoom(double X倍率, double Y倍率) = 0;
 
 		/** 拡大率を設定.*/
 		void SetZoom(double X拡大率, double Y拡大率)
@@ -116,9 +122,6 @@ namespace SDX
 			MultiZoom(倍率, 倍率);
 		}
 
-		/** 縦横別で拡大率を掛け算する.*/
-		virtual void MultiZoom(double X倍率, double Y倍率) = 0;
-
 		/** 相対座標で移動.*/
 		virtual void Move(double X移動量, double Y移動量) = 0;
 
@@ -129,7 +132,7 @@ namespace SDX
 		}
 
 		/** 描画する.*/
-		virtual void Draw(const Color &描画色, int 透過率, Camera *座標変換Camera = nullptr) const = 0;
+		virtual void Draw(const Color &描画色) const = 0;
 
 		/** 回転する.*/
 		virtual void Rotate(double 回転する角度) = 0;

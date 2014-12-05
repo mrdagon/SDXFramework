@@ -22,7 +22,7 @@
 #include <Multimedia/File.h>
 
 #include <Utility/Rand.h>
-#include <Utility/Timer.h>
+#include <Utility/Time.h>
 #include <Utility/Speed.h>
 #include <Utility/EnumArray.h>
 #include <Utility/Motion.h>

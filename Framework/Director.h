@@ -3,9 +3,6 @@
 //[Contact]http://sourceforge.jp/projects/dxframework/
 #pragma once
 #include <Framework/IScene.h>
-#include <Utility/Timer.h>
-#include <Multimedia/Input.h>
-#include <Framework/Camera.h>
 
 namespace SDX
 {
@@ -14,12 +11,9 @@ namespace SDX
 	class Director
 	{
 	private:
-		std::vector< std::shared_ptr<IScene> > scenes;//!<
+		MONO_STATE(Director)
 
-		Director(){};
-		~Director() = default;
-		void operator =(const Director& src) = delete;
-		Director(const Director& src) = delete;
+		std::vector< std::shared_ptr<IScene> > scenes;//!<
 
 		static Director& Single()
 		{
@@ -52,7 +46,7 @@ namespace SDX
 
 			while (it != Single().scenes.end())
 			{
-				if ((*it)->IsEnd())
+				if ((*it)->isEnd)
 				{
 					it = Single().scenes.erase(it);
 					if (Single().scenes.size() == 0)break;
@@ -63,8 +57,8 @@ namespace SDX
 		}
 
 		/** Sceneを追加する.*/
-		/** 追加したシーンがアクティブになる\n
-			既に追加されているシーンの場合アクティブ化する*/
+		/** 追加したシーンがアクティブになる\n*/
+		/**	既に追加されているシーンの場合アクティブ化する*/
 		static void AddScene(IScene* 追加するシーン)
 		{
 			//既に存在する場合移動のみ

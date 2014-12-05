@@ -81,8 +81,8 @@ Unicode範囲内の特殊な記号は使いません\n
 明示的に書かないとinline化してくれない事があったので必要なら使います。\n
 \n
 <B>インクルードガード</B>\n
-使いたいコンパイラが全て #pragma onceを実装しているため。\n
-#defineによるインクルードガードではなく、#pragma onceを使う。\n
+使いたいコンパイラが全て pragma onceを実装しているため。\n
+defineによるインクルードガードではなく、pragma onceを使う。\n
 \n
 <B>キャスト</B>\n
 int,float,doubleの相互変換はcスタイルキャスト可。\n

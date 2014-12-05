@@ -20,18 +20,18 @@ namespace SDX
 	class Rect : public IShape
 	{
 	public:
-		double x;//!<
-		double y;//!<
+		double x;//!< 起点座標
+		double y;//!< 起点座標
 
-		double widthLeft;//!<
-		double widthRight;//!<
+		double widthLeft;//!< 起点から左側の幅
+		double widthRight;//!< 起点から右側の幅
 
-		double heightUp;//!<
-		double heightDown;//!<
+		double heightUp;//!< 起点から上側の幅
+		double heightDown;//!< 起点から下側の幅
 
-		/*座標と大きさを指定*/
-		/*デフォルト引数だと左上座標と大きさを指定*/
-		/*横幅A=横幅B,高さA=高さBとすると中心座標指定になる*/
+		/**座標と大きさを指定.*/
+		/**デフォルト引数だと左上座標と大きさを指定*/
+		/**横幅A=横幅B,高さA=高さBとすると中心座標指定になる*/
 		Rect(double X座標, double Y座標, double 横幅A, double 高さA, double 横幅B = 0, double 高さB = 0) :
 			x(X座標),
 			y(Y座標),
@@ -41,8 +41,11 @@ namespace SDX
 			widthRight(横幅A)
 		{}
 
-		template <class T>
-		Rect(T X座標, T Y座標, T 横幅A, T 高さA, T 横幅B = 0, T 高さB = 0) :
+		template <class T1,class T2,class T3,class T4>
+		/**座標と大きさを指定.*/
+		/**デフォルト引数だと左上座標と大きさを指定*/
+		/**横幅A=横幅B,高さA=高さBとすると中心座標指定になる*/
+		Rect(T1 X座標, T2 Y座標, T3 横幅A, T4 高さA, T3 横幅B = 0, T4 高さB = 0) :
 			x((double)X座標),
 			y((double)Y座標),
 			heightUp((double)高さB),
@@ -51,7 +54,7 @@ namespace SDX
 			widthRight((double)横幅A)
 		{}
 
-		virtual IShape* Clone(double X座標, double Y座標) const
+		virtual IShape* Clone(double X座標, double Y座標) const override
 		{
 			auto shape = new Rect(X座標, Y座標, widthRight, heightDown, widthLeft, heightUp);
 			shape->zoomX = this->zoomX;
@@ -59,19 +62,19 @@ namespace SDX
 			return shape;
 		}
 
-		void SetPos(double X座標, double Y座標)
+		void SetPos(double X座標, double Y座標) override
 		{
 			this->x = X座標;
 			this->y = Y座標;
 		}
 
-		void Move(double X移動量, double Y移動量)
+		void Move(double X移動量, double Y移動量) override
 		{
 			this->x += X移動量;
 			this->y += Y移動量;
 		}
 
-		void MultiZoom(double X倍率, double Y倍率)
+		void MultiZoom(double X倍率, double Y倍率) override
 		{
 			widthLeft *= X倍率;
 			widthRight *= X倍率;
@@ -80,57 +83,61 @@ namespace SDX
 			heightDown *= Y倍率;
 		}
 
-		void Rotate(double 回転する角度){}
+		void Rotate(double 回転する角度) override{}
 
-		void SetAngle(double 指定角度){}
+		void SetAngle(double 指定角度) override{}
 
-		void Draw(const Color &描画色, int 透過率, Camera *座標変換Camera = nullptr) const;
+		void Draw(const Color &描画色) const override;
 
-		inline double GetX() const
+		inline double GetX() const override
 		{
 			return x;
 		}
 
-		inline double GetY() const
+		inline double GetY() const override
 		{
 			return y;
 		}
 
-		inline double GetW() const
+		inline double GetW() const override
 		{
 			return widthLeft + widthRight;
 		}
 
-		inline double GetH() const
+		inline double GetH() const override
 		{
 			return heightUp + heightDown;
 		}
 
+		/** 左端のX座標を取得.*/
 		inline double GetLeft() const
 		{
 			return x - widthLeft;
 		}
 
+		/** 上端のY座標を取得.*/
 		inline double GetTop() const
 		{
 			return y - heightUp;
 		}
 
+		/** 右端のX座標を取得.*/
 		inline double GetRight() const
 		{
 			return x + widthRight;
 		}
 
+		/** 下端のY座標を取得.*/
 		inline double GetBottom() const
 		{
 			return y + heightDown;
 		}
 
-		bool Hit(const IShape *shape) const
+		bool Hit(const IShape *shape) const override
 		{
 			return shape->Hit(this);
 		}
-		bool Hit(const Complex *complex) const
+		bool Hit(const Complex *complex) const override
 		{
 			for (auto it : complex->shapes)
 			{
@@ -138,7 +145,7 @@ namespace SDX
 			}
 			return false;
 		}
-		bool Hit(const Point *point) const
+		bool Hit(const Point *point) const override
 		{
 			return (
 				(
@@ -152,7 +159,7 @@ namespace SDX
 				)
 				);
 		}
-		bool Hit(const Line *line) const
+		bool Hit(const Line *line) const override
 		{
 			if (
 				!(
@@ -246,10 +253,16 @@ namespace SDX
 
 			return false;
 		}
-		bool Hit(const Rect *rect) const
+		bool Hit(const Rect *rect) const override
 		{
 			return !(GetRight() < rect->GetLeft() || GetLeft() > rect->GetRight() || GetBottom() < rect->GetTop() || GetTop() > rect->GetBottom());
 		}
-		bool Hit(const Circle *circle) const;
+		bool Hit(const Circle *circle) const override;
+
+		/** SDL_Rectに型変換.*/
+		operator SDL_Rect() const
+		{
+			return{ (int)GetLeft(), (int)GetTop(), (int)GetW(), (int)GetH() };
+		}
 	};
 }

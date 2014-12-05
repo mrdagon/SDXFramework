@@ -11,6 +11,10 @@ namespace SDX
 	class IFrame
 	{
 	public:
+
+		virtual ~IFrame() = default;
+
+		/** 枠を描画.*/
 		virtual void Draw(const Rect &領域) const = 0;
 	};
 }

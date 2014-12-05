@@ -15,10 +15,7 @@ namespace SDX
 	class Filter
 	{
 	private:
-		Filter() = default;
-		~Filter() = default;
-		void operator =(const Filter& src){}
-		Filter(const Filter& src){}
+		MONO_STATE(Filter)
 	public:
 		/** モノトーンフィルタ.*/
 		/** 画像をモノトーン調に変化させる。\n*/

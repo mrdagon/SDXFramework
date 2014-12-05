@@ -6,17 +6,24 @@
 \n
 <HR>
 <B>ver 0.10</B>\n
-[破壊的変更]\n
+[大きめの破壊的変更]\n
+BmpFontをFontに統合して廃止\n
+Cameraクラスを再設計\n
+AnimeクラスをFilmクラスに名称変更、Anime::PlayerをAnimeに名称変更し設計見直し\n
+引数が座標X、座標Yとかになっている物をconst Point&に変更\n
+引数が座標X、座標Y、幅、高さとかになっている物をconst Rect&に変更\n
+DrawExtendoの引数をPoint2つからRectに変更\n
+\n
+[細かい破壊的変更]\n
 DXLib版と分離したので～Handleのusing宣言を削除\n
 NULL_HANDLEマクロを削除\n
 Font初期化時の引数を変更\n
-BmpFontをFontに統合して廃止\n
 Waitクラスを削除してSystemに統合\n
 Window::SetFullScreenをWindow::SetFullscreenに変更\n
 SoundとMusicのPlayTypeを削除、及び引数をPlayTypeからboolに変更\n
 必ずtrueを返す関数の戻り値をboolからvoidに変更\n
-Load済みのImageに対してLoadした場合失敗するように仕様変更\n
-Cameraクラスを再設計\n
+Load済みのImageやSound等に対してLoadした場合失敗するように統一\n
+Shape::Draw関数の引数を削減\n
 MOTIONの仕様を変更\n
 \n
 [新機能追加]\n

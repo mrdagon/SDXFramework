@@ -6,6 +6,7 @@
 #include <Multimedia/Color.h>
 #include <Multimedia/Renderer.h>
 #include <Framework/Shape.h>
+#include <Framework/Camera.h>
 
 namespace SDX
 {
@@ -22,14 +23,14 @@ namespace SDX
 
 	/** 描画先を表すクラス.*/
 	/** Screenに無くてRendereにある関数は[Renderer専用]と表記.*/
-	/** \include Screen.*/
+	/** \include Screen.h.*/
 	class Renderer
 	{
 		friend class SubWindow;
 		friend class Drawing;
 	private:
-		SDL_Renderer* handle = nullptr;//!<
-		SDL_Surface* surface = nullptr;//!<
+		SDL_Renderer* handle = nullptr; 
+		SDL_Surface* surface = nullptr;
 		Image* target = nullptr;//!< 描画先Imageのハンドル、nullptrならデフォルト
 		bool isWindow;//!< ウィンドウに対応しているかどうか
 
@@ -44,28 +45,29 @@ namespace SDX
 			return true;
 		}
 	public:
-		static Renderer &mainRenderer;
+		static Renderer &mainRenderer;//!< メインウィンドウのレンダラー
 
-		BlendMode blendMode = BlendMode::NoBlend;//!<
-		Color clearColor = Color(0, 0, 0);//!<消去時の色
-		Color rgba = Color(255, 255, 255, 255);//!<描画輝度とα値
+		BlendMode blendMode = BlendMode::NoBlend;//!< 描画モード
+		Color clearColor = Color(0, 0, 0);//!< 消去時の色
+		Color rgba = Color(255, 255, 255, 255);//!< 描画輝度とα値
 
-		/*描画ハンドルを取得*/
-		SDL_Renderer* GetHandle()
-		{
-			return handle;
-		}
-
-		Renderer() = default;
+		Renderer(){};
 
 		~Renderer()
 		{
 			Destroy();
 		}
 
+		/**コンストラクタ.*/
 		Renderer(int 幅, int 高さ)
 		{
 			Create(幅,高さ);
+		}
+
+		/**描画ハンドルを取得.*/
+		SDL_Renderer* GetHandle()
+		{
+			return handle;
 		}
 
 		/** Windowと独立した、Rendererを生成.*/
@@ -118,7 +120,7 @@ namespace SDX
 		}
 
 		/**対象RenderHandleにコピー.*/
-		/** 処理が重い*/
+		/** 処理が重い、Cameraの影響を受けない*/
 		/** [Renderer専用]*/
 		bool Draw(const Rect& 領域, Renderer& コピー先 = Renderer::mainRenderer)
 		{
@@ -136,7 +138,7 @@ namespace SDX
 		}
 
 		/** 対象RenderHandleにコピー.*/
-		/** 処理が重い*/
+		/** 処理が重い、Cameraの影響を受けない*/
 		/** [Renderer専用]*/
 		bool DrawExtend(const Rect& 元範囲, const Rect& コピー先範囲, Renderer& コピー先 = Renderer::mainRenderer)
 		{
@@ -196,7 +198,15 @@ namespace SDX
 			}
 
 			if (handle == nullptr){ return false; }
-			SDL_Rect rect = { (int)描画領域.GetX(), (int)描画領域.GetY(), (int)描画領域.GetW(), (int)描画領域.GetH() };
+			SDL_Rect rect;
+			if (Camera::Get())
+			{
+				rect = Camera::Get()->TransRect(描画領域);
+			}
+			else
+			{
+				rect = 描画領域;
+			}
 
 			return !SDL_RenderSetViewport(handle, &rect);
 		}
@@ -212,7 +222,15 @@ namespace SDX
 				return !SDL_RenderSetClipRect(handle, 0);
 			}
 
-			SDL_Rect rect = { (int)非描画領域.GetX(), (int)非描画領域.GetY(), (int)非描画領域.GetW(), (int)非描画領域.GetH() };
+			SDL_Rect rect;
+			if (Camera::Get())
+			{
+				rect = Camera::Get()->TransRect(非描画領域);
+			}
+			else
+			{
+				rect = 非描画領域;
+			}
 
 			return !SDL_RenderSetClipRect(handle, &rect);
 		}

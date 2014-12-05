@@ -9,19 +9,20 @@ namespace SDX
 	class IScene
 	{
 	public:
-		bool isEnd = false;//!<
+		bool isEnd = false;//!< 消滅フラグ
 
+		virtual ~IScene() = default;
+
+		/**更新処理.*/
 		virtual void Update() = 0;
+
+		/**描画処理.*/
 		virtual void Draw() = 0;
 
+		/**初期化処理.*/
 		virtual void Init(){};
-		virtual void Final(){};
-		virtual void Event(){};
 
-		/**.*/
-		bool IsEnd()
-		{
-			return isEnd;
-		}
+		/**終了時の処理.*/
+		virtual void Final(){};
 	};
 }

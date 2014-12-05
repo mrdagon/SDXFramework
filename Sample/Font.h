@@ -8,8 +8,8 @@ bool SampleFont()
 	using namespace SDX;
 	System::Initialise("sample", 600, 400);
 
-	Font fontA(SystemFont::Gothic, 20, 4,FontRender::Solid);
-	Font fontB(SystemFont::Mincho, 20, 4,FontRender::Blended);
+	Font fontA(SystemFont::Gothic, 20, 4, false);
+	Font fontB(SystemFont::Mincho, 20, 4, true);
 
 	double angle = 0;
 

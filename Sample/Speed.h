@@ -33,7 +33,7 @@ bool SampleSpeed()
 			shapes[a]->MoveA(speeds[a]->Get(), 0);
 
 			//描画する
-			shapes[a]->Draw(Color::White, 255);
+			shapes[a]->Draw(Color::White);
 		}
 
 		if (Input::key.Return.on){ break;}//Enterで終了

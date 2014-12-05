@@ -72,45 +72,45 @@ namespace SDX
 		Joypad(const Joypad &joypad){};
 		Joypad operator =(const Joypad &joypad) = delete;
 	public:
-		int StickX = 0;//!<
-		int StickY = 0;//!<
+		int StickX = 0;//!< ジョイスティックの横方向入力
+		int StickY = 0;//!< ジョイスティックの縦方向入力 
 
-		Key Down;
-		Key Left;
-		Key Right;
-		Key Up;
-		Key Button1;
-		Key Button2;
-		Key Button3;
-		Key Button4;
-		Key Button5;
-		Key Button6;
-		Key Button7;
-		Key Button8;
-		Key Button9;
-		Key Button10;
-		Key Button11;
-		Key Button12;
-		Key Button13;
-		Key Button14;
-		Key Button15;
-		Key Button16;
-		Key Button17;
-		Key Button18;
-		Key Button19;
-		Key Button20;
-		Key Button21;
-		Key Button22;
-		Key Button23;
-		Key Button24;
-		Key Button25;
-		Key Button26;
-		Key Button27;
-		Key Button28;
-
+		Key Down;//!< キー
+		Key Left;//!< キー
+		Key Right;//!< キー
+		Key Up;//!< キー
+		Key Button1;//!< キー
+		Key Button2;//!< キー
+		Key Button3;//!< キー
+		Key Button4;//!< キー
+		Key Button5;//!< キー
+		Key Button6;//!< キー
+		Key Button7;//!< キー
+		Key Button8;//!< キー
+		Key Button9;//!< キー
+		Key Button10;//!< キー
+		Key Button11;//!< キー
+		Key Button12;//!< キー
+		Key Button13;//!< キー
+		Key Button14;//!< キー
+		Key Button15;//!< キー
+		Key Button16;//!< キー
+		Key Button17;//!< キー
+		Key Button18;//!< キー
+		Key Button19;//!< キー
+		Key Button20;//!< キー
+		Key Button21;//!< キー
+		Key Button22;//!< キー
+		Key Button23;//!< キー
+		Key Button24;//!< キー
+		Key Button25;//!< キー
+		Key Button26;//!< キー
+		Key Button27;//!< キー
+		Key Button28;//!< キー
+		
 		Joypad(){}
 
-		/**.*/
+		/** ジョイパッドを起動.*/
 		void Open()
 		{
 			handle = SDL_JoystickOpen(0);

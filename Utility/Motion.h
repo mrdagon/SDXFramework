@@ -37,6 +37,8 @@ namespace SDX
 		private:
 			TSpeed speed;
 		public:
+
+			/** 速度を指定.*/
 			ToFront(TSpeed 速度) :
 				speed(速度)
 			{}
@@ -59,6 +61,8 @@ namespace SDX
 			double 進行方向;
 			Rect 移動範囲;
 		public:
+
+			/** 速度と移動範囲、最初の移動方向を指定.*/
 			Bound(const TSpeed &速度, const Rect& 移動範囲, double 進行方向) :
 				speed(速度),
 				移動範囲(移動範囲)
@@ -115,6 +119,7 @@ namespace SDX
 			TSpeed speed;
 			Point 目標座標;
 		public:
+			/** コンストラクタ.*/
 			ToPoint(const TSpeed &速度, const Point& 目標座標) :
 				speed(速度),
 				目標座標(目標座標)
@@ -130,8 +135,10 @@ namespace SDX
 				if (lx * lx + ly * ly <= nowSpeed * nowSpeed)
 				{
 					移動対象->SetPos(目標座標.GetX(), 目標座標.GetY());
+					return false;
 				}
-				else{
+				else
+				{
 					const double angle = atan2(ly, lx);
 					移動対象->MovePolar(nowSpeed, angle);
 				}
@@ -154,6 +161,8 @@ namespace SDX
 
 			Point 前座標;
 		public:
+
+			/** コンストラクタ.*/
 			Orbit(const TSpeed &速度) :
 				speed(速度),
 				前座標(0, 0)
@@ -185,6 +194,8 @@ namespace SDX
 			double 前振れ幅X = 0;
 			double 前振れ幅Y = 0;
 		public:
+
+			/** コンストラクタ.*/
 			Vibrate(double 最大振れ幅) :
 				最大振れ幅(最大振れ幅)
 			{}

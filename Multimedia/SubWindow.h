@@ -39,7 +39,8 @@ namespace SDX
 			}
 		}
 	public:
-		static SubWindow mainWindow;
+
+		static SubWindow mainWindow;//!< 現在アクティブなウィンドウ
 
 		SubWindow() = default;
 
@@ -48,6 +49,7 @@ namespace SDX
 			Destroy();
 		}
 
+		/** Windowの初期化と生成.*/
 		SubWindow(const char* ウィンドウ名, int 幅, int 高さ, bool フルスクリーンフラグ = false)
 		{
 			Create(ウィンドウ名, 幅, 高さ, フルスクリーンフラグ);

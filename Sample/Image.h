@@ -18,7 +18,7 @@ bool SampleImage()
 
 		image.Draw({ 10, 10 }, true);//反転して描画
 
-		image.DrawExtend({ 400, 10 }, { 420, 30 });//指定矩形に描画
+		image.DrawExtend({ 400, 10 , 20, 20 });//指定矩形に描画
 
 		image.DrawRotate({ 400, 200 }, 0.5, angle);//角度と拡大率を指定して描画
 

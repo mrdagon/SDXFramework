@@ -26,7 +26,7 @@ namespace SDX
 		std::chrono::system_clock::time_point startTime;//再生開始時刻
 		double restartPosition = 0;//!< 再生再開位置
 	public:
-		Music() = default;
+		Music(){};
 		~Music()
 		{
 			Destroy();

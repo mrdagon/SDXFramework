@@ -17,17 +17,13 @@ namespace SDX
 	class Input
 	{
 	private:
-		Input(){}
-		~Input(){};
-
-		void operator =(const Input& src) = delete;
-		Input(const Input& src) = delete;
+		MONO_STATE(Input)
 	public:
-		static Joypad pad;//!<
-		static Mouse mouse;//!<
-		static Keyboard key;//!<
-		static Touch touch[10];//!<
-		static Gesture gesture;//!<
+		static Joypad pad;//!< ジョイパッド
+		static Mouse mouse;//!< マウス 
+		static Keyboard key;//!< キーボード
+		static Touch touch[10];//!< タッチ
+		static Gesture gesture;//!< タッチジェスチャー
 
 		/** 入力状態をリセット.*/
 		static void Reset()

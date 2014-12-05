@@ -122,117 +122,115 @@ namespace SDX
 	{
 		friend class Input;
 	private:
+		MONO_STATE(Keyboard)
+
 		EnumArray<bool, KeyCode> press;
-
-		Keyboard(const Keyboard &key){};
-		Keyboard& operator =(const Keyboard &key) = delete;
 	public:
-		Key Back;
-		Key Tab;
-		Key Return;
-		Key LShift;
-		Key RShift;
-		Key LControl;
-		Key RControl;
-		Key Escape;
-		Key Space;
-		Key PageUp;
-		Key PageDown;
-		Key End;
-		Key Home;
-		Key Left;
-		Key Up;
-		Key Right;
-		Key Down;
-		Key Insert;
-		Key Delete;
+		//とりあえずDoxygenのエラーを消すためのコメント
+		Key Back;//!< キー
+		Key Tab;//!< キー
+		Key Return;//!< キー
+		Key LShift;//!< キー
+		Key RShift;//!< キー
+		Key LControl;//!< キー
+		Key RControl;//!< キー
+		Key Escape;//!< キー
+		Key Space;//!< キー
+		Key PageUp;//!< キー
+		Key PageDown;//!< キー
+		Key End;//!< キー
+		Key Home;//!< キー
+		Key Left;//!< キー
+		Key Up;//!< キー
+		Key Right;//!< キー
+		Key Down;//!< キー
+		Key Insert;//!< キー
+		Key Delete;//!< キー
 
-		Key Minus;
-		Key Yen;
-		Key PrevTrack;
-		Key Period;
-		Key Slash;
-		Key LAlt;
-		Key RAlt;
-		Key Scroll;
-		Key Semicolon;
-		Key Colon;
-		Key LBracket;
-		Key RBracket;
-		Key At;
-		Key Backslash;
-		Key Comma;
-		Key Capslock;
-		Key Pause;
+		Key Minus;//!< キー
+		Key Yen;//!< キー
+		Key PrevTrack;//!< キー
+		Key Period;//!< キー
+		Key Slash;//!< キー
+		Key LAlt;//!< キー
+		Key RAlt;//!< キー
+		Key Scroll;//!< キー
+		Key Semicolon;//!< キー
+		Key Colon;//!< キー
+		Key LBracket;//!< キー
+		Key RBracket;//!< キー
+		Key At;//!< キー
+		Key Backslash;//!< キー
+		Key Comma;//!< キー
+		Key Capslock;//!< キー
+		Key Pause;//!< キー
 
-		Key Numpad0;
-		Key Numpad1;
-		Key Numpad2;
-		Key Numpad3;
-		Key Numpad4;
-		Key Numpad5;
-		Key Numpad6;
-		Key Numpad7;
-		Key Numpad8;
-		Key Numpad9;
-		Key Multiply;
-		Key Add;
-		Key Subtract;
-		Key Decimal;
-		Key Divide;
-		Key NUMPADEnter;
+		Key Numpad0;//!< キー
+		Key Numpad1;//!< キー
+		Key Numpad2;//!< キー
+		Key Numpad3;//!< キー
+		Key Numpad4;//!< キー
+		Key Numpad5;//!< キー
+		Key Numpad6;//!< キー
+		Key Numpad7;//!< キー
+		Key Numpad8;//!< キー
+		Key Numpad9;//!< キー
+		Key Multiply;//!< キー
+		Key Add;//!< キー
+		Key Subtract;//!< キー
+		Key Decimal;//!< キー
+		Key Divide;//!< キー
+		Key NUMPADEnter;//!< キー
 
-		Key F1;
-		Key F2;
-		Key F3;
-		Key F4;
-		Key F5;
-		Key F6;
-		Key F7;
-		Key F8;
-		Key F9;
-		Key F10;
-		Key F11;
-		Key F12;
+		Key F1;//!< キー
+		Key F2;//!< キー
+		Key F3;//!< キー
+		Key F4;//!< キー
+		Key F5;//!< キー
+		Key F6;//!< キー
+		Key F7;//!< キー
+		Key F8;//!< キー
+		Key F9;//!< キー
+		Key F10;//!< キー
+		Key F11;//!< キー
+		Key F12;//!< キー
 
-		Key A;
-		Key B;
-		Key C;
-		Key D;
-		Key E;
-		Key F;
-		Key G;
-		Key H;
-		Key I;
-		Key J;
-		Key K;
-		Key L;
-		Key M;
-		Key N;
-		Key O;
-		Key P;
-		Key Q;
-		Key R;
-		Key S;
-		Key T;
-		Key U;
-		Key V;
-		Key W;
-		Key X;
-		Key Y;
-		Key Z;
-		Key _0;
-		Key _1;
-		Key _2;
-		Key _3;
-		Key _4;
-		Key _5;
-		Key _6;
-		Key _7;
-		Key _8;
-		Key _9;
-
-		Keyboard() = default;
+		Key A;//!< キー
+		Key B;//!< キー
+		Key C;//!< キー
+		Key D;//!< キー
+		Key E;//!< キー
+		Key F;//!< キー
+		Key G;//!< キー
+		Key H;//!< キー
+		Key I;//!< キー
+		Key J;//!< キー
+		Key K;//!< キー
+		Key L;//!< キー
+		Key M;//!< キー
+		Key N;//!< キー
+		Key O;//!< キー
+		Key P;//!< キー
+		Key Q;//!< キー
+		Key R;//!< キー
+		Key S;//!< キー
+		Key T;//!< キー
+		Key U;//!< キー
+		Key V;//!< キー
+		Key W;//!< キー
+		Key X;//!< キー
+		Key Y;//!< キー
+		Key Z;//!< キー
+		Key _0;//!< キー
+		Key _1;//!< キー
+		Key _2;//!< キー
+		Key _3;//!< キー
+		Key _4;//!< キー
+		Key _5;//!< キー
+		Key _6;//!< キー
+		Key _7;//!< キー
+		Key _8;//!< キー
+		Key _9;//!< キー
 
 		/** 状態のリセット.*/
 		void Reset()

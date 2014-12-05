@@ -11,6 +11,7 @@
 <tr>                            <td>SDX::Renderer           <td>描画領域の管理クラス</td></tr>
 <tr style="background:#ccccff"> <td>描画</td>               <td> </td></tr>
 <tr>                            <td>SDX::Drawing            <td>リソースを読み込まずに描画を行う関数群</td></tr>
+<tr>                            <td>SDX::IDrawable          <td>描画可能なクラスのインターフェース</td></tr>
 <tr>                            <td>SDX::Image              <td>画像データを表すクラス</td></tr>
 <tr>                            <td>SDX::Font               <td>フォントデータを表すクラス</td></tr>
 <tr>                            <td>SDX::Color              <td>色を表すクラス</td></tr>
@@ -22,7 +23,6 @@
 <tr>                            <td>SDX::Music              <td>BGM用音声を表すクラス</td></tr>
 <tr>                            <td>SDX::Sound              <td>効果音用音声を表すクラス</td></tr>
 <tr>                            <td>SDX::Movie              <td>動画を表すクラス[未実装]</td></tr>
-<tr>                            <td>SDX::MovieImage         <td>Imageクラスの動画版[未実装]</td></tr>
 <tr style="background:#ccccff"> <td>入力</td><td> </td></tr>
 <tr>                            <td>SDX::Input              <td>キーやマウスによる入力をまとめて管理するクラス</td></tr>
 <tr>                            <td>SDX::Key                <td>各ボタンとキーを表すクラス</td></tr>
@@ -30,9 +30,11 @@
 <tr>                            <td>SDX::Keyboard           <td>キーボードの状態を表すクラス</td></tr>
 <tr>                            <td>SDX::Mouse              <td>マウスの状態を表すクラス</td></tr>
 <tr>                            <td>SDX::Touch              <td>タッチ操作の状態を表すクラス</td></tr>
+<tr>                            <td>SDX::Gesture            <td>タッチ操作の各種ジェスチャー</td></tr>
 <tr style="background:#8888ff"> <th>フレームワーク</th>     <th>マルチメディアクラスを間接利用するクラス等</th></tr>
 <tr style="background:#ccccff"> <td>拡張描画機能</td><td> </td></tr>
 <tr>                            <td>SDX::ImagePack          <td>複数のImageをまとめるクラス</td></tr>
+<tr>                            <td>SDX::Film              <td>Imageをまとめてコマ送りアニメとして表すクラス</td></tr>
 <tr>                            <td>SDX::Anime              <td>Imageをまとめてコマ送りアニメとして表すクラス</td></tr>
 <tr>                            <td>SDX::IFrame             <td>描画用枠のインターフェース</td></tr>
 <tr>                            <td>SDX::BmpFrame           <td>描画用枠を表すクラス</td></tr>
@@ -49,8 +51,9 @@
 <tr>                            <td>SDX::SpImage            <td>Imageのスプライト</td></tr>
 <tr>                            <td>SDX::SpAnime            <td>Animeのスプライト</td></tr>
 <tr>                            <td>SDX::SpFont             <td>IFontのスプライト</td></tr>
-<tr>                            <td>SDX::SpFrame        <td>IFrameのスプライト</td></tr>
+<tr>                            <td>SDX::SpFrame			<td>IFrameのスプライト</td></tr>
 <tr>                            <td>SDX::SpMap              <td>マップチップのスプライト</td></tr>
+<tr>                            <td>SDX::SpNull             <td>何も描画しないスプライト</td></tr>
 <tr style="background:#ccccff"> <td>2Dモデル</td><td> </td></tr>
 <tr>                            <td>SDX::Model              <td>ShapeとSpriteをまとめて、2Dモデルを表すクラス</td></tr>
 <tr style="background:#ccccff"> <td>シーン管理</td><td></td></tr>
@@ -64,5 +67,4 @@
 <tr>                            <td>SDX::MOTION             <td>移動方法のポリシー郡</td></tr>
 <tr>                            <td>SDX::EnumArray          <td>列挙型用固定配列</td></tr>
 </table>
-
 */

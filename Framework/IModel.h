@@ -18,18 +18,19 @@ namespace SDX
 		double zoomY = 1;//!<
 		double angle = 0;//!<
 		double shadowSize = 1;//!<
-		bool isCamera = true;//!<
 	protected:
-		bool isRemove = false;//!<
+		bool isRemove = false;//!< 消滅フラグ
 	public:
-		IShape &iShape;//!<
-		ISprite &iSprite;//!<
+		IShape &iShape;//!< 対応Shape
+		ISprite &iSprite;//!< 対応Sprite
 
+		/** コンストラクタ.*/
 		IModel(IShape &図形, ISprite &描画方法) :
 			iShape(図形),
 			iSprite(描画方法)
 		{};
-		virtual ~IModel(){};
+		
+		virtual ~IModel() = default;
 
 		/** 消滅フラグの取得.*/
 		bool GetRemoveFlag()
@@ -46,30 +47,13 @@ namespace SDX
 			shadowSize = 影の表示倍率;
 		}
 
-		/** 描画にカメラを使うか設定.*/
-		void SetIsCamera(bool カメラ利用フラグ)
-		{
-			isCamera = カメラ利用フラグ;
-		}
-
 		/** 描画する.*/
 		virtual void Draw()
 		{
-			if (iSprite.GetColor() == Color::White)
-			{
-				iSprite.Draw({ GetX(), GetY() }, isCamera && Camera::Get());
-			}
-			else
-			{
-				Screen::SetBright(iSprite.GetColor());
-				Screen::SetBlendMode(BlendMode::Alpha, iSprite.GetColor().GetAlpha());
-				iSprite.Draw({ GetX(), GetY() }, isCamera && Camera::Get());
-				Screen::SetBlendMode(BlendMode::NoBlend, 0);
-				Screen::SetBright(Color::White);
-			}
+			iSprite.Draw({ GetX(), GetY() });
 
 			//当たり判定を表示するならコメントアウト解除
-			//shape.get()->Draw(Color::Red,128,Camera::Get() );
+			//iShape.Draw({255,0,0,128} );
 		}
 
 		/** 影を描画する.*/
@@ -84,15 +68,15 @@ namespace SDX
 			double zoomY = iSprite.zoomY;
 			iSprite.zoomX *= shadowSize;
 			iSprite.zoomY *= shadowSize;
-			iSprite.Draw({ GetX() + X座標ずれ, GetY() + Y座標ずれ }, isCamera && Camera::Get());
+			iSprite.Draw({ GetX() + X座標ずれ, GetY() + Y座標ずれ });
 			iSprite.zoomX = zoomX;
 			iSprite.zoomY = zoomY;
 		}
 
-		/** アニメーションを更新する.*/
+		/** Spriteを更新する.*/
 		void AnimeUpdate()
 		{
-			iSprite.AnimeUpdate();
+			iSprite.Update();
 		}
 
 		/** 相対座標で移動.*/
@@ -134,17 +118,18 @@ namespace SDX
 		/** 縦横別で拡大率を掛ける.*/
 		void MultiZoom(double X倍率, double Y倍率)
 		{
-			iShape.MultiZoom(X倍率, Y倍率);
 			zoomX *= X倍率;
 			zoomY *= Y倍率;
 
+			iShape.MultiZoom(X倍率, Y倍率);
 			iSprite.MultiZoom(X倍率, Y倍率);
 		}
 
 		/** 回転させる.*/
 		void Rotate(double 回転角度)
 		{
-			this->angle += 回転角度;
+			angle += 回転角度;
+			iShape.Rotate(回転角度);
 			iSprite.Rotate(回転角度);
 		}
 
@@ -157,14 +142,15 @@ namespace SDX
 		/** 角度を設定する.*/
 		void SetAngle(double 角度)
 		{
-			iSprite.Rotate(角度 - this->angle);
-			this->angle = 角度;
+			iShape.Rotate(角度 - angle);
+			iSprite.Rotate(角度 - angle);
+			angle = 角度;
 		}
 
 		/** 色をまとめて変更する、透明度も含む.*/
 		void SetColor(const Color &描画色)
 		{
-			iSprite.SetColor(描画色);
+			iSprite.color = 描画色;
 		}
 
 		/** 横方向の拡大率を取得.*/
@@ -210,8 +196,8 @@ namespace SDX
 
 			if (座標変換に使うCamera)
 			{
-				pt.x = 座標変換に使うCamera->TransX(Input::mouse.x + 座標変換に使うCamera->GetForcus().x);
-				pt.y = 座標変換に使うCamera->TransY(Input::mouse.y + 座標変換に使うCamera->GetForcus().y);
+				pt.x = 座標変換に使うCamera->TransX(Input::mouse.x + 座標変換に使うCamera->forcus.x);
+				pt.y = 座標変換に使うCamera->TransY(Input::mouse.y + 座標変換に使うCamera->forcus.y);
 			}
 			else{
 				pt.x = Input::mouse.x;
@@ -221,15 +207,15 @@ namespace SDX
 			return iShape.Hit(&pt);
 		}
 
-		/** 対象との角度を取得.*/
 		template <class T>
+		/** 対象との角度を取得.*/
 		double GetDirect(T* 比較対象)
 		{
 			return atan2(比較対象->GetY() - GetY(), 比較対象->GetX() - GetX());
 		}
 
-		/** 対象との相対座標を取得.*/
 		template <class T>
+		/** 対象との相対座標を取得.*/
 		double GetDistance(T* 比較対象)
 		{
 			const double xd = this->GetX() - 比較対象->GetX();

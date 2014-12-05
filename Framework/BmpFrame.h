@@ -12,8 +12,7 @@ namespace SDX
 	class BmpFrame : public IFrame
 	{
 	private:
-		bool isMake;//!<
-		ImagePack *frame;//!<
+		ImagePack *frame = nullptr;//!<
 	public:
 		/** フレームを作成する.*/
 		/** ３×３分割したImagePackを元にフレームを作成*/
@@ -21,16 +20,18 @@ namespace SDX
 		{
 			if (フレーム画像->GetSize() != 9) return false;
 
-			this->frame = フレーム画像;
-			this->isMake = true;
+			frame = フレーム画像;
 
 			return true;
 		}
 
 		/** 矩形のフレームを描画.*/
 		/** 右上座標を指定してフレームを描画する*/
+		/** @todo Camera対応が途中、隙間が出来るかも*/
 		void Draw(const Rect &領域) const
 		{
+			if (frame == nullptr){ return; }
+
 			const int fWidth = frame->GetWidth();
 			const int fHeight = frame->GetHeight();
 
@@ -42,14 +43,14 @@ namespace SDX
 			const double yB = Y座標 - fHeight + 領域.GetH();
 
 			//内部スキンを描画
-			frame[0][4]->DrawExtend({ fWidth + X座標, fHeight + Y座標 }, { 領域.GetW() - fWidth + X座標, 領域.GetH() - fHeight + Y座標 });
+			frame[0][4]->DrawExtend({ fWidth + X座標, fHeight + Y座標 , 領域.GetW() - fWidth + X座標, 領域.GetH() - fHeight + Y座標 });
 
 			//まず外枠を描画
-			frame[0][3]->DrawExtend({ X座標, yA }, { xA, yB });
-			frame[0][5]->DrawExtend({ xB, yA }, { xB + fWidth, yB });
+			frame[0][3]->DrawExtend({ X座標, yA ,  xA -X座標, yB-yA });
+			frame[0][5]->DrawExtend({ xB, yA , fWidth, yB-yA });
 
-			frame[0][1]->DrawExtend({ xA, Y座標 }, { xB, yA });
-			frame[0][7]->DrawExtend({ xA, yB }, { xB, yB + fHeight });
+			frame[0][1]->DrawExtend({ xA, Y座標 ,  xB-xA, yA-Y座標 });
+			frame[0][7]->DrawExtend({ xA, yB ,  xB-xA, fHeight });
 
 			//四隅を描画
 			frame[0][0]->Draw({ X座標, Y座標 });

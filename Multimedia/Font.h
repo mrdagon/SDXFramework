@@ -15,12 +15,6 @@
 
 namespace SDX
 {
-	enum class FontRender
-	{
-		Solid,//!<ベタ、高速
-		Blended,//!<混合、最高品質
-	};
-
 	/** TrueTypeFontとBMPFontをまとめて扱うクラス.*/
 	/** 毎回レンダリングせず、ハッシュマップにImageを格納する*/
 	/** 一度も表示していない文字が必要になった場合生成し以後使いまわす*/
@@ -31,12 +25,12 @@ namespace SDX
 	{
 	private:
 		TTF_Font* handle = nullptr;//!<
-		FontRender fontRender;
+		bool isBlendRender;
 		int size = 0;//!<
 		int enterHeight = 0;//!<
 		mutable std::map<int, Image*> hash;//!<
 
-		int style = TTF_STYLE_NORMAL;
+		int style = TTF_STYLE_NORMAL;//!<
 
 		static bool GetUTFSize(unsigned char 一文字目,int &文字長さ )
 		{
@@ -96,7 +90,7 @@ namespace SDX
 				if (str == nullptr){ continue; }
 
 				str->SetColor(描画色);
-				str->DrawExtend(位置, { 位置.x + str->GetWidth()*X拡大率, 位置.y + str->GetHeight()*Y拡大率 });
+				str->DrawExtend({ 位置.x , 位置. y ,  str->GetWidth()*X拡大率, str->GetHeight()*Y拡大率 });
 				位置.x += str->GetWidth() * X拡大率;
 			}
 		}
@@ -143,13 +137,13 @@ namespace SDX
 
 				SDL_Surface* surface;
 
-				if (fontRender == FontRender::Solid)
+				if (isBlendRender)
 				{
-					surface = TTF_RenderUTF8_Solid(handle, 文字, { 255, 255, 255 });
+					surface = TTF_RenderUTF8_Blended(handle, 文字, { 255, 255, 255 });
 				}
 				else
 				{
-					surface = TTF_RenderUTF8_Blended(handle, 文字, { 255, 255, 255 });
+					surface = TTF_RenderUTF8_Solid(handle, 文字, { 255, 255, 255 });
 				}
 
 				SDL_Texture* moji = SDL_CreateTextureFromSurface(Screen::GetHandle(), surface);
@@ -176,20 +170,20 @@ namespace SDX
 
 		Font() = default;
 
-		Font(const char *フォント名, int 大きさ, int 行間 , FontRender 品質 = FontRender::Solid)
+		/** コンストラクタ*/
+		Font(const char *フォント名, int 大きさ, int 行間 = 0 , bool 高品質レンダリングフラグ = true )
 		{
-			Load(フォント名, 大きさ, 行間,品質);
+			Load(フォント名, 大きさ, 行間, 高品質レンダリングフラグ);
 		}
 
-		/** メモリ上にフォントを作成する.*/
-		/** 太さは0～9で指定、大きさと太さは-1にするとデフォルトになる\n*/
+		/** フォントを作成する.*/
 		/**	行間は0の場合、改行後の文字が上下くっつく。\n*/
 		/** BMPフォント専用にしたい場合、フォント名は無効な物を入れる*/
-		bool Load(const char *フォント名, int 大きさ, int 行間 , FontRender 品質 = FontRender::Solid )
+		bool Load(const char *フォント名, int 大きさ, int 行間 = 0, bool 高品質レンダリングフラグ = true )
 		{
 			if (Loading::isLoading)
 			{
-				Loading::AddLoading([=]{ Load(フォント名,大きさ,行間,品質); });
+				Loading::AddLoading([=]{ Load(フォント名, 大きさ, 行間, 高品質レンダリングフラグ); });
 				return true;
 			}
 
@@ -197,7 +191,7 @@ namespace SDX
 
 			this->size = 大きさ;
 			this->enterHeight = 行間 + 大きさ;
-			fontRender = 品質;
+			isBlendRender = true;;
 			handle = TTF_OpenFont(フォント名, 大きさ);
 
 			return true;
@@ -235,13 +229,13 @@ namespace SDX
 
 			for (auto it : 描画する文字列.StringS)
 			{
-				if (fontRender == FontRender::Solid)
+				if (isBlendRender)
 				{
-					surface = TTF_RenderUTF8_Solid(handle, it.c_str(), 文字色);
+					surface = TTF_RenderUTF8_Blended(handle, it.c_str(), 文字色);
 				}
 				else
 				{
-					surface = TTF_RenderUTF8_Blended(handle, it.c_str(), 文字色);
+					surface = TTF_RenderUTF8_Solid(handle, it.c_str(), 文字色);
 				}
 
 				幅 = std::max(幅, surface->w);
@@ -364,6 +358,12 @@ namespace SDX
 		/** 文字列が2文字以上なら2文字目以降は無視*/
 		void SetImage(const std::string &文字, Image *対応画像)
 		{
+			if (Loading::isLoading)
+			{
+				Loading::AddLoading([=]{ SetImage(文字,対応画像); });
+				return;
+			}
+
 			int charSize;
 			auto it = 文字.begin();
 
@@ -372,23 +372,35 @@ namespace SDX
 		}
 
 		/** 指定した文字に対応するImageをまとめて設定.*/
-		void SetImageS(const std::string &文字列, ImagePack &対応画像)
+		void SetImageS(const std::string &文字列, ImagePack *対応画像)
 		{
+			if (Loading::isLoading)
+			{
+				Loading::AddLoading([=]{ SetImageS(文字列, 対応画像); });
+				return;
+			}
+
 			int charSize;
 			int a = 0;
 			for (auto it = 文字列.begin(); it != 文字列.end(); it += charSize)
 			{
 				if (!GetUTFSize(*it, charSize)){ continue; }
 
-				SetHash(文字列.substr(std::distance(文字列.begin(), it), charSize).c_str(), charSize , 対応画像[a]);
+				SetHash(文字列.substr(std::distance(文字列.begin(), it), charSize).c_str(), charSize , 対応画像[0][a]);
 			}
 		}
 
 		/** 指定した文字から連続してに対応するImageをまとめて設定.*/
 		/** 例えば文字列="0"で登録数=10なら0～9までを登録*/
 		/** アルファベットや数字用*/
-		void SetImageS(const std::string &文字列, ImagePack &対応画像, int 登録数)
+		void SetImageS(const std::string &文字列, ImagePack *対応画像, int 登録数)
 		{
+			if (Loading::isLoading)
+			{
+				Loading::AddLoading([=]{ SetImageS(文字列, 対応画像); });
+				return;
+			}
+
 			int charSize;
 			int a = 0;
 			auto it = 文字列.begin();
@@ -398,7 +410,7 @@ namespace SDX
 			for (int a = 0; a < 登録数;++a)
 			{
 				if (!GetUTFSize(*it, charSize)){ continue; }
-				SetHash(str.c_str(),charSize,対応画像[a]);
+				SetHash(str.c_str(),charSize,対応画像[0][a]);
 				if (str[charSize - 1] == 0xff)
 				{
 					str[charSize - 2]++;

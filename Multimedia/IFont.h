@@ -7,11 +7,13 @@
 
 namespace SDX
 {
-	/** Font,BmpFont等のインターフェース.*/
+	/** Fontのインターフェース.*/
 	/** \include Font.h*/
 	class IFont
 	{
 	public:
+		virtual ~IFont() = default;
+
 		/** 文字を描画.*/
 		virtual bool Draw(const Point &座標, const Color &描画色, const VariadicStream &描画する文字列) const = 0;
 

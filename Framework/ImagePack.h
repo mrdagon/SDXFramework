@@ -14,14 +14,11 @@ namespace SDX
 	class ImagePack
 	{
 	protected:
-		std::vector<Image*> imageS;//!<
-		int widthMax;//!<
-		int heightMax;//!<
+		std::vector<Image*> imageS;//!< 保持するImage
+		int widthMax = 0;//!< 最大幅
+		int heightMax = 0;//!< 最大高さ
 	public:
-		ImagePack() :
-			widthMax(0),
-			heightMax(0)
-		{}
+		ImagePack() = default;
 
 		/** １つの画像を分割して読み込む.*/
 		ImagePack(const char *ファイル名, int 総コマ数, int コマ割り横, int コマ割り縦)
@@ -56,7 +53,7 @@ namespace SDX
 				for (int b = 0; b < コマ割り横; ++b)
 				{
 					if (count >= 総コマ数) break;
-					this->Add(new Image(image, x, y, width, height));
+					this->Add(new Image(image, { x, y, width, height }));
 					x += width;
 					count++;
 				}
@@ -98,6 +95,7 @@ namespace SDX
 			this->widthMax = std::max(this->widthMax, 追加イメージ->GetWidth());
 			this->heightMax = std::max(this->heightMax, 追加イメージ->GetHeight());
 		}
+		/** Imageを末尾に追加.*/
 		void Add(const char *ファイル名)
 		{
 			Add(new Image(ファイル名));
@@ -143,31 +141,37 @@ namespace SDX
 			}
 		}
 
+		/** オペレータ.*/
 		Image* operator[](int index)
 		{
 			return imageS[index];
 		}
 
+		/** オペレータ.*/
 		Image* operator[](int index) const
 		{
 			return imageS[index];
 		}
 
+		/** イテレータ用.*/
 		auto begin() ->decltype(imageS.begin())
 		{
 			return imageS.begin();
 		}
 
+		/** イテレータ用.*/
 		auto end() ->decltype(imageS.end())
 		{
 			return imageS.end();
 		}
 
+		/** イテレータ用.*/
 		auto begin() const ->decltype(imageS.begin())
 		{
 			return imageS.begin();
 		}
 
+		/** イテレータ用.*/
 		auto end() const ->decltype(imageS.end())
 		{
 			return imageS.end();

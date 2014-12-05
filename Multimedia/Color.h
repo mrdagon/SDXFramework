@@ -50,11 +50,13 @@ namespace SDX
 			return data.a;
 		}
 
-		operator SDL_Color()
+		/** 型変換.*/
+		operator SDL_Color() const
 		{
 			return data;
 		}
 
+		/** 比較オペレータ.*/
 		bool operator==(Color 比較色) {
 			return (
 				GetRed() == 比較色.GetRed() &&
@@ -64,21 +66,21 @@ namespace SDX
 				);
 		}
 
-		static const Color Black;
-		static const Color Dilver;
-		static const Color Gray;
-		static const Color White;
-		static const Color Maroon;
-		static const Color Red;
-		static const Color Purple;
-		static const Color Fuchsia;
-		static const Color Green;
-		static const Color Lime;
-		static const Color Olive;
-		static const Color Yellow;
-		static const Color Navy;
-		static const Color Blue;
-		static const Color Teal;
-		static const Color Aqua;
+		static const Color Black;//!< 黒 [RGB]0,0,0
+		static const Color Silver;//!< 銀 [R]192,192,192
+		static const Color Gray;//!< 灰 [RGB]128,128,128
+		static const Color White;//!< 白 [RGB]255,255,255
+		static const Color Maroon;//!< 栗 [RGB]128,0,0
+		static const Color Red;//!< 赤 [RGB]255,0,0
+		static const Color Purple;//!< 紫 [RGB]128,0,128
+		static const Color Fuchsia;//!< 赤紫 [RGB]255,0,255
+		static const Color Green;//!< 濃緑 [RGB]0,128,0
+		static const Color Lime;//!< 明緑 [RGB]0,255,0
+		static const Color Olive;//!< 暗黄 [RGB]128,128,0
+		static const Color Yellow;//!< 黄 [[RGB]255,255,0
+		static const Color Navy;//!< 濃青 [RGB]0,0,128
+		static const Color Blue;//!< 青 [RGB]0,0,255
+		static const Color Teal;//!< 青緑 [RGB]0,128,128
+		static const Color Aqua;//!< 水 [RGB]0,255,255
 	};
 }

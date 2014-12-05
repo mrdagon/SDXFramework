@@ -17,43 +17,21 @@ namespace SDX
 	class ISprite
 	{
 		friend class IModel;
-
 	protected:
-		double    zoomX = 1;//!<
-		double    zoomY = 1;//!<
-
-		double    gapX = 0;//!<中心モデルとの位置差
-		double    gapY = 0;//!<
-
-		double    axisX = 0;//!<回転軸
-		double    axisY = 0;//!<
-
-		Color    color = { 255, 255, 255, 255 };//!<
-		double    angle = 0;//!<
+		double zoomX = 1;//!< 描画倍率
+		double zoomY = 1;//!< 描画倍率
+		double angle = 0;//!< 角度
 
 	public:
-		bool isTurn = false;
+		bool isTurn = false;//!< 反転フラグ
+		Color color = { 255, 255, 255, 255 };//!< 描画色
+		Point gap;//!<Shape中心とSpriteとの位置差
+		Point axis;//!< 回転軸
 
-		ISprite(){}
-
-		virtual ~ISprite(){};
+		virtual ~ISprite() = default;
 
 		/** ISpriteを描画する.*/
-		virtual void Draw(const Point &座標, bool カメラフラグ) = 0;
-
-		/** Shapeとの相対座標を移動.*/
-		void MoveGap(double X移動量, double Y移動量)
-		{
-			gapX += X移動量;
-			gapY += Y移動量;
-		}
-
-		/** Shapeとの相対座標を指定.*/
-		void SetGap(const Point &座標)
-		{
-			gapX = 座標.x;
-			gapY = 座標.y;
-		}
+		virtual void Draw(const Point &座標) = 0;
 
 		/** 表示倍率を設定.*/
 		void SetZoom(double X拡大率, double Y拡大率)
@@ -74,11 +52,8 @@ namespace SDX
 			zoomX *= X倍率;
 			zoomY *= Y倍率;
 
-			gapX *= X倍率;
-			gapY *= Y倍率;
-
-			axisX *= X倍率;
-			axisY *= Y倍率;
+			gap.x *= X倍率;
+			gap.y *= Y倍率;
 		}
 
 		/** 横方向の表示倍率を取得.*/
@@ -91,18 +66,6 @@ namespace SDX
 		double GetZoomY()
 		{
 			return this->zoomY;
-		}
-
-		/** 左右反転フラグを設定.*/
-		void SetTurn(bool 反転フラグ)
-		{
-			this->isTurn = 反転フラグ;
-		}
-
-		/** 左右反転フラグを取得.*/
-		bool GetTurn()
-		{
-			return this->isTurn;
 		}
 
 		/** 表示角度を取得.*/
@@ -123,19 +86,7 @@ namespace SDX
 			this->angle += 回転する角度;
 		}
 
-		/** 描画色を取得.*/
-		Color GetColor()
-		{
-			return color;
-		}
-
-		/** 透明度を0～255で設定.*/
-		void SetColor(const Color &描画色)
-		{
-			color = 描画色;
-		}
-
-		/** 説明.*/
-		virtual void AnimeUpdate(){};
+		/** Anime等の更新処理.*/
+		virtual void Update(){};
 	};
 }

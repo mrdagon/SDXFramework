@@ -9,23 +9,16 @@ namespace SDX
 {
 	/** 時間と日付を取得する関数群.*/
 	/** わりと標準ライブラリで良い感じはある.*/
-	/** \include Timer.h*/
+	/** \include Time.h*/
 	class Time
 	{
 	private:
+		MONO_STATE(Time)
+
 		double fps;
 		std::chrono::system_clock::time_point reset;
 		std::chrono::system_clock::time_point fpsCounter;
 		std::chrono::system_clock::time_point watch;
-
-		Time(void)
-		{
-			this->ResetCount();
-		}
-		~Time(void){};
-		void operator =(const Time& src){}
-		Time(const Time& src){}
-
 
 		static Time& Single()
 		{

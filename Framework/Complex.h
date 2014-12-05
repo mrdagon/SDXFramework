@@ -20,16 +20,17 @@ namespace SDX
 	class Complex : public IShape
 	{
 	public:
-		std::vector<IShape*> shapes;//!<
+		std::vector<IShape*> shapes;//!< 保持するShape
 
-		Complex(){};
+		Complex() = default;
 
+		/**コンストラクタ.*/
 		Complex(IShape *shape)
 		{
 			shapes.push_back(shape);
 		}
 
-		IShape* Clone(double x, double y) const
+		IShape* Clone(double x, double y) const override
 		{
 			Complex *buf = new Complex();
 
@@ -41,7 +42,7 @@ namespace SDX
 			return buf;
 		}
 
-		void SetPos(double X座標, double Y座標)
+		void SetPos(double X座標, double Y座標) override
 		{
 			for (auto it : shapes)
 			{
@@ -49,7 +50,7 @@ namespace SDX
 			}
 		}
 
-		void Move(double X移動量, double Y移動量)
+		void Move(double X移動量, double Y移動量) override
 		{
 			for (auto it : shapes)
 			{
@@ -57,27 +58,27 @@ namespace SDX
 			}
 		}
 
-		double GetX() const
+		double GetX() const override
 		{
 			return shapes[0]->GetX();
 		}
 
-		double GetY() const
+		double GetY() const override
 		{
 			return shapes[0]->GetY();
 		}
 
-		double GetW() const
+		double GetW() const override
 		{
 			return shapes[0]->GetW();
 		}
 
-		double GetH() const
+		double GetH() const override
 		{
 			return shapes[0]->GetH();
 		}
 
-		void MultiZoom(double X倍率, double Y倍率)
+		void MultiZoom(double X倍率, double Y倍率) override
 		{
 			for (auto it : shapes)
 			{
@@ -87,7 +88,7 @@ namespace SDX
 			zoomY *= Y倍率;
 		}
 
-		void Rotate(double 回転する角度)
+		void Rotate(double 回転する角度) override
 		{
 			for (auto it : shapes)
 			{
@@ -95,7 +96,7 @@ namespace SDX
 			}
 		}
 
-		void SetAngle(double 指定角度)
+		void SetAngle(double 指定角度) override
 		{
 			for (auto it : shapes)
 			{
@@ -103,13 +104,13 @@ namespace SDX
 			}
 		}
 
-		void Draw(const Color &描画色, int 透過率, Camera *座標変換Camera = nullptr) const;
+		void Draw(const Color &描画色) const override;
 
-		bool Hit(const IShape *shape) const
+		bool Hit(const IShape *shape) const override
 		{
 			return shape->Hit(this);
 		}
-		bool Hit(const Complex *complex) const
+		bool Hit(const Complex *complex) const override
 		{
 			for (auto itA : this->shapes)
 			{
@@ -120,9 +121,9 @@ namespace SDX
 			}
 			return false;
 		}
-		bool Hit(const Point *point) const;
-		bool Hit(const Line *line) const;
-		bool Hit(const Rect *rect) const;
-		bool Hit(const Circle *circle) const;
+		bool Hit(const Point *point) const override;
+		bool Hit(const Line *line) const override;
+		bool Hit(const Rect *rect) const override;
+		bool Hit(const Circle *circle) const override;
 	};
 }

@@ -11,9 +11,10 @@ namespace SDX
 	class Model : public IModel
 	{
 	public:
-		TShape shape;//!<
-		TSprite sprite;//!<
+		TShape shape;//!< 対応Shape
+		TSprite sprite;//!< 対応Sprite
 
+		/**コンストラクタ.*/
 		Model(TShape &&図形と位置, TSprite &&描画方法) :
 			IModel(shape, sprite),
 			shape(図形と位置),

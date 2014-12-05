@@ -20,17 +20,18 @@ namespace SDX
 	class Circle : public IShape
 	{
 	public:
-		double x;//!<
-		double y;//!<
-		double radius;//!<
+		double x;//!< 座標
+		double y;//!< 座標
+		double radius;//!< 半径
 
+		/**コンストラクタ.*/
 		Circle(double X座標, double Y座標, double 半径) :
 			x(X座標),
 			y(Y座標),
 			radius(半径)
 		{}
 
-		IShape* Clone(double X座標, double Y座標) const
+		IShape* Clone(double X座標, double Y座標) const override
 		{
 			auto shape = new Circle(X座標, Y座標, this->radius);
 			shape->zoomX = this->zoomX;
@@ -38,13 +39,13 @@ namespace SDX
 			return shape;
 		}
 
-		void SetPos(double X座標, double Y座標)
+		void SetPos(double X座標, double Y座標) override
 		{
 			this->x = X座標;
 			this->y = Y座標;
 		}
 
-		void MultiZoom(double 倍率X, double 倍率Y)
+		void MultiZoom(double 倍率X, double 倍率Y) override
 		{
 			this->radius *= 倍率X;
 
@@ -52,43 +53,45 @@ namespace SDX
 			zoomY *= 倍率Y;
 		}
 
-		void Rotate(double 回転する角度){}
+		void Rotate(double 回転する角度) override
+		{}
 
-		void SetAngle(double 指定角度){}
+		void SetAngle(double 指定角度) override
+		{}
 
-		void Move(double X移動量, double Y移動量)
+		void Move(double X移動量, double Y移動量) override
 		{
 			this->x += X移動量;
 			this->y += Y移動量;
 		}
 
-		double GetX() const
+		double GetX() const override
 		{
 			return int(x);
 		}
 
-		double GetY() const
+		double GetY() const override
 		{
 			return int(y);
 		}
 
-		double GetW() const
+		double GetW() const override
 		{
 			return int(radius * 2);
 		}
 
-		double GetH() const
+		double GetH() const override
 		{
 			return int(radius * 2);
 		}
 
-		void Draw(const Color &描画色, int 透過率, Camera *座標変換Camera = nullptr) const;
+		void Draw(const Color &描画色) const override;
 
-		bool Hit(const IShape *shape) const
+		bool Hit(const IShape *shape) const override
 		{
 			return shape->Hit(this);
 		}
-		bool Hit(const Complex *complex) const
+		bool Hit(const Complex *complex) const override
 		{
 			for (auto it : complex->shapes)
 			{
@@ -96,7 +99,7 @@ namespace SDX
 			}
 			return false;
 		}
-		bool Hit(const Point *point) const
+		bool Hit(const Point *point) const override
 		{
 			return
 				(
@@ -105,11 +108,11 @@ namespace SDX
 				(this->radius * this->radius)
 				);
 		}
-		bool Hit(const Line *line) const
+		bool Hit(const Line *line) const override
 		{
 			return line->LinePoint(x, y, (line->GetThickHarf() + radius));
 		}
-		bool Hit(const Circle *circle) const
+		bool Hit(const Circle *circle) const override
 		{
 			return
 				(
@@ -118,7 +121,7 @@ namespace SDX
 				(this->radius + circle->radius) * (this->radius + circle->radius)
 				);
 		}
-		bool Hit(const Rect *rect) const
+		bool Hit(const Rect *rect) const override
 		{
 			return
 				(

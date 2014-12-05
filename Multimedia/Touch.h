@@ -13,9 +13,11 @@ namespace SDX
 	{
 		friend class Input;
 	private:
-		bool press = false;//!<
-		double xBuffer;//!<
-		double yBuffer;//!<
+		MONO_STATE(Touch)
+
+		bool press = false;
+		double xBuffer;
+		double yBuffer;
 
 		void Position(double X座標, double Y座標)
 		{
@@ -44,15 +46,15 @@ namespace SDX
 		}
 
 	public:
-		double x = 0;//!<
-		double y = 0;//!<
+		double x = 0;//!< タッチしている座標
+		double y = 0;//!< タッチしている座標 
 
-		double moveX = 0;//!<
-		double moveY = 0;//!<
+		double moveX = 0;//!< 前回更新時からの移動量
+		double moveY = 0;//!< 前回更新時からの移動量
 
-		bool on = false;//!<
-		bool off = false;//!<
-		bool hold = false;//!<
+		bool on = false;//!< タッチされた直後は true
+		bool off = false;//!< 指を離した直後は true
+		bool hold = false;//!< タッチしている間は true
 
 		unsigned int  holdCount = 0;//!<押されている時間
 

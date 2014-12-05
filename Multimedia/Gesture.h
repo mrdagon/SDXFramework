@@ -13,9 +13,11 @@ namespace SDX
 	{
 		friend class Input;
 	private:
+		MONO_STATE(Gesture)
+
 		bool press = false;//!<
-		double xBuffer;//!<
-		double yBuffer;//!<
+		double xBuffer = 0;//!<
+		double yBuffer = 0;//!<
 
 		void Position(double X座標, double Y座標)
 		{
@@ -43,22 +45,24 @@ namespace SDX
 			}
 		}
 	public:
-		bool on = false;//!<
+		bool on = false;//!< 何らかのジェスチャーが発生した時にtrue
 
-		double rotate = 0;//!<回転ジェスチャー
-		double pinche = 0;//!<ピンチ操作
+		double rotate = 0;//!< 回転ジェスチャー
+		double pinche = 0;//!< ピンチ操作
 
-		double x = 0;//!<ジェスチャー操作の中心点
-		double y = 0;//!<
+		double x = 0;//!< ジェスチャー操作の中心点
+		double y = 0;//!< ジェスチャー操作の中心点
 
-		int fingerCount = 0;//!<ジェスチャーに使った指の本数
+		int fingerCount = 0;//!< ジェスチャーに使った指の本数
 
+		/** 状態の更新.*/
 		void Update()
 		{
 			on = press;
 			press = false;
 		}
 
+		/** 状態をリセット.*/
 		void Reset()
 		{
 			press = false;

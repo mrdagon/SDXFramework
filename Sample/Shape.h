@@ -37,11 +37,11 @@ bool SampleShape()
 		{
 			if (isHit[a])
 			{
-				shapes[a]->Draw(Color::Red, 255);
+				shapes[a]->Draw(Color::Red);
 			}
 			else
 			{
-				shapes[a]->Draw(Color::White, 255);
+				shapes[a]->Draw(Color::White);
 			}
 		}
 

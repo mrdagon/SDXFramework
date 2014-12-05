@@ -5,16 +5,14 @@
 
 namespace SDX
 {
-	/** 速度変化のポリシー.*/
+	/** 変化する数値のポリシー.*/
 	namespace SPEED
 	{
-		/** 変化する数値を表す抽象クラス.*/
+		/** 速度のインターフェース.*/
 		/// \include Speed.h
 		class ISpeed
 		{
 		public:
-			ISpeed(){};
-
 			virtual ~ISpeed(){};
 
 			/** 現在の速度を取得.*/

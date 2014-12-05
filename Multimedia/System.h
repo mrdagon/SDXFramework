@@ -16,10 +16,7 @@ namespace SDX
 		friend class Window;
 
 	private:
-		System() = default;
-		~System() = default;
-		void operator =(const System& src){}
-		System(const System& src){}
+		MONO_STATE(System)
 
 		/** シングルトンなインスタンスを取得.*/
 		static bool& IsEnd()

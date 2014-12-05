@@ -16,10 +16,7 @@ namespace SDX
 	class Screen
 	{
 	private:
-		Screen() = default;
-		~Screen() = default;
-		void operator =(const Screen& src){}
-		Screen(const Screen& src){}
+		MONO_STATE(Screen)
 
 		static Renderer *activeRenderer;//!<アクティブなRenderer
 	public:

@@ -13,13 +13,15 @@ namespace SDX
 		class Liner : public ISpeed
 		{
 		private:
-			double speed;
+			double speed;//速度
 		public:
+
+			/** 速度を指定する.*/
 			Liner(double 速度) :
 				speed(速度)
 			{}
 
-			double Get() const  override
+			double Get() const override
 			{
 				return speed;
 			}
@@ -35,9 +37,11 @@ namespace SDX
 		class Accel : public ISpeed
 		{
 		private:
-			double speed;
-			double accel;//加速度
+			double speed;//!< 現在の速度
+			double accel;//!< 加速度
 		public:
+
+			/** 初速と加速度を指定.*/
 			Accel(double 初速, double 加速度) :
 				speed(初速),
 				accel(加速度)
@@ -64,6 +68,8 @@ namespace SDX
 			double 角度;
 			double 角速度;
 		public:
+
+			/** 速度を大きくすると最大値が変化し、角速度により周期が変化する.*/
 			Wave(double 速度, double 角速度, double 初角 = 0) :
 				speed(速度),
 				角速度(角速度),
@@ -91,6 +97,8 @@ namespace SDX
 			double 加速度;
 			double 限界速度;
 		public:
+
+			/** 初期状態を設定.*/
 			AccelLimit(double 初速, double 加速度, double 限界速度) :
 				speed(初速),
 				加速度(加速度),

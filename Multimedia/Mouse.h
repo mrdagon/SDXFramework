@@ -31,36 +31,31 @@ namespace SDX
 	{
 		friend class Input;
 	private:
+		MONO_STATE(Mouse)
+
 		int xBuffer;//!<
 		int yBuffer;//!<
 
 		EnumArray<bool, MouseCode> press;
-
-		Mouse(const Mouse &mouse){};
-		Mouse operator =(const Mouse &mouse) = delete;
 	public:
-		Mouse()
-		{
-			Reset();
-		}
 
-		int x;//!<
-		int y;//!<
+		int x = 0;//!< 現在座標
+		int y = 0;//!< 現在座標
 
-		int moveX;//!<
-		int moveY;//!<
+		int moveX = 0;//!< 直前の座標からの移動量
+		int moveY = 0;//!< 直前の座標からの移動量
 
-		int Whell;//!<
+		int Whell = 0;//!< マウスの回転量
 
-		Key Left;
-		Key Right;
-		Key Middle;
+		Key Left;//!< 左クリック
+		Key Right;//!< 右クリック
+		Key Middle;//!< マウスホイールクリック
 
-		Key Button4;
-		Key Button5;
-		Key Button6;
-		Key Button7;
-		Key Button8;
+		Key Button4;//!< 4ボタン
+		Key Button5;//!< 5ボタン
+		Key Button6;//!< 6ボタン
+		Key Button7;//!< 7ボタン
+		Key Button8;//!< 8ボタン
 
 		/** 状態のリセット.*/
 		void Reset()

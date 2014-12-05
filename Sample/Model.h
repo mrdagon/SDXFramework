@@ -12,7 +12,6 @@ bool SampleModel()
 
 	Model<Point, SpImage> model(Point( 300, 200 ), SpImage(&image));
 	Model<Point, SpImage> model2(Point(550, 350), SpImage(&image));
-	model2.SetIsCamera(false);
 
 	while (System::Update())
 	{

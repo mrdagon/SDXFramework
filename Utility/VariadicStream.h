@@ -21,7 +21,7 @@ namespace SDX
 	//showpos:正の値なら+を表示
 
 	/**可変数引数な文字列を処理するクラス.*/
-	/** \include Variadic.h */
+	/** \include VariadicStream.h */
 	class VariadicStream
 	{
 	private:
@@ -49,9 +49,12 @@ namespace SDX
 		}
 
 	public:
-		std::vector<std::string> StringS;
+		/** 一行ずつの文字列.*/
+		std::vector<std::string> StringS; 
 
 		template < typename ... TStream>
+		/** コンストラクタ.*/
+		/** 書式指定にはiomanipを使う*/
 		VariadicStream(TStream... 文字列ストリーム)
 		{
 			std::string 分割する文字列 = Change(文字列ストリーム...);

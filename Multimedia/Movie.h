@@ -13,51 +13,18 @@ namespace SDX
 	class Movie
 	{
 	private:
-		std::string fileName;//!<
-	public:
+		Movie(const Movie &movie);
+		Movie& operator =(const Movie &movie);
 
-		/** 動画ファイルの登録.*/
-		Movie(const char *ファイル名)
-		{
-			this->fileName = ファイル名;
-		}
-
-		/** 動画ファイルの登録.*/
-		/** メモリには読み込まれない。*/
-		bool Load(const char *ファイル名)
-		{
-			this->fileName = ファイル名;
-			return true;
-		}
-
-		/** 動画を再生.*/
-		/** 拡大は整数倍のみ\n
-			途中キャンセルフラグがtrueの場合、再生中に入力すると途中で再生を中断する*/
-		void Play(int 拡大率, bool 途中キャンセルフラグ)
-		{
-		}
-	};
-
-	/** Imageクラスの動画版[未実装].*/ 
-	/** \include*/
-	/** @todo 全く実装していない.*/
-	class MovieImage
-	{
-	private:
-		MovieImage(const MovieImage &movie);
-		MovieImage& operator =(const MovieImage &movie);
-
-		int handle;//!<
-		bool isTrans;//!<
+		int handle = 0;//!<
+		bool isTrans = false;//!<
 		int width;//!<
 		int height;//!<
 	public:
-		MovieImage() :
-			isTrans(false)
-		{}
+		Movie(){}
 
 		/** ファイルの読込.*/
-		MovieImage(const char *ファイル名)
+		Movie(const char *ファイル名)
 		{
 			Load(ファイル名);
 		}
