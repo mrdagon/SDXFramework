@@ -397,7 +397,7 @@ namespace SDX
 		{
 			if (Loading::isLoading)
 			{
-				Loading::AddLoading([=]{ SetImageS(文字列, 対応画像); });
+				Loading::AddLoading([=]{ SetImageS(文字列, 対応画像,登録数); });
 				return;
 			}
 

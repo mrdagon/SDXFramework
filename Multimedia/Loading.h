@@ -32,12 +32,7 @@ namespace SDX
 
 		static std::vector<std::function<void(void)>> funcS;
 
-		static void AddLoading(std::function<void(void)> &&読み込み関数)
-		{
-			std::lock_guard<std::mutex> lock(mtx);
-			funcS.push_back(読み込み関数);
-			++loadingCount;
-		}
+
 	public:
 
 		/** 非同期読み込みするResorceを登録開始.*/
@@ -78,6 +73,20 @@ namespace SDX
 		{
 			std::lock_guard<std::mutex> lock(mtx);
 			return succesCount;
+		}
+
+		/** 非同期読み込み登録中かどうか.*/
+		static bool IsLoading()
+		{
+			return isLoading;
+		}
+
+		/** 非同期読み込み処理に追加.*/
+		static void AddLoading(std::function<void(void)> &&読み込み関数)
+		{
+			std::lock_guard<std::mutex> lock(mtx);
+			funcS.push_back(読み込み関数);
+			++loadingCount;
 		}
 	};
 }

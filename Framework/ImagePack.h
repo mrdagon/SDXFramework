@@ -135,6 +135,12 @@ namespace SDX
 		/** 分割読み込み時*/
 		void AdjustWidth(std::vector<int> 幅)
 		{
+			if (Loading::isLoading)
+			{
+				Loading::AddLoading([=]{  AdjustWidth(幅); });
+				return;
+			}
+
 			for (unsigned int a = 0; a < 幅.size();++a)
 			{ 
 				imageS[a]->part.w -= 幅[a];

@@ -4,6 +4,8 @@
 #pragma once
 
 #include <Framework/IShape.h>
+#include <SDL.h>
+
 namespace SDX
 {
 	class Complex;
