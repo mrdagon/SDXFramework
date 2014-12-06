@@ -30,8 +30,6 @@ local.properties
 
 #SDL+DXLIB+help
 SDL2/
-DXLib/
-html/
 
 #################
 ## Visual Studio
