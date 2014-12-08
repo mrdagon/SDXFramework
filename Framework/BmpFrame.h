@@ -18,8 +18,13 @@ namespace SDX
 		/** フレーム画像は３×３分割した9マスの物が使える*/
 		bool Make(ImagePack *フレーム画像)
 		{
-			if (フレーム画像->GetSize() != 9) return false;
+			if (Loading::IsLoading())
+			{
+				Loading::AddLoading([=]{ Make(フレーム画像); });
+				return true;
+			}
 
+			if (フレーム画像->GetSize() != 9) return false;
 			frame = フレーム画像;
 
 			return true;
