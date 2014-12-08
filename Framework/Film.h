@@ -39,24 +39,36 @@ namespace SDX
 		Film() = default;
 
 		/** 画像ファイルを分割してメモリへ読み込む.*/
-		Film(const char *ファイル名, int 総コマ数, int コマ割り横, int コマ割り縦, int 再生フレーム数 = 1) :
+		Film(const char *ファイル名, int 総コマ数, int コマ割り横, int コマ割り縦, int １コマの再生時間 = 1) :
 			ImagePack(ファイル名, 総コマ数, コマ割り横, コマ割り縦)
 		{
-			for (unsigned int a = 0; a < times.size(); ++a)
+			for (int a = 0; a < 総コマ数; ++a)
 			{
-				times.push_back(再生フレーム数);
+				times.push_back(１コマの再生時間);
 				nexts.push_back((int)NextFrame::Normal);
 			}
 		}
 
-		/** 画像ファイルを分割してメモリへ読み込む.*/
-		bool Load(const char *ファイル名, int 総コマ数, int コマ割り横, int コマ割り縦, int 再生フレーム数 = 1)
+		/** 連番ファイルを一括して読み込む.*/
+		Film(const char* ファイル名, const char *拡張子, int 総コマ数, int １コマの再生時間 = 1, const char* 書式 = "%03d.")
 		{
+			Load(ファイル名, 拡張子, 総コマ数, １コマの再生時間 ,書式);
+		}
+
+		/** 画像ファイルを分割してメモリへ読み込む.*/
+		bool Load(const char *ファイル名, int 総コマ数, int コマ割り横, int コマ割り縦, int １コマの再生時間 = 1)
+		{
+			if (Loading::IsLoading())
+			{
+				Loading::AddLoading([=]{ Load(ファイル名, 総コマ数, コマ割り横, コマ割り縦, １コマの再生時間); });
+				return true;
+			}
+
 			if (!ImagePack::Load(ファイル名, 総コマ数, コマ割り横, コマ割り縦)) { return false; }
 
 			for (int a = 0; a < 総コマ数; ++a)
 			{
-				times.push_back(再生フレーム数);
+				times.push_back(１コマの再生時間);
 				nexts.push_back((int)NextFrame::Normal);
 			}
 
@@ -64,17 +76,23 @@ namespace SDX
 		}
 
 		/** 連番ファイルを一括して読み込む.*/
-		bool Load(const char* ファイル名, const char *拡張子, int 総コマ数, int 再生フレーム数 = 1)
+		bool Load(const char* ファイル名, const char *拡張子, int 総コマ数, int １コマの再生時間 = 1, const char* 書式 = "%03d.")
 		{
+			if (Loading::IsLoading())
+			{
+				Loading::AddLoading([=]{ Load(ファイル名, 拡張子, 総コマ数, １コマの再生時間 , 書式); });
+				return true;
+			}
+
 			for (int a = 0; a < 総コマ数; ++a)
 			{
 				char fileBuf[8];
-				sprintf_s(fileBuf, 8, "%03d.", a);
+				sprintf_s(fileBuf, 8, 書式, a);
 				std::string fileName = ファイル名;
 				fileName += fileBuf;
 				fileName += 拡張子;
 
-				this->Add(new Image(fileName.c_str()), 再生フレーム数);
+				this->Add(new Image(fileName.c_str()), １コマの再生時間);
 			}
 
 			return true;
@@ -83,6 +101,12 @@ namespace SDX
 		/** 末尾にImageを追加する.*/
 		void Add(Image *追加イメージ, int 再生フレーム数 = 1)
 		{
+			if (Loading::IsLoading())
+			{
+				Loading::AddLoading([=]{ Add(追加イメージ, 再生フレーム数); });
+				return;
+			}
+
 			ImagePack::Add(追加イメージ);
 			times.push_back(再生フレーム数);
 			nexts.push_back((int)NextFrame::Normal);
@@ -90,6 +114,12 @@ namespace SDX
 		/** 末尾にImageを追加する.*/
 		void Add(const char *ファイル名, int 再生フレーム数 = 1)
 		{
+			if (Loading::IsLoading())
+			{
+				Loading::AddLoading([=]{ Add(ファイル名, 再生フレーム数); });
+				return;
+			}
+
 			Add(new Image(ファイル名), 再生フレーム数);
 		}
 
@@ -102,8 +132,14 @@ namespace SDX
 		}
 
 		/** 各コマのフレーム数を設定する.*/
-		void SetFrameTime(int フレーム時間[])
+		void SetFrameTime(const std::vector<int> &フレーム時間)
 		{
+			if (Loading::IsLoading())
+			{
+				Loading::AddLoading([=]{ SetFrameTime(フレーム時間); });
+				return;
+			}
+
 			for (unsigned int a = 0; a < times.size(); ++a)
 			{
 				times[a] = フレーム時間[a];
@@ -114,6 +150,12 @@ namespace SDX
 		/** 初期は全コマNextFrame*/
 		void SetType(FilmType 再生方法)
 		{
+			if (Loading::IsLoading())
+			{
+				Loading::AddLoading([=]{SetType(再生方法); });
+				return;
+			}
+
 			switch (再生方法)
 			{
 			case FilmType::Normal:
@@ -133,6 +175,12 @@ namespace SDX
 		/** 初期は全コマNextFrame*/
 		void SetType(int コマ番号, int 次フレーム)
 		{
+			if (Loading::IsLoading())
+			{
+				Loading::AddLoading([=]{nexts[コマ番号] = 次フレーム; });
+				return;
+			}
+
 			nexts[コマ番号] = 次フレーム;
 		}
 
@@ -140,6 +188,12 @@ namespace SDX
 		/** 初期は全コマNextFrame*/
 		void SetType(int コマ番号, NextFrame 次フレーム)
 		{
+			if (Loading::IsLoading())
+			{
+				Loading::AddLoading([=]{ nexts[コマ番号] = (int)次フレーム; });
+				return;
+			}
+
 			nexts[コマ番号] = (int)次フレーム;
 		}
 

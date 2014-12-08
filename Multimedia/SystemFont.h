@@ -20,11 +20,11 @@ namespace SDX
 		static const char* メイリオ = "C:/Windows/Fonts/meiryo.ttc";
 		static const char* Meiryo_UI = "C:/Windows/Fonts/meiryo.ttc";
 		//win8.1以降
-		//static const char* 游ゴシック        = "C:/Windows/Fonts/";
-		//static const char* 游ゴシック_Light  = "C:/Windows/Fonts/";
-		//static const char* 游ゴシック_Bold   = "C:/Windows/Fonts/";
-		//static const char* 游明朝            = "C:/Windows/Fonts/";
-		//static const char* 游明朝_Demibold   = "C:/Windows/Fonts/";
+		//static const char* 游ゴシック			= "C:/Windows/Fonts/";
+		//static const char* 游ゴシック_Light	= "C:/Windows/Fonts/";
+		//static const char* 游ゴシック_Bold	= "C:/Windows/Fonts/";
+		//static const char* 游明朝				= "C:/Windows/Fonts/";
+		//static const char* 游明朝_Demibold	= "C:/Windows/Fonts/";
 
 #elif defined(__MACOSX__)
 		const char* Gothic = "/System/Library/Fonts/ヒラギノ角ゴ ProN W3.otf";///< 各OS標準の日本語フォント

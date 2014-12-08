@@ -85,7 +85,8 @@ namespace SDX
 			buf += " = ";
 
 			auto diff = std::chrono::system_clock::now() - Single().watch;
-			Drawing::String(座標, Color(255, 255, 255), { buf, (double)std::chrono::duration_cast<std::chrono::microseconds>(diff).count() / 1000 });
+			double count = std::chrono::duration_cast<std::chrono::milliseconds>(diff).count();
+			Drawing::String(座標, Color(255, 255, 255), { buf, count });
 			Single().watch = std::chrono::system_clock::now();
 		}
 	};

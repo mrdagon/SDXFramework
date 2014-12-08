@@ -10,7 +10,7 @@ bool SampleFile()
 	File fileA("test.txt", FileMode::Write, true);
 	int a = 100;
 	char c = 123;
-	std::string    str = "こんにちは";
+	std::string str = "こんにちは";
 	fileA.Write(a);
 	fileA.Write(c);
 	fileA.Write(str);
@@ -24,7 +24,7 @@ bool SampleFile()
 	fileB.Read(str2);
 	fileA.Close();
 
-	System::Initialise("sample", 600, 400);
+	System::Initialise("sample", 640, 480);
 
 	while (System::Update())
 	{

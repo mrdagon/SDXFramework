@@ -168,20 +168,5 @@ namespace SDX
 		{
 			while (!Keyboard::HoldAnyKey() && System::ProcessMessage()){}
 		}
-
-		/** スクリーンセーバーの動作制限のON/OFF.*/
-		/** 初期状態ではスクリーンセーバーは動作しない*/
-		static bool SetScreenSaver(bool スクリーンセーバー有効フラグ)
-		{
-			if (スクリーンセーバー有効フラグ)
-			{
-				SDL_EnableScreenSaver();
-			}
-			else
-			{
-				SDL_DisableScreenSaver();
-			}
-
-		}
 	};
 }

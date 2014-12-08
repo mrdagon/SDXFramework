@@ -315,14 +315,14 @@ public:
 					Screen::SetDrawMode();
 					Screen::SetTarget(&image);
 					Drawing::Rect({ 0, 0, 256, 256 }, Color::White, true);
-					Screen::GetRenderer()->target = prev;
+					Screen::SetTarget(prev);
 					Screen::SetDrawMode(col,mode);
 					Camera::Set(cam);
 				}
 
-				double rateX = std::sqrt((終点.x - 始点.x)*(終点.x - 始点.x) + (終点.y - 始点.y) + (終点.y - 始点.y));//太さ
+				double rateX = std::sqrt((終点.x - 始点.x)*(終点.x - 始点.x) + (終点.y - 始点.y) * (終点.y - 始点.y));//太さ
 				double rateY = 太さ;//長さ
-				double angle = std::atan2( 終点.x - 始点.x , 終点.y - 始点.y);
+				double angle = std::atan2( 終点.y - 始点.y , 終点.x - 始点.x);
 
 				image.SetColor(色);
 				image.DrawRotateAxis({ (始点.x + 終点.x)/2, (始点.y + 終点.y)/2 }, { 128, 128 }, rateX/256, rateY/256, angle);

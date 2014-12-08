@@ -6,7 +6,7 @@
 bool SampleCamera()
 {
 	using namespace SDX;
-	System::Initialise("sample", 600, 400);
+	System::Initialise("sample", 640, 480);
 
 	System::End();
 	return true;

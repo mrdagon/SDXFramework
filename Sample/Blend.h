@@ -8,7 +8,7 @@ bool SampleBlend()
 	/*
 	//サンプルコード作成途中です。
 	using namespace SDX;
-	System::Initialise("sample", 600, 400);
+	System::Initialise("sample", 640, 480);
 
 	Image imageA("image.bmp");
 	Image imageB("image.bmp");

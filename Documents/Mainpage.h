@@ -16,7 +16,7 @@
 @ref ReleaseNote\n
 @ref todo "未実装関数とクラス一覧"\n
 \n
-@section    外部リンク
+@section 外部リンク
 <B>SDX開発コミュニティ</B>\n
 <a href="https://sourceforge.jp/projects/dxframework/" target="_blank"><B>SorceForge</B></a>\n
 <B>使用しているライブラリ</B>\n

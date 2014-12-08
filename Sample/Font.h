@@ -2,26 +2,41 @@
 //[License]GNU Affero General Public License, version 3
 //[Contact]http://sourceforge.jp/projects/dxframework/
 
-//フォントを使って文字列を描画する
+//フォントを作成して文字列を描画する
 bool SampleFont()
 {
 	using namespace SDX;
-	System::Initialise("sample", 600, 400);
+	System::Initialise("sample", 640, 480);
 
-	Font fontA(SystemFont::Gothic, 20, 4, false);
+	//フォントの初期化
+	Font fontA(SystemFont::Gothic, 9, 4,false);
 	Font fontB(SystemFont::Mincho, 20, 4, true);
 
+	//BMPフォントの登録
+	ImagePack bmpNumber("data/number.png",10,10,1);
+	ImagePack bmpFont("data/font.png", 30, 10, 3);
+
+	fontA.SetImageS("0", &bmpNumber,10);
+	fontA.SetImageS("a", &bmpFont, 26);
+	fontA.SetImageS("A", &bmpFont, 26);
+	fontA.SetImage("×", bmpFont[26]);
+	fontA.SetImage("□", bmpFont[27]);
+	fontA.SetImage("○", bmpFont[28]);
+	fontA.SetImage("☆", bmpFont[29]);
+
 	double angle = 0;
+
+	Screen::SetBackColor(Color::Silver);
 
 	while (System::Update())
 	{
 		angle += 0.02;
 
-		fontA.Draw({ 10 * angle, 10 }, Color::White, "Hello!\nこんにちは\n今日は");
-		fontB.Draw({ 10 * angle, 200 }, Color::Blue, "Hello!\nこんにちは\n今日は");
+		fontA.Draw({ 10 , 10 }, Color::White, "Hello○\nこん☆にちは\n今日は1234");
+		fontB.Draw({ 10 , 200 }, Color::Blue, "Hello○\nこん☆にちは\n今日は1234");
 
-		fontA.DrawRotate({ 300, 200 }, 1, angle, Color::White, false, "文字の回転\nてすとしますよ~~~");
-		fontB.DrawRotate({ 300, 200 }, 1, angle / 2, Color::White, false, "文字の回転\nてすとしますよ~~~");
+		fontA.DrawRotate({ 300, 100 }, 1, angle, Color::White, false, "文字の回転□\nてすと1234×");
+		fontB.DrawRotate({ 300, 200 }, 1, angle, Color::White, false, "文字の回転□\nてすと1234×");
 
 		if (Input::key.Return.on){ break;}//Enterで終了
 	}

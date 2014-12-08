@@ -42,7 +42,7 @@ namespace SDX
 	public:
 		Point position;//!< 中心の位置
 		Point forcus;//!< Screen上の座標positonがWindow上のforcusに来るように補正をかける
-		double zoom;//!< 拡大率、マイナスになると上下左右反転
+		double zoom;//!< 拡大率、マイナスになると描画が狂う
 
 		/** カメラの作成.*/
 		/** 初期座標と拡大率を指定してカメラを初期化*/

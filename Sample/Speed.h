@@ -8,7 +8,7 @@
 bool SampleSpeed()
 {
 	using namespace SDX;
-	System::Initialise("sample", 600, 400);
+	System::Initialise("sample", 640, 480);
 
 	//位置と形を持った型
 	std::vector<std::shared_ptr<IShape>> shapes;

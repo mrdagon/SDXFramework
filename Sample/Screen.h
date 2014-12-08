@@ -8,9 +8,11 @@
 bool SampleScreen()
 {
 	using namespace SDX;
-	System::Initialise("sample", 600, 400);
+	System::Initialise("sample", 640, 480);
+	
+	Image image("data/pipo-enemy035.png");
 
-	Image image("image.bmp");
+	Screen::SetBackColor(Color::White);
 
 	while (System::Update())
 	{
@@ -18,15 +20,19 @@ bool SampleScreen()
 		Screen::SetBright(Color::Red);
 		image.Draw({ 0, 0 });
 		Screen::SetBright(Color::Green);
-		image.Draw({ 200, 0 });
+		image.Draw({ 100, 0 });
 		Screen::SetBright(Color::Blue);
-		image.Draw({ 400, 0 });
+		image.Draw({ 200, 0 });
 
 		//半透明描画
-		Screen::SetBright(Color::White);
-		Screen::SetBlendMode(BlendMode::Alpha, 128);
-		image.Draw({ 0, 200 });
-		Screen::SetBlendMode(BlendMode::NoBlend, 0);
+		Screen::SetDrawMode({ 255, 255, 255, 128 }, BlendMode::Alpha);
+		image.Draw({ 300, 0 });
+		Screen::SetDrawMode();//引数無しで解除
+
+		//描画範囲制御
+		Screen::SetClip({ 0, 100 , 60, 120 });
+		image.Draw({ 0, 100 });
+		Screen::SetClip();//引数無しで解除
 
 		if (Input::key.Return.on){ break;}//Enterで終了
 	}

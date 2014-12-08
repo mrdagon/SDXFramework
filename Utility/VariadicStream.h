@@ -21,7 +21,7 @@ namespace SDX
 	//showpos:正の値なら+を表示
 
 	/**可変数引数な文字列を処理するクラス.*/
-	/** \include VariadicStream.h */
+	/** \include Font.h */
 	class VariadicStream
 	{
 	private:

@@ -163,32 +163,29 @@ namespace SDX
 		}
 		bool Hit(const Line *line) const override
 		{
-			if (
-				!(
-				line->GetMaxX() + line->GetThickHarf() < this->GetLeft() ||
-				line->GetMinX() - line->GetThickHarf() > this->GetTop() ||
-				line->GetMaxY() + line->GetThickHarf() < this->GetRight() ||
-				line->GetMinY() - line->GetThickHarf() > this->GetBottom()
-				)
+			//完全に外部にある
+			if (				
+					line->GetMaxX() + line->GetThickHarf() < this->GetLeft()  ||
+					line->GetMinX() - line->GetThickHarf() > this->GetRight() ||
+					line->GetMaxY() + line->GetThickHarf() < this->GetTop()   ||
+					line->GetMinY() - line->GetThickHarf() > this->GetBottom()	
 				)
 			{
 				return false;
 			}
 
+			//四角形の対角線との交差チェック
 			//√２/2≒0.7
-			if (LineLine(line->GetXA(), line->GetYA(), line->GetXB(), line->GetYB()
-				, this->GetLeft() - int(line->GetThickHarf() * 0.7), this->GetTop() - int(line->GetThickHarf() * 0.7), this->GetRight() + int(line->GetThickHarf() * 0.7), this->GetBottom() + int(line->GetThickHarf() * 0.7)))
+			if (LineLine(line->GetXA(), line->GetYA(), line->GetXB(), line->GetYB() , this->GetLeft() - int(line->GetThickHarf() * 0.7), this->GetTop() - int(line->GetThickHarf() * 0.7), this->GetRight() + int(line->GetThickHarf() * 0.7), this->GetBottom() + int(line->GetThickHarf() * 0.7)))
+			{
+				return true;
+			}
+			if (LineLine(line->GetXA(), line->GetYA(), line->GetXB(), line->GetYB()	, this->GetRight() + int(line->GetThickHarf() * 0.7), this->GetTop() - int(line->GetThickHarf() * 0.7), this->GetLeft() - int(line->GetThickHarf() * 0.7), this->GetBottom() + int(line->GetThickHarf() * 0.7)))
 			{
 				return true;
 			}
 
-			if (LineLine(line->GetXA(), line->GetYA(), line->GetXB(), line->GetYB()
-				, this->GetRight() + int(line->GetThickHarf() * 0.7), this->GetTop() - int(line->GetThickHarf() * 0.7), this->GetLeft() - int(line->GetThickHarf() * 0.7), this->GetBottom() + int(line->GetThickHarf() * 0.7)))
-			{
-				return true;
-			}
-
-			//端の丸い所以外判定
+			//端が四角内にあるか判定
 			if (
 				line->GetXA() + line->GetThickHarf() > this->GetLeft() && line->GetXA() - line->GetThickHarf() < this->GetRight() &&
 				line->GetYA() + line->GetThickHarf() > this->GetTop() && line->GetYA() - line->GetThickHarf() < this->GetBottom()
@@ -221,6 +218,8 @@ namespace SDX
 				}
 			}
 
+
+			//端が四角内にあるか判定
 			if (
 				line->GetXB() + line->GetThickHarf() > this->GetLeft() && line->GetXB() - line->GetThickHarf() < this->GetRight() &&
 				line->GetYB() + line->GetThickHarf() > this->GetTop() && line->GetYB() - line->GetThickHarf() < this->GetBottom()

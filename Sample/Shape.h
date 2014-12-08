@@ -8,12 +8,12 @@
 bool SampleShape()
 {
 	using namespace SDX;
-	System::Initialise("sample", 600, 400);
+	System::Initialise("sample", 640, 480);
 
 	//図形を宣言する
 	Circle circle(10, 10, 100);
 	Rect rect(60, 60, 100, 100);
-	Line line(200, 100, PAI / 4, 300, 5);
+	Line line(200, 100, PAI / 4, 600, 5);
 
 	//共通のインターフェースを持っている
 	IShape* shapes[3];
@@ -24,24 +24,33 @@ bool SampleShape()
 	while (System::Update())
 	{
 		circle.SetPos(Input::mouse.x, Input::mouse.y);
+
 		//Lineは回転可能
 		line.Rotate(0.01);
 
 		//ダブルディスパッチによる当たり判定
-		bool isHit[3];
-		isHit[0] = circle.Hit(&rect) || circle.Hit(&line);
-		isHit[1] = shapes[1]->Hit(shapes[0]) || shapes[1]->Hit(shapes[2]);
-		isHit[2] = shapes[2]->Hit(shapes[0]) || shapes[2]->Hit(shapes[1]);
-
 		for (int a = 0; a < 3; ++a)
 		{
-			if (isHit[a])
+			int hit = 0;
+
+			for (int b = 0; b < 3; ++b)
+			{
+				if (a == b){ continue; }
+					
+				hit += shapes[a]->Hit(shapes[b]);
+			}
+
+			if ( hit == 0)
+			{
+				shapes[a]->Draw(Color::White);
+			}
+			else if (hit == 1)
 			{
 				shapes[a]->Draw(Color::Red);
 			}
 			else
 			{
-				shapes[a]->Draw(Color::White);
+				shapes[a]->Draw(Color::Blue);
 			}
 		}
 

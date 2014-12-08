@@ -207,6 +207,12 @@ namespace SDX
 				temp = Camera::Get()->TransRect(temp);
 			}
 
+			//サイズがマイナスなら描画しない
+			if (temp.w < 0 || temp.h < 0)
+			{
+				return false;
+			}
+
 			RGBACulculate();
 			if (反転フラグ)
 			{
@@ -267,6 +273,27 @@ namespace SDX
 			if (Camera::Get())
 			{
 				temp = Camera::Get()->TransRect(temp);
+			}
+
+			RGBACulculate();
+			return !SDL_RenderCopyEx(Screen::GetHandle(), handle, &part, &temp, 0, nullptr, SDL_RendererFlip(反転フラグ));
+		}
+
+		/** 指定した一部分を描画.*/
+		bool DrawPartExtend(const Rect &描画先領域, const Rect &描画元領域, bool 反転フラグ = false) const
+		{
+			SDL_Rect temp = { (int)描画先領域.x, (int)描画先領域.y, (int)描画先領域.GetW(), (int)描画先領域.GetH() };
+			SDL_Rect part = { (int)描画元領域.x + this->part.x, (int)描画元領域.y + this->part.y, (int)描画元領域.GetW(), (int)描画元領域.GetH() };
+
+			if (Camera::Get())
+			{
+				temp = Camera::Get()->TransRect(temp);
+			}
+
+			//サイズがマイナスなら描画しない
+			if (temp.w < 0 || temp.h < 0)
+			{
+				return false;
 			}
 
 			RGBACulculate();

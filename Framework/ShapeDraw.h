@@ -25,8 +25,8 @@ namespace SDX
 		Drawing::Line({ xA, yA }, { xB, yB }, 描画色, (int)thick);
 		if (thick > 1)
 		{
-			Drawing::Circle({ xA, yA, thick }, 描画色);
-			Drawing::Circle({ xB, yB, thick }, 描画色);
+			Drawing::Circle({ xA, yA, thick/2 }, 描画色);
+			Drawing::Circle({ xB, yB, thick/2 }, 描画色);
 		}
 	}
 

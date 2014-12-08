@@ -191,7 +191,7 @@ namespace SDX
 
 			this->size = 大きさ;
 			this->enterHeight = 行間 + 大きさ;
-			isBlendRender = true;;
+			isBlendRender = 高品質レンダリングフラグ;
 			handle = TTF_OpenFont(フォント名, 大きさ);
 
 			return true;
@@ -369,25 +369,6 @@ namespace SDX
 
 			if (!GetUTFSize(*it, charSize)){ return; }
 			SetHash(文字.substr(std::distance(文字.begin(), it), charSize).c_str(), charSize, 対応画像);
-		}
-
-		/** 指定した文字に対応するImageをまとめて設定.*/
-		void SetImageS(const std::string &文字列, ImagePack *対応画像)
-		{
-			if (Loading::isLoading)
-			{
-				Loading::AddLoading([=]{ SetImageS(文字列, 対応画像); });
-				return;
-			}
-
-			int charSize;
-			int a = 0;
-			for (auto it = 文字列.begin(); it != 文字列.end(); it += charSize)
-			{
-				if (!GetUTFSize(*it, charSize)){ continue; }
-
-				SetHash(文字列.substr(std::distance(文字列.begin(), it), charSize).c_str(), charSize , 対応画像[0][a]);
-			}
 		}
 
 		/** 指定した文字から連続してに対応するImageをまとめて設定.*/

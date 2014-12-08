@@ -8,13 +8,12 @@
 bool SampleTime()
 {
 	using namespace SDX;
-	System::Initialise("sample", 600, 400);
+	System::Initialise("sample", 640, 480);
 
 	Time::ResetFPS();
 	Time::ResetCount();
 
 	int count = 0;
-
 
 	while (System::Update())
 	{
@@ -24,24 +23,23 @@ bool SampleTime()
 
 		tm date;
 		Time::GetDate(&date);
-
-		//Drawing::String({ 10, 100 }, Color::White, { date.tm_year + 1900, "年    ", date.tm_mon + 1, "月    ", date.tm_mday, "日" });
+		Drawing::String({ 10, 100 }, Color::White, { date.tm_year + 1900, "年 ", date.tm_mon + 1, "月 ", date.tm_mday, "日" });
 
 		Time::StartWatch();//処理時間の計測開始
 
-		for (int a = 0; a < 100; ++a)
+		for (int a = 0; a < 1000; ++a)
 		{
-			Drawing::Circle({ 100, 100, 20 }, Color::White);
+			Drawing::Circle({ 200, 100, 20 }, Color::White);
 		}
 
-		Time::DrawWatch({ 10, 220 }, "処理時間:");//StartWatchかDrawWatchを呼んでからかかった時間をミリ秒で表示
+		Time::DrawWatch({ 10, 220 }, "○描画1000回の処理時間:");
 
-		for (int a = 0; a < 100; ++a)
+		for (int a = 0; a < 1000; ++a)
 		{
-			Drawing::Circle({ 110, 110, 20 }, Color::White,5);
+			Drawing::Rect({ 210, 110, 40 ,40}, Color::White,true);
 		}
 
-		Time::DrawWatch({ 10, 240 }, "処理時間:");//StartWatchかDrawWatchを呼んでからかかった時間をミリ秒で表示
+		Time::DrawWatch({ 10, 240 }, "□描画1000回の処理時間:");
 
 
 		if (Input::key.Return.on){ break;}//Enterで終了

@@ -16,8 +16,8 @@ bool SampleColor()
 		//緑の四角を描画、省略してみる
 		Drawing::Rect({ 10, 100, 200, 200 }, { 0, 255, 0 }, true);
 
-		//青い●を描画、塗りつぶし有り
-		Drawing::Circle({ 110, 300, 50 }, Color::Blue);
+		//半透明の青い●を描画、塗りつぶし有り
+		Drawing::Circle({ 110, 300, 50 }, {0,0,255,128});
 
 		if (Input::key.Return.on){ break;}//Enterで終了
 	}

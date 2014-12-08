@@ -6,7 +6,7 @@
 bool SampleDrawing()
 {
 	using namespace SDX;
-	System::Initialise("sample", 600, 400);
+	System::Initialise("sample", 640, 480);
 	Camera cam({ 300, 200 }, 1);
 
 	Camera::Set(&cam);

@@ -32,7 +32,6 @@ namespace SDX
 
 		static std::vector<std::function<void(void)>> funcS;
 
-
 	public:
 
 		/** 非同期読み込みするResorceを登録開始.*/

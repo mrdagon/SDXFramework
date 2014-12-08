@@ -15,7 +15,7 @@ namespace SDX
 		ImagePack *frame = nullptr;//!<
 	public:
 		/** フレームを作成する.*/
-		/** ３×３分割したImagePackを元にフレームを作成*/
+		/** フレーム画像は３×３分割した9マスの物が使える*/
 		bool Make(ImagePack *フレーム画像)
 		{
 			if (フレーム画像->GetSize() != 9) return false;
@@ -27,36 +27,131 @@ namespace SDX
 
 		/** 矩形のフレームを描画.*/
 		/** 右上座標を指定してフレームを描画する*/
-		/** @todo Camera対応が途中、隙間が出来るかも*/
 		void Draw(const Rect &領域) const
 		{
 			if (frame == nullptr){ return; }
 
-			const int fWidth = frame->GetWidth();
-			const int fHeight = frame->GetHeight();
+			auto camera = Camera::Get();
 
-			const double X座標 = 領域.GetLeft();
-			const double Y座標 = 領域.GetTop();
-			const double xA = X座標 + fWidth;
-			const double xB = X座標 - fWidth + 領域.GetW();
-			const double yA = Y座標 + fHeight;
-			const double yB = Y座標 - fHeight + 領域.GetH();
+			int width = frame->GetWidth();
+			int height = frame->GetHeight();
+			bool isMin = true;//枠が小さいため部分描画が必要フラグ
+			int partW = width;
+			int partH = height;
+			int partLeft = 0;
+			int partTop = 0;
 
-			//内部スキンを描画
-			frame[0][4]->DrawExtend({ fWidth + X座標, fHeight + Y座標 , 領域.GetW() - fWidth + X座標, 領域.GetH() - fHeight + Y座標 });
+			//外枠
+			if (width * 2 > 領域.GetW())
+			{
+				width = (int)領域.GetW() / 2;
+				partW = width;
+				partLeft = frame->GetWidth() - width;
+				isMin = true;
+			}
+			if (height * 2 > 領域.GetH())
+			{
+				height = (int)領域.GetH() / 2;
+				partH = height;
+				partTop = frame->GetHeight() - height;
+				isMin = true;
+			}
 
-			//まず外枠を描画
-			frame[0][3]->DrawExtend({ X座標, yA ,  xA -X座標, yB-yA });
-			frame[0][5]->DrawExtend({ xB, yA , fWidth, yB-yA });
+			if (camera)
+			{
+				Camera::Set();
 
-			frame[0][1]->DrawExtend({ xA, Y座標 ,  xB-xA, yA-Y座標 });
-			frame[0][7]->DrawExtend({ xA, yB ,  xB-xA, fHeight });
+				width = int(width * camera->zoom);
+				height = int(height *camera->zoom);
 
-			//四隅を描画
-			frame[0][0]->Draw({ X座標, Y座標 });
-			frame[0][2]->Draw({ X座標 + 領域.GetW() - fWidth, Y座標 });
-			frame[0][6]->Draw({ X座標, Y座標 + 領域.GetH() - fHeight });
-			frame[0][8]->Draw({ X座標 + 領域.GetW() - fWidth, Y座標 + 領域.GetH() - fHeight });
+				//カメラ補正有り
+				int xA = (int)camera->TransX(領域.GetLeft());
+				int xB = xA + width;
+				int xD = (int)camera->TransX(領域.GetRight());
+				int xC = xD - width;
+
+				int yA = (int)camera->TransY(領域.GetTop());
+				int yB = yA + height;
+				int yD = (int)camera->TransY(領域.GetBottom());
+				int yC = yD - height;
+
+				//内側
+				frame[0][4]->DrawExtend({ xB, yB, xC -xB, yC - yB });
+
+				if (isMin)
+				{
+					frame[0][3]->DrawPartExtend({ xA, yB, width, yC - yB }, { 0, 0, width, height});//左
+					frame[0][5]->DrawPartExtend({ xC, yB, width, yC - yB }, { partLeft, 0, width, height });//右
+
+					frame[0][1]->DrawPartExtend({ xB, yA, xC - xB, height }, { 0, 0, width, height });//上
+					frame[0][7]->DrawPartExtend({ xB, yC, xC - xB, height }, { 0, partTop, width, height });//下
+
+					frame[0][0]->DrawPartExtend({ xA, yA, width, height }, { 0, 0, width, height });//左上
+					frame[0][2]->DrawPartExtend({ xC, yA, width, height }, { partLeft, 0, width, height });//右上
+					frame[0][6]->DrawPartExtend({ xA, yC, width, height }, { 0, partTop, width, height });//左下
+					frame[0][8]->DrawPartExtend({ xC, yC, width, height }, { partLeft, partTop, width, height });//右下
+				}
+				else
+				{
+					frame[0][3]->DrawExtend({ xA, yB, width, yC - yB });//左
+					frame[0][5]->DrawExtend({ xC, yB, width, yC - yB });//右
+
+					frame[0][1]->DrawExtend({ xB, yA, xC - xB, height });//上
+					frame[0][7]->DrawExtend({ xB, yC, xC - xB, height });//下
+
+					frame[0][0]->DrawExtend({ xA, yA, width, height });//左上
+					frame[0][2]->DrawExtend({ xC, yA, width, height });//右上
+					frame[0][6]->DrawExtend({ xA, yC, width, height });//左下
+					frame[0][8]->DrawExtend({ xC, yC, width, height });//右下
+				}
+
+				Camera::Set(camera);
+			}
+			else
+			{
+				//カメラ補正無し
+				int xA = (int)領域.GetLeft();
+				int xB = (int)領域.GetLeft() + width;
+				int xC = (int)領域.GetRight() - width;
+				int yA = (int)領域.GetTop();
+				int yB = (int)領域.GetTop() + height;
+				int yC = (int)領域.GetBottom() - height;
+
+				//内側
+				frame[0][4]->DrawExtend({ xB, yB, 領域.GetW() - width * 2, 領域.GetH() - height * 2 });
+
+				if (isMin)
+				{
+					//外枠
+					frame[0][3]->DrawPartExtend({ xA, yB, width, 領域.GetH() - height * 2 }, { 0, 0, width, height });//左
+					frame[0][5]->DrawPartExtend({ xC, yB, width, 領域.GetH() - height * 2 }, { partLeft, 0, width, height });//右
+
+					frame[0][1]->DrawPartExtend({ xB, yA, 領域.GetW() - width * 2, height }, { 0, 0, width, height });//上
+					frame[0][7]->DrawPartExtend({ xB, yC, 領域.GetW() - width * 2, height }, { 0, partTop, width, height });//下
+
+					frame[0][0]->DrawPartExtend({ xA, yA, width, height }, { 0, 0, width, height });//左上
+					frame[0][2]->DrawPartExtend({ xC, yA, width, height }, { partLeft, 0, width, height });//右上
+					frame[0][6]->DrawPartExtend({ xA, yC, width, height }, { 0, partTop, width, height });//左下
+					frame[0][8]->DrawPartExtend({ xC, yC, width, height }, { partLeft, partTop, width, height });//右下
+				}
+				else
+				{
+					//外枠
+					frame[0][3]->DrawExtend({ xA, yB, width, 領域.GetH() - height * 2 });//左
+					frame[0][5]->DrawExtend({ xC, yB, width, 領域.GetH() - height * 2 });//右
+
+					frame[0][1]->DrawExtend({ xB, yA, 領域.GetW() - width * 2, height });//上
+					frame[0][7]->DrawExtend({ xB, yC, 領域.GetW() - width * 2, height });//下
+
+					frame[0][0]->DrawExtend({ xA, yA, width, height });//左上
+					frame[0][2]->DrawExtend({ xC, yA, width, height });//右上
+					frame[0][6]->DrawExtend({ xA, yC, width, height });//左下
+					frame[0][8]->DrawExtend({ xC, yC, width, height });//右下
+				}
+
+			}
+
+			Camera::Set(camera);
 		}
 	};
 }

@@ -9,7 +9,7 @@ bool SampleTouch()
 {
 	using namespace SDX;
 
-	System::Initialise("sample", 600, 400);//ウィンドウタイトルを指定して、初期化する
+	System::Initialise("sample", 640, 480);//ウィンドウタイトルを指定して、初期化する
 
 	while (System::Update())//ウィンドウの更新や、入力の更新等を行う
 	{

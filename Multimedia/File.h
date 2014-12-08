@@ -78,23 +78,23 @@ namespace SDX
 			switch (読み書きモード)
 			{
 			case FileMode::Read:
-				if (isBinary)    handle = SDL_RWFromFile(fileName.c_str(), "rb");
-				else            handle = SDL_RWFromFile(fileName.c_str(), "r");
+				if (isBinary){ handle = SDL_RWFromFile(fileName.c_str(), "rb"); }
+				else{ handle = SDL_RWFromFile(fileName.c_str(), "r"); }
 
 				canRead = true;
 				canWrite = false;
 				canAdd = false;
 				break;
 			case FileMode::Write:
-				if (isBinary)    handle = SDL_RWFromFile(fileName.c_str(), "wb");
-				else            handle = SDL_RWFromFile(fileName.c_str(), "w");
+				if (isBinary){ handle = SDL_RWFromFile(fileName.c_str(), "wb"); }
+				else{ handle = SDL_RWFromFile(fileName.c_str(), "w"); }
 				canWrite = true;
 				canRead = false;
 				canAdd = false;
 				break;
 			case FileMode::Add:
-				if (isBinary)    handle = SDL_RWFromFile(fileName.c_str(), "ab");
-				else            handle = SDL_RWFromFile(fileName.c_str(), "a");
+				if (isBinary){ handle = SDL_RWFromFile(fileName.c_str(), "ab"); }
+				else{ handle = SDL_RWFromFile(fileName.c_str(), "a"); }
 				canWrite = true;
 				canAdd = true;
 				canRead = false;

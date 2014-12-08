@@ -72,13 +72,6 @@ namespace SDX
 		}
 
 		/** 描画領域を設定する、設定範囲外には描画されない.*/
-		/** Rectの幅を0にすると描画領域が全体になる.*/
-		static bool SetArea(const Rect &描画領域 = { 0, 0, 0, 0 })
-		{
-			return activeRenderer->SetArea(描画領域);
-		}
-
-		/** 非描画領域を設定する、設定範囲内には描画されない.*/
 		/** Rectの幅を0にするとクリップ領域が解除される.*/
 		static bool SetClip(const Rect &非描画領域 = {0,0,0,0})
 		{
@@ -110,10 +103,12 @@ namespace SDX
 		}
 
 		/** 画面全体をBMP形式で保存.*/ 
+		/*
 		static bool SaveBmp(const char *ファイル名)
 		{
 			return activeRenderer->SaveBMP(ファイル名);
 		}
+		*/
 
 	};
 }

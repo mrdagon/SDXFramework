@@ -8,7 +8,7 @@
 bool SampleRand()
 {
 	using namespace SDX;
-	System::Initialise("sample", 600, 400);
+	System::Initialise("sample", 640, 480);
 
 	while (System::Update())
 	{

@@ -6,7 +6,7 @@
 bool SampleLoading()
 {
 	using namespace SDX;
-	System::Initialise("sample", 600, 400);
+	System::Initialise("sample", 640, 480);
 
 	Loading::Start();//非同期読み込み開始
 

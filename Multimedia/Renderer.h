@@ -186,18 +186,17 @@ namespace SDX
 			return target;
 		}
 
-		/** 描画領域を設定する、設定範囲外には描画されない.*/
-		/** 幅を0にすると描画領域の制限を解除する.*/
-		bool SetArea(const Rect &描画領域 = {0,0,0,0})
+		/** 描画領域を設定する、範囲外には描画されない.*/
+		/** 幅を0にするとクリップ領域を解除する.*/
+		bool SetClip(const Rect &描画領域 = {0,0,0,0})
 		{
 			if (handle == nullptr){ return false; }
 
 			if (描画領域.GetW() == 0)
 			{
-				return !SDL_RenderSetViewport(handle, 0);
+				return !SDL_RenderSetClipRect(handle, 0);
 			}
 
-			if (handle == nullptr){ return false; }
 			SDL_Rect rect;
 			if (Camera::Get())
 			{
@@ -206,30 +205,6 @@ namespace SDX
 			else
 			{
 				rect = 描画領域;
-			}
-
-			return !SDL_RenderSetViewport(handle, &rect);
-		}
-
-		/** 非描画領域を設定する、設定範囲内には描画されない.*/
-		/** 幅を0にするとクリップ領域を解除する.*/
-		bool SetClip(const Rect &非描画領域 = {0,0,0,0})
-		{
-			if (handle == nullptr){ return false; }
-
-			if (非描画領域.GetW() == 0)
-			{
-				return !SDL_RenderSetClipRect(handle, 0);
-			}
-
-			SDL_Rect rect;
-			if (Camera::Get())
-			{
-				rect = Camera::Get()->TransRect(非描画領域);
-			}
-			else
-			{
-				rect = 非描画領域;
 			}
 
 			return !SDL_RenderSetClipRect(handle, &rect);
@@ -266,10 +241,12 @@ namespace SDX
 		}
 
 		/** BMP形式で保存.*/
+		/*
 		bool SaveBMP(const char* ファイル名)
 		{
 			if ( handle == nullptr ){ return false; }
 			return !SDL_SaveBMP(surface, ファイル名);
 		}
+		*/
 	};
 }

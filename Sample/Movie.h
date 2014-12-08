@@ -9,7 +9,7 @@ bool SampleMovie()
 {
 	/*
 	using namespace SDX;
-	System::Initialise("sample", 600, 400);
+	System::Initialise("sample", 640, 480);
 
 	//動画をシングルスレッドで再生
 	Movie movie("movie.mp4");
