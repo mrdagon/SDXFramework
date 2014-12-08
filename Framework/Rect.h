@@ -31,6 +31,8 @@ namespace SDX
 		double heightUp;//!< 起点から上側の幅
 		double heightDown;//!< 起点から下側の幅
 
+		Rect() = default;
+
 		/**座標と大きさを指定.*/
 		/**デフォルト引数だと左上座標と大きさを指定*/
 		/**横幅A=横幅B,高さA=高さBとすると中心座標指定になる*/
