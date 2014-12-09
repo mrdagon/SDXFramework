@@ -86,9 +86,9 @@ namespace SDX
 		}
 
 		/** 極座標で移動.*/
-		void MovePolar(double 距離, double 角度)
+		void MoveA(double 距離, double 角度)
 		{
-			iShape.Move(距離 * cos(角度), 距離 * sin(角度));
+			iShape.MoveA(距離 * cos(角度), 距離 * sin(角度));
 		}
 
 		/** 指定座標に移動.*/

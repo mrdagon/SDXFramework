@@ -29,7 +29,6 @@ namespace SDX
 		Music(){};
 		~Music()
 		{
-			Destroy();
 		}
 
 		/** 音声ファイルを登録.*/
@@ -61,7 +60,6 @@ namespace SDX
 		bool Destroy()
 		{
 			if (handle == nullptr){ return false; }
-
 
 			Mix_FreeMusic(handle);
 			return true;

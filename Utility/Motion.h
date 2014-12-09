@@ -29,7 +29,7 @@ namespace SDX
 		*/
 
 
-		template <class TSpeed, class TShape>
+		template <class TSpeed, class TShape = IShape>
 		/**前方に移動.*/
 		/** \include Motion.h */
 		class ToFront : public IMotion<TShape>
@@ -45,13 +45,13 @@ namespace SDX
 
 			bool Update(TShape* 移動対象) override
 			{
-				移動対象->MovePolar(speed.Update(), 移動対象->GetAngle());
+				移動対象->MoveA(speed.Update(), 移動対象->GetAngle());
 
 				return true;
 			}
 		};
 
-		template <class TSpeed, class TShape>
+		template <class TSpeed, class TShape = IShape>
 		/**範囲内で跳ね返る.*/
 		/** \include Motion.h */
 		class Bound : public IMotion<TShape>
@@ -65,7 +65,8 @@ namespace SDX
 			/** 速度と移動範囲、最初の移動方向を指定.*/
 			Bound(const TSpeed &速度, const Rect& 移動範囲, double 進行方向) :
 				speed(速度),
-				移動範囲(移動範囲)
+				移動範囲(移動範囲),
+				進行方向(進行方向)
 			{}
 
 			bool Update(TShape* 移動対象) override
@@ -104,13 +105,13 @@ namespace SDX
 				if (進行方向 < 0) 進行方向 += PAI * 2;
 				if (進行方向 > PAI * 2) 進行方向 -= PAI * 2;
 
-				移動対象->MovePolar(speed.Update(), 進行方向);
+				移動対象->MoveA(speed.Update(), 進行方向);
 
 				return true;
 			}
 		};
 
-		template <class TSpeed, class TShape>
+		template <class TSpeed, class TShape = IShape>
 		/**目標座標に移動.*/
 		/** \include Motion.h */
 		class ToPoint : public IMotion<TShape>
@@ -140,14 +141,14 @@ namespace SDX
 				else
 				{
 					const double angle = atan2(ly, lx);
-					移動対象->MovePolar(nowSpeed, angle);
+					移動対象->MoveA(nowSpeed, angle);
 				}
 
 				return true;
 			}
 		};
 
-		template <class TSpeed, class TShape>
+		template <class TSpeed, class TShape = IShape>
 		/**円周上を移動.*/
 		/** \include Motion.h */
 		class Orbit : public IMotion<TShape>
@@ -155,17 +156,21 @@ namespace SDX
 		private:
 			TSpeed speed;
 			Point 軌道中心;
-			double 角度;
 			double 半径X;
 			double 半径Y;
-
-			Point 前座標;
+			double 角度;
+			double 前移動量X;
+			double 前移動量Y;
 		public:
 
 			/** コンストラクタ.*/
-			Orbit(const TSpeed &速度) :
-				speed(速度),
-				前座標(0, 0)
+			Orbit(const TSpeed &角速度 , double 半径X , double 半径Y , double 初期進行方向 = 0.0) :
+				speed(角速度),
+				半径X(半径X),
+				半径Y(半径Y),
+				角度(初期進行方向 - PAI / 2),
+				前移動量X(cos(初期進行方向 - PAI/2) * 半径X),
+				前移動量Y(sin(初期進行方向 - PAI/2) * 半径Y)
 			{}
 
 			bool Update(TShape* 移動対象) override
@@ -176,23 +181,24 @@ namespace SDX
 				const double nextX = cos(角度) * 半径X;
 				const double nextY = sin(角度) * 半径Y;
 
-				移動対象->Move(nextX - 前座標.GetX(), nextY - 前座標.GetX());
+				移動対象->Move(nextX - 前移動量X, nextY - 前移動量Y);
 
-				前座標.SetPos(nextX, nextY);
+				前移動量X = nextX;
+				前移動量Y = nextY;
 
 				return true;
 			}
 		};
 
-		template <class TShape>
+		template <class TShape = IShape>
 		/**範囲内で振動.*/
 		/** \include Motion.h */
 		class  Vibrate : public IMotion<TShape>
 		{
 		private:
 			double 最大振れ幅;
-			double 前振れ幅X = 0;
-			double 前振れ幅Y = 0;
+			double 移動X = 0;
+			double 移動Y = 0;
 		public:
 
 			/** コンストラクタ.*/
@@ -202,11 +208,12 @@ namespace SDX
 
 			bool Update(TShape* 移動対象) override
 			{
-				//移動対象
-				double 振れ幅 = 最大振れ幅;
-				前振れ幅X = Rand::Get(-振れ幅, 振れ幅) - 前振れ幅X;
-				前振れ幅X = Rand::Get(-振れ幅, 振れ幅) - 前振れ幅X;
-				移動対象->Move(前振れ幅X, 前振れ幅Y);
+				double randX = Rand::Get(-最大振れ幅, 最大振れ幅);
+				double randY = Rand::Get(-最大振れ幅, 最大振れ幅);
+				移動対象->Move(randX-移動X, randY-移動Y);				
+				移動X = randX;
+				移動Y = randY;
+
 				return true;
 			}
 		};

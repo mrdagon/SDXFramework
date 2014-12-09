@@ -10,6 +10,9 @@ bool SampleModel()
 	
 	Image image("image.bmp");
 
+	Image ねずみ("data/pipo-enemy034.png");
+	Image ひよこ("data/pipo-enemy035.png");
+
 	Model<Point, SpImage> model(Point( 300, 200 ), SpImage(&image));
 	Model<Point, SpImage> model2(Point(550, 350), SpImage(&image));
 
@@ -17,6 +20,8 @@ bool SampleModel()
 	{
 		model.Draw();
 		model2.Draw();
+
+		model.Hit(&model2);
 
 
 		if (Input::key.Return.on){ break;}//Enterで終了

@@ -11,7 +11,7 @@ namespace SDX
 	{
 		/**移動方法のインターフェース.*/
 		/**ジェネリックな設計なら継承不要.*/
-		template <class TShape>
+		template <class TShape = IShape>
 		class IMotion
 		{
 		public:

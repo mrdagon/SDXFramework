@@ -8,7 +8,9 @@
 namespace SDX
 {
 	/** リソースの非同期読み込み支援関数.*/
-	/** Image,Font,Sound,Music,Movieで有効*/
+	/** Image,Font,Sound,Music,ImagePack,Filmで有効\n*/
+	/** Loading::End()後は、全リソースの読み込みが終わるまでリソースの読み込み等を行ってはいけない*/
+	/** 特にFont::DrawやDrawing::Fontで新しい文字を出すとたまにエラーが出るので注意が必要*/
 	/** \include Loading.h*/
 	class Loading
 	{

@@ -330,7 +330,7 @@ public:
 		}
 
 		/** 左上の座標と大きさを指定して矩形を描画.*/
-		static void Rect(const Rect &領域, const Color &色, bool 塗りつぶしフラグ)
+		static void Rect(const Rect &領域, const Color &色, bool 塗りつぶしフラグ = true)
 		{
 			SDL_Rect buf = { (int)領域.GetLeft(), (int)領域.GetTop(), (int)領域.GetW(), (int)領域.GetH() };
 
@@ -352,6 +352,7 @@ public:
 
 		/** 中心と半径を指定して円を描画.*/
 		/** 太さに0を指定した場合塗りつぶし.*/
+		/** 太さが1以上の場合処理が重い*/
 		static void Circle(const Circle &円形, const Color& 色, int 太さ = 0)
 		{
 			if (太さ <= 0)
@@ -366,6 +367,7 @@ public:
 
 		/** 中心と外接する四角形の大きさを指定して楕円を描画.*/
 		/** 太さに0を指定した場合塗りつぶし.*/
+		/** 太さが1以上の場合処理が重い*/
 		static void Oval(const Point &中心, int 幅, int 高さ, const Color& 色, int 太さ = 0)
 		{
 			if (太さ <= 0)
@@ -398,6 +400,7 @@ public:
 
 		/** 正三角形を描画.*/
 		/** 太さに0を指定した場合塗りつぶし.*/
+		/** 太さが1以上の場合処理が重い*/
 		static void Triangle(const Point &中心座標,int 辺の長さ , double 角度 , const Color &描画色 , int 太さ = 0)
 		{
 			if (太さ <= 0)

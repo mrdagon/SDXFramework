@@ -15,15 +15,13 @@ namespace SDX
 		int leftPan = 255;//!<
 		int rightPan = 255;//!<
 
+		double volume = 1.0;
 		int angle = 0;
 		int distance = -1;
 	public:
 		Sound(){}
 
-		~Sound()
-		{
-			Release();
-		}
+		~Sound(){}
 
 		/** 音声ファイルをメモリに読み込む.*/
 		Sound(const char *ファイル名, double 音量 = 1.0)
@@ -44,8 +42,11 @@ namespace SDX
 
 			handle = Mix_LoadWAV(ファイル名);
 			if (!handle){ return false; }
+			
+			volume = std::max(音量,0.0);
+			volume = std::min(音量,1.0);
 
-			Mix_VolumeChunk(handle, int(音量 * 128));
+			Mix_VolumeChunk(handle, int(volume * 128));
 			return true;
 		}
 
@@ -70,7 +71,7 @@ namespace SDX
 			//channel = (++channel) % 2;
 			Mix_PlayChannel(0, handle, 0);
 
-			if (distance != -1)
+			if (distance > 0)
 			{
 				Mix_SetPosition(0, angle, distance);
 			}
@@ -85,13 +86,21 @@ namespace SDX
 		/** 音量を0～1.0の範囲で設定.*/
 		bool SetVolume(double 音量)
 		{
+			volume = std::max(音量, 0.0);
+			volume = std::min(音量, 1.0);
 			Mix_VolumeChunk(handle, int(音量 * 128));
 			return true;
 		}
 
+		/** 音量を取得.*/
+		double GetVolume()
+		{
+			return volume;
+		}
+
 		/** 音声パンを設定.*/
 		/** スピーカー左右の音量を変える、0.0～1.0*/
-		void SetPanning(double 左パン, double 右パン)
+		void SetPanning(double 左パン = 1.0, double 右パン = 1.0)
 		{
 			leftPan = std::min(int(左パン*255),255);
 			rightPan = std::min(int(右パン*255),255);
@@ -99,9 +108,9 @@ namespace SDX
 
 		/** 3D音声再生効果を付ける.*/
 		/** 距離は[近]0～1.0[遠]、角度は[正面]0[左]-PAI/2[右]PAI/2で指定*/
-		/** 距離を-1以下にすると無効になる*/
+		/** 距離を0以下にすると無効になる*/
 		/** SetPanよりこっちが優先される*/
-		void Set3DEffect(double 距離, double 角度 = 0)
+		void Set3DEffect(double 距離 = -1, double 角度 = 0)
 		{
 			distance = std::min((int)距離*255,255);
 			angle = int(角度 * 180 / PAI);//℃に変換

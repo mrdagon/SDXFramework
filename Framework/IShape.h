@@ -137,6 +137,12 @@ namespace SDX
 		/** 回転する.*/
 		virtual void Rotate(double 回転する角度) = 0;
 
+		/** 角度を取得する.*/
+		virtual double GetAngle() const
+		{
+			return 0;
+		}
+
 		/** 角度を指定する.*/
 		virtual void SetAngle(double 指定角度) = 0;
 

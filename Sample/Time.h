@@ -27,19 +27,19 @@ bool SampleTime()
 
 		Time::StartWatch();//処理時間の計測開始
 
-		for (int a = 0; a < 1000; ++a)
+		for (int a = 0; a < 100; ++a)
 		{
-			Drawing::Circle({ 200, 100, 20 }, Color::White);
+			Drawing::Circle({ 200, 100, 20 }, Color::White , 5);
 		}
 
-		Time::DrawWatch({ 10, 220 }, "○描画1000回の処理時間:");
+		Time::DrawWatch({ 10, 220 }, "○描画100回の処理時間:");
 
-		for (int a = 0; a < 1000; ++a)
+		for (int a = 0; a < 100; ++a)
 		{
 			Drawing::Rect({ 210, 110, 40 ,40}, Color::White,true);
 		}
 
-		Time::DrawWatch({ 10, 240 }, "□描画1000回の処理時間:");
+		Time::DrawWatch({ 10, 240 }, "□描画100回の処理時間:");
 
 
 		if (Input::key.Return.on){ break;}//Enterで終了

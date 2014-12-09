@@ -16,6 +16,9 @@ bool SampleWindow()
 
 	while (System::Update())
 	{
+		Window::SetIcon("data/icon000.png");
+		sub.SetIcon("data/icon009.png");
+
 		Drawing::String({ 10, 100 }, Color::White, { "Windowクラスのテスト" ,Input::mouse.x," ",Input::mouse.y});
 		Screen::SetRenderer(sub.GetRenderer());
 		Drawing::String({ 10, 100 }, Color::White, { "SubWindowクラスのテスト", Input::mouse.x," ", Input::mouse.y });

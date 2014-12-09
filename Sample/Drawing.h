@@ -7,9 +7,6 @@ bool SampleDrawing()
 {
 	using namespace SDX;
 	System::Initialise("sample", 640, 480);
-	Camera cam({ 300, 200 }, 1);
-
-	Camera::Set(&cam);
 
 	double angle = 0;
 
@@ -20,7 +17,8 @@ bool SampleDrawing()
 		Drawing::Line({ 10, 100 }, { 100, 150 }, Color::Blue, 3);
 		Drawing::Line({ 210, 100 }, { 100, 150 }, Color::Blue);
 
-		Drawing::Rect({ 60, 200, 100, 250 }, Color::Red, true);
+		Drawing::Rect({ 50, 200, 50, 50 }, Color::Green,false);
+		Drawing::Rect({ 75, 225, 50, 50 }, Color::Green, true);
 
 		Screen::SetDrawMode({ 255, 255, 255, 128 } , BlendMode::Alpha);
 

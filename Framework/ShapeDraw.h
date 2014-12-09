@@ -23,10 +23,10 @@ namespace SDX
 	void Line::Draw(const Color &描画色) const
 	{
 		Drawing::Line({ xA, yA }, { xB, yB }, 描画色, (int)thick);
-		if (thick > 1)
+		if (thick >= 3)
 		{
-			Drawing::Circle({ xA, yA, thick/2 }, 描画色);
-			Drawing::Circle({ xB, yB, thick/2 }, 描画色);
+			Drawing::Circle({ xA, yA, (thick-1)/2 }, 描画色);
+			Drawing::Circle({ xB, yB, (thick-1)/2 }, 描画色);
 		}
 	}
 

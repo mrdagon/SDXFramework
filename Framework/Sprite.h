@@ -8,7 +8,7 @@
 namespace SDX
 {
 	/** Imageスプライト.*/
-	/** \include Sprite.h*/
+	/** \include Model.h*/
 	class SpImage : public ISprite
 	{
 	private:
@@ -30,7 +30,7 @@ namespace SDX
 	};
 
 	/** ImagePackスプライト.*/
-	/** \include Sprite.h*/
+	/** \include Model.h*/
 	class SpImageS : public ISprite
 	{
 	private:
@@ -67,7 +67,7 @@ namespace SDX
 	};
 
 	/** Animeスプライト.*/
-	/** \include Sprite.h*/
+	/** \include Model.h*/
 	class SpAnime : public ISprite
 	{
 	private:
@@ -99,7 +99,7 @@ namespace SDX
 	};
 
 	/** Fontスプライト.*/
-	/** \include Sprite.h*/
+	/** \include Model.h*/
 	class SpFont : public ISprite
 	{
 	private:
@@ -144,7 +144,7 @@ namespace SDX
 	};
 
 	/** IFrameスプライト.*/
-	/** \include Sprite.h*/
+	/** \include Model.h*/
 	class SpFrame : public ISprite
 	{
 	private:
@@ -167,7 +167,7 @@ namespace SDX
 	};
 
 	/** マップチップスプライト.*/
-	/** \include Sprite.h*/
+	/** \include Model.h*/
 	class SpMap : public ISprite
 	{
 	private:
@@ -257,7 +257,7 @@ namespace SDX
 	};
 
 	/** Nullスプライト.*/
-	/** \include Sprite.h*/
+	/** \include Model.h*/
 	class SpNull : public ISprite
 	{
 	public:

@@ -197,7 +197,7 @@ namespace SDX
 		}
 
 		/**角度を取得.*/
-		double GetAngle() const
+		double GetAngle() const override
 		{
 			return this->angle;
 		}
