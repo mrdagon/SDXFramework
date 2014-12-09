@@ -55,7 +55,7 @@ namespace SDX
 			}
 
 			//音声関連の初期化
-			Mix_Init(MIX_INIT_MP3);
+			Mix_Init(MIX_INIT_MP3 | MIX_INIT_OGG);
 			Mix_OpenAudio(44100, AUDIO_S16, 2, 1024);
 			Mix_AllocateChannels(16);
 

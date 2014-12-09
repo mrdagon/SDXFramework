@@ -10,16 +10,18 @@ bool SampleMusic()
 	using namespace SDX;
 	System::Initialise("sample", 640, 480);
 
-	Music musicA("bgm_maoudamashii_healing01.mp3");
-	Music musicB("bgm_maoudamashii_piano14.ogg");
+	Music musicA("data/bgm_maoudamashii_healing01.mp3");//このmp3再生出来ない?
+	Music musicB("data/bgm_maoudamashii_piano14.ogg");
 
+	musicA.SetFadeinTime(1000);
 	musicB.SetFadeinTime(1000);
 
 	while (System::Update())
 	{
 		if (Input::key.A.on)
 		{
-			musicA.Restart();
+			//musicA.Play();
+			Music::Stop();
 		}
 		if (Input::key.B.on)
 		{

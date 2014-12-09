@@ -11,8 +11,8 @@ bool SampleSound()
 
 	System::Initialise("sample", 640, 480);//ウィンドウタイトルを指定して、初期化する
 
-	Sound seA("se_maoudamashii_onepoint14.wav");
-	Sound seB("se_maoudamashii_onepoint15.wav");
+	Sound seA("data/se_maoudamashii_onepoint14.wav");
+	Sound seB("data/se_maoudamashii_onepoint15.wav");
 
 	Sound *nowSE = &seA;
 	double distance = 0.0;
@@ -20,6 +20,9 @@ bool SampleSound()
 
 	while (System::Update())//ウィンドウの更新や、入力の更新等を行う
 	{
+		Drawing::String({ 10, 10 }, Color::White, "AとBでSEの種類変更\nZXで音量変更、RLでパン設定、カーソルキーで3D効果");
+		Drawing::String({ 10, 50 }, Color::White, { "音量 = ", nowSE->GetVolume(),"\n角度 = ",angle,"\n距離 = " , distance });
+
 		//AとBで再生対象変更
 		if (Input::key.A.on)
 		{
@@ -51,12 +54,14 @@ bool SampleSound()
 			nowSE->Set3DEffect();
 			nowSE->SetPanning(0.5, 1.0);
 			nowSE->Play();
+			nowSE->SetPanning();
 		}
 		if (Input::key.L.on)
 		{
 			nowSE->Set3DEffect();
 			nowSE->SetPanning(1.0, 0.5);
 			nowSE->Play();
+			nowSE->SetPanning();
 		}
 
 		//上下左右カーソルで3D効果
@@ -75,12 +80,14 @@ bool SampleSound()
 		if (Input::key.Up.on)
 		{
 			distance += 0.1;
+			if (distance >= 1){ distance = 1; }
 			nowSE->Set3DEffect(distance,angle);
 			nowSE->Play();
 		}
 		if (Input::key.Down.on)
 		{
 			distance -= 0.1;
+			if (distance <= 0){ distance = 0; }
 			nowSE->Set3DEffect(distance, angle);
 			nowSE->Play();
 		}

@@ -71,7 +71,7 @@ namespace SDX
 			//channel = (++channel) % 2;
 			Mix_PlayChannel(0, handle, 0);
 
-			if (distance > 0)
+			if (distance >= 0)
 			{
 				Mix_SetPosition(0, angle, distance);
 			}
@@ -110,6 +110,7 @@ namespace SDX
 		/** 距離は[近]0～1.0[遠]、角度は[正面]0[左]-PAI/2[右]PAI/2で指定*/
 		/** 距離を0以下にすると無効になる*/
 		/** SetPanよりこっちが優先される*/
+		/** @todo 距離指定がバグってる？*/
 		void Set3DEffect(double 距離 = -1, double 角度 = 0)
 		{
 			distance = std::min((int)距離*255,255);
