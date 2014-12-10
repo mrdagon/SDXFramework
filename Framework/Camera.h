@@ -12,7 +12,6 @@ namespace SDX
 	{
 	//●影響があるクラスと関数
 	//[Renderer/Screen]<OK>
-	//SetArea
 	//SetClip
 	//[Drawing]<OK>
 	//Line

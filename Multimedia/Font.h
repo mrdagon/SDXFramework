@@ -56,7 +56,7 @@ namespace SDX
 			for (auto it = 文字列.begin(); it != 文字列.end(); it += charSize)
 			{
 				if (!GetUTFSize(*it, charSize)){ continue; }
-				if (*it == ' ')
+				if (handle == nullptr && *it == ' ')
 				{
 					位置.x += size;
 					continue;
@@ -79,7 +79,7 @@ namespace SDX
 			for (auto it = 文字列.begin(); it != 文字列.end(); it += charSize)
 			{
 				if (!GetUTFSize(*it, charSize)){ continue; }
-				if (*it == ' ')
+				if (handle == nullptr && *it == ' ')
 				{
 					位置.x += size * X拡大率;
 					continue;
@@ -102,7 +102,7 @@ namespace SDX
 			for (auto it = 文字列.begin(); it != 文字列.end(); it += charSize)
 			{
 				if (!GetUTFSize(*it, charSize)){ continue; }
-				if (*it == ' ')
+				if (handle == nullptr && *it == ' ')
 				{
 					位置.x += size * 拡大率;
 					continue;

@@ -13,8 +13,8 @@ bool SampleMusic()
 	Music musicA("data/bgm_maoudamashii_healing01.mp3");//このmp3再生出来ない?
 	Music musicB("data/bgm_maoudamashii_piano14.ogg");
 
-	musicA.SetFadeinTime(1000);
-	musicB.SetFadeinTime(1000);
+	musicA.SetFadeInTime(1000);
+	musicB.SetFadeInTime(1000);
 
 	while (System::Update())
 	{

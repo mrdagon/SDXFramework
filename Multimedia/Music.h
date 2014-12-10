@@ -16,20 +16,35 @@ namespace SDX
 		friend class System;
 	private:
 		static Music *active;//!< 現在再生中のMusic
+		static Music *next;//!< fadeOutの次に再生するMusic
+		static bool nextLoop;//!< 次に再生するMusicがループするか
+		static bool nextRestart;//!< 次に再生するMusicがリスタートするか
+
 		Mix_Music* handle = nullptr;//!<音楽リソースのハンドル
 		std::string fileName;//!<音声ファイル名
 		int volume;//!<再生音量
 
-		int fadeinTime = 0;//!< フェードイン時間
-		bool isStop = false;//!< 途中終了フラグ
+		int fadeInTime = 0;//!< フェードイン時間(ミリ秒)
+		int fadeOutTime = 0;//!< フェードアウト時間(ミリ秒)
 
 		std::chrono::system_clock::time_point startTime;//再生開始時刻
 		double restartPosition = 0;//!< 再生再開位置
+
+		/** 停止時のコールバック専用関数.*/
+		/** 普通に呼び出してはいけない*/
+		static void Finished()
+		{
+			//ここでは再生処理等をしてはいけない
+			//途中で終了した場合
+			auto diff = std::chrono::system_clock::now() - active->startTime;
+			active->restartPosition += (double)std::chrono::duration_cast<std::chrono::milliseconds>(diff).count() / 1000;
+			active = nullptr;
+		}
+
 	public:
 		Music(){};
-		~Music()
-		{
-		}
+
+		~Music(){}
 
 		/** 音声ファイルを登録.*/
 		Music(const char *ファイル名, double 音量 = 1.0)
@@ -49,7 +64,7 @@ namespace SDX
 
 			if (handle != nullptr){ return false; }
 
-			this->fileName = ファイル名;
+			fileName = ファイル名;
 			handle = Mix_LoadMUS(ファイル名);
 			volume = int(音量 * 255);
 
@@ -65,24 +80,33 @@ namespace SDX
 			return true;
 		}
 
-		/** 音声ファイルを再生.*/
-		/** Musicファイルは複数同時に再生する事は出来ない。\n*/
+		/** 音声ファイルを先頭から再生.*/
+		/** Musicは複数同時に再生する事は出来ない。\n*/
 		/**	現在再生中の音声は停止する。*/
 		bool Play( bool ループ再生フラグ = true )
 		{
+			next = nullptr;
 			if (handle == nullptr){ return false; }
+
+			//現在再生中のBGMにfadeOutTimeが設定されている場合
+			if (active && active->fadeOutTime > 0)
+			{
+				next = this;
+				nextLoop = ループ再生フラグ;
+				nextRestart = false;
+				Stop();
+				return true;
+			}
 
 			int isLoop = ( 1 - ループ再生フラグ * 2);
 
-			isStop = false;
-
-			if (fadeinTime <= 0)
+			if (fadeInTime <= 0)
 			{
 				Mix_PlayMusic(handle, isLoop );
 			}
 			else			
 			{
-				Mix_FadeInMusic(handle, isLoop , fadeinTime);
+				Mix_FadeInMusic(handle, isLoop , fadeInTime);
 			}
 
 			startTime = std::chrono::system_clock::now();
@@ -93,17 +117,26 @@ namespace SDX
 		}
 
 		/** 前回停止した位置から再生.*/
-		/** Musicファイルは複数同時に再生する事は出来ない。\n*/
+		/** Musicは複数同時に再生する事は出来ない。\n*/
 		/**	現在再生中の音声は停止する。*/
 		bool Restart(bool ループ再生フラグ = true)
 		{
+			next = nullptr;
 			if (handle == nullptr){ return false; }
 
-			isStop = false;
+			//現在再生中のBGMにfadeOutTimeが設定されている場合
+			if (active && active->fadeOutTime > 0)
+			{
+				next = this;
+				nextLoop = ループ再生フラグ;
+				nextRestart = true;
+				Stop();
+				return true;
+			}
 
 			int isLoop = ( 1 - ループ再生フラグ * 2);
 
-			if (fadeinTime <= 0)
+			if (fadeInTime <= 0)
 			{
 				Mix_PlayMusic(handle, isLoop);
 				if (restartPosition > 0)
@@ -113,14 +146,7 @@ namespace SDX
 			}
 			else
 			{
-				if (restartPosition > 0)
-				{
-					Mix_FadeInMusicPos(handle, isLoop, fadeinTime, restartPosition);
-				}
-				else
-				{
-					Mix_FadeInMusic(handle, isLoop, fadeinTime);
-				}
+				Mix_FadeInMusicPos(handle, isLoop, fadeInTime, restartPosition);
 			}
 
 			startTime = std::chrono::system_clock::now();
@@ -139,33 +165,40 @@ namespace SDX
 		}
 
 		/** 再生時のフェードイン時間を設定[ミリ秒].*/
-		/** 指定ミリ秒かけて徐々に音量を上げる*/
-		void SetFadeinTime(int フェードイン時間)
+		/** 指定の時間で徐々に音量を上げていく*/
+		void SetFadeInTime(int フェードイン時間)
 		{
-			fadeinTime = フェードイン時間;
+			fadeInTime = std::max(0,フェードイン時間);
+		}
+
+		/** 再生時のフェードイン時間を設定[ミリ秒].*/
+		/** 指定の時間で徐々に音量を下げていく*/
+		void SetFadeOutTime(int フェードアウト時間)
+		{
+			fadeOutTime = std::max(0,フェードアウト時間);
 		}
 
 		/** 再生中か確認.*/
 		/** いずれかのMusicが再生中ならtureを返す*/
 		static bool Check()
 		{
-			return !Mix_PlayingMusic();
+			//何故かこの関数だけ成功時は1
+			return (Mix_PlayingMusic() == 1);
 		}
 
 		/** 再生中のMusicを停止.*/
 		/** フェードアウト時間[mm秒]が1以上の場合、徐々に音量を下げて停止する*/
-		static bool Stop(int フェードアウト時間 = 0)
+		static bool Stop()
 		{
-			active->isStop = true;
+			if (!Check()){ return false; }
 
-			if (フェードアウト時間 <= 0)
+			if (active->fadeOutTime <= 0)
 			{
 				Mix_HaltMusic();
 			}
 			else
 			{
-				Mix_FadeOutMusic(フェードアウト時間);
-
+				Mix_FadeOutMusic( active->fadeOutTime );
 			}
 
 			return true;
@@ -178,16 +211,22 @@ namespace SDX
 			Mix_VolumeMusic(int(音量 * 255));
 		}
 
-		/** 停止時のコールバック専用関数.*/
-		/** 普通に呼び出してはいけない*/
-		static void Finished()
+		/** fadeOut終了後の次Musicを再生する処理.*/
+		static bool Update()
 		{
-			//途中で終了した場合
-			auto diff = std::chrono::system_clock::now() - active->startTime;
-			active->restartPosition += (double)std::chrono::duration_cast<std::chrono::milliseconds>(diff).count() / 1000;
-			
-			//フェードイン終了の次に再生するBGMがある場合の処理
-
+			if (!active && next)
+			{
+				if (nextRestart)
+				{
+					return next->Restart(nextLoop);
+				}
+				else
+				{
+					return next->Play(nextLoop);
+				}
+			}
+			return false;
 		}
+
 	};
 }

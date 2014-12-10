@@ -33,7 +33,6 @@ namespace SDX
 		{
 			if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_AUDIO | SDL_INIT_VIDEO) < 0)
 			{
-				//fprintf(stderr, "SDLの初期化に失敗しました：%s \n", SDL_GetError());
 				exit(1);
 				return;
 			}
@@ -59,13 +58,14 @@ namespace SDX
 			Mix_OpenAudio(44100, AUDIO_S16, 2, 1024);
 			Mix_AllocateChannels(16);
 
+			Mix_HookMusicFinished(Music::Finished);
+
 			IsEnd() = false;
 
 			SubWindow::mainWindow.Create(ウィンドウ名,幅,高さ,フルスクリーンフラグ);
 
 			Screen::SetRenderer(Renderer::mainRenderer);
 			Window::SetWindow(SubWindow::mainWindow);
-
 
 			//タブレットと画面サイズを合わせる
 #ifdef TABLET
@@ -75,7 +75,6 @@ namespace SDX
 			Window::Single().aspect = (double)dpiX / dpiY;
 			SDL_RenderSetLogicalSize(Screen::GetHandle(), 幅, 高さ);
 #endif
-
 		}
 
 		/** ライブラリの終了処理.*/
@@ -101,6 +100,9 @@ namespace SDX
 			}
 			Input::Update();
 			bool result = System::ProcessMessage();
+
+			Music::Update();
+
 			return result;
 		}
 
@@ -133,12 +135,17 @@ namespace SDX
 #ifdef TABLET
 					case SDL_WINDOWEVENT_MINIMIZED:
 						//スリープに入る
-						Mix_VolumeMusic(0);
+						if (Music::Check())
+						{
+							Mix_PauseMusic();
+						}
 						break;
 					case SDL_WINDOWEVENT_RESTORED:
 						//スリープ解除
-						if( Music::active == nullptr ){break;}
-						Mix_VolumeMusic(Music::active->volume / 2);
+						if (Music::Check())
+						{
+							Mix_ResumeMusic();
+						}
 						break;
 #endif
 					}

@@ -13,13 +13,29 @@ namespace SDX
 	private:
 		MONO_STATE(Director)
 
-		std::vector< std::shared_ptr<IScene> > scenes;//!<
-
-		static Director& Single()
+		static std::vector<std::shared_ptr<IScene>>& Single()
 		{
-			static Director instance;
+			static std::vector<std::shared_ptr<IScene>> instance;
 			return instance;
 		}
+
+		/** 消滅したSceneを片付ける.*/
+		static void Remove()
+		{
+			auto it = Single().begin();
+
+			while (it != Single().end())
+			{
+				if ((*it)->isEnd)
+				{
+					it = Single().erase(it);
+					if (Single().size() == 0){ break; }
+					continue;
+				}
+				it++;
+			}
+		}
+
 	public:
 		/** 実行開始.*/
 		static void Run()
@@ -28,9 +44,9 @@ namespace SDX
 
 			while (System::Update(IsDraw()))
 			{
-				if (Single().scenes.size() == 0) break;
-				Single().scenes.back()->Update();
-				if (IsDraw()){ Single().scenes.back()->Draw(); }
+				if (Single().size() == 0){ break; }
+				Single().back()->Update();
+				if (IsDraw()){ Single().back()->Draw(); }
 				//更新処理
 				if (Camera::Get()){ Camera::Get()->Update(); }
 				Time::CheckFPS();
@@ -39,49 +55,46 @@ namespace SDX
 			}
 		}
 
-		/** 消滅したSceneを片付ける.*/
-		static void Remove()
-		{
-			auto it = Single().scenes.begin();
-
-			while (it != Single().scenes.end())
-			{
-				if ((*it)->isEnd)
-				{
-					it = Single().scenes.erase(it);
-					if (Single().scenes.size() == 0)break;
-					continue;
-				}
-				it++;
-			}
-		}
-
-		/** Sceneを追加する.*/
+		/** Sceneを追加しスタックに積む.*/
 		/** 追加したシーンがアクティブになる\n*/
-		/**	既に追加されているシーンの場合アクティブ化する*/
-		static void AddScene(IScene* 追加するシーン)
+		/**	既に追加されているシーンの場合アクティブにするだけ*/
+		static void AddScene(std::shared_ptr<IScene> 追加するシーン)
 		{
-			//既に存在する場合移動のみ
-			auto it = Single().scenes.begin();
-			while (it != Single().scenes.end())
+			bool isExist = false;
+
+			//既に存在する場合、削除してから追加
+			auto it = Single().begin();
+			while (it != Single().end())
 			{
-				if ((*it).get() == 追加するシーン)
+				if ((*it) == 追加するシーン)
 				{
-					Single().scenes.push_back((*it));
-					return;
+					isExist = true;
+					Single().erase(it);
+					break;
 				}
 				++it;
 			}
-			//存在していない場合初期化して追加
-			追加するシーン->Init();
-			Single().scenes.emplace_back(追加するシーン);
+
+			Single().push_back(追加するシーン);
 		}
 
 		/** 上からインデックス番目のシーンを取得.*/
 		/** 0で現在アクティブなシーン*/
-		static IScene* GetScene(int インデックス)
+		static std::shared_ptr<IScene> GetScene(int インデックス)
 		{
-			return Single().scenes[Single().scenes.size() - インデックス - 1].get();
+			return Single()[Single().size() - インデックス - 1];
+		}
+
+		/** 上からインデックス番目のシーンをアクティブにする.*/
+		/** 0で現在アクティブなシーン*/
+		static bool ActiveScene(int インデックス)
+		{
+			int no = Single().size() - インデックス - 1;
+			if (no < 0) { return false; }
+
+			AddScene(Single()[no]);
+
+			return true;
 		}
 
 		/** 描画更新フラグを設定.*/

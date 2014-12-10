@@ -286,15 +286,15 @@ public:
 				if (Camera::Get())
 				{
 					xA = (int)Camera::Get()->TransX(始点.x);
-					xB = (int)Camera::Get()->TransX(始点.y);
-					yA = (int)Camera::Get()->TransY(終点.x);
+					xB = (int)Camera::Get()->TransX(終点.x);
+					yA = (int)Camera::Get()->TransY(始点.y);
 					yB = (int)Camera::Get()->TransY(終点.y);
 				}
 				else
 				{
 					xA = (int)始点.x;
-					xB = (int)始点.y;
-					yA = (int)終点.x;
+					xB = (int)終点.x;
+					yA = (int)始点.y;
 					yB = (int)終点.y;
 				}
 

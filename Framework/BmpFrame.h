@@ -14,6 +14,16 @@ namespace SDX
 	private:
 		ImagePack *frame = nullptr;//!<
 	public:
+
+		BmpFrame() = default;
+
+		/** フレームを作成する.*/
+		/** フレーム画像は３×３分割した9マスの物が使える*/
+		BmpFrame(ImagePack *フレーム画像)
+		{
+			Make(フレーム画像);
+		}
+
 		/** フレームを作成する.*/
 		/** フレーム画像は３×３分割した9マスの物が使える*/
 		bool Make(ImagePack *フレーム画像)

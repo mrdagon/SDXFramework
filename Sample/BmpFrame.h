@@ -14,10 +14,8 @@ bool SampleBmpFrame()
 	ImagePack frameImageB("data/pipo-WindowBase004.png", 9, 3, 3);
 
 	//BmpFrameを作成
-	BmpFrame bmpFrameA;
-	BmpFrame bmpFrameB;
-	bmpFrameA.Make(&frameImageA);
-	bmpFrameB.Make(&frameImageB);
+	BmpFrame bmpFrameA(&frameImageA);
+	BmpFrame bmpFrameB(&frameImageB);
 
 	Rect 四角(220,140,200,200);
 	double 大きさ = 1.0;

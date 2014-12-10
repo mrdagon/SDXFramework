@@ -13,8 +13,11 @@ bool SampleModel()
 	Image ねずみ("data/pipo-enemy034.png");
 	Image ひよこ("data/pipo-enemy035.png");
 
+	//各種スプライトと組み合わせたモデル
 	Model<Point, SpImage> model(Point( 300, 200 ), SpImage(&image));
 	Model<Point, SpImage> model2(Point(550, 350), SpImage(&image));
+
+	//各種モーション
 
 	while (System::Update())
 	{

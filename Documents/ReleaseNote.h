@@ -1,8 +1,7 @@
 ﻿/*!
 @page ReleaseNote 更新履歴
 各バージョンの主な更新履歴です \n
-詳細はGithubのコミットコメントを確認して下さい\n
-今後の変更予定はSorceForgeの
+今後の変更予定はSorceForgeのチケットを参照して下さい\n
 \n
 <HR>
 <B>ver 0.10</B>\n
@@ -13,6 +12,7 @@ AnimeクラスをFilmクラスに名称変更、Anime::PlayerをAnimeに名称�
 引数が座標X、座標Yとかになっている物をconst Point&に変更\n
 引数が座標X、座標Y、幅、高さとかになっている物をconst Rect&に変更\n
 DrawExtendoの引数をPoint2つからRectに変更\n
+Directorクラスのバグを修正\b
 \n
 [細かい破壊的変更]\n
 DXLib版と分離したので～Handleのusing宣言を削除\n
