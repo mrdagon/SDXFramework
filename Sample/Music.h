@@ -10,27 +10,28 @@ bool SampleMusic()
 	using namespace SDX;
 	System::Initialise("sample", 640, 480);
 
-	Music musicA("data/bgm_maoudamashii_healing01.mp3");//このmp3再生出来ない?
+	Music musicA("data/bgm_maoudamashii_piano14.ogg");//このmp3再生出来ない?
 	Music musicB("data/bgm_maoudamashii_piano14.ogg");
 
-	musicA.SetFadeInTime(1000);
 	musicB.SetFadeInTime(1000);
+	musicB.SetFadeOutTime(1000);
 
 	while (System::Update())
 	{
+		Drawing::String({10,10},Color::White,"AとBでBGMを再生または再開、Sで停止");
+
 		if (Input::key.A.on)
 		{
-			//musicA.Play();
-			Music::Stop();
+			musicA.Restart();
 		}
 		if (Input::key.B.on)
 		{
 			musicB.Restart();
 		}
-
-		//音量変更
-
-		//停止-フェードアウト付き
+		if (Input::key.S.on)
+		{
+			Music::Stop();
+		}
 
 		if (Input::key.Return.on){ break;}//Enterで終了
 	}

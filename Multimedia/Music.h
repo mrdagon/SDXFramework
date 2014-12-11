@@ -82,7 +82,6 @@ namespace SDX
 
 		/** 音声ファイルを先頭から再生.*/
 		/** Musicは複数同時に再生する事は出来ない。\n*/
-		/**	現在再生中の音声は停止する。*/
 		bool Play( bool ループ再生フラグ = true )
 		{
 			next = nullptr;
@@ -118,7 +117,6 @@ namespace SDX
 
 		/** 前回停止した位置から再生.*/
 		/** Musicは複数同時に再生する事は出来ない。\n*/
-		/**	現在再生中の音声は停止する。*/
 		bool Restart(bool ループ再生フラグ = true)
 		{
 			next = nullptr;
@@ -132,6 +130,11 @@ namespace SDX
 				nextRestart = true;
 				Stop();
 				return true;
+			}
+			else if ( active )
+			{
+				//止めてから再生する
+				Stop();
 			}
 
 			int isLoop = ( 1 - ループ再生フラグ * 2);
@@ -153,8 +156,6 @@ namespace SDX
 			Mix_VolumeMusic(volume / 2);
 			active = this;
 
-			Mix_HookMusicFinished(Finished);
-
 			return true;
 		}
 
@@ -171,7 +172,7 @@ namespace SDX
 			fadeInTime = std::max(0,フェードイン時間);
 		}
 
-		/** 再生時のフェードイン時間を設定[ミリ秒].*/
+		/** 停止時のフェードアウト時間を設定[ミリ秒].*/
 		/** 指定の時間で徐々に音量を下げていく*/
 		void SetFadeOutTime(int フェードアウト時間)
 		{
@@ -211,7 +212,8 @@ namespace SDX
 			Mix_VolumeMusic(int(音量 * 255));
 		}
 
-		/** fadeOut終了後の次Musicを再生する処理.*/
+		/** fadeOut付きで終了した後に次Musicを再生するための処理.*/
+		/** System::Update内で呼ばれている*/
 		static bool Update()
 		{
 			if (!active && next)

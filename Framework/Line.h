@@ -135,12 +135,6 @@ namespace SDX
 			this->CulLine();
 		}
 
-		void SetAngle(double 指定角度) override
-		{
-			this->angle = 指定角度;
-			CulLine();
-		}
-
 		void Move(double X移動量, double Y移動量) override
 		{
 			this->x += X移動量;

@@ -88,7 +88,7 @@ namespace SDX
 		/** 極座標で移動.*/
 		void MoveA(double 距離, double 角度)
 		{
-			iShape.MoveA(距離 * cos(角度), 距離 * sin(角度));
+			iShape.Move(距離 * cos(角度), 距離 * sin(角度));
 		}
 
 		/** 指定座標に移動.*/
@@ -126,10 +126,10 @@ namespace SDX
 		}
 
 		/** 回転させる.*/
+		/** 図形は回転しない*/
 		void Rotate(double 回転角度)
 		{
 			angle += 回転角度;
-			iShape.Rotate(回転角度);
 			iSprite.Rotate(回転角度);
 		}
 
@@ -140,9 +140,9 @@ namespace SDX
 		}
 
 		/** 角度を設定する.*/
+		/** 図形は回転しない*/
 		void SetAngle(double 角度)
 		{
-			iShape.Rotate(角度 - angle);
 			iSprite.Rotate(角度 - angle);
 			angle = 角度;
 		}

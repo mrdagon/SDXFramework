@@ -54,10 +54,8 @@ namespace SDX
 		}
 
 		void Rotate(double 回転する角度) override
-		{}
-
-		void SetAngle(double 指定角度) override
-		{}
+		{
+		}
 
 		void Move(double X移動量, double Y移動量) override
 		{

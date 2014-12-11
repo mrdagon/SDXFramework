@@ -96,14 +96,6 @@ namespace SDX
 			}
 		}
 
-		void SetAngle(double 指定角度) override
-		{
-			for (auto it : shapes)
-			{
-				it->SetAngle(指定角度);
-			}
-		}
-
 		void Draw(const Color &描画色) const override;
 
 		bool Hit(const IShape *shape) const override

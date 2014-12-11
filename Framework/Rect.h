@@ -87,9 +87,10 @@ namespace SDX
 			heightDown *= Y倍率;
 		}
 
-		void Rotate(double 回転する角度) override{}
-
-		void SetAngle(double 指定角度) override{}
+		void Rotate(double 回転する角度) override
+		{
+		
+		}
 
 		void Draw(const Color &描画色) const override;
 
