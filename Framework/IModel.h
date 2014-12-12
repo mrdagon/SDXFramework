@@ -143,6 +143,7 @@ namespace SDX
 		/** 図形は回転しない*/
 		void SetAngle(double 角度)
 		{
+			iShape.Rotate(角度 - angle);
 			iSprite.Rotate(角度 - angle);
 			angle = 角度;
 		}
