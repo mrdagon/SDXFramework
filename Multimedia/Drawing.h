@@ -355,6 +355,8 @@ public:
 		/** 太さが1以上の場合処理が重い*/
 		static void Circle(const Circle &円形, const Color& 色, int 太さ = 0)
 		{
+			if (円形.radius <= 0){ return; }
+
 			if (太さ <= 0)
 			{
 				GetCircle(色).DrawExtend({ 円形.x - 円形.radius, 円形.y - 円形.radius , 円形.radius*2, 円形.radius*2 });

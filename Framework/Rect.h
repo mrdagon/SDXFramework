@@ -263,10 +263,20 @@ namespace SDX
 		}
 		bool Hit(const Circle *circle) const override;
 
+		Point GetPoint()
+		{
+			return { x , y};
+		}
+
 		/** SDL_Rectに型変換.*/
 		operator SDL_Rect() const
 		{
 			return{ (int)GetLeft(), (int)GetTop(), (int)GetW(), (int)GetH() };
+		}
+
+		Rect operator +(Point &加算値)
+		{
+			return {this->x + 加算値.x,this->y + 加算値.y ,widthRight , heightDown , widthLeft , heightUp};
 		}
 	};
 }
