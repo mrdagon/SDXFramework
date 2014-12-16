@@ -10,18 +10,20 @@ namespace SDX
 {
 	namespace MOTION
 	{
-		/*
+		
 		//コピペ用ひな形
-		template <class TSpeed>
-		class Base : public IMotion
+		/*
+		template <class TSpeed , class TShape = IShape>
+		class Base : public IMotion<TShape>
 		{
-		MOTION_BASE
+		private:
+			TSpeed speed;
 		public:
 		Base(const TSpeed &速度):
 		speed(速度)
 		{}
 
-		void Update(IModel* 移動対象)
+		void Update(TShape* 移動対象) override
 		{
 		移動対象
 		}
@@ -39,7 +41,7 @@ namespace SDX
 		public:
 
 			/** 速度を指定.*/
-			ToFront(TSpeed 速度) :
+			ToFront(const TSpeed &速度) :
 				speed(速度)
 			{}
 
