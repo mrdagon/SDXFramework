@@ -20,11 +20,10 @@ namespace SDX
 			image(描画Image)
 		{}
 
-		void Draw(const Point &座標) override
+		void Draw(const IShape &座標) override
 		{
-			const Point pos = { 座標.x + gap.x, 座標.y + gap.x };
+			const Point pos = { 座標.GetX() + gap.x, 座標.GetY() + gap.x };
 			const Point center = { axis.x + image->GetHeight() / 2, axis.y + image->GetHeight() / 2 };
-
 			image->DrawRotateAxis(pos, center, zoomX, zoomY, angle, isTurn);
 		}
 	};
@@ -55,11 +54,11 @@ namespace SDX
 			return index;
 		}
 
-		void Draw(const Point &座標) override
+		void Draw(const IShape &座標) override
 		{
 			const auto image = imageS->operator[](index);
 
-			const Point pos = { 座標.x + gap.x, 座標.y + gap.y };
+			const Point pos = { 座標.GetX() + gap.x, 座標.GetY() + gap.y };
 			const Point center = { axis.x + image->GetHeight() / 2, axis.y + image->GetHeight() / 2 };
 
 			image->DrawRotateAxis(pos, center, zoomX, zoomY, angle, isTurn);
@@ -89,9 +88,9 @@ namespace SDX
 			anime.Update(aniSpeed);
 		}
 
-		void Draw(const Point &座標) override
+		void Draw(const IShape &座標) override
 		{
-			const Point pos = { 座標.x + gap.x, 座標.y + gap.y };
+			const Point pos = { 座標.GetX() + gap.x, 座標.GetY() + gap.y };
 			const Point center = { axis.x + film->GetHeight() / 2, axis.y + film->GetHeight() / 2 };
 
 			anime.DrawRotateAxis(pos, center, zoomX, zoomY, angle, isTurn);
@@ -104,42 +103,26 @@ namespace SDX
 	{
 	private:
 		const IFont *font;//!<
-		std::string& refStr;//!<
 		std::string str;//!<
-		bool isReference;//!<
-		Color rgb;//!<
 
 	public:
 		/**コンストラクタ.*/
-		SpFont(const IFont *フォント, const Color &描画色, double 縦倍率, double 横倍率, const char* 描画する文字列) :
+		SpFont(const IFont *フォント, const char* 描画する文字列) :
 			font(フォント),
-			rgb(描画色),
-			str(描画する文字列),
-			refStr(str),
-			isReference(false)
-		{
-			this->SetZoom(縦倍率, 横倍率);
-		}
+			str(描画する文字列)
+		{}
 
-		/**コンストラクタ.*/
-		SpFont(const IFont *フォント, const Color &描画色, double 縦倍率, double 横倍率, std::string& 参照する文字列) :
-			font(フォント),
-			rgb(描画色),
-			refStr(参照する文字列),
-			isReference(true)
+		void Draw(const IShape &座標) override
 		{
-			this->SetZoom(縦倍率, 横倍率);
-		}
+			font->DrawRotate({ 座標.GetX() + gap.x, 座標.GetY() + gap.y }, zoomX, angle, color, isTurn, str);
 
-		void Draw(const Point &座標) override
-		{
-			font->DrawExtend({ 座標.x + gap.x, 座標.y + gap.y }, zoomX, zoomY, rgb, refStr.c_str());
+			//font->DrawExtend({ 座標.GetX() + gap.x, 座標.GetY() + gap.y }, zoomX, zoomY, color, str );
 		}
 
 		/**描画する文字列を変更.*/
 		void SetText(const char* 表示する文字)
 		{
-			refStr = 表示する文字;
+			str = 表示する文字;
 		}
 	};
 
@@ -149,20 +132,16 @@ namespace SDX
 	{
 	private:
 		const IFrame *bmpFrame;//!<
-		double width;//!<
-		double height;//!<
 
 	public:
 		/**コンストラクタ.*/
-		SpFrame(const IFrame *描画する枠, double 幅, double 高さ) :
-			bmpFrame(描画する枠),
-			width(幅),
-			height(高さ)
+		SpFrame(const IFrame *描画する枠) :
+			bmpFrame(描画する枠)
 		{}
 
-		void Draw(const Point &座標) override
+		void Draw(const IShape &座標) override
 		{
-			bmpFrame->Draw({ 座標.x + gap.x, 座標.y + gap.y, width * zoomX, height * zoomY });
+			bmpFrame->Draw({ 座標.GetX() + gap.x, 座標.GetY() + gap.y, 座標.GetW() * zoomX, 座標.GetH() * zoomY });
 		}
 	};
 
@@ -205,7 +184,7 @@ namespace SDX
 			}
 		}
 
-		void Draw(const Point &座標) override
+		void Draw(const IShape &座標) override
 		{
 			const int chipW = chip.GetWidth();
 			const int chipH = chip.GetHeight();
@@ -213,8 +192,8 @@ namespace SDX
 			if (Camera::Get())
 			{
 				//隙間が出来るのを防ぐためCameraを一旦切って処理
-				const int baseY = int(Camera::Get()->TransY(座標.y));
-				const int baseX = int(Camera::Get()->TransX(座標.x));
+				const int baseY = int(Camera::Get()->TransY(座標.GetY()) );
+				const int baseX = int(Camera::Get()->TransX(座標.GetX()));
 
 				double posXA;
 				double posYA;
@@ -249,14 +228,14 @@ namespace SDX
 					{
 						const int no = data[a][b];
 						if (no == 0) continue;
-						chip[no]->Draw({ 座標.x + a*chipW, 座標.y + b*chipH });
+						chip[no]->Draw({ 座標.GetX() + a*chipW, 座標.GetY() + b*chipH });
 					}
 				}
 			}
 		}
 	};
 
-	/** Nullスプライト.*/
+	/** 描画しないNullスプライト.*/
 	/** \include Model.h*/
 	class SpNull : public ISprite
 	{
@@ -266,7 +245,7 @@ namespace SDX
 		SpNull()
 		{}
 
-		void Draw(const Point &座標) override
+		void Draw(const IShape &座標) override
 		{}
 	};
 }

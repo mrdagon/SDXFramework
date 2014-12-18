@@ -19,7 +19,7 @@ namespace SDX
 #include <Sample/Touch.h>//○
 #include <Sample/Gesture.h>//○
 #include <Sample/Movie.h>//×
-#include <Sample/Music.h>//○
+#include <Sample/Music.h>//●
 #include <Sample/Sound.h>//●
 #include <Sample/Window.h>//●
 #include <Sample/Screen.h>//●
@@ -32,7 +32,7 @@ namespace SDX
 #include <Sample/Director.h>//●
 #include <Sample/ImagePack.h>//●
 #include <Sample/Shape.h>//●
-#include <Sample/Model.h>//○
+#include <Sample/Model.h>//●
 //Utility
 #include <Sample/EnumArray.h>//●
 #include <Sample/Motion.h>//●

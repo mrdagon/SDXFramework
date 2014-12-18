@@ -21,10 +21,10 @@ bool SampleMotion()
 	MOTION::Bound<SPEED::Liner> bound({ 5 }, {0,0,640,480},PAI/6);
 	MOTION::ToPoint<SPEED::Accel> toPoint({ -1.0, 0.01 }, {400,400});
 	MOTION::Orbit<SPEED::AccelLimit> orbit({ 0 , 0.001, 0.2 },50,30);
-	MOTION::Vibrate<> vibrate( 5 );
+	MOTION::Vibrate vibrate( 5 );
 
 	IShape* shapeS[5] = {&line,&rect,&circleA,&circleB,&circleC};
-	MOTION::IMotion<> *motionS[5] = {&toFront,&bound,&toPoint,&orbit,&vibrate};
+	MOTION::IMotion *motionS[5] = {&toFront,&bound,&toPoint,&orbit,&vibrate};
 
 	while (System::Update())//ウィンドウの更新や、入力の更新等を行う
 	{

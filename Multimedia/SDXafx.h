@@ -73,4 +73,9 @@ namespace SDX
 		return a;
 	}
 
+	bool MOTION::IMotion::Update(IModel *移動対象)
+	{
+		Update(&移動対象->iShape);
+		return true;
+	}
 }

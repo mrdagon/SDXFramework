@@ -35,7 +35,7 @@ namespace SDX
 	//ImageやDrawingを利用
 	private:
 		double angle;//!< 
-		MOTION::IMotion<Point> *motion;
+		MOTION::IMotion *motion;
 
 		static Camera* active;//!< 現在アクティブなカメラ
 	public:

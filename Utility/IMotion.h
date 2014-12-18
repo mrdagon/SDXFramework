@@ -5,20 +5,22 @@
 
 namespace SDX
 {
+	class IModel;
 	/**移動パターンのポリシー.*/
 	/** \include Motion.h */
 	namespace MOTION
 	{
 		/**移動方法のインターフェース.*/
 		/**ジェネリックな設計なら継承不要.*/
-		template <class TShape = IShape>
 		class IMotion
 		{
 		public:
 			virtual ~IMotion() = default;
 
 			/** Motion終了時はfalseを返す.*/
-			virtual bool Update(TShape* 移動対象) = 0;
+			virtual bool Update(IShape* 移動対象) = 0;
+
+			virtual bool Update(IModel* 移動対象);
 		};
 	}
 }

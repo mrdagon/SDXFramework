@@ -2,10 +2,10 @@
 //[License]GNU Affero General Public License, version 3
 //[Contact]http://sourceforge.jp/projects/dxframework/
 #pragma once
-#include<Framework/Sprite.h>
-#include<Framework/Shape.h>
-#include<Framework/Camera.h>
-#include<memory>
+#include <Framework/Sprite.h>
+#include <Framework/Shape.h>
+#include <Framework/Camera.h>
+#include <memory>
 
 namespace SDX
 {
@@ -50,7 +50,7 @@ namespace SDX
 		/** 描画する.*/
 		virtual void Draw()
 		{
-			iSprite.Draw({ GetX(), GetY() });
+			iSprite.Draw( iShape );
 
 			//当たり判定を表示するならコメントアウト解除
 			//iShape.Draw({255,0,0,128} );
@@ -68,15 +68,13 @@ namespace SDX
 			double zoomY = iSprite.zoomY;
 			iSprite.zoomX *= shadowSize;
 			iSprite.zoomY *= shadowSize;
-			iSprite.Draw({ GetX() + X座標ずれ, GetY() + Y座標ずれ });
+
+			iSprite.gap.Move(X座標ずれ,Y座標ずれ);
+			iSprite.Draw( iShape);
+			iSprite.gap.Move(-X座標ずれ, -Y座標ずれ);
+
 			iSprite.zoomX = zoomX;
 			iSprite.zoomY = zoomY;
-		}
-
-		/** Spriteを更新する.*/
-		void AnimeUpdate()
-		{
-			iSprite.Update();
 		}
 
 		/** 相対座標で移動.*/
@@ -190,23 +188,6 @@ namespace SDX
 			return iShape.Hit(判定を行うShape);
 		}
 
-		/** マウスカーソルとの衝突判定.*/
-		bool Hit(Camera *座標変換に使うCamera = nullptr)
-		{
-			Point pt;
-
-			if (座標変換に使うCamera)
-			{
-				pt.x = 座標変換に使うCamera->TransX(Input::mouse.x + 座標変換に使うCamera->forcus.x);
-				pt.y = 座標変換に使うCamera->TransY(Input::mouse.y + 座標変換に使うCamera->forcus.y);
-			}
-			else{
-				pt.x = Input::mouse.x;
-				pt.y = Input::mouse.y;
-			}
-
-			return iShape.Hit(&pt);
-		}
 
 		template <class T>
 		/** 対象との角度を取得.*/

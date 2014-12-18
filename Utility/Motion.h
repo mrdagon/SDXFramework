@@ -31,10 +31,10 @@ namespace SDX
 		*/
 
 
-		template <class TSpeed, class TShape = IShape>
+		template <class TSpeed>
 		/**前方に移動.*/
 		/** \include Motion.h */
-		class ToFront : public IMotion<TShape>
+		class ToFront : public IMotion
 		{
 		private:
 			TSpeed speed;
@@ -45,7 +45,7 @@ namespace SDX
 				speed(速度)
 			{}
 
-			bool Update(TShape* 移動対象) override
+			bool Update(IShape* 移動対象) override
 			{
 				移動対象->MoveA(speed.Update(), 移動対象->GetAngle());
 
@@ -53,10 +53,10 @@ namespace SDX
 			}
 		};
 
-		template <class TSpeed, class TShape = IShape>
+		template <class TSpeed>
 		/**範囲内で跳ね返る.*/
 		/** \include Motion.h */
-		class Bound : public IMotion<TShape>
+		class Bound : public IMotion
 		{
 		private:
 			TSpeed speed;
@@ -71,7 +71,7 @@ namespace SDX
 				進行方向(進行方向)
 			{}
 
-			bool Update(TShape* 移動対象) override
+			bool Update(IShape* 移動対象) override
 			{
 				//範囲外にいる
 				if (移動対象->GetX() < 移動範囲.GetLeft())
@@ -113,10 +113,10 @@ namespace SDX
 			}
 		};
 
-		template <class TSpeed, class TShape = IShape>
+		template <class TSpeed>
 		/**目標座標に移動.*/
 		/** \include Motion.h */
-		class ToPoint : public IMotion<TShape>
+		class ToPoint : public IMotion
 		{
 		private:
 			TSpeed speed;
@@ -128,7 +128,7 @@ namespace SDX
 				目標座標(目標座標)
 			{}
 
-			bool Update(TShape* 移動対象) override
+			bool Update(IShape* 移動対象) override
 			{
 				//移動対象
 				const double nowSpeed = speed.Update();
@@ -150,10 +150,10 @@ namespace SDX
 			}
 		};
 
-		template <class TSpeed, class TShape = IShape>
+		template <class TSpeed>
 		/**円周上を移動.*/
 		/** \include Motion.h */
-		class Orbit : public IMotion<TShape>
+		class Orbit : public IMotion
 		{
 		private:
 			TSpeed speed;
@@ -175,7 +175,7 @@ namespace SDX
 				前移動量Y(sin(初期進行方向 - PAI/2) * 半径Y)
 			{}
 
-			bool Update(TShape* 移動対象) override
+			bool Update(IShape* 移動対象) override
 			{
 				//移動対象
 				角度 += speed.Update();
@@ -192,10 +192,9 @@ namespace SDX
 			}
 		};
 
-		template <class TShape = IShape>
 		/**範囲内で振動.*/
 		/** \include Motion.h */
-		class  Vibrate : public IMotion<TShape>
+		class  Vibrate : public IMotion
 		{
 		private:
 			double 最大振れ幅;
@@ -208,7 +207,7 @@ namespace SDX
 				最大振れ幅(最大振れ幅)
 			{}
 
-			bool Update(TShape* 移動対象) override
+			bool Update(IShape* 移動対象) override
 			{
 				double randX = Rand::Get(-最大振れ幅, 最大振れ幅);
 				double randY = Rand::Get(-最大振れ幅, 最大振れ幅);

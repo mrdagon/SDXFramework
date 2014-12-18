@@ -25,13 +25,13 @@ namespace SDX
 	public:
 		bool isTurn = false;//!< 反転フラグ
 		Color color = { 255, 255, 255, 255 };//!< 描画色
-		Point gap;//!<Shape中心とSpriteとの位置差
-		Point axis;//!< 回転軸
+		Point gap = {0,0};//!<Shape中心とSpriteとの位置差
+		Point axis = {0,0};//!< 回転軸のずれ
 
 		virtual ~ISprite() = default;
 
 		/** ISpriteを描画する.*/
-		virtual void Draw(const Point &座標) = 0;
+		virtual void Draw(const IShape &図形) = 0;
 
 		/** 表示倍率を設定.*/
 		void SetZoom(double X拡大率, double Y拡大率)
