@@ -2,10 +2,7 @@
 //[License]GNU Affero General Public License, version 3
 //[Contact]http://sourceforge.jp/projects/dxframework/
 #pragma once
-#include <fstream>
-#include <sstream>
-#include <iostream>
-#include <Multimedia/System.h>
+#include <Multimedia/SDX.h>
 
 namespace SDX
 {
@@ -45,7 +42,6 @@ namespace SDX
 			File::Open(ファイル名, 読み書きモード, バイナリファイル, Androidの保存先);
 		}
 
-		/** デストラクタ.*/
 		~File()
 		{
 			Close();

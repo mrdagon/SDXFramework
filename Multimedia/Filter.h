@@ -4,7 +4,6 @@
 #pragma once
 #include<Multimedia/SDX.h>
 #include<Multimedia/Image.h>
-#include<Framework/ImagePack.h>
 
 namespace SDX
 {

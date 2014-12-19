@@ -2,6 +2,7 @@
 //[License]GNU Affero General Public License, version 3
 //[Contact]http://sourceforge.jp/projects/dxframework/
 #pragma once
+#include <Framework/IPosition.h>
 #include <vector>
 #include <algorithm>
 
@@ -15,14 +16,11 @@ namespace SDX
 
 	class Camera;
 	class Color;
-	/** 位置情報を持つ図形の抽象クラス.*/
+	/** 衝突判定可能な図形の抽象クラス.*/
 	/** \include Shape.h */
-	class IShape
+	class IShape : public IPosition
 	{
 	protected:
-		double zoomX = 1;//!< 図形の拡大率
-		double zoomY = 1;//!< 図形の拡大率
-
 		/** 矩形の交差判定.*/
 		static bool RectRect(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4)
 		{
@@ -88,8 +86,11 @@ namespace SDX
 
 		virtual ~IShape() = default;
 
+		/** 同じ形の図形を作る.*/
+		virtual IShape* Clone(double x, double y) const = 0;
+
 		/** 衝突判定.*/
-		virtual bool Hit(const IShape *IShape) const = 0;
+		virtual bool Hit(const IShape *iShape) const = 0;
 		/** 衝突判定.*/
 		virtual bool Hit(const Complex *complex) const = 0;
 		/** 衝突判定.*/
@@ -101,79 +102,7 @@ namespace SDX
 		/** 衝突判定.*/
 		virtual bool Hit(const Circle *circle) const = 0;
 
-		/** 指定座標に移動.*/
-		virtual void SetPos(double X座標, double Y座標) = 0;
-
-		/** 同じ形の図形を作る.*/
-		virtual IShape* Clone(double x, double y) const = 0;
-
-		/** 縦横別で拡大率を掛け算する.*/
-		virtual void MultiZoom(double X倍率, double Y倍率) = 0;
-
-		/** 拡大率を設定.*/
-		void SetZoom(double X拡大率, double Y拡大率)
-		{
-			MultiZoom(X拡大率 / zoomX, Y拡大率 / zoomY);
-		}
-
-		/** 拡大率を掛け算する.*/
-		void MultiZoom(double 倍率)
-		{
-			MultiZoom(倍率, 倍率);
-		}
-
-		/** 相対座標で移動.*/
-		virtual void Move(double X移動量, double Y移動量) = 0;
-
-		/** 極座標で移動.*/
-		void MoveA(double 距離, double 方向)
-		{
-			Move(距離 * cos(方向), 距離 * sin(方向));
-		}
-
 		/** 描画する.*/
 		virtual void Draw(const Color &描画色) const = 0;
-
-		/** 回転する.*/
-		virtual void Rotate(double 回転する角度) = 0;
- 
-		/** 角度を取得する.*/
-		virtual double GetAngle() const
-		{
-			return 0;
-		}
-
-		/** 角度を指定する.*/
-		void SetAngle(double 指定角度)
-		{
-			Rotate( 指定角度 - GetAngle() );
-		}
-
-		/** 対象との角度を取得.*/
-		double GetDirect(IShape* 比較対象) const
-		{
-			return atan2(比較対象->GetY() - this->GetY(), 比較対象->GetX() - this->GetX());
-		}
-
-		/** 対象との相対座標を取得.*/
-		double GetDistance(IShape* 比較対象) const
-		{
-			const double xd = this->GetX() - 比較対象->GetX();
-			const double yd = this->GetY() - 比較対象->GetY();
-
-			return sqrt(xd * xd + yd * yd);
-		}
-
-		/** X座標を取得.*/
-		virtual double GetX() const = 0;
-
-		/** Y座標を取得.*/
-		virtual double  GetY() const = 0;
-
-		/** 幅を取得.*/
-		virtual double  GetW() const = 0;
-
-		/** 高さを取得.*/
-		virtual double  GetH() const = 0;
 	};
 }

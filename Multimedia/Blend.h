@@ -2,6 +2,7 @@
 //[License]GNU Affero General Public License, version 3
 //[Contact]http://sourceforge.jp/projects/dxframework/
 #pragma once
+#include<Multimedia/SDX.h>
 #include<Multimedia/Image.h>
 
 namespace SDX

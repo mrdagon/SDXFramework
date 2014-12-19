@@ -10,7 +10,7 @@ bool SampleModel()
 	
 	Image くま("data/pipo-enemy037.png");
 	Font フォント(SystemFont::Gothic, 10);
-	Film がいこつ("data/hone.png", 12, 3, 4);
+	Film がいこつ("data/hone.png", 12, 3, 4,12);
 	ImagePack 枠画像("data/pipo-WindowBase001.png",9,3,3);
 	BmpFrame 枠(&枠画像);
 
@@ -35,9 +35,11 @@ bool SampleModel()
 	{
 		for (int a = 0; a < 4; ++a)
 		{
-			modelS[a]->Update();
-			motionS[a]->Update( modelS[a] );
-			modelS[a]->Draw();
+			modelS[a]->iSprite.Update();//SpAnimeは更新が必要
+			motionS[a]->Update( modelS[a] );//modelを移動
+			modelS[a]->Draw();//modelを描画
+
+			//衝突中のモデルを回転させる
 			for (int b = a+1 ; b < 4; ++b)
 			{
 				if (modelS[a]->Hit(modelS[b]))

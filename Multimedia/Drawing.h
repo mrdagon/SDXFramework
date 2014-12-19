@@ -2,12 +2,12 @@
 //[License]GNU Affero General Public License, version 3
 //[Contact]http://sourceforge.jp/projects/dxframework/
 #pragma once
-#include<Multimedia/SDX.h>
-#include<Multimedia/Color.h>
-#include<Multimedia/Image.h>
-#include<Multimedia/Font.h>
-#include<Utility/VariadicStream.h>
-#include<Framework/Shape.h>
+#include <Multimedia/SDX.h>
+#include <Multimedia/Color.h>
+#include <Multimedia/Image.h>
+#include <Multimedia/Font.h>
+#include <Utility/VariadicStream.h>
+#include <Framework/Shape.h>
 #include <Framework/Camera.h>
 
 namespace SDX

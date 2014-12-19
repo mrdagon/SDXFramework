@@ -3,6 +3,7 @@
 //[Contact]http://sourceforge.jp/projects/dxframework/
 #pragma once
 #include <Multimedia/SDX.h>
+#include <Multimedia/Loading.h>
 
 namespace SDX
 {

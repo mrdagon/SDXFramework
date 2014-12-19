@@ -2,9 +2,8 @@
 //[License]GNU Affero General Public License, version 3
 //[Contact]http://sourceforge.jp/projects/dxframework/
 #pragma once
-#include <SDXFramework.h>
-#include <Utility/IMotion.h>
 #include <Framework/Shape.h>
+#include <Utility/IMotion.h>
 
 namespace SDX
 {
@@ -13,8 +12,8 @@ namespace SDX
 		
 		//コピペ用ひな形
 		/*
-		template <class TSpeed , class TShape = IShape>
-		class Base : public IMotion<TShape>
+		template <class TSpeed>
+		class Base : public IMotion
 		{
 		private:
 			TSpeed speed;
@@ -30,7 +29,6 @@ namespace SDX
 		};
 		*/
 
-
 		template <class TSpeed>
 		/**前方に移動.*/
 		/** \include Motion.h */
@@ -45,7 +43,7 @@ namespace SDX
 				speed(速度)
 			{}
 
-			bool Update(IShape* 移動対象) override
+			bool Update(IPosition* 移動対象) override
 			{
 				移動対象->MoveA(speed.Update(), 移動対象->GetAngle());
 
@@ -71,7 +69,7 @@ namespace SDX
 				進行方向(進行方向)
 			{}
 
-			bool Update(IShape* 移動対象) override
+			bool Update(IPosition* 移動対象) override
 			{
 				//範囲外にいる
 				if (移動対象->GetX() < 移動範囲.GetLeft())
@@ -128,7 +126,7 @@ namespace SDX
 				目標座標(目標座標)
 			{}
 
-			bool Update(IShape* 移動対象) override
+			bool Update(IPosition* 移動対象) override
 			{
 				//移動対象
 				const double nowSpeed = speed.Update();
@@ -175,7 +173,7 @@ namespace SDX
 				前移動量Y(sin(初期進行方向 - PAI/2) * 半径Y)
 			{}
 
-			bool Update(IShape* 移動対象) override
+			bool Update(IPosition* 移動対象) override
 			{
 				//移動対象
 				角度 += speed.Update();
@@ -207,7 +205,7 @@ namespace SDX
 				最大振れ幅(最大振れ幅)
 			{}
 
-			bool Update(IShape* 移動対象) override
+			bool Update(IPosition* 移動対象) override
 			{
 				double randX = Rand::Get(-最大振れ幅, 最大振れ幅);
 				double randY = Rand::Get(-最大振れ幅, 最大振れ幅);

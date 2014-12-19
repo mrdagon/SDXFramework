@@ -2,7 +2,9 @@
 //[License]GNU Affero General Public License, version 3
 //[Contact]http://sourceforge.jp/projects/dxframework/
 #pragma once
-#include "Utility/IMotion.h"
+#include <Multimedia/SDX.h>
+#include <Utility/IMotion.h>
+
 namespace SDX
 {
 	/** 2D用に座標変換を行うカメラを表すクラス.*/
@@ -11,9 +13,9 @@ namespace SDX
 	class Camera
 	{
 	//●影響があるクラスと関数
-	//[Renderer/Screen]<OK>
+	//[Renderer/Screen]
 	//SetClip
-	//[Drawing]<OK>
+	//[Drawing]
 	//Line
 	//Rect
 	//Circle
@@ -21,22 +23,22 @@ namespace SDX
 	//Polygon
 	//Triangle
 	//Pixel
-	//[Image]<OK>
+	//[Image]
 	//Draw～6種
 	//
 	//●間接的に影響
-	//[Font]<OK>
+	//[Font]
 	//Imageを利用
 	//[BmpFrame]
 	//Imageを利用
-	//[Shape]<OK>
+	//[Shape]
 	//Drawingを利用
-	//[Sprite]<OK>
+	//[Sprite]
 	//ImageやDrawingを利用
 	private:
 		double angle;//!< 
-		MOTION::IMotion *motion;
-
+		std::unique_ptr<MOTION::IMotion> motion;
+		
 		static Camera* active;//!< 現在アクティブなカメラ
 	public:
 		Point position;//!< 中心の位置
@@ -50,7 +52,7 @@ namespace SDX
 			forcus(座標),
 			zoom(拡大率),
 			angle(0)
-		{};
+		{}
 
 		/** 現在アクティブなカメラを取得.*/
 		static Camera* Get()
@@ -62,6 +64,12 @@ namespace SDX
 		static void Set(Camera *アクティブにするCamera = nullptr)
 		{
 			active = アクティブにするCamera;
+		}
+
+		/**.*/
+		void SetMotion( std::unique_ptr<MOTION::IMotion> 移動パターン)
+		{
+			motion = std::move(移動パターン);
 		}
 
 		/** モーションに応じてカメラ位置の更新.*/

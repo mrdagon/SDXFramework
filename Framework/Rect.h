@@ -142,6 +142,7 @@ namespace SDX
 		{
 			return shape->Hit(this);
 		}
+
 		bool Hit(const Complex *complex) const override
 		{
 			for (auto it : complex->shapes)

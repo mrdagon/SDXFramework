@@ -5,7 +5,6 @@
 #include <Multimedia/Window.h>
 #include <Multimedia/Input.h>
 #include <Multimedia/Font.h>
-#include <Multimedia/Music.h>
 
 namespace SDX
 {
