@@ -77,7 +77,6 @@ namespace SDX
 			return 0;
 		}
 
-
 		/** X座標を取得.*/
 		virtual double GetX() const = 0;
 
