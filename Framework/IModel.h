@@ -44,7 +44,7 @@ namespace SDX
 		}
 
 		/** 描画する.*/
-		virtual void Draw()
+		virtual void Draw() const
 		{
 			iSprite.Draw( iShape );
 

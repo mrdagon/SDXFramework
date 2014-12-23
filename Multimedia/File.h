@@ -181,7 +181,7 @@ namespace SDX
 
 		template <class TSaveType, class TOutput>
 		/**型変換をしつつ配列に読み込む.*/
-		/**intで保存した値をdoubleにして読み込みたい時に使う.*/
+		/**intで保存してdoubleの値に代入したい時等に使う.*/
 		bool Read(TOutput *読み込み先配列, int 要素数, int 分母)
 		{
 			if (!canRead) return false;

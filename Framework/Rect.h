@@ -264,7 +264,7 @@ namespace SDX
 		}
 		bool Hit(const Circle *circle) const override;
 
-		Point GetPoint()
+		Point GetPoint() const
 		{
 			return { x , y};
 		}
