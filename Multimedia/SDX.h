@@ -24,8 +24,11 @@ namespace SDX
 {
 	const double PAI = 3.1415926535897931;//!< 円周率
 	const double DEG = PAI / 180;//!< ラジアンにおける1℃
+	/**Aから見たBの角度差を-PAI～+PAIで返す.*/
+	double CompAngle(double 角度A, double 角度B);
 }
 
+//暫定的に、マクロ使用
 #define MONO_STATE(a) \
 a() = default;\
 ~a() = default;\
@@ -34,16 +37,17 @@ a(const a& src) = delete;\
 void operator =(const a&& src) = delete;\
 a(const a&& src) = delete;
 
+//暫定的に、マクロ使用
 #define INTERFACE(a) \
 vartual ~a() = default;
 
+//Windowsのみ有効なコード
 #pragma comment(lib, "SDL2.lib")
 #pragma comment(lib, "SDL2main.lib")
 #pragma comment(lib, "SDL2_image.lib")
 #pragma comment(lib, "SDL2_mixer.lib")
 #pragma comment(lib, "SDL2_ttf.lib")
-
-#pragma execution_character_set("utf-8")//charの文字コードをUTF-8に変更:Windows
+#pragma execution_character_set("utf-8")//charの文字コードをUTF-8に変更
 
 #ifdef _DEBUG
 #pragma comment(linker, "/NODEFAULTLIB:msvcrt.lib")

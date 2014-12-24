@@ -52,6 +52,25 @@ namespace SDX
 	std::mutex Loading::mtx;
 	std::vector<std::function<void(void)>> Loading::funcS;
 
+	double CompAngle(double 角度A, double 角度B)
+	{
+		double 角度差 = 角度A - 角度B;
+		角度差 = fmod(角度差, PAI * 2);
+
+		//角度差がPAI以上
+		if (角度差 > PAI)
+		{
+			角度差 -= PAI * 2;
+		}
+		//角度差が-PAI以下
+		if (角度差 < -PAI)
+		{
+			角度差 += PAI * 2;
+		}
+
+		return 角度差;
+	}
+
 	bool Renderer::SetTarget(Image *描画対象)
 	{
 		bool a;
