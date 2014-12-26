@@ -42,9 +42,23 @@ namespace SDX
 
 		/** 矩形のフレームを描画.*/
 		/** 右上座標を指定してフレームを描画する*/
-		void Draw(const Rect &領域) const
+		/** @todo ImagePackにSetColorしていた場合の動作がまだ*/
+		void Draw(const Rect &領域 , const Color &描画色 = Color::White) const
 		{
 			if (frame == nullptr){ return; }
+
+			Color color = Screen::GetRenderer()->rgba;
+
+			if (描画色 != Color::White)
+			{
+				Screen::GetRenderer()->rgba.SetColor
+					(
+						color.GetRed() * 描画色.GetRed() / 255,
+						color.GetGreen() * 描画色.GetGreen() / 255,
+						color.GetBlue() * 描画色.GetBlue() / 255,
+						color.GetAlpha() * 描画色.GetAlpha() / 255					
+					);
+			}
 
 			auto camera = Camera::Get();
 
@@ -74,6 +88,7 @@ namespace SDX
 
 			if (camera)
 			{
+				//隙間が出来るのでCameraの機能はここで計算
 				Camera::Set();
 
 				width = int(width * camera->zoom);
@@ -167,6 +182,11 @@ namespace SDX
 			}
 
 			Camera::Set(camera);
+
+			if (描画色 != Color::White)
+			{
+				Screen::GetRenderer()->rgba = color;
+			}
 		}
 	};
 }

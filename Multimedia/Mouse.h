@@ -119,6 +119,12 @@ namespace SDX
 			return true;
 		}
 
+		/** カーソル位置を取得.*/
+		Point GetPoint()
+		{
+			return {x,y};
+		}
+
 		/** MouseCodeでアクセス.*/
 		/** MouseCode::COUNTや範囲外の場合Leftを返す*/
 		Key& operator[](MouseCode index)

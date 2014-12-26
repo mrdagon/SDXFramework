@@ -57,7 +57,8 @@ namespace SDX
 		}
 
 		/** 比較オペレータ.*/
-		bool operator==(Color 比較色) {
+		bool operator == (const Color &比較色) const
+		{
 			return (
 				GetRed() == 比較色.GetRed() &&
 				GetBlue() == 比較色.GetBlue() &&
@@ -65,6 +66,14 @@ namespace SDX
 				GetAlpha() == 比較色.GetAlpha()
 				);
 		}
+
+		/** 比較オペレータ.*/
+		bool operator != (const Color &比較色) const
+		{
+			return !(比較色 == *this);
+		}
+
+
 
 		static const Color Black;//!< 黒 [RGB]0,0,0
 		static const Color Silver;//!< 銀 [R]192,192,192

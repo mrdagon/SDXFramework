@@ -15,6 +15,6 @@ namespace SDX
 		virtual ~IFrame() = default;
 
 		/** 枠を描画.*/
-		virtual void Draw(const Rect &領域) const = 0;
+		virtual void Draw(const Rect &領域, const Color& 描画色 = Color::White) const = 0;
 	};
 }
