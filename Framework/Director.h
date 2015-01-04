@@ -78,7 +78,7 @@ namespace SDX
 		}
 
 		/** 上からインデックス番目のシーンを取得.*/
-		/** 0で現在アクティブなシーン*/
+		/** 0で現在アクティブなシーン、1で一つ前*/
 		static std::shared_ptr<IScene> GetScene(int インデックス)
 		{
 			return Single()[Single().size() - インデックス - 1];

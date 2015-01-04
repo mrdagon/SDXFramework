@@ -29,6 +29,15 @@ namespace SDX
 		};
 		*/
 
+
+		/**その場所で停止.*/
+		class Stop : public IMotion
+		{
+		public:
+			Stop()
+			{}
+		};
+
 		template <class TSpeed>
 		/**前方に移動.*/
 		/** \include Motion.h */

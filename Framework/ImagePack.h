@@ -138,6 +138,15 @@ namespace SDX
 			return this->heightMax;
 		}
 		
+		/** 描画色をまとめて変更.*/
+		void SetColor(const Color &描画色)
+		{
+			for (auto && it : imageS)
+			{
+				it->SetColor(描画色);
+			}
+		}
+
 		/** 先頭からimageの幅を差分修正.*/
 		/** BMPフォント用の画像を文字幅を調整する時に使う*/
 		/** 分割読み込み時*/

@@ -37,6 +37,6 @@ namespace SDX
 
 	void Circle::Draw(const Color &描画色) const
 	{
-		Drawing::Circle({ x, y, radius }, 描画色, true);
+		Drawing::Circle({ x, y, radius }, 描画色);
 	}
 };
