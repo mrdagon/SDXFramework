@@ -11,8 +11,9 @@ Cameraクラスを再設計\n
 AnimeクラスをFilmクラスに名称変更、Anime::PlayerをAnimeに名称変更し設計見直し\n
 引数が座標X、座標Yとかになっている物をconst Point&に変更\n
 引数が座標X、座標Y、幅、高さとかになっている物をconst Rect&に変更\n
-DrawExtendoの引数をPoint2つからRectに変更\n
+DrawExtendの引数をPoint2つからRectに変更\n
 Directorクラスのバグを修正\b
+IFontクラスの反転フラグの引数の位置を変更\n
 \n
 [細かい破壊的変更]\n
 DXLib版と分離したので～Handleのusing宣言を削除\n

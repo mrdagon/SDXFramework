@@ -114,7 +114,7 @@ namespace SDX
 
 		void Draw(const IShape &座標) override
 		{
-			font->DrawRotate({ 座標.GetX() + gap.x, 座標.GetY() + gap.y }, zoomX, angle, color, isTurn, str);
+			font->DrawRotate({ 座標.GetX() + gap.x, 座標.GetY() + gap.y }, zoomX, angle, color, str, isTurn);
 
 			//font->DrawExtend({ 座標.GetX() + gap.x, 座標.GetY() + gap.y }, zoomX, zoomY, color, str );
 		}

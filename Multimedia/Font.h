@@ -302,7 +302,8 @@ namespace SDX
 		}
 
 		/** 文字を描画.*/
-		bool Draw(const Point &座標, const Color &描画色, const VariadicStream &描画する文字列) const override
+		/**@todo 反転描画無効*/
+		bool Draw(const Point &座標, const Color &描画色, const VariadicStream &描画する文字列 , bool 反転フラグ = false) const override
 		{
 			Point 位置 = 座標;
 
@@ -323,7 +324,8 @@ namespace SDX
 		}
 
 		/** 文字を回転して描画.*/
-		bool DrawRotate(const Point &座標, double 拡大率, double 角度, const Color &描画色, bool 反転フラグ, const VariadicStream &描画する文字列) const override
+		/**@todo 反転描画無効*/
+		bool DrawRotate(const Point &座標, double 拡大率, double 角度, const Color &描画色, const VariadicStream &描画する文字列, bool 反転フラグ = false) const override
 		{
 			int 行数 = 描画する文字列.StringS.size();
 
@@ -340,7 +342,8 @@ namespace SDX
 		}
 
 		/** 拡大率を指定して文字を描画.*/
-		bool DrawExtend(const Point &座標, double X拡大率, double Y拡大率, const Color &描画色, const VariadicStream &描画する文字列) const override
+		/**@todo 反転描画無効*/
+		bool DrawExtend(const Point &座標, double X拡大率, double Y拡大率, const Color &描画色, const VariadicStream &描画する文字列, bool 反転フラグ = false) const override
 		{
 			Point 位置 = 座標;
 
