@@ -106,7 +106,7 @@ namespace SDX
 		{
 			for (auto itA : this->shapes)
 			{
-				for (auto itB : this->shapes)
+				for (auto itB : complex->shapes)
 				{
 					if (itA->Hit(itB)) return true;
 				}

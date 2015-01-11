@@ -120,8 +120,6 @@ namespace SDX
 			{
 				太さ = std::max(太さ * CIRCLE_SIZE * 2 / int(矩形.GetW() + 矩形.GetH()), 2);//最低2
 
-				SDL_Rect rect2 = 矩形;
-
 				auto prev = Screen::GetTarget();
 				auto mode = Screen::GetRenderer()->blendMode;
 				auto col = Screen::GetRenderer()->rgba;

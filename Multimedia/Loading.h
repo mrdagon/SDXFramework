@@ -24,8 +24,8 @@ namespace SDX
 	private:
 		Loading(void) = default;
 		~Loading(void) = default;
-		void operator =(const Loading& src){}
-		Loading(const Loading& src){}
+		//void operator =(const Loading& src){}
+		//Loading(const Loading& src){}
 
 		static bool isLoading;
 		static int loadingCount;

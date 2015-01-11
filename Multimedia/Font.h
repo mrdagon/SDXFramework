@@ -385,7 +385,7 @@ namespace SDX
 			}
 
 			int charSize;
-			int a = 0;
+
 			auto it = 文字列.begin();
 			if (!GetUTFSize(*it, charSize)){ return; }
 			std::string str = 文字列.substr(0, charSize);

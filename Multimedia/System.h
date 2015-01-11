@@ -70,8 +70,8 @@ namespace SDX
 #ifdef TABLET
 			int dpiX;
 			int dpiY;
-			SDL_GetWindowSize(Window::Single().handle, &dpiX, &dpiY);
-			Window::Single().aspect = (double)dpiX / dpiY;
+			SDL_GetWindowSize(SubWindow::mainWindow.handle, &dpiX, &dpiY);
+			SubWindow::mainWindow.aspect = (double)dpiX / dpiY;
 			SDL_RenderSetLogicalSize(Screen::GetHandle(), 幅, 高さ);
 #endif
 		}

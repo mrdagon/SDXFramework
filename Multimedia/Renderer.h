@@ -149,8 +149,7 @@ namespace SDX
 			SDL_Rect srcrect = { (int)元範囲.GetX(), (int)元範囲.GetY(), (int)元範囲.GetW(), (int)元範囲.GetH() };
 			SDL_Rect dsrect = { (int)コピー先範囲.GetX(), (int)コピー先範囲.GetY(), (int)コピー先範囲.GetW(), (int)コピー先範囲.GetH() };
 
-			int a = SDL_BlitScaled(surface, &srcrect, コピー先.surface, &dsrect);
-
+			SDL_BlitScaled(surface, &srcrect, コピー先.surface, &dsrect);
 			SDL_RenderCopy(コピー先.GetHandle(), image, &srcrect, &dsrect);
 			SDL_DestroyTexture(image);
 

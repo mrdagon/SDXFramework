@@ -3,6 +3,7 @@
 //[Contact]http://sourceforge.jp/projects/dxframework/
 #pragma once
 #include <algorithm>
+#include <cmath>
 
 namespace SDX
 {
@@ -39,7 +40,7 @@ namespace SDX
 		/** 極座標で移動.*/
 		void MoveA(double 距離, double 方向)
 		{
-			Move(距離 * cos(方向), 距離 * sin(方向));
+			Move(距離 * std::cos(方向), 距離 * std::sin(方向));
 		}
 
 		/** 前方に移動.*/
@@ -66,7 +67,7 @@ namespace SDX
 		/** 対象との角度を取得.*/
 		double GetDirect(IPosition* 比較対象) const
 		{
-			return atan2(比較対象->GetY() - this->GetY(), 比較対象->GetX() - this->GetX());
+			return std::atan2(比較対象->GetY() - this->GetY(), 比較対象->GetX() - this->GetX());
 		}
 
 		/** 対象との相対座標を取得.*/
@@ -75,7 +76,7 @@ namespace SDX
 			const double xd = this->GetX() - 比較対象->GetX();
 			const double yd = this->GetY() - 比較対象->GetY();
 
-			return sqrt(xd * xd + yd * yd);
+			return std::sqrt(xd * xd + yd * yd);
 		}
 
 		/** X座標を取得.*/
