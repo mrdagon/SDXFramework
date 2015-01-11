@@ -11,6 +11,7 @@ namespace SDX
 	/** Image,Font,Sound,Music,ImagePack,Filmで有効\n*/
 	/** Loading::End()後は、全リソースの読み込みが終わるまでリソースの読み込み等を行ってはいけない*/
 	/** 特にFont::DrawやDrawing::Fontで新しい文字を出すとたまにエラーが出るので注意が必要*/
+	/** @todo Windows以外ではエラーが出る*/
 	/** \include Loading.h*/
 	class Loading
 	{
