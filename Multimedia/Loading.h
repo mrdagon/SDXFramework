@@ -48,6 +48,11 @@ namespace SDX
 		/** 非同期読み込みするResorceの読込開始.*/
 		static void End()
 		{
+			if ( !isLoading )
+			{
+				return;
+			}
+
 			isLoading = false;
 
 			std::thread
