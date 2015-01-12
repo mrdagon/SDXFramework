@@ -40,6 +40,9 @@ namespace SDX
 		/** 非同期読み込みするResorceを登録開始.*/
 		static void Start()
 		{
+#ifndef __WINDOWS__
+			return;
+#endif
 			loadingCount = 0;
 			succesCount = 0;
 			isLoading = true;
