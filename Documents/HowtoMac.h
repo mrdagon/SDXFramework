@@ -49,10 +49,15 @@ Add  frameworks & libraries here に  「SDXFramework/MacOSX」の中にある\n
 「SDL2_ttf.framework」\n
 の４つをドラッグ＆ドロップして追加します。\n
 \n
-④画面の上の方にある「Build Settings」を選択します\n
+④さらにCopy Filesに上の4つのframeworkをドラッグ＆ドロップして追加します。\n
+\n
+⑤画面の上の方にある「Build Settings」を選択します\n
 左のBasicをAllに変更します。\n
 \n
-⑤画面をスクロールしてSerch Paths の項目から Header Search Pathsを開き\n
+⑥画面をスクロールしてLinking の項目から  Runpath Search Pathsを開き\n
+｢@loader_path/../Frameworks/｣と入力します。\n
+\n
+⑦画面をスクロールしてSerch Paths の項目から Header Search Pathsを開き\n
 先ほど解凍した「SDXFramework/jni/SDL/include｣フォルダをドラッグ＆ドロップして追加します。\n
 以上でプロジェクトの設定は完了です\n
 \n
@@ -96,10 +101,22 @@ return 0;
 \n
 <HR>
 <B>7 プリコンパイル済みヘッダーを利用する</B>\n
-調査中\n
+[参考/Xcode5でプリコンパイル済みヘッダを使う]\n
+http://qiita.com/idtkb/items/839cc85200a8e30c76cd
 \n
-<B>8 完成したソフトを配布する</B>\n
-.appファイルを作りましょう。\n
-[参考]\n
+上記の方法で行けるようです。\n
+\n
+メインの開発環境がMSVC等でとりあえずコンパイル出来れば良い場合は\n
+#include "PreCompile.cpp"等、cppファイルをmain.cppでインクルードすれば良いです。\n
+\n
+<B>8 画像ファイルを置く場所\n
+\n
+<B>9 完成したソフトを配布する</B>\n
+.appファイルを作ります。\n
+\n
+[参考/MacでSDLアプリケーションの作り方]\n
 http://d.hatena.ne.jp/o_mega/20080512/1210612958
+\n
+[参考/Library not loaded エラー？ここを見直そう]\n
+http://qiita.com/kakipo/items/3cd87e00bc96bc3888b2
 */

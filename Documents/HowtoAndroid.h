@@ -4,6 +4,8 @@ SDXFrameworkの利用にはSDXFrameworkが必要です。\n
 androidの環境構築は他のOSに比べるとややこしいです\n
 実機デバッグの設定方法は機種により違うので各自で調べて下さい\n
 clangにしか対応していないのでandroidNDKの64bit版だと使えないと思います\n
+動作確認がちょっと中途半端で、不具合等多いかもしれません\n
+android studioを利用する場合は勝手が違うと思います、自力で調べて下さい\n
 <HR>
 <B>1.android-sdkの導入</B>\n
 以下のサイトを参考にしてjavaやeclipseの環境を構築して下さい\n

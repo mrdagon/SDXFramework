@@ -18,6 +18,7 @@
 #include <vector>
 #include <thread>
 #include <mutex>
+#include <cmath>
 
 /** SDXFramework共通の名前空間.*/
 namespace SDX
