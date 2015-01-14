@@ -30,12 +30,13 @@ namespace SDX
 		mutable std::map<int, Image*> hash;//!<
 
 		int style = TTF_STYLE_NORMAL;//!<
-
+		
 		static bool GetUTFSize(unsigned char 一文字目,int &文字長さ )
 		{
 
 			if (一文字目 < 0x20)
 			{
+				//空白文字
 				文字長さ = 1;
 				return false;
 			}
@@ -186,6 +187,7 @@ namespace SDX
 				return true;
 			}
 
+			//すでに読み込んでいる場合は失敗
 			if (handle != nullptr){ return false; }
 
 			this->size = 大きさ;
@@ -193,12 +195,13 @@ namespace SDX
 			isBlendRender = 高品質レンダリングフラグ;
 			handle = TTF_OpenFont(フォント名, 大きさ);
 
-			return true;
+			return (handle != nullptr);
 		}
 
 		/** フォントハンドルをメモリから開放する.*/
 		bool Release() const
 		{
+			//すでに読み込んでいる場合は失敗
 			if (handle != nullptr){ return false; }
 			TTF_CloseFont(handle);
 			for (auto && it : hash)

@@ -154,6 +154,9 @@ namespace SDX
 		/** タイトルを設定.*/
 		bool SetTitle(const char *タイトル名)
 		{
+#ifdef TABLET
+			return false;
+#endif
 			if (handle == nullptr){ return false; }
 
 			SDL_SetWindowTitle(handle, タイトル名);
@@ -200,6 +203,9 @@ namespace SDX
 		/** ウィンドウのアイコンを設定.*/
 		bool SetIcon(const char *ファイル名)
 		{
+#ifdef TABLET
+			return false;
+#endif
 			if (handle == nullptr){ return false; }
 
 			SDL_Surface* icon = IMG_Load(ファイル名);

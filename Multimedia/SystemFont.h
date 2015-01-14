@@ -11,8 +11,8 @@ namespace SDX
 	namespace SystemFont
 	{
 #ifdef __WINDOWS__
-		static const char* Gothic = "C:/Windows/Fonts/msgothic.ttc";///< 各OS標準の日本語フォント
-		static const char* Mincho = "C:/Windows/Fonts/msmincho.ttc";///< 各OS標準の日本語フォント
+		static const char* Gothic = "C:/Windows/Fonts/msgothic.ttc";//!< 各OS標準の日本語フォント
+		static const char* Mincho = "C:/Windows/Fonts/msmincho.ttc";//!< 各OS標準の日本語フォント
 
 		static const char* UI_Gothic = "C:/Windows/Fonts/msgothic.ttc";
 		static const char* Ｐゴシック = "C:/Windows/Fonts/msgothic.ttc";
@@ -27,8 +27,8 @@ namespace SDX
 		//static const char* 游明朝_Demibold	= "C:/Windows/Fonts/";
 
 #elif defined(__MACOSX__)
-		const char* Gothic = "/System/Library/Fonts/ヒラギノ角ゴ ProN W3.otf";///< 各OS標準の日本語フォント
-		const char* Mincho = "/System/Library/Fonts/ヒラギノ明朝 ProN W3.otf";///< 各OS標準の日本語フォント
+		const char* Gothic = "/System/Library/Fonts/ヒラギノ角ゴ ProN W3.otf";//!< 各OS標準の日本語フォント
+		const char* Mincho = "/System/Library/Fonts/ヒラギノ明朝 ProN W3.otf";//!< 各OS標準の日本語フォント
 
 		const char* ヒラギノ角ゴPro_W3 = "/Library/Fonts/ヒラギノ角ゴ Pro W3.otf";
 		const char* ヒラギノ角ゴProN_W3 = "/System/Library/Fonts/ヒラギノ角ゴ ProN W3.otf";
@@ -47,8 +47,8 @@ namespace SDX
 		const char* Osaka = "/Library/Fonts/Osaka.ttf";
 		const char* Osaka等幅 = "/Library/Fonts/OsakaMono.ttf";
 #elif defined(__LINUX__)
-		static const char* Gothic;///< 各OS標準の日本語フォント
-		static const char* Mincho;///< 各OS標準の日本語フォント
+		static const char* Gothic = "/usr/share/fonts/";//!< 各OS標準の日本語フォント
+		static const char* Mincho = "/usr/share/fonts/";//!< 各OS標準の日本語フォント
 
 		static const char* TakaoGothic;
 		static const char* TakaoExGothic;
@@ -61,11 +61,11 @@ namespace SDX
 		static const char* sans;
 		static const char* serif;
 #elif defined(__ANDROID__)
-		static const char* Gothic = "/system/fonts/TBGothicMed_213.ttf";///< 各OS標準の日本語フォント
-		static const char* Mincho = "/system/fonts/TBGothicMed_213.ttf";///< 各OS標準の日本語フォント
+		static const char* Gothic = "/system/fonts/TBGothicMed_213.ttf";//!< 各OS標準の日本語フォント
+		static const char* Mincho = "/system/fonts/TBGothicMed_213.ttf";//!< 各OS標準の日本語フォント
 #elif defined(__IPHONEOS__)
-		static const char* Gothic;///< 各OS標準の日本語フォント
-		static const char* Mincho;///< 各OS標準の日本語フォント
+		static const char* Gothic;//!< 各OS標準の日本語フォント
+		static const char* Mincho;//!< 各OS標準の日本語フォント
 #endif
 	}
 }

@@ -37,7 +37,7 @@ namespace SDX
 		/*Windowに対応した、Rendererを生成.*/
 		bool Create(SDL_Window* 元Window)
 		{
-			if (handle != nullptr) return false;
+			if (handle != nullptr){ return false ;}
 
 			isWindow = true;
 			handle = SDL_CreateRenderer(元Window, -1, SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_TARGETTEXTURE);

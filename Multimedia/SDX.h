@@ -52,6 +52,15 @@ vartual ~a() = default;
 
 #ifdef _DEBUG
 #pragma comment(linker, "/NODEFAULTLIB:msvcrt.lib")
+#else
+/*
+コメントアウトするとRerease時にMTでコンパイル可能になる
+#pragma comment(linker, "/NODEFAULTLIB:msvcrt.lib")
+int fprintf( FILE * stream, const char * format, ... )
+{
+	return 0;
+}
+*/
 #endif
 
 #include <SDL.h>

@@ -36,31 +36,14 @@ namespace SDX
 				return;
 			}
 
-			setlocale(LC_CTYPE, "jpn");//文字コードを日本語に
-
-			TTF_Init();
-
-			//デフォルトフォントの設定
-			Drawing::SetDefaultFont(SystemFont::Gothic, 16 , 2 );
-
-			SDL_InitSubSystem(SDL_INIT_JOYSTICK | SDL_INIT_GAMECONTROLLER | SDL_INIT_EVERYTHING);
-
+#ifndef TABLET
 			SDL_JoystickEventState(SDL_ENABLE);
 
 			if (SDL_NumJoysticks() > 0)
 			{
 				Input::pad.Open();
 			}
-
-			//音声関連の初期化
-			Mix_Init(MIX_INIT_MP3 | MIX_INIT_OGG);
-			Mix_OpenAudio(44100, AUDIO_S16, 2, 1024);
-			Mix_AllocateChannels(16);
-
-			Mix_HookMusicFinished(Music::Finished);
-
-			IsEnd() = false;
-
+#endif
 			SubWindow::mainWindow.Create(ウィンドウ名,幅,高さ,フルスクリーンフラグ);
 
 			Screen::SetRenderer(Renderer::mainRenderer);
@@ -74,6 +57,25 @@ namespace SDX
 			SubWindow::mainWindow.aspect = (double)dpiX / dpiY;
 			SDL_RenderSetLogicalSize(Screen::GetHandle(), 幅, 高さ);
 #endif
+
+			//デフォルトフォントの設定
+			setlocale(LC_CTYPE, "jpn");//文字コードを日本語に
+
+			TTF_Init();
+			Drawing::SetDefaultFont(SystemFont::Gothic, 16 , 2 );
+			SDL_InitSubSystem(SDL_INIT_JOYSTICK | SDL_INIT_GAMECONTROLLER | SDL_INIT_EVERYTHING);
+
+
+			//音声関連の初期化
+			Mix_Init(MIX_INIT_MP3 | MIX_INIT_OGG);
+			Mix_OpenAudio(44100, AUDIO_S16, 2, 1024);
+			Mix_AllocateChannels(16);
+
+			Mix_HookMusicFinished(Music::Finished);
+
+			IsEnd() = false;
+
+
 		}
 
 		/** ライブラリの終了処理.*/
@@ -108,18 +110,19 @@ namespace SDX
 		/** OSのメッセージ処理を行う.*/
 		/** 目安として1/60秒に一回程度、この関数を呼び出す必要があり。*/
 		/**	falseを返した場合、速やかにプログラムを終了させなければならない。*/
+		/** @todo タブレット版専用の処理色々*/
 		static bool ProcessMessage()
 		{
 			SDL_Event event;
 
 			while (SDL_PollEvent(&event))
 			{
-				/* QUIT イベントが発生したら終了する*/
 				if (event.type == SDL_WINDOWEVENT)
 				{
 					switch (event.window.event)
 					{
 					case SDL_WINDOWEVENT_CLOSE:
+#ifndef TABLET
 						//ここでIDに応じてDestroy等する
 						SubWindow::CheckWindowID(event.window.windowID);
 						if (SubWindow::mainWindow.handle == nullptr)
@@ -130,23 +133,26 @@ namespace SDX
 								it->Destroy();
 							}
 						}
+#endif
 						break;
-#ifdef TABLET
 					case SDL_WINDOWEVENT_MINIMIZED:
+#ifdef TABLET
 						//スリープに入る
 						if (Music::Check())
 						{
-							Mix_PauseMusic();
+							//Music::active->Stop();
 						}
+#endif
 						break;
 					case SDL_WINDOWEVENT_RESTORED:
+#ifdef TABLET
 						//スリープ解除
 						if (Music::Check())
 						{
-							Mix_ResumeMusic();
+							//Music::active->Restart();
 						}
-						break;
 #endif
+						break;
 					}
 
 				}

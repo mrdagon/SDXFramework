@@ -11,7 +11,7 @@ bool SampleCamera()
 	Camera camera({320,240},1);
 
 	Image image("data/pipo-enemy035.png");
-	Font font = Font(SystemFont::Mincho, 10);
+	Font font(SystemFont::Mincho, 10);
 
 	ImagePack frameImage("data/pipo-WindowBase001.png", 9, 3, 3);
 	BmpFrame bmpFrame(&frameImage);

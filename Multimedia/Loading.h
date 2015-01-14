@@ -40,6 +40,7 @@ namespace SDX
 		/** 非同期読み込みするResorceを登録開始.*/
 		static void Start()
 		{
+			//Windowsのみ有効
 #ifndef __WINDOWS__
 			return;
 #endif

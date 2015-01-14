@@ -48,6 +48,7 @@ return 0;
 }
 @endcode
 main.cppがあるディレクトリに移動してコマンドを実行\n
-$ clang++ -std=c++11 -o sdxtest main.cpp -lSDL2 -lSDL2_image -lSDL_ttf -lSDL2_mixer\n
+"clang++ -std=c++11 -o sdxtest main.cpp -lSDL2 -lSDL2_image -lSDL_ttf -lSDL2_mixer\n"
+(sdxtestの部分を変えると出力されるファイル名が変わります、sudo su する必要がある場合もあります)
 sdxtest.aとかが出力されたら成功です.
 */
