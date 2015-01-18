@@ -7,7 +7,7 @@ Ubuntu14.04での導入方法です。他のディストリビューションで
 ターミナルを起動して以下のコマンドを実行する\n
 $ sudo apt-get install libsdl2-dev\n
 $ sudo apt-get install libsdl2-image-dev\n
-$ sudo apt-get install libsdl-ttf2.0-dev\n
+$ sudo apt-get install libsdl2-ttf-dev\n
 $ sudo apt-get install libsdl2-mixer-de\n
 これでSDLの必要なファイルがインストールされます
 <HR>
@@ -47,8 +47,9 @@ System::End();//ライブラリの終了処理
 return 0;
 }
 @endcode
+\n
 main.cppがあるディレクトリに移動してコマンドを実行\n
-"clang++ -std=c++11 -o sdxtest main.cpp -lSDL2 -lSDL2_image -lSDL_ttf -lSDL2_mixer\n"
+"clang++ -std=c++11 -o sdxtest main.cpp -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer\n"
 (sdxtestの部分を変えると出力されるファイル名が変わります、sudo su する必要がある場合もあります)
 sdxtest.aとかが出力されたら成功です.
 */
