@@ -1,5 +1,5 @@
 ﻿/*!
-@page howtoLinux SDXの導入方法(Linux)
+@page howtoLinux SDXの導入方法(GNU/Linux)
 Ubuntu14.04での導入方法です。他のディストリビューションでも大体同じになると思います\n
 とりあえずターミナルからのコンパイル方法だけ解説します.
 <HR>
@@ -49,7 +49,7 @@ return 0;
 @endcode
 \n
 main.cppがあるディレクトリに移動してコマンドを実行\n
-"clang++ -std=c++11 -o sdxtest main.cpp -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer\n"
+"clang++ -std=c++11 -o sdxtest main.cpp -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer"\n
 (sdxtestの部分を変えると出力されるファイル名が変わります、sudo su する必要がある場合もあります)
 sdxtest.aとかが出力されたら成功です.
 */
