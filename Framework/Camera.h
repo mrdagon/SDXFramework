@@ -66,7 +66,7 @@ namespace SDX
 			active = アクティブにするCamera;
 		}
 
-		/**.*/
+		/** カメラの移動モーションを設定.*/
 		void SetMotion( std::unique_ptr<MOTION::IMotion> 移動パターン)
 		{
 			motion = std::move(移動パターン);

@@ -3,7 +3,7 @@
 <B>[現在サポートしている環境]</B>\n
 @ref howtoWindows \n
 @ref howtoMac \n
-@ref howtoLinux \n
+@ref howtoGNULinux \n
 @ref howtoAndroid
 <HR>
 <B>[暫定的にサポートしている環境]</B>\n

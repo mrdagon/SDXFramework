@@ -4,6 +4,9 @@
 今後の変更予定はSorceForgeのチケットを参照して下さい\n
 \n
 <HR>
+<B>ver 0.11</B>\n
+\n
+\n
 <B>ver 0.10</B>\n
 [大きめの破壊的変更]\n
 BmpFontをFontに統合して廃止\n
@@ -12,7 +15,7 @@ AnimeクラスをFilmクラスに名称変更、Anime::PlayerをAnimeに名称�
 引数が座標X、座標Yとかになっている物をconst Point&に変更\n
 引数が座標X、座標Y、幅、高さとかになっている物をconst Rect&に変更\n
 DrawExtendの引数をPoint2つからRectに変更\n
-Directorクラスのバグを修正\b
+Directorクラスのバグを修正\n
 IFontクラスの反転フラグの引数の位置を変更\n
 \n
 [細かい破壊的変更]\n
@@ -47,6 +50,9 @@ Soundクラスの非実装関数を一部削除\n
 ImageからisScreen,isAlpha,isTransフラグ関係を削除\n
 BlendBltとFilterBltをそれぞれBlend,Filterに統合(ただし未実装)\n
 Copyコンストラクタを色々禁止\n
+GNU/Linuxのコンパイル方法を修正\n
+Macで配布する場合の注意事項を追記\n
+Sample実行用の画像ファイル等を配布開始\n
 \n
 <B>ver 0.09</B>\n
 ライセンスをAGPL Ver3に変更\n

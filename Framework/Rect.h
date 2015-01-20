@@ -264,6 +264,7 @@ namespace SDX
 		}
 		bool Hit(const Circle *circle) const override;
 
+		/** Pointを取得.*/
 		Point GetPoint() const
 		{
 			return { x , y};
@@ -275,6 +276,7 @@ namespace SDX
 			return{ (int)GetLeft(), (int)GetTop(), (int)GetW(), (int)GetH() };
 		}
 
+		/** 座標に加算.*/
 		Rect operator +(Point &加算値)
 		{
 			return {this->x + 加算値.x,this->y + 加算値.y ,widthRight , heightDown , widthLeft , heightUp};
