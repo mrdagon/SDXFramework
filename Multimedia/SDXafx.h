@@ -43,6 +43,7 @@ namespace SDX
 
 	Music* Music::active = nullptr;
 	Music* Music::next = nullptr;
+	int Music::mainVolume = MIX_MAX_VOLUME;
 	bool Music::nextLoop;//!< 次に再生するMusicがループするか
 	bool Music::nextRestart;//!< 次に再生するMusicがリスタートするか
 

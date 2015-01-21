@@ -5,6 +5,7 @@
 #include <Multimedia/SDX.h>
 #include <Multimedia/Sound.h>
 #include <chrono>
+#include <string>
 
 namespace SDX
 {
@@ -19,6 +20,7 @@ namespace SDX
 		static Music *next;//!< fadeOutの次に再生するMusic
 		static bool nextLoop;//!< 次に再生するMusicがループするか
 		static bool nextRestart;//!< 次に再生するMusicがリスタートするか
+		static int mainVolume;
 
 		Mix_Music* handle = nullptr;//!<音楽リソースのハンドル
 		std::string fileName;//!<音声ファイル名
@@ -66,7 +68,7 @@ namespace SDX
 
 			fileName = ファイル名;
 			handle = Mix_LoadMUS(ファイル名);
-			volume = int(音量 * 255);
+			volume = int(音量 * MIX_MAX_VOLUME);
 
 			return true;
 		}
@@ -109,7 +111,7 @@ namespace SDX
 			}
 
 			startTime = std::chrono::system_clock::now();
-			Mix_VolumeMusic(volume / 2);
+			Mix_VolumeMusic(volume * mainVolume / MIX_MAX_VOLUME);
 			active = this;
 
 			return true;
@@ -153,7 +155,7 @@ namespace SDX
 			}
 
 			startTime = std::chrono::system_clock::now();
-			Mix_VolumeMusic(volume / 2);
+			Mix_VolumeMusic(volume * mainVolume / MIX_MAX_VOLUME);
 			active = this;
 
 			return true;
@@ -209,7 +211,21 @@ namespace SDX
 		/** いずれかのMusicが再生中なら音量を変更*/
 		static void ChangeVolume(double 音量)
 		{
-			Mix_VolumeMusic(int(音量 * 255));
+			Mix_VolumeMusic(int(音量 * mainVolume));
+		}
+
+		/** 全体の音量を0～1.0の範囲で設定.*/
+		/** 一度もこの関数を使用していない場合は最大音量*/
+		static void SetMainVolume(double 音量)
+		{
+			//元音量を変更
+			mainVolume = int(音量 * MIX_MAX_VOLUME);
+			
+			//再生中なら現在の音量も変化
+			if (Check())
+			{
+				Mix_VolumeMusic(mainVolume * active->volume / MIX_MAX_VOLUME);
+			}
 		}
 
 		/** fadeOut付きで終了した後に次Musicを再生するための処理.*/

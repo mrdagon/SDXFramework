@@ -89,7 +89,7 @@ namespace SDX
 		{
 			volume = std::max(音量, 0.0);
 			volume = std::min(音量, 1.0);
-			Mix_VolumeChunk(handle, int(音量 * 128));
+			Mix_VolumeChunk(handle, int(音量 * MIX_MAX_VOLUME));
 			return true;
 		}
 
@@ -122,5 +122,12 @@ namespace SDX
 			}
 		}
 
+		/** 全体の音量を0～1.0の範囲で設定.*/
+		/** 一度もこの関数を使用していない場合は最大音量*/
+		static void SetMainVolume(double 音量)
+		{
+			//全チャンネルの音量を変更
+			Mix_Volume(-1,int(音量 * MIX_MAX_VOLUME));
+		}
 	};
 }
