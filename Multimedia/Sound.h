@@ -9,6 +9,7 @@ namespace SDX
 {
 	/** 効果音用音声を表すクラス.*/
 	/** \include Sound.h*/
+	/** @todo 同時に複数の効果音を鳴らす場合の挙動に不安*/
 	class Sound
 	{
 	private:
@@ -44,7 +45,6 @@ namespace SDX
 			handle = Mix_LoadWAV(ファイル名);
 			if (!handle){ return false; }
 			
-			volume = std::max(音量,0.0);
 			volume = std::min(音量,1.0);
 
 			Mix_VolumeChunk(handle, int(volume * 128));
