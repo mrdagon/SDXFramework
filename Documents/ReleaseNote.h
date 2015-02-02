@@ -4,6 +4,9 @@
 今後の変更予定はSorceForgeのチケットを参照して下さい\n
 \n
 <HR>
+<B>ver 0.12</B>\n
+WindowにSetLogicalSize関数を追加\n
+例えば、ウィンドウサイズを倍にして、表示倍率も倍にするといった事が簡単に出来るようになる\n
 <B>ver 0.11</B>\n
 SoundとMusicに全体の音量を変更する関数を追加\n
 \n

@@ -57,14 +57,12 @@ namespace SDX
 			SubWindow::mainWindow.aspect = (double)dpiX / dpiY;
 			SDL_RenderSetLogicalSize(Screen::GetHandle(), 幅, 高さ);
 #endif
-
 			//デフォルトフォントの設定
 			setlocale(LC_CTYPE, "jpn");//文字コードを日本語に
 
 			TTF_Init();
 			Drawing::SetDefaultFont(SystemFont::Gothic, 16 , 2 );
 			SDL_InitSubSystem(SDL_INIT_JOYSTICK | SDL_INIT_GAMECONTROLLER | SDL_INIT_EVERYTHING);
-
 
 			//音声関連の初期化
 			Mix_Init(MIX_INIT_MP3 | MIX_INIT_OGG);
@@ -74,8 +72,6 @@ namespace SDX
 			Mix_HookMusicFinished(Music::Finished);
 
 			IsEnd() = false;
-
-
 		}
 
 		/** ライブラリの終了処理.*/

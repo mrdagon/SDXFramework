@@ -54,6 +54,13 @@ namespace SDX
 			activeWindow->SetSize(幅,高さ);
 		}
 
+		/** 描画領域の大きさを設定する.*/
+		/** 例えばSetSizeの半分にすると2倍表示になる*/
+		static void SetLogicalSize(int 幅, int 高さ)
+		{
+			activeWindow->SetLogicalSize(幅,高さ);
+		}
+
 		/** ウィンドウ幅の取得.*/
 		static int GetWidth()
 		{

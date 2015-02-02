@@ -24,6 +24,8 @@ namespace SDX
 		bool isFullScreen = false;//!<フルスクリーン状態のフラグ
 		int width;//!<ウィンドウの幅
 		int height;//!<ウィンドウの高さ
+		int logicWidth = -1;
+		int logicheight = -1;
 		double aspect;//!<タッチ用の画面の縦横比
 		static std::list<SubWindow*> windowS;
 
@@ -174,6 +176,11 @@ namespace SDX
 			SDL_RenderSetLogicalSize(renderer.GetHandle(), 幅, 高さ);
 			SDL_SetWindowSize(handle, 幅, 高さ);
 
+			if (logicWidth != -1)
+			{
+				SDL_RenderSetLogicalSize(renderer.GetHandle(), logicWidth, logicheight);
+			}
+
 			return true;
 		}
 
@@ -224,5 +231,13 @@ namespace SDX
 			renderer.Clear();
 		}
 
+		/** 描画領域の大きさを設定する.*/
+		/** 例えばSetSizeの半分にすると2倍表示になる*/
+		void SetLogicalSize(int 幅, int 高さ)
+		{
+			logicWidth = 幅;
+			logicheight = 高さ;
+			SDL_RenderSetLogicalSize(renderer.GetHandle(), 幅, 高さ);
+		}
 	};
 }
