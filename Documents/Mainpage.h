@@ -24,7 +24,9 @@
 <a href="http://www.libsdl.org/projects/SDL_image/" target="_blank"><B>SDL_image</B></a>\n
 <a href="http://www.libsdl.org/projects/SDL_mixer/" target="_blank"><B>SDL_mixer</B></a>\n
 <a href="http://www.libsdl.org/projects/SDL_ttf/" target="_blank"><B>SDL_ttf</B></a>\n
-<B>ライブラリ開発者</B>\n
+<B>ライブラリ開発者のブログ</B>\n
 <a href="http://tacoika.blog87.fc2.com/" target="_blank"><B>（´・＠・）ﾀｺﾔ!!!</B></a>\n
+<B>最新版</B>\n
+<a href="https://github.com/mrdagon/SDXFramework" target="_blank"><B>Github</B></a>\n
 \n
 */
