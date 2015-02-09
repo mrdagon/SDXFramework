@@ -40,7 +40,8 @@ namespace SDX
 			if (handle != nullptr){ return false ;}
 
 			isWindow = true;
-			handle = SDL_CreateRenderer(元Window, -1, SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_TARGETTEXTURE);
+			//handle = SDL_CreateRenderer(元Window, -1, SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_TARGETTEXTURE);
+			handle = SDL_CreateRenderer(元Window, -1, SDL_RENDERER_PRESENTVSYNC);
 			surface = SDL_GetWindowSurface(元Window);
 			return true;
 		}
@@ -238,14 +239,5 @@ namespace SDX
 			SetBright(輝度＋α値);
 			SetBlendMode(ブレンドモード, 輝度＋α値.GetAlpha());
 		}
-
-		/** BMP形式で保存.*/
-		/*
-		bool SaveBMP(const char* ファイル名)
-		{
-			if ( handle == nullptr ){ return false; }
-			return !SDL_SaveBMP(surface, ファイル名);
-		}
-		*/
 	};
 }

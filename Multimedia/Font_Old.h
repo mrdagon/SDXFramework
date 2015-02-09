@@ -34,8 +34,7 @@ public:
 	/** メモリ上にフォントを作成する.*/
 	/** 太さは0～9で指定、大きさと太さは-1にするとデフォルトになる\n*/
 	/**	改行高さは0の場合、改行後の文字が上下くっつく。*/
-	/**	SDLとDXLIBではフォント名の指定方法が違うので注意。*/
-	/**	SDLでは太さとフォントタイプが無効*/
+	/**	@todo 太さが無効*/
 	bool Load(const char *フォント名,int 大きさ ,int 太さ = 1 , int 改行高さ = 0)
 	{
 		Release();
@@ -114,14 +113,6 @@ public:
 		return this->thick;
 	}
 			
-	/** 描画時の幅を取得[DXLIB].*/
-	int GetDrawStringWidth( VariadicStream 幅を計算する文字列 ) const
-	{
-		int 幅 = 0;
-
-		return 幅;
-	}
-
 	/** 文字を描画.*/
 	bool Draw(const Point &座標, const Color &描画色, const VariadicStream &描画する文字列, bool 反転フラグ = false) const override
 	{        

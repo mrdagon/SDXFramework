@@ -44,8 +44,8 @@ namespace SDX
 				Input::pad.Open();
 			}
 #endif
-			SubWindow::mainWindow.Create(ウィンドウ名,幅,高さ,フルスクリーンフラグ);
 
+			SubWindow::mainWindow.Create(ウィンドウ名,幅,高さ,フルスクリーンフラグ);
 			Screen::SetRenderer(Renderer::mainRenderer);
 			Window::SetWindow(SubWindow::mainWindow);
 

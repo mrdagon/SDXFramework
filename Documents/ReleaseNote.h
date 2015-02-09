@@ -1,14 +1,22 @@
 ﻿/*!
 @page ReleaseNote 更新履歴
 各バージョンの主な更新履歴です \n
-今後の変更予定はSorceForgeのチケットを参照して下さい\n
+今後の変更予定はSorceForgeのチケットやTodo一覧を参照して下さい\n
+\n
+SorceForgeで配布しているファイルはデータを全て含む、安定版です\n
+開発中のバージョンを入手したい場合は\n
+以下のページ右下の"Download ZIP"からソースをダウンロードし\n
+https://github.com/mrdagon/SDXFramework
+\n
+SDXFramework>jni>SDL>includeに解凍したファイルを上書きする等して下さい\n
 \n
 <HR>
 <B>ver 0.12</B>\n
-WindowにSetLogicalSize関数を追加\n
-例えば、ウィンドウサイズを倍にして、表示倍率も倍にするといった事が簡単に出来るようになる\n
+Window::SetLogicalSize関数を追加\n
+ウィンドウサイズを倍にして、表示倍率も倍にするといった事が簡単に出来るようになります\n
+Android関連の不具合を修正。Androidの導入方法を修正。\n
+ドキュメントを色々修正\n
 \n
-マニュアルの文章を一部修正\n
 <B>ver 0.11</B>\n
 SoundとMusicに全体の音量を変更する関数を追加\n
 \n

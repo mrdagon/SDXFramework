@@ -48,6 +48,8 @@ namespace SDX
 			int f;
 
 			SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+			SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+			SDL_RenderClear(renderer);
 			SDL_SetRenderDrawColor(renderer,255,255,255,255);
 
 			dx = x2 - x1 < 0 ? x1 - x2 : x2 - x1;
@@ -79,7 +81,7 @@ namespace SDX
 			}
 		}
 		
-		/** 円.*/
+		/** 円を作成.*/
 		static Image& GetCircle(const Color &描画色, const Rect &矩形 = {0,0,0,0}, int 太さ = 0)
 		{
 			static Image circleA;
@@ -108,7 +110,6 @@ namespace SDX
 				Screen::SetTarget(prev);
 				Screen::SetDrawMode(col,mode);
 				Camera::Set(cam);
-
 			}
 
 			if (太さ <= 0)
@@ -165,7 +166,7 @@ namespace SDX
 			}
 		}
 
-		/** 正三角形.*/
+		/** 正三角形を作成.*/
 		static void GetTriangle(const Color &描画色, const Point &中心座標 = {0,0}, int 辺の長さ = 0, double 角度 = 0, int 太さ = 0)
 		{
 			static Image imageA;
@@ -350,7 +351,7 @@ public:
 
 		/** 中心と半径を指定して円を描画.*/
 		/** 太さに0を指定した場合塗りつぶし.*/
-		/** 太さが1以上の場合処理が重い*/
+		/** ※太さが1以上の場合処理が重い*/
 		static void Circle(const Circle &円形, const Color& 色, int 太さ = 0)
 		{
 			if (円形.radius <= 0){ return; }
@@ -367,7 +368,7 @@ public:
 
 		/** 中心と外接する四角形の大きさを指定して楕円を描画.*/
 		/** 太さに0を指定した場合塗りつぶし.*/
-		/** 太さが1以上の場合処理が重い*/
+		/** ※太さが1以上の場合処理が重い*/
 		static void Oval(const Point &中心, int 幅, int 高さ, const Color& 色, int 太さ = 0)
 		{
 			if (太さ <= 0)
@@ -400,7 +401,7 @@ public:
 
 		/** 正三角形を描画.*/
 		/** 太さに0を指定した場合塗りつぶし.*/
-		/** 太さが1以上の場合処理が重い*/
+		/** ※太さが1以上の場合処理が重い*/
 		static void Triangle(const Point &中心座標,int 辺の長さ , double 角度 , const Color &描画色 , int 太さ = 0)
 		{
 			if (太さ <= 0)

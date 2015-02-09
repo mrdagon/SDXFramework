@@ -8,7 +8,6 @@
 namespace SDX
 {
 	/** 2D用に座標変換を行うカメラを表すクラス.*/
-	/** @todo グローバルな機能として設計中*/
 	/** \include Camera.h*/
 	class Camera
 	{

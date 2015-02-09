@@ -101,14 +101,5 @@ namespace SDX
 		{
 			activeRenderer->SetDrawMode(輝度＋α値,ブレンドモード);
 		}
-
-		/** 画面全体をBMP形式で保存.*/ 
-		/*
-		static bool SaveBmp(const char *ファイル名)
-		{
-			return activeRenderer->SaveBMP(ファイル名);
-		}
-		*/
-
 	};
 }
