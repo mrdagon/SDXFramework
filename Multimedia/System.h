@@ -110,6 +110,7 @@ namespace SDX
 		static bool ProcessMessage()
 		{
 			SDL_Event event;
+			static Music* prevMusic = nullptr;
 
 			while (SDL_PollEvent(&event))
 			{
@@ -131,24 +132,24 @@ namespace SDX
 						}
 #endif
 						break;
-					case SDL_WINDOWEVENT_MINIMIZED:
 #ifdef TABLET
-						//スリープに入る
+					case SDL_WINDOWEVENT_MINIMIZED:
+						//スリープに入った時、再生中ならBGMを停止する
 						if (Music::Check())
 						{
-							//Music::active->Stop();
+							prevMusic = Music::active;
+							Music::active->Stop();
 						}
-#endif
 						break;
 					case SDL_WINDOWEVENT_RESTORED:
-#ifdef TABLET
-						//スリープ解除
-						if (Music::Check())
+						//BGMを止めていたら、再開する
+						if ( prevMusic )
 						{
-							//Music::active->Restart();
+							prevMusic->Restart();
 						}
-#endif
+						prevMusic = nullptr;
 						break;
+#endif
 					}
 
 				}

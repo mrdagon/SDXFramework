@@ -21,6 +21,7 @@ namespace SDX
 
 		void Position(double X座標, double Y座標)
 		{
+			//event.tfinger.x等は0.0~1.0の範囲になるので、押した位置を画面の解像度に合わせて計算する
 			const double aspA = Window::activeWindow->aspect;
 			const double aspB = (double)Window::GetWidth() / Window::GetHeight();
 

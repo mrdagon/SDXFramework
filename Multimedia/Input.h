@@ -31,7 +31,10 @@ namespace SDX
 			pad.Reset();
 			mouse.Reset();
 			key.Reset();
-			for (auto && it : touch) it.Reset();
+			for (auto && it : touch)
+			{
+				it.Reset();
+			}
 			gesture.Reset();
 		}
 
@@ -275,6 +278,7 @@ namespace SDX
 				if (event.tfinger.fingerId == 1) mouse.press[MouseCode::Right] = isPush;
 			case SDL_FINGERMOTION:
 				if (event.tfinger.fingerId >= 10) break;
+				//Positon関数で座標を計算
 				touch[(int)event.tfinger.fingerId].Position(event.tfinger.x, event.tfinger.y);
 				mouse.xBuffer = (int)touch[(int)event.tfinger.fingerId].xBuffer;
 				mouse.yBuffer = (int)touch[(int)event.tfinger.fingerId].yBuffer;
@@ -288,7 +292,5 @@ namespace SDX
 				break;
 			}
 		}
-
-
 	};
 }
