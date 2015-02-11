@@ -15,7 +15,7 @@ namespace SDX
 /** 旧フォントクラス.*/
 /** 毎回レンダリングするので遅い*/
 /** \include Font.h*/
-class FontOld : public IFont
+class Font : public IFont
 {
 private:
 	TTF_Font* handle = nullptr;//!<
@@ -23,10 +23,10 @@ private:
 	int thick = 0;
 	int enterHeight = 0;
 public:
-	FontOld(){}
+	Font(){}
 	
 	/** デフォルトコンストラクタ.*/
-	FontOld(const char *フォント名, int 大きさ, int 太さ = 1, int 改行高さ = 0)
+	Font(const char *フォント名, int 大きさ, int 太さ = 1, int 改行高さ = 0)
 	{
 		Load( フォント名 , 大きさ , 太さ , 改行高さ);
 	}

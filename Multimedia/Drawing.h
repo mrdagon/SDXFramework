@@ -48,7 +48,7 @@ namespace SDX
 			int f;
 
 			SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
-			SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+			SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
 			SDL_RenderClear(renderer);
 			SDL_SetRenderDrawColor(renderer,255,255,255,255);
 
@@ -103,11 +103,16 @@ namespace SDX
 				Camera::Set();
 				Screen::SetDrawMode();
 				auto prev = Screen::GetTarget();
+
 				Screen::SetTarget(&circleA);
 				MakeCircle(Screen::GetHandle(), 0, 0, CIRCLE_SIZE, CIRCLE_SIZE);
+				Screen::SetTarget(&circleB);
+	    		SDL_SetRenderDrawColor(Screen::GetHandle(), 0, 0, 0, 0);
+    			SDL_RenderClear(Screen::GetHandle());
 				Screen::SetTarget(&circleC);
 				Drawing::Rect({ 0, 0, CIRCLE_SIZE, CIRCLE_SIZE }, Color::White, true);
 				Screen::SetTarget(prev);
+
 				Screen::SetDrawMode(col,mode);
 				Camera::Set(cam);
 			}
@@ -192,6 +197,8 @@ namespace SDX
 
 				Screen::SetTarget(&imageA);
 				//横向きの三角形を描画
+	    		SDL_SetRenderDrawColor(Screen::GetHandle(), 0, 0, 0, 0);
+    			SDL_RenderClear(Screen::GetHandle());
 				SDL_SetRenderDrawBlendMode(Screen::GetHandle(), SDL_BLENDMODE_BLEND);
 				SDL_SetRenderDrawColor(Screen::GetHandle(), 255, 255, 255, 255);
 				for (int y = 0; y < HSIZE/2; ++y)

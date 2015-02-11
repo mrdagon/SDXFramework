@@ -110,7 +110,6 @@ namespace SDX
 		static bool ProcessMessage()
 		{
 			SDL_Event event;
-			static Music* prevMusic = nullptr;
 
 			while (SDL_PollEvent(&event))
 			{
@@ -137,17 +136,12 @@ namespace SDX
 						//スリープに入った時、再生中ならBGMを停止する
 						if (Music::Check())
 						{
-							prevMusic = Music::active;
-							Music::active->Stop();
+							Mix_PauseMusic();
 						}
 						break;
 					case SDL_WINDOWEVENT_RESTORED:
 						//BGMを止めていたら、再開する
-						if ( prevMusic )
-						{
-							prevMusic->Restart();
-						}
-						prevMusic = nullptr;
+						Mix_ResumeMusic();
 						break;
 #endif
 					}
