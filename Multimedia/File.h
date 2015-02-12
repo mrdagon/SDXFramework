@@ -160,6 +160,12 @@ namespace SDX
 			int 文字数 = 0;
 			SDL_RWread(handle, &文字数, sizeof(int), 1);
 
+			if (文字数 == 0)
+			{
+				読み込み先変数 = "";
+				return true;
+			}
+
 			読み込み先変数.resize(文字数);
 			SDL_RWread(handle, (char*)読み込み先変数.c_str(), 文字数, 1);
 
@@ -228,6 +234,7 @@ namespace SDX
 		/** 文字列を書き込む.*/
 		/** FileModeがWriteかAddの場合成功。\n*/
 		/**	書込元変数をファイルに書き込む。*/
+		/** 文字列の長さが文字列自身の前に書き込まれる*/
 		bool Write(std::string &書込み元変数)
 		{
 			if (!canWrite) return false;
@@ -285,10 +292,20 @@ namespace SDX
 
 				std::string buf;
 				std::istringstream iss(all);
+				int numA,numB;
 
 				while (std::getline(iss, buf, '\n'))
 				{
-					lineS.push_back(buf);
+					numA = buf.find_first_of('\r');
+					numB = buf.find_first_of('\n');
+					if (numA < numB){ numA = numB; };
+
+					if (numA != std::string::npos)
+					{
+						buf = buf.substr(0, numA);
+					}
+
+					lineS.push_back(buf.substr());
 				}
 			}
 			return lineS;

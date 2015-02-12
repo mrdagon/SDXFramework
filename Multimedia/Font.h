@@ -9,6 +9,7 @@
 #include <Multimedia/Image.h>
 #include <Framework/ImagePack.h>
 #include <Multimedia/Window.h>
+#include <Multimedia/File.h>
 
 #include <map>
 #include <iomanip>
@@ -33,7 +34,6 @@ namespace SDX
 		
 		static bool GetUTFSize(unsigned char 一文字目,int &文字長さ )
 		{
-
 			if (一文字目 < 0x20)
 			{
 				//空白文字
@@ -122,6 +122,8 @@ namespace SDX
 		}
 
 		/** 文字イメージが生成されているか確認し、無ければ新規に生成する.*/
+		/** @todo Androidだと重い*/
+		/** pngのBitmapフォント用意した方がttfフォントより容量的には優位な可能性もある*/
 		Image* GetHash(const char* 文字 , int 文字長さ) const
 		{
 			int ID = 文字[0];
@@ -146,11 +148,11 @@ namespace SDX
 					surface = TTF_RenderUTF8_Solid(handle, 文字, { 255, 255, 255 });
 				}
 
-				SDL_Texture* moji = SDL_CreateTextureFromSurface(Screen::GetHandle(), surface);
-				Image* image = new Image(moji, surface->w, surface->h);
-				hash[ID] = image;
+				SDL_Texture* moji = SDL_CreateTextureFromSurface(Screen::GetHandle(), surface);				
+				hash[ID] = new Image(moji, surface->w, surface->h);
+
 				SDL_FreeSurface(surface);
-				return image;
+				return hash[ID];
 			}
 			return it->second;
 		}
@@ -266,6 +268,206 @@ namespace SDX
 			SDL_DestroyRenderer(render);
 
 			return image;
+		}
+
+		/** テキストファイルに対応した、BMPフォントデータを生成する.*/
+		bool MakeBMPFont(const std::string テキストファイル名 )
+		{
+			if (handle == nullptr){ return false; }
+			SDL_Surface* surface;
+			SDL_Surface* buff;
+
+			SDL_Rect pos;
+			SDL_Rect rect;
+			rect.x = 0;
+			rect.y = 0;
+			pos.x = 0;
+			pos.y = 0;
+
+			/* OpenGLのテクスチャとして使うために
+			各ピクセルがR,G,B,A順の32bitサーフェイスを生成する */
+			Uint32 rmask, gmask, bmask, amask;
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+			rmask = 0xff000000;
+			gmask = 0x00ff0000;
+			bmask = 0x0000ff00;
+			amask = 0x000000ff;
+#else
+			rmask = 0x000000ff;
+			gmask = 0x0000ff00;
+			bmask = 0x00ff0000;
+			amask = 0xff000000;
+#endif
+			//追加フォント
+			File file(テキストファイル名.c_str(), FileMode::Read, true);
+			auto strS = file.GetLineS();
+			int count = strS.size();
+
+			int high = TTF_FontHeight(handle);
+			surface = SDL_CreateRGBSurface(0, size * 16 , high * (23+((count+15)/16) ) , 32, rmask, gmask, bmask, amask);
+
+			std::string str;
+
+			//基本フォントを生成
+			for (int a = 0; a < 23; ++a)
+			{
+				//全角16文字ずつ
+				switch (a)
+				{
+					case  0: str = "!\"#$%&'()*+,-./0123456789:;<=>?@"; break;
+					case  1: str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`"; break;
+					case  2: str = "abcdefghijklmnopqrstuvwxyz{|}~";break;
+					case  3: str = "｡｢｣､･ｦｧｨｩｪｫｬｭｮｯｰｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿ"; break;
+					case  4: str = "ﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜﾝﾞﾟ"; break;
+					case  5: str = "ぁあぃいぅうぇえぉおかがきぎくぐ"; break;
+					case  6: str = "けげこごさざしじすずせぜそぞただ"; break;
+					case  7: str = "ちぢっつづてでとどなにぬねのはば"; break;
+					case  8: str = "ぱひびぴふぶぷへべぺほぼぽまみむ"; break;
+					case  9: str = "めもゃやゅゆょよらりるれろゎわゐ"; break;
+					case 10: str = "ゑをんゔゕゖ"; break;
+					case 11: str = "゠ァアィイゥウェエォオカガキギク"; break;
+					case 12: str = "グケゲコゴサザシジスズセゼソゾタ"; break;
+					case 13: str = "ダチヂッツヅテデトドナニヌネノハ"; break;
+					case 14: str = "バパヒビピフブプヘベペホボポマミ"; break;
+					case 15: str = "ムメモャヤュユョヨラリルレロヮワ"; break;
+					case 16: str = "ヰヱヲンヴヵヶヷヸヹヺ・ーヽヾヿ"; break;
+					case 17: str = "！＂＃＄％＆＇（）＊＋，－．／０"; break;
+					case 18: str = "１２３４５６７８９：；＜＝＞？＠"; break;
+					case 19: str = "ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰ"; break;
+					case 20: str = "ＱＲＳＴＵＶＷＸＹＺ［＼］＾＿｀"; break;
+					case 21: str = "ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐ"; break;
+					case 22: str = "ｑｒｓｔｕｖｗｘｙｚ｛｜｝～｟｠"; break;
+				}
+				
+				if (isBlendRender)
+				{
+					buff = TTF_RenderUTF8_Blended(handle, str.c_str(), { 255, 255, 255 });
+				}
+				else
+				{
+					buff = TTF_RenderUTF8_Solid(handle, str.c_str(), { 255, 255, 255 });
+				}
+				pos.w = buff->w;
+				pos.h = buff->h;
+
+				SDL_BlitSurface(buff, NULL, surface, &pos);
+
+				pos.y += high;
+				SDL_FreeSurface(buff);
+			}
+
+			//一文字ずつ
+			//http://1bit.mobi/20101026101350.html 常用漢字表
+			for (auto && it : strS)
+			{
+				if (isBlendRender)
+				{
+					buff = TTF_RenderUTF8_Blended(handle, it.c_str(), { 255, 255, 255 });
+				}
+				else
+				{
+					buff = TTF_RenderUTF8_Solid(handle, it.c_str(), { 255, 255, 255 });
+				}
+
+				pos.w = buff->w;
+				pos.h = buff->h;
+
+				SDL_BlitSurface(buff, NULL, surface, &pos);
+
+				pos.x += pos.w;
+				if (pos.x >= size * 16)
+				{
+					pos.x = 0;
+					pos.y += high;
+				}
+				SDL_FreeSurface(buff);
+			}
+
+			std::string fileName = TTF_FontFaceFamilyName(handle);
+			fileName += TTF_FontFaceStyleName(handle);
+			fileName += ".bmp";
+
+			SDL_SaveBMP(surface, fileName.c_str());
+			SDL_FreeSurface(surface);
+
+			return true;
+		}
+
+		/** MakeBMPFontで生成したBMPフォントデータを読み込む.*/
+		bool LoadBMPFont( const Image& BMPフォント , const std::string テキストファイル名)
+		{
+			File file(テキストファイル名.c_str(), FileMode::Read, true);
+			auto strS = file.GetLineS();
+			int count = strS.size();
+
+			int h = BMPフォント.GetHeight() / ((count+15)/16 + 23);
+			int w = BMPフォント.GetWidth() / 16;
+
+			std::string str;
+
+			for (int a = 0; a < 23; ++a)
+			{
+				switch (a)
+				{
+					case  0: str = "!\"#$%&'()*+,-./0123456789:;<=>?@"; break;
+					case  1: str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`"; break;
+					case  2: str = "abcdefghijklmnopqrstuvwxyz{|}~"; break;
+					case  3: str = "｡｢｣､･ｦｧｨｩｪｫｬｭｮｯｰｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿ"; break;
+					case  4: str = "ﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜﾝﾞﾟ"; break;
+					case  5: str = "ぁあぃいぅうぇえぉおかがきぎくぐ"; break;
+					case  6: str = "けげこごさざしじすずせぜそぞただ"; break;
+					case  7: str = "ちぢっつづてでとどなにぬねのはば"; break;
+					case  8: str = "ぱひびぴふぶぷへべぺほぼぽまみむ"; break;
+					case  9: str = "めもゃやゅゆょよらりるれろゎわゐ"; break;
+					case 10: str = "ゑをんゔゕゖ"; break;
+					case 11: str = "゠ァアィイゥウェエォオカガキギク"; break;
+					case 12: str = "グケゲコゴサザシジスズセゼソゾタ"; break;
+					case 13: str = "ダチヂッツヅテデトドナニヌネノハ"; break;
+					case 14: str = "バパヒビピフブプヘベペホボポマミ"; break;
+					case 15: str = "ムメモャヤュユョヨラリルレロヮワ"; break;
+					case 16: str = "ヰヱヲンヴヵヶヷヸヹヺ・ーヽヾヿ"; break;
+					case 17: str = "！＂＃＄％＆＇（）＊＋，－．／０"; break;
+					case 18: str = "１２３４５６７８９：；＜＝＞？＠"; break;
+					case 19: str = "ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰ"; break;
+					case 20: str = "ＱＲＳＴＵＶＷＸＹＺ［＼］＾＿｀"; break;
+					case 21: str = "ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐ"; break;
+					case 22: str = "ｑｒｓｔｕｖｗｘｙｚ｛｜｝～｟｠"; break;
+				}
+
+				for (int b = 0; b < 32; ++b)
+				{
+					int ID;
+					if (a <= 2)
+					{
+						if (a == 2 && b == 29){ break; }
+						ID = str[b];
+						hash[ID] = new Image(BMPフォント, { b * w/2, a * h, w / 2, h });
+					}
+					else if (a == 3)
+					{
+						if (b == 29){ break; }
+						ID = str[b * 3] + str[b * 3 + 1] * 256 + str[b * 3 + 2] * 256 * 256;
+						hash[ID] = new Image(BMPフォント, { b * w/2, a * h, w / 2, h });
+					}
+					else
+					{
+						if (b >= 16){ break; }
+						if (a == 10 && b == 6){ break; }
+
+						ID = str[b * 3] + str[b * 3 + 1] * 256 + str[b * 3 + 2] * 256 * 256;
+						hash[ID] = new Image(BMPフォント, { b * w, a * h, w, h });
+					}
+				}
+			}
+
+			int c = 0;
+			for (auto &it : strS)
+			{
+				SetImage(it, new Image(BMPフォント, { c%16*w, (c/16+23*h), w , h }));
+				++c;
+			}
+
+			return true;
 		}
 
 		/** 大きさを取得.*/

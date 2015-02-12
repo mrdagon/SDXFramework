@@ -15,7 +15,7 @@ namespace SDX
 /** 旧フォントクラス.*/
 /** 毎回レンダリングするので遅い*/
 /** \include Font.h*/
-class Font : public IFont
+class FontOld : public IFont
 {
 private:
 	TTF_Font* handle = nullptr;//!<
@@ -23,10 +23,10 @@ private:
 	int thick = 0;
 	int enterHeight = 0;
 public:
-	Font(){}
+	FontOld(){}
 	
 	/** デフォルトコンストラクタ.*/
-	Font(const char *フォント名, int 大きさ, int 太さ = 1, int 改行高さ = 0)
+	FontOld(const char *フォント名, int 大きさ, int 太さ = 1, int 改行高さ = 0)
 	{
 		Load( フォント名 , 大きさ , 太さ , 改行高さ);
 	}
@@ -64,7 +64,7 @@ public:
 	/** フォントから画像を生成*/
 	Image MakeImage(Color 文字色, bool 反転フラグ, VariadicStream 描画する文字列) const
 	{
-		int 幅   = GetDrawStringWidth(描画する文字列);
+		int 幅   = 0;
 		int 高さ = ((int)描画する文字列.StringS.size()-1) * enterHeight + size;
 		int Y座標 = 0;
 
@@ -99,6 +99,27 @@ public:
 		SDL_DestroyRenderer(render);
 
 		return image;
+	}
+
+
+	/** 描画時の幅を取得.*/
+	int GetDrawStringWidth(const VariadicStream &幅を計算する文字列) const
+	{
+		if (handle == nullptr){ return 0; }
+
+
+		TTF_SizeUTF8( handle , 幅を ,);
+
+		int 幅 = 0;
+		int w;
+
+		for (auto it : 幅を計算する文字列.StringS)
+		{
+			TTF_SizeUTF8(handle, it.c_str() , &w, NULL );
+			幅 = std::max(幅, w);
+		}
+
+		return 幅;
 	}
 
 	/** 大きさを取得.*/

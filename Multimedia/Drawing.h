@@ -207,6 +207,9 @@ namespace SDX
 					SDL_RenderDrawLine(Screen::GetHandle(), 0, y, x, y);
 					SDL_RenderDrawLine(Screen::GetHandle(), 0, HSIZE-y-1, x, HSIZE-y-1);
 				}
+				Screen::SetTarget(&imageB);
+				SDL_SetRenderDrawColor(Screen::GetHandle(), 0, 0, 0, 0);
+				SDL_RenderClear(Screen::GetHandle());
 				Screen::SetTarget(&imageC);
 				Drawing::Rect({ 0, 0, WSIZE, HSIZE }, Color::White, true);
 				Screen::SetTarget(prev);
