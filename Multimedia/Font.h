@@ -271,6 +271,7 @@ namespace SDX
 		}
 
 		/** テキストファイルに対応した、BMPフォントデータを生成する.*/
+        /** テキストファイルには出力したい文字を一行で入力する.*/
 		bool MakeBMPFont(const std::string テキストファイル名 )
 		{
 			if (handle == nullptr){ return false; }
@@ -303,40 +304,45 @@ namespace SDX
 			auto strS = file.GetLineS();
 			int count = strS.size();
 
+            unsigned int index = 0;
+
+            if( (unsigned char)strS[0][0] == 0xEF && (unsigned char)strS[0][1] == 0xBB && (unsigned char)strS[0][2] == 0xBF ){index = 3;}
+
+            while(1)
+            {
+                if( strS[0].size() <= index ){break;}
+
+                if( (unsigned char)strS[0][index] < 0x80 ){index += 1;}
+			    else if ( (unsigned char)strS[0][index] < 0xE0){ index += 2; }
+			    else if ( (unsigned char)strS[0][index] < 0xF0){ index += 3; }
+			    else { index += 4; }
+
+                ++count;
+            }
+
 			int high = TTF_FontHeight(handle);
-			surface = SDL_CreateRGBSurface(0, size * 16 , high * (23+((count+15)/16) ) , 32, rmask, gmask, bmask, amask);
+			surface = SDL_CreateRGBSurface(0, size * 32 , high * (12+((count+31)/32) ) , 32, rmask, gmask, bmask, amask);
 
 			std::string str;
 
 			//基本フォントを生成
-			for (int a = 0; a < 23; ++a)
+			for (int a = 0; a < 12; ++a)
 			{
-				//全角16文字ずつ
+				//全角32文字ずつ
 				switch (a)
 				{
-					case  0: str = "!\"#$%&'()*+,-./0123456789:;<=>?@"; break;
-					case  1: str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`"; break;
-					case  2: str = "abcdefghijklmnopqrstuvwxyz{|}~";break;
-					case  3: str = "｡｢｣､･ｦｧｨｩｪｫｬｭｮｯｰｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿ"; break;
-					case  4: str = "ﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜﾝﾞﾟ"; break;
-					case  5: str = "ぁあぃいぅうぇえぉおかがきぎくぐ"; break;
-					case  6: str = "けげこごさざしじすずせぜそぞただ"; break;
-					case  7: str = "ちぢっつづてでとどなにぬねのはば"; break;
-					case  8: str = "ぱひびぴふぶぷへべぺほぼぽまみむ"; break;
-					case  9: str = "めもゃやゅゆょよらりるれろゎわゐ"; break;
-					case 10: str = "ゑをんゔゕゖ"; break;
-					case 11: str = "゠ァアィイゥウェエォオカガキギク"; break;
-					case 12: str = "グケゲコゴサザシジスズセゼソゾタ"; break;
-					case 13: str = "ダチヂッツヅテデトドナニヌネノハ"; break;
-					case 14: str = "バパヒビピフブプヘベペホボポマミ"; break;
-					case 15: str = "ムメモャヤュユョヨラリルレロヮワ"; break;
-					case 16: str = "ヰヱヲンヴヵヶヷヸヹヺ・ーヽヾヿ"; break;
-					case 17: str = "！＂＃＄％＆＇（）＊＋，－．／０"; break;
-					case 18: str = "１２３４５６７８９：；＜＝＞？＠"; break;
-					case 19: str = "ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰ"; break;
-					case 20: str = "ＱＲＳＴＵＶＷＸＹＺ［＼］＾＿｀"; break;
-					case 21: str = "ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐ"; break;
-					case 22: str = "ｑｒｓｔｕｖｗｘｙｚ｛｜｝～｟｠"; break;
+					case  0: str = "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`"; break;
+					case  1: str = "abcdefghijklmnopqrstuvwxyz{|}~｡｢｣､･ｦｧｨｩｪｫｬｭｮｯｰｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿ"; break;
+					case  2: str = "ﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜﾝﾞﾟ"; break;
+					case  3: str = "ぁあぃいぅうぇえぉおかがきぎくぐけげこごさざしじすずせぜそぞただ"; break;
+					case  4: str = "ちぢっつづてでとどなにぬねのはばぱひびぴふぶぷへべぺほぼぽまみむ"; break;
+					case  5: str = "めもゃやゅゆょよらりるれろゎわゐゑをんゔゕゖ"; break;
+					case  6: str = "ァアィイゥウェエォオカガキギクグケゲコゴサザシジスズセゼソゾタダ"; break;
+					case  7: str = "チヂッツヅテデトドナニヌネノハバパヒビピフブプヘベペホボポマミム"; break;
+					case  8: str = "メモャヤュユョヨラリルレロヮワヰヱヲンヴヵヶヷヸヹヺ・ーヽヾヿ゠"; break;
+					case  9: str = "！＂＃＄％＆＇（）＊＋，－．／０１２３４５６７８９：；＜＝＞？＠"; break;
+					case 10: str = "ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ［＼］＾＿｀"; break;
+					case 11: str = "ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ｛｜｝～｟｠"; break;
 				}
 				
 				if (isBlendRender)
@@ -356,18 +362,43 @@ namespace SDX
 				SDL_FreeSurface(buff);
 			}
 
+
 			//一文字ずつ
 			//http://1bit.mobi/20101026101350.html 常用漢字表
-			for (auto && it : strS)
-			{
+            index = 0;
+            int length = 0;
+            if( (unsigned char)strS[0][0] == 0xEF && (unsigned char)strS[0][1] == 0xBB && (unsigned char)strS[0][2] == 0xBF ){index = 3;}
+
+            while(1)
+            {
+                if( strS[0].size() <= index ){break;}
+
+                if( (unsigned char)strS[0][index] < 0x80 )
+                {
+                    length = 1;
+                }
+			    else if ( (unsigned char)strS[0][index] < 0xE0)
+                {
+                    length = 2; 
+                }
+			    else if ( (unsigned char)strS[0][index] < 0xF0)
+                {
+                    length = 3; 
+                }
+			    else
+                {
+                    length = 4;
+                }
 				if (isBlendRender)
 				{
-					buff = TTF_RenderUTF8_Blended(handle, it.c_str(), { 255, 255, 255 });
+					buff = TTF_RenderUTF8_Blended(handle, strS[0].substr(index,length).c_str() , { 255, 255, 255 });
 				}
 				else
 				{
-					buff = TTF_RenderUTF8_Solid(handle, it.c_str(), { 255, 255, 255 });
+					buff = TTF_RenderUTF8_Solid(handle, strS[0].substr(index,length).c_str() , { 255, 255, 255 });
 				}
+
+                index += length;
 
 				pos.w = buff->w;
 				pos.h = buff->h;
@@ -375,13 +406,13 @@ namespace SDX
 				SDL_BlitSurface(buff, NULL, surface, &pos);
 
 				pos.x += pos.w;
-				if (pos.x >= size * 16)
+				if (pos.x >= size * 32)
 				{
 					pos.x = 0;
 					pos.y += high;
 				}
 				SDL_FreeSurface(buff);
-			}
+            }
 
 			std::string fileName = TTF_FontFaceFamilyName(handle);
 			fileName += TTF_FontFaceStyleName(handle);
@@ -398,61 +429,61 @@ namespace SDX
 		{
 			File file(テキストファイル名.c_str(), FileMode::Read, true);
 			auto strS = file.GetLineS();
-			int count = strS.size();
+			int count = 0;
 
-			int h = BMPフォント.GetHeight() / ((count+15)/16 + 23);
-			int w = BMPフォント.GetWidth() / 16;
+            unsigned int index = 0;
+
+            if( (unsigned char)strS[0][0] == 0xEF && (unsigned char)strS[0][1] == 0xBB && (unsigned char)strS[0][2] == 0xBF ){index = 3;}
+
+            while(1)
+            {
+                if( strS[0].size() <= index ){break;}
+
+                if( (unsigned char)strS[0][index] < 0x80 ){index += 1;}
+			    else if ( (unsigned char)strS[0][index] < 0xE0){ index += 2; }
+			    else if ( (unsigned char)strS[0][index] < 0xF0){ index += 3; }
+			    else { index += 4; }
+
+                ++count;
+            }
+
+			int h = BMPフォント.GetHeight() / ((count+31)/32 + 12);
+			int w = BMPフォント.GetWidth() / 32;
 
 			std::string str;
 
-			for (int a = 0; a < 23; ++a)
+			for (int a = 0; a < 12; ++a)
 			{
 				switch (a)
 				{
-					case  0: str = "!\"#$%&'()*+,-./0123456789:;<=>?@"; break;
-					case  1: str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`"; break;
-					case  2: str = "abcdefghijklmnopqrstuvwxyz{|}~"; break;
-					case  3: str = "｡｢｣､･ｦｧｨｩｪｫｬｭｮｯｰｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿ"; break;
-					case  4: str = "ﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜﾝﾞﾟ"; break;
-					case  5: str = "ぁあぃいぅうぇえぉおかがきぎくぐ"; break;
-					case  6: str = "けげこごさざしじすずせぜそぞただ"; break;
-					case  7: str = "ちぢっつづてでとどなにぬねのはば"; break;
-					case  8: str = "ぱひびぴふぶぷへべぺほぼぽまみむ"; break;
-					case  9: str = "めもゃやゅゆょよらりるれろゎわゐ"; break;
-					case 10: str = "ゑをんゔゕゖ"; break;
-					case 11: str = "゠ァアィイゥウェエォオカガキギク"; break;
-					case 12: str = "グケゲコゴサザシジスズセゼソゾタ"; break;
-					case 13: str = "ダチヂッツヅテデトドナニヌネノハ"; break;
-					case 14: str = "バパヒビピフブプヘベペホボポマミ"; break;
-					case 15: str = "ムメモャヤュユョヨラリルレロヮワ"; break;
-					case 16: str = "ヰヱヲンヴヵヶヷヸヹヺ・ーヽヾヿ"; break;
-					case 17: str = "！＂＃＄％＆＇（）＊＋，－．／０"; break;
-					case 18: str = "１２３４５６７８９：；＜＝＞？＠"; break;
-					case 19: str = "ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰ"; break;
-					case 20: str = "ＱＲＳＴＵＶＷＸＹＺ［＼］＾＿｀"; break;
-					case 21: str = "ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐ"; break;
-					case 22: str = "ｑｒｓｔｕｖｗｘｙｚ｛｜｝～｟｠"; break;
+					case  0: str = "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`"; break;
+					case  1: str = "abcdefghijklmnopqrstuvwxyz{|}~｡｢｣､･ｦｧｨｩｪｫｬｭｮｯｰｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿ"; break;
+					case  2: str = "ﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜﾝﾞﾟ"; break;
+					case  3: str = "ぁあぃいぅうぇえぉおかがきぎくぐけげこごさざしじすずせぜそぞただ"; break;
+					case  4: str = "ちぢっつづてでとどなにぬねのはばぱひびぴふぶぷへべぺほぼぽまみむ"; break;
+					case  5: str = "めもゃやゅゆょよらりるれろゎわゐゑをんゔゕゖ"; break;
+					case  6: str = "ァアィイゥウェエォオカガキギクグケゲコゴサザシジスズセゼソゾタダ"; break;
+					case  7: str = "チヂッツヅテデトドナニヌネノハバパヒビピフブプヘベペホボポマミム"; break;
+					case  8: str = "メモャヤュユョヨラリルレロヮワヰヱヲンヴヵヶヷヸヹヺ・ーヽヾヿ゠"; break;
+					case  9: str = "！＂＃＄％＆＇（）＊＋，－．／０１２３４５６７８９：；＜＝＞？＠"; break;
+					case 10: str = "ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ［＼］＾＿｀"; break;
+					case 11: str = "ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ｛｜｝～｟｠"; break;
 				}
 
-				for (int b = 0; b < 32; ++b)
+				for (int b = 0; b < 64; ++b)
 				{
 					int ID;
 					if (a <= 2)
 					{
-						if (a == 2 && b == 29){ break; }
+						if (a == 1 && b == 61){ break; }
+                        if( a == 2 && b == 32){ break;}
 						ID = str[b];
-						hash[ID] = new Image(BMPフォント, { b * w/2, a * h, w / 2, h });
-					}
-					else if (a == 3)
-					{
-						if (b == 29){ break; }
-						ID = str[b * 3] + str[b * 3 + 1] * 256 + str[b * 3 + 2] * 256 * 256;
 						hash[ID] = new Image(BMPフォント, { b * w/2, a * h, w / 2, h });
 					}
 					else
 					{
-						if (b >= 16){ break; }
-						if (a == 10 && b == 6){ break; }
+						if (b >= 32){ break; }
+						if (a == 5 && b == 22){ break; }
 
 						ID = str[b * 3] + str[b * 3 + 1] * 256 + str[b * 3 + 2] * 256 * 256;
 						hash[ID] = new Image(BMPフォント, { b * w, a * h, w, h });
@@ -460,12 +491,41 @@ namespace SDX
 				}
 			}
 
+            //一文字ずつ
+			//http://1bit.mobi/20101026101350.html 常用漢字表
 			int c = 0;
-			for (auto &it : strS)
-			{
-				SetImage(it, new Image(BMPフォント, { c%16*w, (c/16+23*h), w , h }));
-				++c;
-			}
+
+            index = 0;
+            int length = 0;
+            if( (unsigned char)strS[0][0] == 0xEF && (unsigned char)strS[0][1] == 0xBB && (unsigned char)strS[0][2] == 0xBF ){index = 3;}
+
+            while(1)
+            {
+                if( strS[0].size() <= index ){break;}
+
+                if( (unsigned char)strS[0][index] < 0x80 )
+                {
+                    length = 1;
+                }
+			    else if ( (unsigned char)strS[0][index] < 0xE0)
+                {
+                    length = 2; 
+                }
+			    else if ( (unsigned char)strS[0][index] < 0xF0)
+                {
+                    length = 3; 
+                }
+			    else
+                {
+                    length = 4;
+                }
+				
+                SetImage(strS[0].substr(index,length).c_str(), new Image(BMPフォント, { c%32*w, (c/32+12)*h, w , h }));
+                
+                index += length;
+                ++c;
+            }
+
 
 			return true;
 		}
