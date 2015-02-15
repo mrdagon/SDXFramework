@@ -539,8 +539,6 @@ namespace SDX
 		/** 描画時の幅を取得.*/
 		int GetDrawStringWidth(const VariadicStream &幅を計算する文字列) const
 		{
-			if (handle == nullptr){ return 0; }
-
 			int 最大幅 = 0;
 
 			for (auto 文字列 : 幅を計算する文字列.StringS)
