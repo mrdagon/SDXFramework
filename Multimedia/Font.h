@@ -16,293 +16,292 @@
 
 namespace SDX
 {
-	/** TrueTypeFontとBMPFontをまとめて扱うクラス.*/
-	/** 毎回レンダリングせず、ハッシュマップにImageを格納する*/
-	/** 一度も表示していない文字が必要になった場合生成し以後使いまわす*/
-	/** @todo 高さが違う文字が混ざった場合の仕様が未定、現状上揃え*/
-	/** \include Font.h*/
-	class Font : public IFont
-	{
-	private:
-		TTF_Font* handle = nullptr;//!<
-		bool isBlendRender;
-		int size = 0;//!<
-		int enterHeight = 0;//!<
-		mutable std::map<int, Image*> hash;//!<
+    /** TrueTypeFontとBMPFontをまとめて扱うクラス.*/
+    /** 毎回レンダリングせず、ハッシュマップにImageを格納する*/
+    /** 一度も表示していない文字が必要になった場合生成し以後使いまわす*/
+    /** @todo 高さが違う文字が混ざった場合の仕様が未定、現状上揃え*/
+    /** \include Font.h*/
+    class Font : public IFont
+    {
+    private:
+        TTF_Font* handle = nullptr;//!<
+        bool isBlendRender;
+        int size = 0;//!<
+        int enterHeight = 0;//!<
+        mutable std::map<int, Image*> hash;//!<
 
-		int style = TTF_STYLE_NORMAL;//!<
-		
-		static bool GetUTFSize(unsigned char 一文字目,int &文字長さ )
-		{
-			if (一文字目 < 0x20)
-			{
-				//空白文字
-				文字長さ = 1;
-				return false;
-			}
+        int style = TTF_STYLE_NORMAL;//!<
+        
+        static bool GetUTFSize(unsigned char 一文字目,int &文字長さ )
+        {
+            if (一文字目 < 0x20)
+            {
+                //空白文字
+                文字長さ = 1;
+                return false;
+            }
 
-			if (一文字目 < 0x80){ 文字長さ = 1; }
-			else if (一文字目 < 0xE0){ 文字長さ = 2; }
-			else if (一文字目 < 0xF0){ 文字長さ = 3; }
-			else { 文字長さ = 4; }
-			return true;
-		}
+            if (一文字目 < 0x80){ 文字長さ = 1; }
+            else if (一文字目 < 0xE0){ 文字長さ = 2; }
+            else if (一文字目 < 0xF0){ 文字長さ = 3; }
+            else { 文字長さ = 4; }
+            return true;
+        }
 
-		/** UTFの文字列を一文字ずつ描画.*/
-		void DrawUTFString(const Point &座標, const std::string &文字列 , const Color &描画色) const
-		{
-			Point 位置 = 座標;
+        /** UTFの文字列を一文字ずつ描画.*/
+        void DrawUTFString(const Point &座標, const std::string &文字列 , const Color &描画色) const
+        {
+            Point 位置 = 座標;
 
-			int charSize;
-			for (auto it = 文字列.begin(); it != 文字列.end(); it += charSize)
-			{
-				if (!GetUTFSize(*it, charSize)){ continue; }
-				if (handle == nullptr && *it == ' ')
-				{
-					位置.x += size;
-					continue;
-				}
+            int charSize;
+            for (auto it = 文字列.begin(); it != 文字列.end(); it += charSize)
+            {
+                if (!GetUTFSize(*it, charSize)){ continue; }
+                if (handle == nullptr && *it == ' ')
+                {
+                    位置.x += size;
+                    continue;
+                }
 
-				Image* str = GetHash(文字列.substr(std::distance(文字列.begin(), it), charSize).c_str() , charSize);
-				if (str == nullptr){ continue; }
+                Image* str = GetHash(文字列.substr(std::distance(文字列.begin(), it), charSize).c_str() , charSize);
+                if (str == nullptr){ continue; }
 
-				str->SetColor(描画色);
-				str->Draw(位置);
-				位置.x += str->GetWidth();
-			}
-		}
-		/** UTFの文字列を一文字ずつ拡大描画.*/
-		void DrawUTFString(const Point &座標, double X拡大率, double Y拡大率, const std::string &文字列, const Color &描画色) const
-		{
-			Point 位置 = 座標;
+                str->SetColor(描画色);
+                str->Draw(位置);
+                位置.x += str->GetWidth();
+            }
+        }
+        /** UTFの文字列を一文字ずつ拡大描画.*/
+        void DrawUTFString(const Point &座標, double X拡大率, double Y拡大率, const std::string &文字列, const Color &描画色) const
+        {
+            Point 位置 = 座標;
 
-			int charSize = 0;
-			for (auto it = 文字列.begin(); it != 文字列.end(); it += charSize)
-			{
-				if (!GetUTFSize(*it, charSize)){ continue; }
-				if (handle == nullptr && *it == ' ')
-				{
-					位置.x += size * X拡大率;
-					continue;
-				}
+            int charSize = 0;
+            for (auto it = 文字列.begin(); it != 文字列.end(); it += charSize)
+            {
+                if (!GetUTFSize(*it, charSize)){ continue; }
+                if (handle == nullptr && *it == ' ')
+                {
+                    位置.x += size * X拡大率;
+                    continue;
+                }
 
-				Image* str = GetHash(文字列.substr(std::distance(文字列.begin(), it), charSize).c_str(),charSize);
-				if (str == nullptr){ continue; }
+                Image* str = GetHash(文字列.substr(std::distance(文字列.begin(), it), charSize).c_str(),charSize);
+                if (str == nullptr){ continue; }
 
-				str->SetColor(描画色);
-				str->DrawExtend({ 位置.x , 位置. y ,  str->GetWidth()*X拡大率, str->GetHeight()*Y拡大率 });
-				位置.x += str->GetWidth() * X拡大率;
-			}
-		}
-		/** UTFの文字列を一文字ずつ回転拡大描画.*/
-		void DrawRotateUTFString(const Point &座標, int X補正, int Y補正, double 拡大率, double 角度, const std::string &文字列, const Color &描画色) const
-		{
-			Point 位置 = 座標;
+                str->SetColor(描画色);
+                str->DrawExtend({ 位置.x , 位置. y ,  str->GetWidth()*X拡大率, str->GetHeight()*Y拡大率 });
+                位置.x += str->GetWidth() * X拡大率;
+            }
+        }
+        /** UTFの文字列を一文字ずつ回転拡大描画.*/
+        void DrawRotateUTFString(const Point &座標, int X補正, int Y補正, double 拡大率, double 角度, const std::string &文字列, const Color &描画色) const
+        {
+            Point 位置 = 座標;
 
-			int charSize = 0;
-			for (auto it = 文字列.begin(); it != 文字列.end(); it += charSize)
-			{
-				if (!GetUTFSize(*it, charSize)){ continue; }
-				if (handle == nullptr && *it == ' ')
-				{
-					位置.x += size * 拡大率;
-					continue;
-				}
+            int charSize = 0;
+            for (auto it = 文字列.begin(); it != 文字列.end(); it += charSize)
+            {
+                if (!GetUTFSize(*it, charSize)){ continue; }
+                if (handle == nullptr && *it == ' ')
+                {
+                    位置.x += size * 拡大率;
+                    continue;
+                }
 
-				Image* str = GetHash(文字列.substr(std::distance(文字列.begin(), it), charSize).c_str(),charSize);
-				if (str == nullptr){ continue; }
+                Image* str = GetHash(文字列.substr(std::distance(文字列.begin(), it), charSize).c_str(),charSize);
+                if (str == nullptr){ continue; }
 
-				double x = 位置.x + std::cos(角度) * X補正 + std::cos(角度 + PAI / 2) * Y補正;
-				double y = 位置.y + std::sin(角度) * X補正 + std::sin(角度 + PAI / 2) * Y補正;
+                double x = 位置.x + std::cos(角度) * X補正 + std::cos(角度 + PAI / 2) * Y補正;
+                double y = 位置.y + std::sin(角度) * X補正 + std::sin(角度 + PAI / 2) * Y補正;
 
-				str->SetColor(描画色);
-				str->DrawRotate({ x, y }, 拡大率, 角度);
-				X補正 += int(str->GetWidth() * 拡大率);
-			}
-		}
+                str->SetColor(描画色);
+                str->DrawRotate({ x, y }, 拡大率, 角度);
+                X補正 += int(str->GetWidth() * 拡大率);
+            }
+        }
 
-		/** 文字イメージが生成されているか確認し、無ければ新規に生成する.*/
-		/** @todo Androidだと重い*/
-		/** pngのBitmapフォント用意した方がttfフォントより容量的には優位な可能性もある*/
-		Image* GetHash(const char* 文字 , int 文字長さ) const
-		{
-			int ID = 文字[0];
-			if (文字長さ >= 2){ ID += 文字[1]*256; }
-			if (文字長さ >= 3){ ID += 文字[2]*256*256; }
-			if (文字長さ >= 4){ ID += 文字[3] * 256 * 256 * 256; }
+        /** 文字イメージが生成されているか確認し、無ければ新規に生成する.*/
+        Image* GetHash(const char* 文字 , int 文字長さ) const
+        {
+            int ID = 文字[0];
+            if (文字長さ >= 2){ ID += 文字[1]*256; }
+            if (文字長さ >= 3){ ID += 文字[2]*256*256; }
+            if (文字長さ >= 4){ ID += 文字[3] * 256 * 256 * 256; }
 
-			auto it = hash.find(ID);
+            auto it = hash.find(ID);
 
-			if (it == hash.end())
-			{
-				if (handle == nullptr){ return nullptr; }
+            if (it == hash.end())
+            {
+                if (handle == nullptr){ return nullptr; }
 
-				SDL_Surface* surface;
+                SDL_Surface* surface;
 
-				if (isBlendRender)
-				{
-					surface = TTF_RenderUTF8_Blended(handle, 文字, { 255, 255, 255 });
-				}
-				else
-				{
-					surface = TTF_RenderUTF8_Solid(handle, 文字, { 255, 255, 255 });
-				}
+                if (isBlendRender)
+                {
+                    surface = TTF_RenderUTF8_Blended(handle, 文字, { 255, 255, 255 });
+                }
+                else
+                {
+                    surface = TTF_RenderUTF8_Solid(handle, 文字, { 255, 255, 255 });
+                }
 
-				SDL_Texture* moji = SDL_CreateTextureFromSurface(Screen::GetHandle(), surface);				
-				hash[ID] = new Image(moji, surface->w, surface->h);
+                SDL_Texture* moji = SDL_CreateTextureFromSurface(Screen::GetHandle(), surface);				
+                hash[ID] = new Image(moji, surface->w, surface->h);
 
-				SDL_FreeSurface(surface);
-				return hash[ID];
-			}
-			return it->second;
-		}
+                SDL_FreeSurface(surface);
+                return hash[ID];
+            }
+            return it->second;
+        }
 
-		/** 指定した文字に対応する画像を設定.*/
-		void SetHash(const char* 文字, int 文字長さ, Image *対応Image)
-		{
-			int ID = 文字[0];
-			if (文字長さ >= 2){ ID += 文字[1] * 256; }
-			if (文字長さ >= 3){ ID += 文字[2] * 256 * 256; }
-			if (文字長さ >= 4){ ID += 文字[3] * 256 * 256 * 256; }
+        /** 指定した文字に対応する画像を設定.*/
+        void SetHash(const char* 文字, int 文字長さ, Image *対応Image)
+        {
+            int ID = 文字[0];
+            if (文字長さ >= 2){ ID += 文字[1] * 256; }
+            if (文字長さ >= 3){ ID += 文字[2] * 256 * 256; }
+            if (文字長さ >= 4){ ID += 文字[3] * 256 * 256 * 256; }
 
-			hash[ID] = 対応Image;
-		}
+            hash[ID] = 対応Image;
+        }
 
-	public:
+    public:
 
-		Font() = default;
+        Font() = default;
 
-		/** コンストラクタ*/
-		Font(const char *フォント名, int 大きさ, int 行間 = 0 , bool 高品質レンダリングフラグ = true )
-		{
-			Load(フォント名, 大きさ, 行間, 高品質レンダリングフラグ);
-		}
+        /** コンストラクタ*/
+        Font(const char *フォント名, int 大きさ, int 行間 = 0 , bool 高品質レンダリングフラグ = true )
+        {
+            Load(フォント名, 大きさ, 行間, 高品質レンダリングフラグ);
+        }
 
-		/** フォントを作成する.*/
-		/**	行間は0の場合、改行後の文字が上下くっつく。\n*/
-		/** BMPフォント専用にしたい場合、フォント名は無効な物を入れる*/
-		bool Load(const char *フォント名, int 大きさ, int 行間 = 0, bool 高品質レンダリングフラグ = true )
-		{
-			if (Loading::isLoading)
-			{
-				Loading::AddLoading([=]{ Load(フォント名, 大きさ, 行間, 高品質レンダリングフラグ); });
-				return true;
-			}
+        /** フォントを作成する.*/
+        /**	行間は0の場合、改行後の文字が上下くっつく。\n*/
+        /** BMPフォント専用にしたい場合、フォント名は無効な物を入れる*/
+        bool Load(const char *フォント名, int 大きさ, int 行間 = 0, bool 高品質レンダリングフラグ = true )
+        {
+            if (Loading::isLoading)
+            {
+                Loading::AddLoading([=]{ Load(フォント名, 大きさ, 行間, 高品質レンダリングフラグ); });
+                return true;
+            }
 
-			//すでに読み込んでいる場合は失敗
-			if (handle != nullptr){ return false; }
+            //すでに読み込んでいる場合は失敗
+            if (handle != nullptr){ return false; }
 
-			this->size = 大きさ;
-			this->enterHeight = 行間 + 大きさ;
-			isBlendRender = 高品質レンダリングフラグ;
-			handle = TTF_OpenFont(フォント名, 大きさ);
+            this->size = 大きさ;
+            this->enterHeight = 行間 + 大きさ;
+            isBlendRender = 高品質レンダリングフラグ;
+            handle = TTF_OpenFont(フォント名, 大きさ);
 
-			return (handle != nullptr);
-		}
+            return (handle != nullptr);
+        }
 
-		/** フォントハンドルをメモリから開放する.*/
-		bool Release() const
-		{
-			//すでに読み込んでいる場合は失敗
-			if (handle != nullptr){ return false; }
-			TTF_CloseFont(handle);
-			for (auto && it : hash)
-			{
-				it.second->Release();
-			}
-			return true;
-		}
+        /** フォントハンドルをメモリから開放する.*/
+        bool Release() const
+        {
+            //すでに読み込んでいる場合は失敗
+            if (handle != nullptr){ return false; }
+            TTF_CloseFont(handle);
+            for (auto && it : hash)
+            {
+                it.second->Release();
+            }
+            return true;
+        }
 
-		/** フォントのハンドルを取得.*/
-		TTF_Font* GetHandle() const
-		{
-			return handle;
-		}
+        /** フォントのハンドルを取得.*/
+        TTF_Font* GetHandle() const
+        {
+            return handle;
+        }
 
-		/** FontからImageを生成.*/
-		Image MakeImage(Color 文字色, bool 反転フラグ, const VariadicStream &描画する文字列) const
-		{
-			if (handle == nullptr){ return Image(); }
+        /** FontからImageを生成.*/
+        Image MakeImage(Color 文字色, bool 反転フラグ, const VariadicStream &描画する文字列) const
+        {
+            if (handle == nullptr){ return Image(); }
 
-			int 幅 = GetDrawStringWidth(描画する文字列);
-			int 高さ = ((int)描画する文字列.StringS.size() - 1) * enterHeight + size;
-			int Y座標 = 0;
+            int 幅 = GetDrawStringWidth(描画する文字列);
+            int 高さ = ((int)描画する文字列.StringS.size() - 1) * enterHeight + size;
+            int Y座標 = 0;
 
-			std::vector<SDL_Surface*> surfaces;
-			SDL_Surface* surface;
+            std::vector<SDL_Surface*> surfaces;
+            SDL_Surface* surface;
 
-			for (auto it : 描画する文字列.StringS)
-			{
-				if (isBlendRender)
-				{
-					surface = TTF_RenderUTF8_Blended(handle, it.c_str(), 文字色);
-				}
-				else
-				{
-					surface = TTF_RenderUTF8_Solid(handle, it.c_str(), 文字色);
-				}
+            for (auto it : 描画する文字列.StringS)
+            {
+                if (isBlendRender)
+                {
+                    surface = TTF_RenderUTF8_Blended(handle, it.c_str(), 文字色);
+                }
+                else
+                {
+                    surface = TTF_RenderUTF8_Solid(handle, it.c_str(), 文字色);
+                }
 
-				幅 = std::max(幅, surface->w);
-				surfaces.push_back(surface);
-			}
+                幅 = std::max(幅, surface->w);
+                surfaces.push_back(surface);
+            }
 
-			SDL_Surface* toRend = SDL_CreateRGBSurface(0, 幅, 高さ, 32, 0, 0, 0, 0);
-			SDL_Renderer* render = SDL_CreateSoftwareRenderer(toRend);
+            SDL_Surface* toRend = SDL_CreateRGBSurface(0, 幅, 高さ, 32, 0, 0, 0, 0);
+            SDL_Renderer* render = SDL_CreateSoftwareRenderer(toRend);
 
-			for (auto it : surfaces)
-			{
-				SDL_Texture* texture = SDL_CreateTextureFromSurface(render, it);
+            for (auto it : surfaces)
+            {
+                SDL_Texture* texture = SDL_CreateTextureFromSurface(render, it);
 
-				SDL_Rect temp = { 0, Y座標, it->w, it->h };
-				SDL_RenderCopy(render, texture, 0, &temp);
+                SDL_Rect temp = { 0, Y座標, it->w, it->h };
+                SDL_RenderCopy(render, texture, 0, &temp);
 
-				Y座標 += this->enterHeight;
+                Y座標 += this->enterHeight;
 
-				SDL_FreeSurface(it);
-				SDL_DestroyTexture(texture);
-			}
-			//描画先を戻す
-			Image image(SDL_CreateTextureFromSurface(Screen::GetHandle(), toRend), 幅, 高さ);
+                SDL_FreeSurface(it);
+                SDL_DestroyTexture(texture);
+            }
+            //描画先を戻す
+            Image image(SDL_CreateTextureFromSurface(Screen::GetHandle(), toRend), 幅, 高さ);
 
-			SDL_FreeSurface(toRend);
-			SDL_DestroyRenderer(render);
+            SDL_FreeSurface(toRend);
+            SDL_DestroyRenderer(render);
 
-			return image;
-		}
+            return image;
+        }
 
-		/** テキストファイルに対応した、BMPフォントデータを生成する.*/
-        /** テキストファイルには出力したい文字を一行で入力する.*/
-		bool MakeBMPFont(const std::string テキストファイル名 )
-		{
-			if (handle == nullptr){ return false; }
-			SDL_Surface* surface;
-			SDL_Surface* buff;
+        /** BMPフォントデータを生成する.*/
+        /** テキストファイルには出力したい文字を一行で入力します*/
+        /** pngに変換したい場合、生成したBMPの黒の箇所を透明にして下さい*/
+        bool MakeBMPFont(const std::string テキストファイル名 )
+        {
+            if (handle == nullptr){ return false; }
+            SDL_Surface* surface;
+            SDL_Surface* buff;
 
-			SDL_Rect pos;
-			SDL_Rect rect;
-			rect.x = 0;
-			rect.y = 0;
-			pos.x = 0;
-			pos.y = 0;
+            SDL_Rect pos;
+            SDL_Rect rect;
+            rect.x = 0;
+            rect.y = 0;
+            pos.x = 0;
+            pos.y = 0;
 
-			/* OpenGLのテクスチャとして使うために
-			各ピクセルがR,G,B,A順の32bitサーフェイスを生成する */
-			Uint32 rmask, gmask, bmask, amask;
+            /* OpenGLのテクスチャとして使うために
+            各ピクセルがR,G,B,A順の32bitサーフェイスを生成する */
+            Uint32 rmask, gmask, bmask, amask;
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
-			rmask = 0xff000000;
-			gmask = 0x00ff0000;
-			bmask = 0x0000ff00;
-			amask = 0x000000ff;
+            rmask = 0xff000000;
+            gmask = 0x00ff0000;
+            bmask = 0x0000ff00;
+            amask = 0x000000ff;
 #else
-			rmask = 0x000000ff;
-			gmask = 0x0000ff00;
-			bmask = 0x00ff0000;
-			amask = 0xff000000;
+            rmask = 0x000000ff;
+            gmask = 0x0000ff00;
+            bmask = 0x00ff0000;
+            amask = 0xff000000;
 #endif
-			//追加フォント
-			File file(テキストファイル名.c_str(), FileMode::Read, true);
-			auto strS = file.GetLineS();
-			int count = strS.size();
+            //追加フォント
+            File file(テキストファイル名.c_str(), FileMode::Read, true);
+            auto strS = file.GetLineS();
+            int count = strS.size();
 
             unsigned int index = 0;
 
@@ -313,58 +312,58 @@ namespace SDX
                 if( strS[0].size() <= index ){break;}
 
                 if( (unsigned char)strS[0][index] < 0x80 ){index += 1;}
-			    else if ( (unsigned char)strS[0][index] < 0xE0){ index += 2; }
-			    else if ( (unsigned char)strS[0][index] < 0xF0){ index += 3; }
-			    else { index += 4; }
+                else if ( (unsigned char)strS[0][index] < 0xE0){ index += 2; }
+                else if ( (unsigned char)strS[0][index] < 0xF0){ index += 3; }
+                else { index += 4; }
 
                 ++count;
             }
 
-			int high = TTF_FontHeight(handle);
-			surface = SDL_CreateRGBSurface(0, size * 32 , high * (12+((count+31)/32) ) , 32, rmask, gmask, bmask, amask);
+            int high = TTF_FontHeight(handle);
+            surface = SDL_CreateRGBSurface(0, size * 32 , high * (12+((count+31)/32) ) , 32, rmask, gmask, bmask, amask);
 
-			std::string str;
+            std::string str;
 
-			//基本フォントを生成
-			for (int a = 0; a < 12; ++a)
-			{
-				//全角32文字ずつ
-				switch (a)
-				{
-					case  0: str = "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`"; break;
-					case  1: str = "abcdefghijklmnopqrstuvwxyz{|}~｡｢｣､･ｦｧｨｩｪｫｬｭｮｯｰｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿ"; break;
-					case  2: str = "ﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜﾝﾞﾟ"; break;
-					case  3: str = "ぁあぃいぅうぇえぉおかがきぎくぐけげこごさざしじすずせぜそぞただ"; break;
-					case  4: str = "ちぢっつづてでとどなにぬねのはばぱひびぴふぶぷへべぺほぼぽまみむ"; break;
-					case  5: str = "めもゃやゅゆょよらりるれろゎわゐゑをんゔゕゖ"; break;
-					case  6: str = "ァアィイゥウェエォオカガキギクグケゲコゴサザシジスズセゼソゾタダ"; break;
-					case  7: str = "チヂッツヅテデトドナニヌネノハバパヒビピフブプヘベペホボポマミム"; break;
-					case  8: str = "メモャヤュユョヨラリルレロヮワヰヱヲンヴヵヶヷヸヹヺ・ーヽヾヿ゠"; break;
-					case  9: str = "！＂＃＄％＆＇（）＊＋，－．／０１２３４５６７８９：；＜＝＞？＠"; break;
-					case 10: str = "ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ［＼］＾＿｀"; break;
-					case 11: str = "ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ｛｜｝～｟｠"; break;
-				}
-				
-				if (isBlendRender)
-				{
-					buff = TTF_RenderUTF8_Blended(handle, str.c_str(), { 255, 255, 255 });
-				}
-				else
-				{
-					buff = TTF_RenderUTF8_Solid(handle, str.c_str(), { 255, 255, 255 });
-				}
-				pos.w = buff->w;
-				pos.h = buff->h;
+            //基本フォントを生成
+            for (int a = 0; a < 12; ++a)
+            {
+                //全角32文字ずつ
+                switch (a)
+                {
+                    case  0: str = "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`"; break;
+                    case  1: str = "abcdefghijklmnopqrstuvwxyz{|}~｡｢｣､･ｦｧｨｩｪｫｬｭｮｯｰｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿ"; break;
+                    case  2: str = "ﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜﾝﾞﾟ"; break;
+                    case  3: str = "ぁあぃいぅうぇえぉおかがきぎくぐけげこごさざしじすずせぜそぞただ"; break;
+                    case  4: str = "ちぢっつづてでとどなにぬねのはばぱひびぴふぶぷへべぺほぼぽまみむ"; break;
+                    case  5: str = "めもゃやゅゆょよらりるれろゎわゐゑをんゔゕゖ"; break;
+                    case  6: str = "ァアィイゥウェエォオカガキギクグケゲコゴサザシジスズセゼソゾタダ"; break;
+                    case  7: str = "チヂッツヅテデトドナニヌネノハバパヒビピフブプヘベペホボポマミム"; break;
+                    case  8: str = "メモャヤュユョヨラリルレロヮワヰヱヲンヴヵヶヷヸヹヺ・ーヽヾヿ゠"; break;
+                    case  9: str = "！＂＃＄％＆＇（）＊＋，－．／０１２３４５６７８９：；＜＝＞？＠"; break;
+                    case 10: str = "ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ［＼］＾＿｀"; break;
+                    case 11: str = "ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ｛｜｝～｟｠"; break;
+                }
+                
+                if (isBlendRender)
+                {
+                    buff = TTF_RenderUTF8_Blended(handle, str.c_str(), { 255, 255, 255 });
+                }
+                else
+                {
+                    buff = TTF_RenderUTF8_Solid(handle, str.c_str(), { 255, 255, 255 });
+                }
+                pos.w = buff->w;
+                pos.h = buff->h;
 
-				SDL_BlitSurface(buff, NULL, surface, &pos);
+                SDL_BlitSurface(buff, NULL, surface, &pos);
 
-				pos.y += high;
-				SDL_FreeSurface(buff);
-			}
+                pos.y += high;
+                SDL_FreeSurface(buff);
+            }
 
 
-			//一文字ずつ
-			//http://1bit.mobi/20101026101350.html 常用漢字表
+            //一文字ずつ
+            //http://1bit.mobi/20101026101350.html 常用漢字表
             index = 0;
             int length = 0;
             if( (unsigned char)strS[0][0] == 0xEF && (unsigned char)strS[0][1] == 0xBB && (unsigned char)strS[0][2] == 0xBF ){index = 3;}
@@ -377,59 +376,60 @@ namespace SDX
                 {
                     length = 1;
                 }
-			    else if ( (unsigned char)strS[0][index] < 0xE0)
+                else if ( (unsigned char)strS[0][index] < 0xE0)
                 {
                     length = 2; 
                 }
-			    else if ( (unsigned char)strS[0][index] < 0xF0)
+                else if ( (unsigned char)strS[0][index] < 0xF0)
                 {
                     length = 3; 
                 }
-			    else
+                else
                 {
                     length = 4;
                 }
-				if (isBlendRender)
-				{
-					buff = TTF_RenderUTF8_Blended(handle, strS[0].substr(index,length).c_str() , { 255, 255, 255 });
-				}
-				else
-				{
-					buff = TTF_RenderUTF8_Solid(handle, strS[0].substr(index,length).c_str() , { 255, 255, 255 });
-				}
+                if (isBlendRender)
+                {
+                    buff = TTF_RenderUTF8_Blended(handle, strS[0].substr(index,length).c_str() , { 255, 255, 255 });
+                }
+                else
+                {
+                    buff = TTF_RenderUTF8_Solid(handle, strS[0].substr(index,length).c_str() , { 255, 255, 255 });
+                }
 
                 index += length;
 
-				pos.w = buff->w;
-				pos.h = buff->h;
+                pos.w = buff->w;
+                pos.h = buff->h;
 
-				SDL_BlitSurface(buff, NULL, surface, &pos);
+                SDL_BlitSurface(buff, NULL, surface, &pos);
 
-				pos.x += pos.w;
-				if (pos.x >= size * 32)
-				{
-					pos.x = 0;
-					pos.y += high;
-				}
-				SDL_FreeSurface(buff);
+                pos.x += pos.w;
+                if (pos.x >= size * 32)
+                {
+                    pos.x = 0;
+                    pos.y += high;
+                }
+                SDL_FreeSurface(buff);
             }
 
-			std::string fileName = TTF_FontFaceFamilyName(handle);
-			fileName += TTF_FontFaceStyleName(handle);
-			fileName += ".bmp";
+            std::string fileName = TTF_FontFaceFamilyName(handle);
+            fileName += TTF_FontFaceStyleName(handle);
+            fileName += ".bmp";
 
-			SDL_SaveBMP(surface, fileName.c_str());
-			SDL_FreeSurface(surface);
+            SDL_SaveBMP(surface, fileName.c_str());
+            SDL_FreeSurface(surface);
 
-			return true;
-		}
+            return true;
+        }
 
-		/** MakeBMPFontで生成したBMPフォントデータを読み込む.*/
-		bool LoadBMPFont( const Image& BMPフォント , const std::string テキストファイル名)
-		{
-			File file(テキストファイル名.c_str(), FileMode::Read, true);
-			auto strS = file.GetLineS();
-			int count = 0;
+        /** MakeBMPFontで生成したBMPフォントデータを読み込む.*/
+        /** テキストファイルはMakeBMPFontに使った物と同じ物を使用して下さい*/
+        bool LoadBMPFont( const Image& BMPフォント , const std::string テキストファイル名)
+        {
+            File file(テキストファイル名.c_str(), FileMode::Read, true);
+            auto strS = file.GetLineS();
+            int count = 0;
 
             unsigned int index = 0;
 
@@ -440,60 +440,60 @@ namespace SDX
                 if( strS[0].size() <= index ){break;}
 
                 if( (unsigned char)strS[0][index] < 0x80 ){index += 1;}
-			    else if ( (unsigned char)strS[0][index] < 0xE0){ index += 2; }
-			    else if ( (unsigned char)strS[0][index] < 0xF0){ index += 3; }
-			    else { index += 4; }
+                else if ( (unsigned char)strS[0][index] < 0xE0){ index += 2; }
+                else if ( (unsigned char)strS[0][index] < 0xF0){ index += 3; }
+                else { index += 4; }
 
                 ++count;
             }
 
-			int h = BMPフォント.GetHeight() / ((count+31)/32 + 12);
-			int w = BMPフォント.GetWidth() / 32;
+            int h = BMPフォント.GetHeight() / ((count+31)/32 + 12);
+            int w = BMPフォント.GetWidth() / 32;
 
-			std::string str;
+            std::string str;
 
-			for (int a = 0; a < 12; ++a)
-			{
-				switch (a)
-				{
-					case  0: str = "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`"; break;
-					case  1: str = "abcdefghijklmnopqrstuvwxyz{|}~｡｢｣､･ｦｧｨｩｪｫｬｭｮｯｰｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿ"; break;
-					case  2: str = "ﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜﾝﾞﾟ"; break;
-					case  3: str = "ぁあぃいぅうぇえぉおかがきぎくぐけげこごさざしじすずせぜそぞただ"; break;
-					case  4: str = "ちぢっつづてでとどなにぬねのはばぱひびぴふぶぷへべぺほぼぽまみむ"; break;
-					case  5: str = "めもゃやゅゆょよらりるれろゎわゐゑをんゔゕゖ"; break;
-					case  6: str = "ァアィイゥウェエォオカガキギクグケゲコゴサザシジスズセゼソゾタダ"; break;
-					case  7: str = "チヂッツヅテデトドナニヌネノハバパヒビピフブプヘベペホボポマミム"; break;
-					case  8: str = "メモャヤュユョヨラリルレロヮワヰヱヲンヴヵヶヷヸヹヺ・ーヽヾヿ゠"; break;
-					case  9: str = "！＂＃＄％＆＇（）＊＋，－．／０１２３４５６７８９：；＜＝＞？＠"; break;
-					case 10: str = "ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ［＼］＾＿｀"; break;
-					case 11: str = "ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ｛｜｝～｟｠"; break;
-				}
+            for (int a = 0; a < 12; ++a)
+            {
+                switch (a)
+                {
+                    case  0: str = "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`"; break;
+                    case  1: str = "abcdefghijklmnopqrstuvwxyz{|}~｡｢｣､･ｦｧｨｩｪｫｬｭｮｯｰｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿ"; break;
+                    case  2: str = "ﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜﾝﾞﾟ"; break;
+                    case  3: str = "ぁあぃいぅうぇえぉおかがきぎくぐけげこごさざしじすずせぜそぞただ"; break;
+                    case  4: str = "ちぢっつづてでとどなにぬねのはばぱひびぴふぶぷへべぺほぼぽまみむ"; break;
+                    case  5: str = "めもゃやゅゆょよらりるれろゎわゐゑをんゔゕゖ"; break;
+                    case  6: str = "ァアィイゥウェエォオカガキギクグケゲコゴサザシジスズセゼソゾタダ"; break;
+                    case  7: str = "チヂッツヅテデトドナニヌネノハバパヒビピフブプヘベペホボポマミム"; break;
+                    case  8: str = "メモャヤュユョヨラリルレロヮワヰヱヲンヴヵヶヷヸヹヺ・ーヽヾヿ゠"; break;
+                    case  9: str = "！＂＃＄％＆＇（）＊＋，－．／０１２３４５６７８９：；＜＝＞？＠"; break;
+                    case 10: str = "ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ［＼］＾＿｀"; break;
+                    case 11: str = "ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ｛｜｝～｟｠"; break;
+                }
 
-				for (int b = 0; b < 64; ++b)
-				{
-					int ID;
-					if (a <= 2)
-					{
-						if (a == 1 && b == 61){ break; }
+                for (int b = 0; b < 64; ++b)
+                {
+                    int ID;
+                    if (a <= 2)
+                    {
+                        if (a == 1 && b == 61){ break; }
                         if( a == 2 && b == 32){ break;}
-						ID = str[b];
-						hash[ID] = new Image(BMPフォント, { b * w/2, a * h, w / 2, h });
-					}
-					else
-					{
-						if (b >= 32){ break; }
-						if (a == 5 && b == 22){ break; }
+                        ID = str[b];
+                        hash[ID] = new Image(BMPフォント, { b * w/2, a * h, w / 2, h });
+                    }
+                    else
+                    {
+                        if (b >= 32){ break; }
+                        if (a == 5 && b == 22){ break; }
 
-						ID = str[b * 3] + str[b * 3 + 1] * 256 + str[b * 3 + 2] * 256 * 256;
-						hash[ID] = new Image(BMPフォント, { b * w, a * h, w, h });
-					}
-				}
-			}
+                        ID = str[b * 3] + str[b * 3 + 1] * 256 + str[b * 3 + 2] * 256 * 256;
+                        hash[ID] = new Image(BMPフォント, { b * w, a * h, w, h });
+                    }
+                }
+            }
 
             //一文字ずつ
-			//http://1bit.mobi/20101026101350.html 常用漢字表
-			int c = 0;
+            //http://1bit.mobi/20101026101350.html 常用漢字表
+            int c = 0;
 
             index = 0;
             int length = 0;
@@ -507,19 +507,19 @@ namespace SDX
                 {
                     length = 1;
                 }
-			    else if ( (unsigned char)strS[0][index] < 0xE0)
+                else if ( (unsigned char)strS[0][index] < 0xE0)
                 {
                     length = 2; 
                 }
-			    else if ( (unsigned char)strS[0][index] < 0xF0)
+                else if ( (unsigned char)strS[0][index] < 0xF0)
                 {
                     length = 3; 
                 }
-			    else
+                else
                 {
                     length = 4;
                 }
-				
+                
                 SetImage(strS[0].substr(index,length).c_str(), new Image(BMPフォント, { c%32*w, (c/32+12)*h, w , h }));
                 
                 index += length;
@@ -527,146 +527,146 @@ namespace SDX
             }
 
 
-			return true;
-		}
+            return true;
+        }
 
-		/** 大きさを取得.*/
-		int GetSize() const
-		{
-			return this->size;
-		}
+        /** 大きさを取得.*/
+        int GetSize() const
+        {
+            return this->size;
+        }
 
-		/** 描画時の幅を取得.*/
-		int GetDrawStringWidth(const VariadicStream &幅を計算する文字列) const
-		{
-			int 最大幅 = 0;
+        /** 描画時の幅を取得.*/
+        int GetDrawStringWidth(const VariadicStream &幅を計算する文字列) const
+        {
+            int 最大幅 = 0;
 
-			for (auto 文字列 : 幅を計算する文字列.StringS)
-			{
-				unsigned char lead;
-				int charSize = 0;
-				int 幅 = 0;
+            for (auto 文字列 : 幅を計算する文字列.StringS)
+            {
+                unsigned char lead;
+                int charSize = 0;
+                int 幅 = 0;
 
-				for (auto it = 文字列.begin(); it != 文字列.end(); it += charSize)
-				{
-					lead = *it;
-					if (lead < 0x20){ continue; }
-					else if (lead < 0x80){ charSize = 1; }
-					else if (lead < 0xE0){ charSize = 2; }
-					else if (lead < 0xF0){ charSize = 3; }
-					else { charSize = 4; }
+                for (auto it = 文字列.begin(); it != 文字列.end(); it += charSize)
+                {
+                    lead = *it;
+                    if (lead < 0x20){ continue; }
+                    else if (lead < 0x80){ charSize = 1; }
+                    else if (lead < 0xE0){ charSize = 2; }
+                    else if (lead < 0xF0){ charSize = 3; }
+                    else { charSize = 4; }
 
-					幅 += GetHash(文字列.substr(std::distance(文字列.begin(), it), charSize).c_str(),charSize)->GetWidth();
-				}
+                    幅 += GetHash(文字列.substr(std::distance(文字列.begin(), it), charSize).c_str(),charSize)->GetWidth();
+                }
 
-				最大幅 = std::max(幅, 最大幅);
-			}
-			return 最大幅;
-		}
+                最大幅 = std::max(幅, 最大幅);
+            }
+            return 最大幅;
+        }
 
-		/** 文字を描画.*/
-		/**@todo 反転描画無効*/
-		bool Draw(const Point &座標, const Color &描画色, const VariadicStream &描画する文字列 , bool 反転フラグ = false) const override
-		{
-			Point 位置 = 座標;
+        /** 文字を描画.*/
+        /**@todo 反転描画無効*/
+        bool Draw(const Point &座標, const Color &描画色, const VariadicStream &描画する文字列 , bool 反転フラグ = false) const override
+        {
+            Point 位置 = 座標;
 
-			for (auto it : 描画する文字列.StringS)
-			{
-				DrawUTFString(位置, it, 描画色);
-				位置.y += this->enterHeight;
-			}
+            for (auto it : 描画する文字列.StringS)
+            {
+                DrawUTFString(位置, it, 描画色);
+                位置.y += this->enterHeight;
+            }
 
-			return true;
-		}
+            return true;
+        }
 
-		/** 文字を影付きで描画.*/
-		bool DrawShadow(const Point &座標, Color 表色, Color 影色, const VariadicStream &描画する文字列) const
-		{
-			Draw({ 座標.x + 1, 座標.y + 1 }, 影色, 描画する文字列);
-			return Draw(座標, 表色, 描画する文字列);
-		}
+        /** 文字を影付きで描画.*/
+        bool DrawShadow(const Point &座標, Color 表色, Color 影色, const VariadicStream &描画する文字列) const
+        {
+            Draw({ 座標.x + 1, 座標.y + 1 }, 影色, 描画する文字列);
+            return Draw(座標, 表色, 描画する文字列);
+        }
 
-		/** 文字を回転して描画.*/
-		/**@todo 反転描画無効*/
-		bool DrawRotate(const Point &座標, double 拡大率, double 角度, const Color &描画色, const VariadicStream &描画する文字列, bool 反転フラグ = false) const override
-		{
-			int 行数 = 描画する文字列.StringS.size();
+        /** 文字を回転して描画.*/
+        /**@todo 反転描画無効*/
+        bool DrawRotate(const Point &座標, double 拡大率, double 角度, const Color &描画色, const VariadicStream &描画する文字列, bool 反転フラグ = false) const override
+        {
+            int 行数 = 描画する文字列.StringS.size();
 
-			int X補正 = int(-GetDrawStringWidth(描画する文字列) * 拡大率 * 0.5);
-			int Y補正 = int(-enterHeight * 拡大率 * 0.5*行数);
+            int X補正 = int(-GetDrawStringWidth(描画する文字列) * 拡大率 * 0.5);
+            int Y補正 = int(-enterHeight * 拡大率 * 0.5*行数);
 
-			for (auto it : 描画する文字列.StringS)
-			{
-				DrawRotateUTFString(座標, X補正, Y補正, 拡大率, 角度, it, 描画色);
-				Y補正 += int(enterHeight * 拡大率);
-			}
+            for (auto it : 描画する文字列.StringS)
+            {
+                DrawRotateUTFString(座標, X補正, Y補正, 拡大率, 角度, it, 描画色);
+                Y補正 += int(enterHeight * 拡大率);
+            }
 
-			return true;
-		}
+            return true;
+        }
 
-		/** 拡大率を指定して文字を描画.*/
-		/**@todo 反転描画無効*/
-		bool DrawExtend(const Point &座標, double X拡大率, double Y拡大率, const Color &描画色, const VariadicStream &描画する文字列, bool 反転フラグ = false) const override
-		{
-			Point 位置 = 座標;
+        /** 拡大率を指定して文字を描画.*/
+        /**@todo 反転描画無効*/
+        bool DrawExtend(const Point &座標, double X拡大率, double Y拡大率, const Color &描画色, const VariadicStream &描画する文字列, bool 反転フラグ = false) const override
+        {
+            Point 位置 = 座標;
 
-			for (auto it : 描画する文字列.StringS)
-			{
-				DrawUTFString(位置, X拡大率, Y拡大率, it, 描画色);
-				位置.y += this->enterHeight * Y拡大率;
-			}
+            for (auto it : 描画する文字列.StringS)
+            {
+                DrawUTFString(位置, X拡大率, Y拡大率, it, 描画色);
+                位置.y += this->enterHeight * Y拡大率;
+            }
 
-			return true;
-		}
+            return true;
+        }
 
-		/** 指定した文字に対応するImageを設定.*/
-		/** 文字列が2文字以上なら2文字目以降は無視*/
-		void SetImage(const std::string &文字, Image *対応画像)
-		{
-			if (Loading::isLoading)
-			{
-				Loading::AddLoading([=]{ SetImage(文字,対応画像); });
-				return;
-			}
+        /** 指定した文字に対応するImageを設定.*/
+        /** 文字列が2文字以上なら2文字目以降は無視*/
+        void SetImage(const std::string &文字, Image *対応画像)
+        {
+            if (Loading::isLoading)
+            {
+                Loading::AddLoading([=]{ SetImage(文字,対応画像); });
+                return;
+            }
 
-			int charSize;
-			auto it = 文字.begin();
+            int charSize;
+            auto it = 文字.begin();
 
-			if (!GetUTFSize(*it, charSize)){ return; }
-			SetHash(文字.substr(std::distance(文字.begin(), it), charSize).c_str(), charSize, 対応画像);
-		}
+            if (!GetUTFSize(*it, charSize)){ return; }
+            SetHash(文字.substr(std::distance(文字.begin(), it), charSize).c_str(), charSize, 対応画像);
+        }
 
-		/** 指定した文字から連続してに対応するImageをまとめて設定.*/
-		/** 例えば文字列="0"で登録数=10なら0～9までを登録*/
-		/** アルファベットや数字用*/
-		void SetImageS(const std::string &文字列, ImagePack *対応画像, int 登録数)
-		{
-			if (Loading::isLoading)
-			{
-				Loading::AddLoading([=]{ SetImageS(文字列, 対応画像,登録数); });
-				return;
-			}
+        /** 指定した文字から連続してに対応するImageをまとめて設定.*/
+        /** 例えば文字列="0"で登録数=10なら0～9までを登録*/
+        /** アルファベットや数字用*/
+        void SetImageS(const std::string &文字列, ImagePack *対応画像, int 登録数)
+        {
+            if (Loading::isLoading)
+            {
+                Loading::AddLoading([=]{ SetImageS(文字列, 対応画像,登録数); });
+                return;
+            }
 
-			int charSize;
+            int charSize;
 
-			auto it = 文字列.begin();
-			if (!GetUTFSize(*it, charSize)){ return; }
-			std::string str = 文字列.substr(0, charSize);
-				
-			for (int a = 0; a < 登録数;++a)
-			{
-				if (!GetUTFSize(*it, charSize)){ continue; }
-				SetHash(str.c_str(),charSize,対応画像[0][a]);
-				if (str[charSize - 1] == 0xff)
-				{
-					str[charSize - 2]++;
-					str[charSize - 1] = 0;
-				}
-				else
-				{
-					str[charSize - 1]++;
-				}
-			}
-		}
-	};
+            auto it = 文字列.begin();
+            if (!GetUTFSize(*it, charSize)){ return; }
+            std::string str = 文字列.substr(0, charSize);
+                
+            for (int a = 0; a < 登録数;++a)
+            {
+                if (!GetUTFSize(*it, charSize)){ continue; }
+                SetHash(str.c_str(),charSize,対応画像[0][a]);
+                if (str[charSize - 1] == 0xff)
+                {
+                    str[charSize - 2]++;
+                    str[charSize - 1] = 0;
+                }
+                else
+                {
+                    str[charSize - 1]++;
+                }
+            }
+        }
+    };
 }

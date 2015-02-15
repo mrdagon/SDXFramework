@@ -15,6 +15,7 @@ SDXFramework>jni>SDL>includeに解凍したファイルを上書きする等し�
 Window::SetLogicalSize関数を追加\n
 ウィンドウサイズを倍にして、表示倍率も倍にするといった事が簡単に出来るようになります\n
 Android関連の不具合を修正。Androidの導入方法を修正。\n
+BMPフォントを出力する関数と、読み込む関数を追加\n
 ドキュメントを色々修正\n
 \n
 <B>ver 0.11</B>\n

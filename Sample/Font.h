@@ -12,17 +12,23 @@ bool SampleFont()
 	Font fontA(SystemFont::Gothic, 9, 4,false);
 	Font fontB(SystemFont::Mincho, 20, 4, true);
 
-	//BMPフォントの登録
+	//BMPフォントを生成したり読み込む
+	//事前にBMPフォントを作っておくと、Android等で読み込みが早い
+	fontA.MakeBMPFont("data/jyouyoukannji.txt");
+	Image bmpFont("data/bmpfont.png");
+	fontA.LoadBMPFont(bmpFont, "data/jyouyoukannji.txt");
+
+	//追加BMPフォントの登録
 	ImagePack bmpNumber("data/number.png",10,10,1);
-	ImagePack bmpFont("data/font.png", 30, 10, 3);
+	ImagePack bmpFont2("data/font.png", 30, 10, 3);
 
 	fontA.SetImageS("0", &bmpNumber,10);
-	fontA.SetImageS("a", &bmpFont, 26);
-	fontA.SetImageS("A", &bmpFont, 26);
-	fontA.SetImage("×", bmpFont[26]);
-	fontA.SetImage("□", bmpFont[27]);
-	fontA.SetImage("○", bmpFont[28]);
-	fontA.SetImage("☆", bmpFont[29]);
+	fontA.SetImageS("a", &bmpFont2, 26);
+	fontA.SetImageS("A", &bmpFont2, 26);
+	fontA.SetImage("×", bmpFont2[26]);
+	fontA.SetImage("□", bmpFont2[27]);
+	fontA.SetImage("○", bmpFont2[28]);
+	fontA.SetImage("☆", bmpFont2[29]);
 
 	double angle = 0;
 
