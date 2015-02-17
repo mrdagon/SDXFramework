@@ -269,9 +269,10 @@ namespace SDX
         }
 
         /** BMPフォントデータを生成する.*/
-        /** テキストファイルには出力したい文字を一行で入力します*/
-        /** pngに変換したい場合、生成したBMPの黒の箇所を透明にして下さい*/
-        bool MakeBMPFont(const std::string テキストファイル名 )
+        /** テキストファイルには出力したい文字を一行で入力します\n*/
+        /** pngに変換したい場合、生成したBMPの黒の箇所を透明にして下さい\n*/
+		/** 等幅フォントのみ対応*/
+		bool MakeBMPFont(const std::string テキストファイル名 )
         {
             if (handle == nullptr){ return false; }
             SDL_Surface* surface;
@@ -332,10 +333,10 @@ namespace SDX
                 {
                     case  0: str = "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`"; break;
                     case  1: str = "abcdefghijklmnopqrstuvwxyz{|}~｡｢｣､･ｦｧｨｩｪｫｬｭｮｯｰｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿ"; break;
-                    case  2: str = "ﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜﾝﾞﾟ"; break;
+                    case  2: str = "ﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜﾝﾞﾟ "; break;
                     case  3: str = "ぁあぃいぅうぇえぉおかがきぎくぐけげこごさざしじすずせぜそぞただ"; break;
                     case  4: str = "ちぢっつづてでとどなにぬねのはばぱひびぴふぶぷへべぺほぼぽまみむ"; break;
-                    case  5: str = "めもゃやゅゆょよらりるれろゎわゐゑをんゔゕゖ"; break;
+                    case  5: str = "めもゃやゅゆょよらりるれろゎわゐゑをんゔゕゖ　"; break;
                     case  6: str = "ァアィイゥウェエォオカガキギクグケゲコゴサザシジスズセゼソゾタダ"; break;
                     case  7: str = "チヂッツヅテデトドナニヌネノハバパヒビピフブプヘベペホボポマミム"; break;
                     case  8: str = "メモャヤュユョヨラリルレロヮワヰヱヲンヴヵヶヷヸヹヺ・ーヽヾヿ゠"; break;
@@ -458,10 +459,10 @@ namespace SDX
                 {
                     case  0: str = "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`"; break;
                     case  1: str = "abcdefghijklmnopqrstuvwxyz{|}~｡｢｣､･ｦｧｨｩｪｫｬｭｮｯｰｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿ"; break;
-                    case  2: str = "ﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜﾝﾞﾟ"; break;
+                    case  2: str = "ﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜﾝﾞﾟ "; break;
                     case  3: str = "ぁあぃいぅうぇえぉおかがきぎくぐけげこごさざしじすずせぜそぞただ"; break;
                     case  4: str = "ちぢっつづてでとどなにぬねのはばぱひびぴふぶぷへべぺほぼぽまみむ"; break;
-                    case  5: str = "めもゃやゅゆょよらりるれろゎわゐゑをんゔゕゖ"; break;
+                    case  5: str = "めもゃやゅゆょよらりるれろゎわゐゑをんゔゕゖ　"; break;
                     case  6: str = "ァアィイゥウェエォオカガキギクグケゲコゴサザシジスズセゼソゾタダ"; break;
                     case  7: str = "チヂッツヅテデトドナニヌネノハバパヒビピフブプヘベペホボポマミム"; break;
                     case  8: str = "メモャヤュユョヨラリルレロヮワヰヱヲンヴヵヶヷヸヹヺ・ーヽヾヿ゠"; break;
@@ -476,14 +477,14 @@ namespace SDX
                     if (a <= 2)
                     {
                         if (a == 1 && b == 61){ break; }
-                        if( a == 2 && b == 32){ break;}
+                        if( a == 2 && b == 33){ break;}
                         ID = str[b];
                         hash[ID] = new Image(BMPフォント, { b * w/2, a * h, w / 2, h });
                     }
                     else
                     {
                         if (b >= 32){ break; }
-                        if (a == 5 && b == 22){ break; }
+                        if (a == 5 && b == 23){ break; }
 
                         ID = str[b * 3] + str[b * 3 + 1] * 256 + str[b * 3 + 2] * 256 * 256;
                         hash[ID] = new Image(BMPフォント, { b * w, a * h, w, h });
