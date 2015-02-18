@@ -8,6 +8,17 @@
 
 namespace SDX
 {
+	enum class Platform
+	{
+		Windows,
+		MacOSX,
+		GNU_Linux,
+		iOS,
+		Android,
+		Unknown,
+	};
+
+
 	/** ライブラリの初期化やシステム的な処理を行う関数群.*/
 	/** \include System.h*/
 	class System
@@ -151,6 +162,14 @@ namespace SDX
 				{
 					IsEnd() = true;
 				}
+				else if (event.type == SDL_TEXTINPUT)
+				{
+					
+				}
+				else if (event.type == SDL_TEXTEDITING)
+				{
+					
+				}
 				else
 				{
 					Input::GetState(event);
@@ -171,5 +190,41 @@ namespace SDX
 		{
 			while (!Keyboard::HoldAnyKey() && System::ProcessMessage()){}
 		}
+
+		/** プラットフォームを取得する.*/
+		static Platform GetPlatform()
+		{
+#ifdef __WINDOWS__
+			return Platform::Windows;
+#elif defined(__MACOSX__)
+			return Platform::MacOSX;
+#elif defined(__LINUX__)
+			return Platform::GNU_Linux;
+#elif defined(__ANDROID__)
+			return Platform::Android;
+#elif defined(__IPHONEOS__)
+			return Platform::iOS;
+#endif
+			return Platform::Unknown;
+		}
+		
+		/** タブレット端末かどうかを取得.*/
+		/** @todo Windowsタブレットだとfalseになる*/
+		static bool IsTablet()
+		{
+#ifdef __WINDOWS__
+			return false;
+#elif defined(__MACOSX__)
+			return false;
+#elif defined(__LINUX__)
+			return false;
+#elif defined(__ANDROID__)
+			return true;
+#elif defined(__IPHONEOS__)
+			return true;
+#endif
+			return false;
+		}
+
 	};
 }

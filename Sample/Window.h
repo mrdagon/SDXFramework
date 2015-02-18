@@ -22,9 +22,9 @@ bool SampleWindow()
 		Window::SetIcon("data/icon000.png");
 		sub.SetIcon("data/icon009.png");
 
-		Drawing::String({ 10, 100 }, Color::White, { "Windowクラスのテスト" ,Input::mouse.x," ",Input::mouse.y});
+		Drawing::String({ 10, 100 }, Color::White, { "Windowクラスのテスト:Enterで終了" ,Input::mouse.x," ",Input::mouse.y});
 		Screen::SetRenderer(sub.GetRenderer());
-		Drawing::String({ 10, 100 }, Color::White, { "SubWindowクラスのテスト", Input::mouse.x," ", Input::mouse.y });
+		Drawing::String({ 10, 100 }, Color::White, { "SubWindowクラスのテスト:Enterで終了", Input::mouse.x," ", Input::mouse.y });
 
 		if (Input::key._1.on){ Window::SetTitle("Mainタイトルを変えたよ！"); }//ウィンドウタイトルを変更
 		if (Input::key._2.on){Window::SetSize(640, 480);}//ウィンドウの大きさを変更

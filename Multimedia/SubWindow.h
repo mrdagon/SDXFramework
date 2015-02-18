@@ -9,6 +9,7 @@ namespace SDX
 {
 	/** ウィンドウを表すクラス.*/
 	/** Windowに無くてSubWindowにある関数は[SubWindow専用]と表記.*/
+	/** @todo 複数ウィンドウの動作確認は不完全*/
 	/** \include Window.h*/
 	class SubWindow
 	{
