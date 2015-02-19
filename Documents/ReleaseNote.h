@@ -4,15 +4,16 @@
 今後の変更予定はSorceForgeのチケットやTodo一覧を参照して下さい\n
 \n
 SorceForgeで配布しているファイルはデータを全て含む、安定版です\n
-開発中のバージョンを入手したい場合は\n
+開発中のバージョンを入手したい場合や、差分ファイルだけ欲しい場合は\n
 以下のページ右下の"Download ZIP"からソースをダウンロードし\n
 https://github.com/mrdagon/SDXFramework
 \n
-SDXFramework>jni>SDL>includeに解凍したファイルを上書きする等して下さい\n
+SDXFramework>jni>SDL>includeに解凍したファイルを上書きして下さい\n
 \n
 <HR>
 <B>ver 0.13</B>\n
 Systemにプラットフォームの種類を取得する関数と、タブレットかどうかを取得する関数を追加。\n
+LoadBMPFont関数を非同期読み込み対応\n
 <B>ver 0.12</B>\n
 Window::SetLogicalSize関数を追加\n
 ウィンドウサイズを倍にして、表示倍率も倍にするといった事が簡単に出来るようになります\n

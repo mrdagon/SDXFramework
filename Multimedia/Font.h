@@ -428,6 +428,13 @@ namespace SDX
         /** テキストファイルはMakeBMPFontに使った物と同じ物を使用して下さい*/
         bool LoadBMPFont( const Image& BMPフォント , const std::string テキストファイル名)
         {
+			if (Loading::isLoading)
+			{
+				Loading::AddLoading([=]{ LoadBMPFont(BMPフォント, テキストファイル名); });
+				return true;
+			}
+
+
             File file(テキストファイル名.c_str(), FileMode::Read, true);
             auto strS = file.GetLineS();
             int count = 0;
