@@ -14,6 +14,8 @@ SDXFramework>jni>SDL>includeに解凍したファイルを上書きして下さ�
 <B>ver 0.13</B>\n
 Systemにプラットフォームの種類を取得する関数と、タブレットかどうかを取得する関数を追加。\n
 LoadBMPFont関数を非同期読み込み対応\n
+Drawing関数で半透明指定が無効になっていたバグを修正\n
+\n
 <B>ver 0.12</B>\n
 Window::SetLogicalSize関数を追加\n
 ウィンドウサイズを倍にして、表示倍率も倍にするといった事が簡単に出来るようになります\n

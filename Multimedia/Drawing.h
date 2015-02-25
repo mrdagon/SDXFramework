@@ -24,16 +24,24 @@ namespace SDX
 		Drawing(const Drawing& src){}
 
 		/**透過状態を計算する.*/
-		static void RGBACulculate(int 赤, int 緑, int 青)
+		static void RGBACulculate( const Color &色 )
 		{
-			SDL_SetRenderDrawBlendMode(Screen::GetHandle(), (SDL_BlendMode)Screen::GetRenderer()->blendMode);
+			if (色.GetAlpha() == 255)
+			{
+				SDL_SetRenderDrawBlendMode(Screen::GetHandle(), (SDL_BlendMode)Screen::GetRenderer()->blendMode);
+			}
+			else
+			{
+				SDL_SetRenderDrawBlendMode(Screen::GetHandle(), (SDL_BlendMode)BlendMode::Alpha);
+			}
+
 			SDL_SetRenderDrawColor
 				(
 				Screen::GetHandle(),
-				Screen::GetRenderer()->rgba.GetRed() * 赤 / 255,
-				Screen::GetRenderer()->rgba.GetGreen() * 緑 / 255,
-				Screen::GetRenderer()->rgba.GetBlue() * 青 / 255,
-				Screen::GetRenderer()->rgba.GetAlpha()
+				Screen::GetRenderer()->rgba.GetRed() * 色.GetRed() / 255,
+				Screen::GetRenderer()->rgba.GetGreen() * 色.GetGreen() / 255,
+				Screen::GetRenderer()->rgba.GetBlue() * 色.GetBlue() / 255,
+				Screen::GetRenderer()->rgba.GetAlpha() * 色.GetAlpha() / 255
 				);
 		}
 
@@ -291,7 +299,7 @@ public:
 			if (太さ <= 1)
 			{
 				int xA,xB,yA,yB;
-				RGBACulculate(色.GetRed(), 色.GetGreen(), 色.GetBlue());
+				RGBACulculate(色);
 				if (Camera::Get())
 				{
 					xA = (int)Camera::Get()->TransX(始点.x);
@@ -348,7 +356,7 @@ public:
 				buf = Camera::Get()->TransRect(buf);
 			}
 
-			RGBACulculate(色.GetRed(), 色.GetGreen(), 色.GetBlue());
+			RGBACulculate(色);
 			if (塗りつぶしフラグ)
 			{
 				SDL_RenderFillRect(Screen::GetHandle(), &buf);
@@ -427,7 +435,7 @@ public:
 		/** 指定座標に点を描画.*/
 		static void Pixel(const Point &座標, const Color &色)
 		{
-			RGBACulculate(色.GetRed(), 色.GetGreen(), 色.GetBlue());
+			RGBACulculate(色);
 
 			double x = 座標.x;
 			double y = 座標.y;
