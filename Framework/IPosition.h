@@ -71,7 +71,7 @@ namespace SDX
 		}
 
 		/** 対象との相対座標を取得.*/
-		double GetDistance(IPosition* 比較対象) const
+		double GetDistance(const IPosition* 比較対象) const
 		{
 			const double xd = this->GetX() - 比較対象->GetX();
 			const double yd = this->GetY() - 比較対象->GetY();

@@ -32,6 +32,7 @@ namespace SDX
 			return range(Engine());
 		}
 		/** 0～最大値の乱数を取得.*/
+		/** 得られる値の種類は最大値+1になるので注意*/
 		static int Get(int 最大値)
 		{
 			std::uniform_int_distribution<int> range(0, 最大値);
