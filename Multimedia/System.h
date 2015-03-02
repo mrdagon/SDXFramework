@@ -18,7 +18,6 @@ namespace SDX
 		Unknown,
 	};
 
-
 	/** ライブラリの初期化やシステム的な処理を行う関数群.*/
 	/** \include System.h*/
 	class System
@@ -35,11 +34,15 @@ namespace SDX
 			return isEnd;
 		}
 	public:
+		static std::string inputText;
+		static std::string textComposition;
+		static int textCursor;
+		static int textSelection_len;
 
 		/** ライブラリの初期化.*/
 		/** 初期化に失敗した場合、ソフトを強制的に終了する。\n*/
 		/**	一部の設定関数は初期化前に呼び出す必要がある。*/
-		static void Initialise(const char* ウィンドウ名, int 幅, int 高さ , bool フルスクリーンフラグ = false)
+		static void Initialise(const char* ウィンドウ名, int 幅, int 高さ, bool フルスクリーンフラグ = false)
 		{
 			if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_AUDIO | SDL_INIT_VIDEO) < 0)
 			{
@@ -124,55 +127,55 @@ namespace SDX
 
 			while (SDL_PollEvent(&event))
 			{
-				if (event.type == SDL_WINDOWEVENT)
+				switch (event.type)
 				{
-					switch (event.window.event)
-					{
-					case SDL_WINDOWEVENT_CLOSE:
+					case SDL_WINDOWEVENT:
+						switch (event.window.event)
+						{
+						case SDL_WINDOWEVENT_CLOSE:
 #ifndef TABLET
-						//ここでIDに応じてDestroy等する
-						SubWindow::CheckWindowID(event.window.windowID);
-						if (SubWindow::mainWindow.handle == nullptr)
-						{
-							IsEnd() = true;
-							for (auto it : SubWindow::windowS)
+							//ここでIDに応じてDestroy等する
+							SubWindow::CheckWindowID(event.window.windowID);
+							if (SubWindow::mainWindow.handle == nullptr)
 							{
-								it->Destroy();
+								IsEnd() = true;
+								for (auto it : SubWindow::windowS)
+								{
+									it->Destroy();
+								}
 							}
-						}
 #endif
-						break;
+							break;
 #ifdef TABLET
-					case SDL_WINDOWEVENT_MINIMIZED:
-						//スリープに入った時、再生中ならBGMを停止する
-						if (Music::Check())
-						{
-							Mix_PauseMusic();
+						case SDL_WINDOWEVENT_MINIMIZED:
+							//スリープに入った時、再生中ならBGMを停止する
+							if (Music::Check())
+							{
+								Mix_PauseMusic();
+							}
+							break;
+						case SDL_WINDOWEVENT_RESTORED:
+							//BGMを止めていたら、再開する
+							Mix_ResumeMusic();
+							break;
+#endif
 						}
 						break;
-					case SDL_WINDOWEVENT_RESTORED:
-						//BGMを止めていたら、再開する
-						Mix_ResumeMusic();
+					case SDL_QUIT:
+						IsEnd() = true;
 						break;
-#endif
-					}
-
-				}
-				else if (event.type == SDL_QUIT)
-				{
-					IsEnd() = true;
-				}
-				else if (event.type == SDL_TEXTINPUT)
-				{
-					
-				}
-				else if (event.type == SDL_TEXTEDITING)
-				{
-					
-				}
-				else
-				{
-					Input::GetState(event);
+					case SDL_TEXTINPUT:
+						inputText += event.text.text;
+						break;
+					case SDL_TEXTEDITING:
+						//Windowsでは無効
+						textComposition = event.edit.text;
+						textCursor = event.edit.start;
+						textSelection_len = event.edit.length;
+						break;
+					default:
+						Input::GetState(event);
+						break;
 				}
 			}
 

@@ -25,6 +25,11 @@ namespace SDX
 	const Color Color::Teal(0x00, 0x80, 0x80);//!< 青緑 [RGB]0,128,128
 	const Color Color::Aqua(0x00, 0xff, 0xff);//!< 水 [RGB]0,255,255
 
+	std::string System::inputText;
+	std::string System::textComposition;
+	int System::textCursor;
+	int System::textSelection_len;
+
 	Camera* Camera::active = nullptr;
 
 	Joypad Input::pad;

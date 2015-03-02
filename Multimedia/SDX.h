@@ -49,18 +49,17 @@ vartual ~a() = default;
 #pragma comment(lib, "SDL2_mixer.lib")
 #pragma comment(lib, "SDL2_ttf.lib")
 #pragma execution_character_set("utf-8")//charの文字コードをUTF-8に変更
-
 #ifdef _DEBUG
 #pragma comment(linker, "/NODEFAULTLIB:msvcrt.lib")
 #else
-/*
-コメントアウトするとRerease時にMTでコンパイル可能になる
-#pragma comment(linker, "/NODEFAULTLIB:msvcrt.lib")
-int fprintf( FILE * stream, const char * format, ... )
-{
-	return 0;
-}
-*/
+
+//コメントアウトするとRerease時にMTでコンパイル可能になる
+//#pragma comment(linker, "/NODEFAULTLIB:msvcrt.lib")
+//int fprintf( FILE * stream, const char * format, ... )
+//{
+//	return 0;
+//}
+
 #endif
 
 #include <SDL.h>

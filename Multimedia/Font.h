@@ -272,7 +272,7 @@ namespace SDX
         /** テキストファイルには出力したい文字を一行で入力します\n*/
         /** pngに変換したい場合、生成したBMPの黒の箇所を透明にして下さい\n*/
 		/** 等幅フォントのみ対応*/
-		bool MakeBMPFont(const std::string テキストファイル名 )
+		bool MakeBMPFont(const std::string テキストファイル名)
         {
             if (handle == nullptr){ return false; }
             SDL_Surface* surface;
@@ -416,6 +416,7 @@ namespace SDX
 
             std::string fileName = TTF_FontFaceFamilyName(handle);
             fileName += TTF_FontFaceStyleName(handle);
+			fileName += std::to_string(size);
             fileName += ".bmp";
 
             SDL_SaveBMP(surface, fileName.c_str());

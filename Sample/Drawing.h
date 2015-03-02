@@ -9,7 +9,7 @@ bool SampleDrawing()
 	System::Initialise("sample", 640, 480);
 
 	double angle = 0;
-
+	
 	while (System::Update())
 	{
 		Drawing::String({ 10, 10 }, Color::White, "こんにちは");
