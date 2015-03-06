@@ -24,6 +24,7 @@ namespace SDX
 	};
 
 	/** 入出力可能なテキストかバイナリファイルを表すクラス.*/
+	/**@todo 配列の保存と読み込みの仕様が分かりにくい？*/
 	/** \include File.h*/
 	class File
 	{
@@ -150,6 +151,29 @@ namespace SDX
 			return true;
 		}
 
+		template < class T >
+		/** 可変長配列を読み込む.*/
+		/** FileMode::Readの場合成功*/
+		/** 要素数を最初に読み込む*/
+		bool Read(std::vector<T> &読み込み元配列)
+		{
+			if (!canRead) return false;
+
+			int 要素数;
+			SDL_RWread(handle, &要素数, sizeof(int), 1);
+
+			読み込み元配列.clear();
+
+			for (int a = 0; a < 要素数; ++a)
+			{
+				T 値;
+				SDL_RWread(handle, &値, sizeof(T), 1);
+				読み込み元配列.push_back(値);
+			}
+
+			return true;
+		}
+
 		/** 文字列を読み込む.*/
 		/** 1byte目が文字数、残り部分が文字データになっていれば読み込める*/
 		/** FileMode::Readの場合成功*/
@@ -247,6 +271,25 @@ namespace SDX
 			return canWrite;
 		}
 
+		template < class T >
+		/** 可変長配列を読み込む.*/
+		/** FileMode::Wirteの場合成功*/
+		/** 要素数を最初に書き込む*/
+		bool Write(std::vector<T> &書込み元配列)
+		{
+			if (!canWrite) return false;
+
+			int 要素数 = 書込み元配列.size();
+			SDL_RWwrite(handle, &要素数, sizeof(int), 1);
+
+			for (int a = 0; a < 要素数; ++a)
+			{
+				SDL_RWwrite(handle, &書込み元配列[a], sizeof(T), 1);
+			}
+
+			return true;
+		}
+
 		template <class TSaveType, class TInput>
 		/**型変換をして書き込む.*/
 		/**double型をfloatに変換して保存する時用*/
@@ -265,12 +308,28 @@ namespace SDX
 		}
 
 		template< class T>
-		/** FileModeがReadの場合Read、WriteかAddの場合Writeを行う.*/
+		/** 変数を読み書きする.*/
+		/** FileModeがReadの場合Read、WriteかAddの場合Writeを行う*/
 		bool ReadWrite(T &読み書き変数)
 		{
 			if (canRead)
 			{
 				return Read(読み書き変数);
+			}
+			else if (canWrite){
+				return Write(読み書き変数);
+			}
+			return false;
+		}
+
+		template< class T>
+		/** 配列に読み書きする.*/
+		/** FileModeがReadの場合Read、WriteかAddの場合Writeを行う*/
+		bool ReadWrite(T *読み書き変数 , int 要素数)
+		{
+			if (canRead)
+			{
+				return Read(読み書き変数 , 要素数);
 			}
 			else if (canWrite){
 				return Write(読み書き変数);
