@@ -67,7 +67,7 @@ namespace SDX
 		/** 対象との角度を取得.*/
 		double GetDirect(IPosition* 比較対象) const
 		{
-			return std::atan2(比較対象->GetY() - this->GetY(), 比較対象->GetX() - this->GetX());
+			return std::atan2( 比較対象->GetY() - this->GetY() , 比較対象->GetX() - this->GetX());
 		}
 
 		/** 対象との相対座標を取得.*/
