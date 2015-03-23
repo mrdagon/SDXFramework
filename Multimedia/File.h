@@ -258,14 +258,17 @@ namespace SDX
 		/** 文字列を書き込む.*/
 		/** FileModeがWriteかAddの場合成功。\n*/
 		/**	書込元変数をファイルに書き込む。*/
-		/** 文字列の長さが文字列自身の前に書き込まれる*/
-		bool Write(std::string &書込み元変数)
+		/** 文字列の長さを文字列自身の前に書き込むかを選択出来る*/
+		bool Write(std::string &書込み元変数 , bool is文字数 = true)
 		{
 			if (!canWrite) return false;
 
 			const int 文字数 = (int)書込み元変数.size();
 
-			SDL_RWwrite(handle, &文字数, sizeof(int), 1);
+			if (is文字数)
+			{
+				SDL_RWwrite(handle, &文字数, sizeof(int), 1);
+			}
 			SDL_RWwrite(handle, 書込み元変数.c_str(), 文字数, 1);
 
 			return canWrite;
