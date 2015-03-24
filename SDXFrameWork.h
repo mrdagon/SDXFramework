@@ -36,3 +36,7 @@
 #include <Framework/Shape.h>
 #include <Framework/IScene.h>
 #include <Framework/Director.h>
+
+#include <Utility/TranceCLI.h>
+#include <Utility/TranceCSV.h>
+#include <Utility/TranceScene.h>

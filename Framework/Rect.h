@@ -22,14 +22,14 @@ namespace SDX
 	class Rect : public IShape
 	{
 	public:
-		double x;//!< 起点座標
-		double y;//!< 起点座標
+		double x = 0;//!< 起点座標
+		double y = 0;//!< 起点座標
 
-		double widthLeft;//!< 起点から左側の幅
-		double widthRight;//!< 起点から右側の幅
+		double widthLeft = 0;//!< 起点から左側の幅
+		double widthRight = 0;//!< 起点から右側の幅
 
-		double heightUp;//!< 起点から上側の幅
-		double heightDown;//!< 起点から下側の幅
+		double heightUp = 0;//!< 起点から上側の幅
+		double heightDown = 0;//!< 起点から下側の幅
 
 		Rect() = default;
 

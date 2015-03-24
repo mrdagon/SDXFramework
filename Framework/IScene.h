@@ -20,9 +20,12 @@ namespace SDX
 		virtual void Draw() = 0;
 
 		/**初期化処理.*/
-		virtual void Init(){};
+		virtual void Init(){}
 
 		/**終了時の処理.*/
-		virtual void Final(){};
+		virtual void Final(){}
+
+		/**GUIの読み込み処理.*/
+		virtual void LoadGUI(){}
 	};
 }

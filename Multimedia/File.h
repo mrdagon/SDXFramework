@@ -340,6 +340,24 @@ namespace SDX
 			return false;
 		}
 
+		/** 改行付きの文字列を一行書き込む.*/
+		bool AddLine(VariadicStream 文字列)
+		{
+			if (!canWrite) return false;
+
+			文字列.StringS[0] += "\r\n";
+
+			const int 文字数 = (int)文字列.StringS[0].size();
+
+			if (文字数 == 0)
+			{
+				return false;
+			}
+			SDL_RWwrite(handle, 文字列.StringS[0].c_str(), 文字数, 1);
+
+			return true;
+		}
+
 		/** ファイルを改行区切りで一括して読み込む.*/
 		std::vector<std::string> GetLineS()
 		{
