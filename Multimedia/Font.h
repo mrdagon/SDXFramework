@@ -602,7 +602,7 @@ namespace SDX
             int 行数 = 描画する文字列.StringS.size();
 
             int X補正 = int(-GetDrawStringWidth(描画する文字列) * 拡大率 * 0.5);
-            int Y補正 = int(-enterHeight * 拡大率 * 0.5*行数);
+            int Y補正 = int(-enterHeight * 拡大率 * (0.5*行数-0.5));
 
             for (auto it : 描画する文字列.StringS)
             {

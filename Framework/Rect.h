@@ -270,6 +270,11 @@ namespace SDX
 			return { x , y};
 		}
 
+		Point GetCenter() const
+		{
+			return{ x + (widthRight - widthLeft) / 2, y + (heightDown - heightUp) / 2 };
+		}
+
 		/** SDL_Rectに型変換.*/
 		operator SDL_Rect() const
 		{
@@ -277,7 +282,7 @@ namespace SDX
 		}
 
 		/** 座標に加算.*/
-		Rect operator +(Point &加算値)
+		Rect operator +(Point &加算値) const
 		{
 			return {this->x + 加算値.x,this->y + 加算値.y ,widthRight , heightDown , widthLeft , heightUp};
 		}

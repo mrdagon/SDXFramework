@@ -119,7 +119,7 @@ namespace SDX
 		}
 
 		/** 座標の加算.*/
-		Point operator +(const Point &加算値)
+		Point operator +(const Point &加算値) const
 		{
 			return {this->x + 加算値.x , this->y + 加算値.y};
 		}
