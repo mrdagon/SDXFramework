@@ -3,9 +3,9 @@
 //[Contact]http://sourceforge.jp/projects/dxframework/
 #pragma once
 #include <Multimedia/File.h>
-#include <Utility/GUIData.h>
-#include <Utility/TranceScene.h>
-#include <Utility/TranceCSV.h>
+#include <GUI/GUIData.h>
+#include <GUI/TranceScene.h>
+#include <GUI/TranceCSV.h>
 #include <vector>
 
 namespace SDX
