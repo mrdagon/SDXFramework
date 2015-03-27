@@ -2,42 +2,73 @@
 //[License]GNU Affero General Public License, version 3
 //[Contact]http://sourceforge.jp/projects/dxframework/
 #pragma once
+#include <GUI/IGUI.h>
 #include <GUI/GUIData.h>
-#include <GUI/TranceScene.h>
-//#include <GUI/TranceCSV.h>
 #include <vector>
+
+#include "Text.h"
+#include "Chara4x3.h"
 
 namespace SDX
 {
 	/**コードを変換する関数の名前空間.*/
 	namespace TranceCode
 	{
+		void GUI_Factory(GUIData& data, std::string& layerName, const char* name, const char* type, int gid, Rect rect, double r, std::vector<std::string>& properties)
+		{
+			if (layerName == "Text")
+			{
+				data.dataS.push_back(std::make_shared<Text>(name, rect));
+			}
+			else if (layerName == "Image")
+			{
+
+			}
+			else if (layerName == "Button")
+			{
+
+			}
+			else if (layerName == "Frame")
+			{
+
+			}
+			else if (layerName == "Chara4x3")
+			{
+				int direct = std::atoi(properties[0].c_str());
+				data.dataS.push_back(std::make_shared<Chara4x3>(name,rect,direct));
+			}
+		}
+
 		/** Tiledで作成したデータ(.tmx)を変換してGUIDataにする関数.*/
 		/**@todo 実装中*/
 		/** \include TranceCode.h*/
-		GUIData TMXtoGUI(const char* ファイル名)
+		GUIData TMXtoGUI(const char* ファイル名, std::function<void(GUIData& data, std::string& layerName, const char* name, const char* type, int gid, Rect rect, double r, std::vector<std::string>& properties)> Factory関数)
 		{
 			File file(ファイル名,FileMode::Read);
 			auto strS = file.GetLineS();
 			GUIData guiS;
-			GUIType guiType = GUIType::Form;
 			bool visible = false;
+
+			std::string layerName = "";
+			std::string name = "";
+			std::string type = "";
+			int gid=0;
+			Rect rect;
+			double r = 0;
+			std::vector<std::string> properties;
+			int index = 0;
 
 			for (auto &it : strS)
 			{
-				if (it.find("<map version") != std::string::npos)
+				if (it.find("<map") != std::string::npos)
 				{
 					//フォーム全体の情報
 				}
 				else if (it.find("<objectgroup") != std::string::npos)
 				{
-					//レイヤーの判定
-					if (it.find("Button") != std::string::npos) { guiType = GUIType::Button; }
-					else if (it.find("Frame") != std::string::npos) { guiType = GUIType::Frame; }
-					else if (it.find("Image") != std::string::npos) { guiType = GUIType::Image; }
-					else if (it.find("Text") != std::string::npos) { guiType = GUIType::Text; }
-					else if (it.find("Chara4x3") != std::string::npos) { guiType = GUIType::Chara4x3; }
-					else { guiType = GUIType::Unknown; }
+					//レイヤー名を取得
+					int a = it.find("name=") + 6;
+					layerName = it.substr(a, it.find("\"", a) - a);
 				}
 				else if (it.find("<object") != std::string::npos)
 				{
@@ -49,48 +80,59 @@ namespace SDX
 					else
 					{
 						int a = it.find("name=") + 6;
-						int b = it.find("type=") + 6;
-						int c = it.find("x=") + 3;
-						int d = it.find("y=") + 3;
-						int e = it.find("width=") + 7;
-						int f = it.find("height=") + 8;
-						std::string name = it.substr(a, it.find("\"", a) - a);
-						std::string type = it.substr(b, it.find("\"", b) - b);
-						double x = std::atoi(it.substr(c, it.find("\"", c) - c).c_str());
-						double y = std::atoi(it.substr(d, it.find("\"", d) - d).c_str());
-						double w = std::atoi(it.substr(e, it.find("\"", e) - e).c_str());
-						double h = std::atoi(it.substr(f, it.find("\"", f) - f).c_str());
-						//rotationは無視する
+						if (a > 6){ name = it.substr(a, it.find("\"", a) - a); }
+						else { name = ""; }
 
-						guiS.AddData(guiType, name.c_str(), type.c_str(), x, y, w, h);
+						int b = it.find("type=") + 6;
+						if (b > 6){ type = it.substr(b, it.find("\"", b) - b); }
+						else { type = ""; }
+
+						int c = it.find("x=") + 3;
+						if (c > 3){ rect.x = std::atoi(it.substr(c, it.find("\"", c) - c).c_str()); }
+
+						int d = it.find("y=") + 3;
+						if (d > 3){ rect.y = std::atoi(it.substr(d, it.find("\"", d) - d).c_str()); }
+
+						int e = it.find("width=") + 7;
+						if (e > 7){ rect.widthRight = std::atoi(it.substr(e, it.find("\"", e) - e).c_str()); }
+						else { rect.widthRight = 0; }
+
+						int f = it.find("height=") + 8;
+						if (f > 8){ rect.heightDown = std::atoi(it.substr(f, it.find("\"", f) - f).c_str()); }
+						else { rect.heightDown = 0; }
+						 
+						int g = it.find("gid=") + 5;
+						if (g > 5){ gid = std::atoi(it.substr(g, it.find("\"", g) - g).c_str()); }
+						else { gid = 0; }
+
+						int h = it.find("rotation=") + 10;
+						if (h > 10){ r = std::atof(it.substr(h, it.find("\"", h) - h).c_str()); }
+						else { r = 0; }
+
+						properties.clear();
 						visible = true;
+						//次の行がpropertiesでは無いなら追加
+						if (strS[index + 1].find("<properties>") == std::string::npos )
+						{
+							Factory関数(guiS, layerName, name.c_str(), type.c_str(), gid, rect, r, properties);
+						}
 					}
 				}
-				else if (it.find("<property name=") != std::string::npos && visible)
+				else if (it.find("<property") != std::string::npos && visible)
 				{
 					//非表示の時はプロパティも無視する
-					int a = it.find("name=") + 6;
 					int b = it.find("value=") + 7;
-					std::string name = it.substr(a,it.find("\"",a) - a );
-					std::string value = it.substr(b, it.find("\"", b) - b);
-					guiS.SetProperty(guiType,name, value);
+					properties.push_back( it.substr(b, it.find("\"", b) - b) );
 				}
+				else if (it.find("</object>") != std::string::npos && visible)
+				{
+					//追加処理
+					Factory関数(guiS, layerName, name.c_str(), type.c_str(), gid, rect, r, properties);
+				}
+				++index;
 			}
 
 			return guiS;
-		}
-
-		/** CLIフォームのコードを変換してSceneのコードとCSVファイルを出力.*/
-		/** デバッグビルド時のみ有効、フォーム名には.hを含めない*/
-		bool CLItoScene(std::string フォーム名)
-		{
-#ifdef _DEBUG
-			//auto uiS = CLItoGUI( (フォーム名 + ".h").c_str() );
-			//TranceCode::GUItoCSV((フォーム名 + ".csv").c_str(), uiS);
-			//TranceCode::GUItoScene(フォーム名.c_str(), uiS);
-			return true;
-#endif
-			return false;
 		}
 	}
 }
