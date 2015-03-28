@@ -20,7 +20,7 @@ namespace SDX
 		//マップレイヤーのデータ
 
 		//マップチップのデータ
-		
+
 		//IGUIの情報
 		std::vector<std::shared_ptr<IGUI>> dataS;
 	};

@@ -37,6 +37,4 @@
 #include <Framework/IScene.h>
 #include <Framework/Director.h>
 
-#include <GUI/GUIData.h>
-#include <GUI/TranceCode.h>
-#include <GUI/TranceTMX.h>
+#include <GUI/TileSet.h>

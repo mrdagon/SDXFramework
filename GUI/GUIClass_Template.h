@@ -14,26 +14,5 @@ namespace SDX
 
 		//@コンストラクタ
 
-		void DefineCode(File& 書込先) override
-		{
-			//@DefineCode
-		}
-
-		void UpdateCode(File& 書込先) override
-		{
-		}
-		
-		void DrawCode(File& 書込先) override
-		{
-		}
-
-		void InitCode(File& 書込先) override
-		{
-		}
-
-		void FinalCode(File& 書込先) override
-		{
-		}
-
 	};
 }

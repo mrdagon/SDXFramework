@@ -12,22 +12,5 @@ namespace SDX
 	class IGUI
 	{
 	public:
-		IGUI() = default;
-
-		IGUI(const char* name):
-			name(name)
-		{}
-
-		std::string name;
-
-		virtual void DefineCode(File& 書込先) = 0;
-
-		virtual void UpdateCode(File& 書込先){};
-		virtual void DrawCode(File& 書込先){};
-		virtual void InitCode(File& 書込先){};
-		virtual void FinalCode(File& 書込先){};
-
-		virtual void SetProperty(std::string &プロパティ名 , std::string &value){}
-		virtual void WriteCSV(File& 書込先){};
 	};
 }
