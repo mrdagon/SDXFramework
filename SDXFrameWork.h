@@ -37,4 +37,4 @@
 #include <Framework/IScene.h>
 #include <Framework/Director.h>
 
-#include <GUI/TileSet.h>
+#include <Tiled/TileSet.h>
