@@ -12,6 +12,9 @@ namespace SDX
 	class IGUI
 	{
 	public:
+		//int id;
+		//Rect rect;
+
 		virtual void Init(){};
 		virtual void Final(){};
 		virtual void Draw(){};

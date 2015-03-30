@@ -5,6 +5,9 @@
 #include <Multimedia/SDX.h>
 #include <Multimedia/Image.h>
 #include <Multimedia/Loading.h>
+#include <Tiled/GetTag.h>
+#include <Multimedia/File.h>
+#include <string>
 
 namespace SDX
 {
@@ -93,6 +96,65 @@ namespace SDX
 
 				this->Add(new Image(fileName.c_str()));
 			}
+			return true;
+		}
+
+		/** tmxファイルのタイルセット情報を元に画像を読み込む.*/
+		bool LoadTmx(const char *tmxファイル名)
+		{
+			if (Loading::isLoading)
+			{
+				Loading::AddLoading([=]{ LoadTmx(tmxファイル名); });
+				return true;
+			}
+
+
+			if (imageS.size() != 0)
+			{
+				return false;
+			}
+
+			File file(tmxファイル名, FileMode::Read);
+			if (file.GetFileMode() != FileMode::Read)
+			{
+				return false;
+			}
+
+			auto strS = file.GetLineS();//全文字読み込むのでわりと効率無視してる
+
+			int tileW;
+			int tileH;
+
+			//0番目はgidで無視されるので空データを入れる	
+			imageS.push_back(new Image());
+
+			for (auto & str : strS)
+			{
+				if (str.find("<objectgroup") != std::string::npos)
+				{
+					//以降オブジェクト情報なので終了
+					break;
+				}
+				else if (str.find("<tileset") != std::string::npos)
+				{
+					tileW = std::atoi(GetTag(str, "tilewidth=").c_str());
+					tileH = std::atoi(GetTag(str, "tileheight=").c_str());
+				}
+				else if (str.find("<image width") != std::string::npos)
+				{
+					std::string sttt = GetTag(str, "source=");
+
+					imageS.push_back(new Image(GetTag(str,"source=").c_str()) );
+				}
+				else if (str.find("<image source") != std::string::npos)
+				{
+					int w = std::atoi(GetTag(str, "width=").c_str()) / tileW;
+					int h = std::atoi(GetTag(str, "height=").c_str()) / tileH;
+
+					Load(GetTag(str, "source=").c_str(), w*h, w, h);
+				}
+			}
+			
 			return true;
 		}
 

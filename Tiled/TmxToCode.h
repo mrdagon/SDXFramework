@@ -4,6 +4,7 @@
 #pragma once
 #include <Tiled/GUIData.h>
 #include <Tiled/TmxToGUI.h>
+#include <Tiled/GetTag.h>
 #include <map>
 
 namespace SDX
@@ -27,17 +28,23 @@ namespace SDX
 
 		struct GUI
 		{
-			GUI(const std::string& name, const std::string& type, const Rect& rect , int gID):
+			GUI(const std::string& name, const std::string& type, const Rect& rect, int gID, double zoomW, double zoomH, double angle) :
 				name(name),
 				type(type),
 				rect(rect),
 				gID(gID),
+				zoomW(zoomW),
+				zoomH(zoomH),
+				angle(angle),
 				isTile(gID != 0)
 			{}
 
 			std::string name;//変数名
 			std::string type;//型名
 			Rect rect;//座標＆大きさ
+			double angle;
+			double zoomW;
+			double zoomH;
 			bool isTile;//gIDパラメータの有無
 			int gID;
 			std::vector<std::string> propertieS;
@@ -46,18 +53,41 @@ namespace SDX
 		std::vector<GUI> guiS;
 	};
 
-	std::string GetTag(std::string &元の文字 , std::string タグ名)
+	/**@と<>を差し替えて、tabを挿入する.*/
+	void ReplaceTag(std::string &変換文字 , std::string &置き換え文字)
 	{
-		if (元の文字.find(タグ名) == std::string::npos)
+		int num;
+		while (1)
 		{
-			return "0";
+			num = 変換文字.find("@");
+			if (num == std::string::npos){ break; }
+			if (置き換え文字 == "")
+			{
+				変換文字.erase(num, 1);
+			}
+			else
+			{
+				変換文字.replace(num, 1, 置き換え文字);		
+			}
+		}
+		while (1)
+		{
+			num = 変換文字.find("&lt;");//<
+			if (num == std::string::npos){ break; }
+			変換文字.replace(num, 4, "<");
+		}
+		while (1)
+		{
+			num = 変換文字.find("&gt;");//<
+			if (num == std::string::npos){ break; }
+			変換文字.replace(num, 4, ">");
 		}
 
-		int a = 元の文字.find(タグ名) + タグ名.size()+1;
-		return 元の文字.substr( a , 元の文字.find("\"" , a) - a );
+		変換文字.insert(0, "\t\t\t");
+
 	}
 
-	void MakeFactoryCode(std::vector<std::string> &classNameS, std::map<std::string, ClassTemplate> &classS)
+	void MakeFactoryCode(std::vector<std::string> &classNameS, std::map<std::string, ClassTemplate> &classS, const std::string& クラス名プリフィックス)
 	{
 		//Factoryの生成
 		File file("GUI_Factory.h", FileMode::Write);
@@ -68,12 +98,12 @@ namespace SDX
 		file.AddLine("#include <string>");
 		for (auto &it : classNameS)
 		{
-			file.AddLine({ "#include \"", classS[it].name, ".h\"" });
+			file.AddLine({ "#include \"", クラス名プリフィックス + classS[it].name, ".h\"" });
 		}
 		file.AddLine("");
 		file.AddLine("namespace SDX");
 		file.AddLine("{");
-		file.AddLine("\tvoid GUI_Factory(GUIData& data, std::string& type , int gid, Rect rect, double r, std::vector<std::string>& properties)");
+		file.AddLine("\tvoid GUI_Factory(GUIData& data, std::string& type , int gid, Rect rect, double zoomW , double zoomH , double angle, std::vector<std::string>& properties)");
 		file.AddLine("\t{");
 		int index = 0;
 		for (auto &it : classNameS)
@@ -87,8 +117,11 @@ namespace SDX
 				file.AddLine({ "\t\telse if(type == \"", it, "\")" });
 			}
 			file.AddLine("\t\t{");
-			std::string str = "\t\t\tdata.dataS.push_back(std::make_shared<" + it + ">(rect";
-			if (classS[it].isTile) { str += ",gid"; }
+			std::string str = "\t\t\tdata.dataS.push_back(std::make_shared<" + クラス名プリフィックス + it + ">(rect,angle";
+			if (classS[it].isTile)
+			{
+				str += ",gid,zoomW,zoomH";
+			}
 			int num = 0;
 			for (auto & it : classS[it].proTypeS)
 			{
@@ -118,7 +151,7 @@ namespace SDX
 
 	}
 
-	void MakeClassCode(const char* templateClass,std::vector<std::string> &classNameS, std::map<std::string, ClassTemplate> &classS )
+	void MakeClassCode(const char* templateClass, std::vector<std::string> &classNameS, std::map<std::string, ClassTemplate> &classS, const std::string& クラス名プリフィックス)
 	{
 		//各クラスのコード
 		File file(templateClass, FileMode::Read);
@@ -127,7 +160,7 @@ namespace SDX
 		for (auto &itt : classNameS)
 		{
 			ClassTemplate& cls = classS[itt];
-			File classFile((itt + ".h").c_str(), FileMode::Write);
+			File classFile((クラス名プリフィックス + itt + ".h").c_str(), FileMode::Write);
 
 			for (auto &it : strS)
 			{
@@ -136,17 +169,20 @@ namespace SDX
 					std::string buf = it;
 					int num = buf.find("GUI_NAME");
 					buf.erase(num, 8);
-					buf.insert(num, cls.name );
+					buf.insert(num, クラス名プリフィックス + cls.name);
 					classFile.AddLine(buf);
 				}
 				else if (it.find("@メンバー宣言") != std::string::npos)
 				{
 					classFile.AddLine(it);
+					classFile.AddLine({ "\t\tRect rect;" });
+					classFile.AddLine({ "\t\tdouble angle;" });
 					if ( cls.isTile)
 					{
 						classFile.AddLine({ "\t\tint gID;" });
+						classFile.AddLine({ "\t\tdouble zoomW;" });
+						classFile.AddLine({ "\t\tdouble zoomH;" });
 					}
-					classFile.AddLine({ "\t\tRect rect;" });
 					for (unsigned int a = 0; a < cls.proNameS.size();++a)
 					{
 						classFile.AddLine({ "\t\t", cls.proTypeS[a] , " ", cls.proNameS[a] , ";" });
@@ -155,10 +191,12 @@ namespace SDX
 				else if (it.find("@コンストラクタ") != std::string::npos)
 				{
 					std::string str = "\t\t";
-					str += cls.name + "(const Rect& rect";
+					str += クラス名プリフィックス + cls.name + "(const Rect& rect, double angle";
 					if ( cls.isTile )
 					{
 						str += ",int gID";
+						str += ",double zoomW";
+						str += ",double zoomH";
 					}
 					for (unsigned int a = 0; a < cls.proNameS.size(); ++a)
 					{
@@ -182,14 +220,52 @@ namespace SDX
 					}
 					if (cls.isTile)
 					{
-						str += "\t\t\tgID(gID),";
+						classFile.AddLine({ "\t\t\tgID(gID)," });
+						classFile.AddLine({ "\t\t\tzoomW(zoomW)," });
+						classFile.AddLine({ "\t\t\tzoomH(zoomH)," });
+
 					}
+					classFile.AddLine({ "\t\t\tangle(angle)," });
 					classFile.AddLine({ "\t\t\trect(rect) " });
 					classFile.AddLine({ "\t\t", "{}" });
 				}
-				else if (it.find("@DefineCode") != std::string::npos)
+				else if (it.find("@関数") != std::string::npos)
 				{
+					classFile.AddLine(it);
+					std::string nullStr = "";
 
+					if (cls.initCode != "")
+					{
+						std::string buf = cls.initCode;
+						ReplaceTag(buf, nullStr);
+						classFile.AddLine("\t\tvoid Init() override{");
+						classFile.AddLine(buf);
+						classFile.AddLine("\t\t}");
+					}
+					else if (cls.finalCode != "")
+					{
+						std::string buf = cls.finalCode;
+						ReplaceTag(buf, nullStr);
+						classFile.AddLine("\t\tvoid Final() override{");
+						classFile.AddLine(buf);
+						classFile.AddLine("\t\t}");
+					}
+					else if(cls.updateCode != "")
+					{
+						std::string buf = cls.updateCode;
+						ReplaceTag(buf, nullStr);
+						classFile.AddLine("\t\tvoid Update() override{");
+						classFile.AddLine(buf);
+						classFile.AddLine("\t\t}");
+					}
+					else if(cls.drawCode != "")
+					{
+						std::string buf = cls.drawCode;
+						ReplaceTag(buf, nullStr);
+						classFile.AddLine("\t\tvoid Draw() override{");
+						classFile.AddLine(buf);
+						classFile.AddLine("\t\t}");
+					}
 				}
 				else
 				{
@@ -200,7 +276,7 @@ namespace SDX
 
 	}
 
-	void MakeSceneCode(const char* templateScene, std::vector<std::string> &classNameS, std::map<std::string, ClassTemplate> &classS, std::vector<GUI_Scene> &sceneS, const char* tmxFile)
+	void MakeSceneCode(const char* templateScene, std::vector<std::string> &classNameS, std::map<std::string, ClassTemplate> &classS, std::vector<GUI_Scene> &sceneS, const char* tmxFile, const std::string& クラス名プリフィックス)
 	{
 		File file(templateScene, FileMode::Read);
 		auto strS = file.GetLineS();
@@ -218,8 +294,7 @@ namespace SDX
 				{
 					int num = str.find("CLASSNAME");
 					std::string buf = str;
-					buf.erase(num, 9);
-					buf.insert(num, scene.name);
+					buf.replace(num, 9, scene.name);
 					file.AddLine(buf);
 				}
 				else if (str.find("@Define") != std::string::npos)
@@ -230,16 +305,22 @@ namespace SDX
 					for (auto &gui : scene.guiS)
 					{
 						std::string buf = "\t\t";
-						buf += gui.type + " " + gui.name + " = { {";
+						buf += クラス名プリフィックス + gui.type + " " + gui.name + " = { {";
 						buf += std::to_string(int(gui.rect.x)) + ",";
 						buf += std::to_string(int(gui.rect.y)) + ",";
 						buf += std::to_string(int(gui.rect.GetW())) + ",";
-						buf += std::to_string(int(gui.rect.GetH())) + "}";
+						buf += std::to_string(int(gui.rect.GetH())) + "} , ";
+						buf += std::to_string(gui.angle);
 
 						if (gui.isTile)
 						{
 							buf += ",";
 							buf += std::to_string(gui.gID);
+							buf += ",";
+							buf += std::to_string(gui.zoomW);
+							buf += ",";
+							buf += std::to_string(gui.zoomH);
+
 						}
 
 						int index = 0;
@@ -274,15 +355,7 @@ namespace SDX
 					{
 						std::string buf = classS[gui.type].initCode;
 						if (buf == ""){ break; }
-						int num;
-						while (1)
-						{
-							num = buf.find("@");
-							if (num == std::string::npos){ break; }
-							buf.replace(num, 1, gui.name + ".");
-						}
-
-						buf.insert(0, "\t\t\t");
+						ReplaceTag(buf, gui.name + ".");
 						file.AddLine(buf);
 					}
 				}
@@ -295,15 +368,7 @@ namespace SDX
 					{
 						std::string buf = classS[gui.type].finalCode;
 						if (buf == ""){ break; }
-						int num;
-
-						while (1)
-						{
-							num = buf.find("@");
-							if (num == std::string::npos){ break; }
-							buf.replace(num, 1, gui.name + ".");
-						}
-						buf.insert(0, "\t\t\t");
+						ReplaceTag(buf, gui.name + ".");
 						file.AddLine(buf);
 					}
 				}
@@ -316,15 +381,7 @@ namespace SDX
 					{
 						std::string buf = classS[gui.type].updateCode;
 						if (buf == ""){ break; }
-						int num;
-
-						while (1)
-						{
-							num = buf.find("@");
-							if (num == std::string::npos){ break; }
-							buf.replace(num, 1, gui.name + ".");
-						}
-						buf.insert(0, "\t\t\t");
+						ReplaceTag(buf, gui.name + ".");
 						file.AddLine(buf);
 					}
 				}
@@ -337,15 +394,7 @@ namespace SDX
 					{
 						std::string buf = classS[gui.type].drawCode;
 						if (buf == ""){ break; }
-						int num;
-
-						while (1)
-						{
-							num = buf.find("@");
-							if (num == std::string::npos){ break; }
-							buf.replace(num, 1, gui.name + ".");
-						}
-						buf.insert(0, "\t\t\t");
+						ReplaceTag(buf, gui.name + ".");
 						file.AddLine(buf);
 					}
 				}
@@ -359,7 +408,7 @@ namespace SDX
 					int index = 0;
 					for (auto &gui : scene.guiS)
 					{
-						file.AddLine({ "\t\t\t", gui.name, " = *dynamic_cast<", gui.type , "*>(guiData.dataS[", index, "].get());" });
+						file.AddLine({ "\t\t\t", gui.name, " = *dynamic_cast<", クラス名プリフィックス + gui.type, "*>(guiData.dataS[", index, "].get());" });
 						++index;
 					}
 				}
@@ -378,7 +427,7 @@ namespace SDX
 	}
 
 	/**tmxファイルとテンプレートからコードを生成する*/
-	void TMXtoCode(const char* tmxFile, const char* templateClass , const char* templateScene , const std::string& クラス名プリフィックス = "GUI_")
+	void TMXtoCode(const char* tmxFile, const char* templateClass , const char* templateScene , const std::string& クラス名プリフィックス = "UI_")
 	{
 		//まず内部データに変更
 		//その後、クラス情報を取得、その後各クラスのコード、GUI_Factoryのコード、
@@ -389,15 +438,49 @@ namespace SDX
 		std::map<std::string, ClassTemplate> classS;
 		std::vector<std::string> classNameS;
 		std::vector<GUI_Scene> sceneS;
+		
+		struct TileSize
+		{
+			TileSize(int w ,int h):
+				w(w),
+				h(h)
+			{}
 
+			int w;
+			int h;
+		};
+
+		std::vector<TileSize> tileS;//各タイルの大きさ
+		tileS.push_back({ 0, 0 });//gID = 0は空データ
 		std::string nowClass;
 
 		//0何もしない、1コードテンプレート追加、2クラステンプレート追加、3オブジェクト追加
 		int mode = 0;
+		int tileW;
+		int tileH;
 
 		for (auto &it : strS)
 		{
-			if (it.find("\"TemplateCode\">") != std::string::npos)
+			if (it.find("<tileset") != std::string::npos)
+			{
+				tileW = std::atoi(GetTag(it, "tilewidth=").c_str());
+				tileH = std::atoi(GetTag(it, "tileheight=").c_str());
+			}
+			else if (it.find("<image width") != std::string::npos)
+			{
+				tileS.push_back({ std::atoi(GetTag(it, "width=").c_str()) , std::atoi(GetTag(it, "height=").c_str()) });
+			}
+			else if (it.find("<image source") != std::string::npos)
+			{
+				int w = std::atoi(GetTag(it, "width=").c_str()) / tileW;
+				int h = std::atoi(GetTag(it, "height=").c_str()) / tileH;
+
+				for (int a = 0; a < w*h; ++a)
+				{
+					tileS.push_back({ tileW, tileH });
+				}	
+			}
+			else if (it.find("\"TemplateCode\">") != std::string::npos)
 			{
 				mode = 1;
 			}
@@ -417,7 +500,7 @@ namespace SDX
 			{
 				if (mode <= 2)
 				{
-					nowClass = クラス名プリフィックス + GetTag(it, "name=");
+					nowClass = GetTag(it, "name=");
 					classS[nowClass].name = nowClass;
 					classS[nowClass].isTile = (it.find("type=\"Image\"") != std::string::npos);
 
@@ -429,16 +512,35 @@ namespace SDX
 				else
 				{		
 					std::string name = GetTag(it,"name=");
-					std::string type = クラス名プリフィックス + GetTag(it, "type=");
+					std::string type = GetTag(it, "type=");
+					if (type == "0"){ type = "Image"; }
+
 					Rect rect;
+					double angle;
+					double zoomW = 1;
+					double zoomH = 1;
 					int gid;
-					rect.x = std::atoi(GetTag(it, "x=").c_str());
-					rect.y = std::atoi(GetTag(it, "y=").c_str());					
+					gid = std::atoi(GetTag(it, "gid=").c_str());
+					rect.x = std::atoi(GetTag(it, "x=").c_str());//四角形は左上、画像は左下
+					rect.y = std::atoi(GetTag(it, "y=").c_str());	
 					rect.widthRight = std::atoi(GetTag(it, "width=").c_str());
 					rect.heightDown = std::atoi(GetTag(it, "height=").c_str());
-					gid = std::atoi(GetTag(it, "gid=").c_str());
+					angle = std::atoi(GetTag(it, "rotation=").c_str());
 
-					sceneS.back().guiS.push_back(GUI_Scene::GUI(name, type, rect, gid));
+					if (gid != 0)
+					{
+						//座標は画像の左下が基準になる、回転させると座標も変化する
+						//中心座標に変換
+						//角度は時計回りで-180～180
+						rect.x += tileS[gid].w / 2;
+						rect.y -= tileS[gid].h / 2;
+						if (rect.widthRight > 0){ zoomW = rect.widthRight; }
+						if (rect.heightDown > 0){ zoomH = rect.heightDown; }
+						rect.widthRight = tileS[gid].w * zoomW;
+						rect.heightDown = tileS[gid].h * zoomH;
+					}					
+
+					sceneS.back().guiS.push_back(GUI_Scene::GUI(name, type, rect, gid, zoomW, zoomH, angle));
 				}
 
 			}
@@ -476,10 +578,10 @@ namespace SDX
 				}
 			}
 		}
-
-		MakeFactoryCode(classNameS, classS);
-		MakeClassCode(templateClass, classNameS, classS);
-		MakeSceneCode(templateScene, classNameS, classS, sceneS , tmxFile);
+		 
+		MakeFactoryCode(classNameS, classS , クラス名プリフィックス);
+		MakeClassCode(templateClass, classNameS, classS, クラス名プリフィックス);
+		MakeSceneCode(templateScene, classNameS, classS, sceneS, tmxFile, クラス名プリフィックス);
 
 		//シーンのコード
 

@@ -3,6 +3,7 @@
 //[Contact]http://sourceforge.jp/projects/dxframework/
 #pragma once
 #include <SDXFrameWork.h>
+#include "GUI_Factory.h"
 
 namespace SDX
 {
@@ -43,7 +44,7 @@ namespace SDX
 		void Draw() override
 		{
 #ifdef _DEBUG			
-			if (!Input::key.Return.on){ LoadGUI(); }
+			if (Input::key.Return.on){ LoadGUI(); }
 #endif
 			//@Draw
 			//@End

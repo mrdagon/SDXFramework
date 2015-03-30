@@ -4,6 +4,7 @@
 #pragma once
 #include <Tiled/IGUI.h>
 #include <Tiled/GUIData.h>
+#include <Tiled/GetTag.h>
 #include <vector>
 
 namespace SDX
@@ -11,79 +12,112 @@ namespace SDX
 	/** Tiledで作成したデータ(.tmx)を変換してGUIDataにする関数.*/
 	/**@todo 実装中*/
 	/** \include TranceCode.h*/
-	GUIData TMXtoGUI(const char* tmxファイル名 , const char* シーン名, std::function<void(GUIData& data, std::string& type , int gid, Rect rect, double r, std::vector<std::string>& properties)> Factory関数)
+	GUIData TMXtoGUI(const char* tmxファイル名 , const char* シーン名, std::function<void(GUIData& data, std::string& type , int gid, Rect rect, double zoomW , double zoomH , double angle, std::vector<std::string>& properties)> Factory関数 )
 	{
 		File file(tmxファイル名, FileMode::Read);
 		auto strS = file.GetLineS();
 		GUIData guiS;
 		bool visible = false;
+		bool isScene = false;
 
 		std::string layerName = "";
 		std::string name = "";
 		std::string type = "";
 		int gid = 0;
 		Rect rect;
-		double r = 0;
+		double angle = 0;
+		double zoomW = 0;
+		double zoomH = 0;
 		std::vector<std::string> properties;
+		struct TileSize
+		{
+			TileSize(int w, int h) :
+				w(w),
+				h(h)
+			{}
+
+			int w;
+			int h;
+		};
+		std::vector<TileSize> tileS;//各タイルの大きさ
+		tileS.push_back({ 0, 0 });//ID=0は空
+
 		int index = 0;
+		int tileW;
+		int tileH;
 
 		for (auto &it : strS)
 		{
-			if (it.find("<map") != std::string::npos)
+			//タイル情報を取得
+			if (it.find("<tileset") != std::string::npos)
+			{
+				tileW = std::atoi(GetTag(it, "tilewidth=").c_str());
+				tileH = std::atoi(GetTag(it, "tileheight=").c_str());
+			}
+			else if (it.find("<image width") != std::string::npos)
+			{
+				tileS.push_back({ std::atoi(GetTag(it, "width=").c_str()), std::atoi(GetTag(it, "height=").c_str()) });
+			}
+			else if (it.find("<image source") != std::string::npos)
+			{
+				int w = std::atoi(GetTag(it, "width=").c_str()) / tileW;
+				int h = std::atoi(GetTag(it, "height=").c_str()) / tileH;
+
+				for (int a = 0; a < w*h; ++a)
+				{
+					tileS.push_back({ tileW, tileH });
+				}
+			}
+			else if (it.find("<map") != std::string::npos)
 			{
 				//フォーム全体の情報
 			}
 			else if (it.find("<objectgroup") != std::string::npos)
 			{
 				//レイヤー名を取得
-				int a = it.find("name=") + 6;
-				layerName = it.substr(a, it.find("\"", a) - a);
+				layerName = GetTag(it, "name=");
+				isScene = (layerName == シーン名);
+			}
+			else if (it.find("</objectgroup>") != std::string::npos && isScene)
+			{
+				break;//目的のSceneの情報を読み取り完了
 			}
 			else if (it.find("<object") != std::string::npos)
 			{
-				//nameとtypeが無い場合と非表示の場合は追加しない
-				if (it.find("name=") == std::string::npos || it.find("type=") == std::string::npos || it.find("visible=\"0\"") != std::string::npos)
+				//非表示の場合は追加しない
+				if (it.find("visible=\"0\"") != std::string::npos || !isScene )
 				{
 					visible = false;
 				}
 				else
 				{
-					int a = it.find("name=") + 6;
-					if (a > 6){ name = it.substr(a, it.find("\"", a) - a); }
-					else { name = ""; }
+					name = GetTag(it, "name=");
+					type = GetTag(it, "type=");
+					if (type == ""){ type = "Image"; }
+					rect.x = std::atoi(GetTag(it, "x=").c_str());
+					rect.y = std::atoi(GetTag(it, "y=").c_str());
+					rect.widthRight = std::atof(GetTag(it, "width=").c_str());
+					rect.heightDown = std::atof(GetTag(it, "height=").c_str());
+					gid = std::atoi(GetTag(it, "gid=").c_str());
+					angle = std::atof(GetTag(it, "rotation=").c_str());
 
-					int b = it.find("type=") + 6;
-					if (b > 6){ type = it.substr(b, it.find("\"", b) - b); }
-					else { type = ""; }
-
-					int c = it.find("x=") + 3;
-					if (c > 3){ rect.x = std::atoi(it.substr(c, it.find("\"", c) - c).c_str()); }
-
-					int d = it.find("y=") + 3;
-					if (d > 3){ rect.y = std::atoi(it.substr(d, it.find("\"", d) - d).c_str()); }
-
-					int e = it.find("width=") + 7;
-					if (e > 7){ rect.widthRight = std::atoi(it.substr(e, it.find("\"", e) - e).c_str()); }
-					else { rect.widthRight = 0; }
-
-					int f = it.find("height=") + 8;
-					if (f > 8){ rect.heightDown = std::atoi(it.substr(f, it.find("\"", f) - f).c_str()); }
-					else { rect.heightDown = 0; }
-
-					int g = it.find("gid=") + 5;
-					if (g > 5){ gid = std::atoi(it.substr(g, it.find("\"", g) - g).c_str()); }
-					else { gid = 0; }
-
-					int h = it.find("rotation=") + 10;
-					if (h > 10){ r = std::atof(it.substr(h, it.find("\"", h) - h).c_str()); }
-					else { r = 0; }
+					if (gid != 0)
+					{
+						//タイルセットから大きさを取得
+						rect.x += tileS[gid].w / 2;
+						rect.y -= tileS[gid].h / 2;
+						if (rect.widthRight > 0){ zoomW = rect.widthRight; }
+						if (rect.heightDown > 0){ zoomH = rect.heightDown; }
+						rect.widthRight = tileS[gid].w * zoomW;
+						rect.heightDown = tileS[gid].h * zoomH;
+					}
 
 					properties.clear();
 					visible = true;
 					//次の行がpropertiesでは無いなら追加
 					if (strS[index + 1].find("<properties>") == std::string::npos)
 					{
-						Factory関数(guiS, type, gid, rect, r, properties);
+						Factory関数(guiS, type, gid, rect,zoomW,zoomH, angle, properties);
 					}
 				}
 			}
@@ -96,7 +130,7 @@ namespace SDX
 			else if (it.find("</object>") != std::string::npos && visible)
 			{
 				//追加処理
-				Factory関数(guiS, type, gid, rect, r, properties);
+				Factory関数(guiS, type, gid, rect , zoomW , zoomH , angle, properties);
 			}
 			++index;
 		}

@@ -11,8 +11,37 @@ namespace SDX
 	{
 	public:
 		//@メンバー宣言
+		//@End
 
 		//@コンストラクタ
+		//@End
 
+		//初期化
+		void Init() override
+		{
+			//@Init
+			//@End
+		}
+
+		//終了時
+		void Final() override
+		{
+			//@Final
+			//@End
+		}
+
+		//更新
+		void Update() override
+		{
+			//@Update
+			//@End
+		}
+
+		//描画
+		void Draw() override
+		{
+			//@Draw
+			//@End
+		}
 	};
 }
