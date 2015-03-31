@@ -28,10 +28,11 @@ namespace SDX
 
 		struct GUI
 		{
-			GUI(const std::string& name, const std::string& type, const Rect& rect, int gID, double zoomW, double zoomH, double angle) :
+			GUI(const std::string& name, const std::string& type , int id , const Rect& rect, int gID, double zoomW, double zoomH, double angle) :
 				name(name),
 				type(type),
 				rect(rect),
+				id(id),
 				gID(gID),
 				zoomW(zoomW),
 				zoomH(zoomH),
@@ -46,6 +47,7 @@ namespace SDX
 			double zoomW;
 			double zoomH;
 			bool isTile;//gIDパラメータの有無
+			int id;
 			int gID;
 			std::vector<std::string> propertieS;
 		};
@@ -103,7 +105,7 @@ namespace SDX
 		file.AddLine("");
 		file.AddLine("namespace SDX");
 		file.AddLine("{");
-		file.AddLine("\tvoid GUI_Factory(GUIData& data, std::string& type , int gid, Rect rect, double zoomW , double zoomH , double angle, std::vector<std::string>& properties)");
+		file.AddLine("\tvoid GUI_Factory(GUIData& data, std::string& type , int id , int gid, Rect rect, double zoomW , double zoomH , double angle, std::vector<std::string>& properties)");
 		file.AddLine("\t{");
 		int index = 0;
 		for (auto &it : classNameS)
@@ -117,7 +119,7 @@ namespace SDX
 				file.AddLine({ "\t\telse if(type == \"", it, "\")" });
 			}
 			file.AddLine("\t\t{");
-			std::string str = "\t\t\tdata.dataS.push_back(std::make_shared<" + クラス名プリフィックス + it + ">(rect,angle";
+			std::string str = "\t\t\tdata.dataS.push_back(std::make_shared<" + クラス名プリフィックス + it + ">(id,rect,angle";
 			if (classS[it].isTile)
 			{
 				str += ",gid,zoomW,zoomH";
@@ -191,7 +193,7 @@ namespace SDX
 				else if (it.find("@コンストラクタ") != std::string::npos)
 				{
 					std::string str = "\t\t";
-					str += クラス名プリフィックス + cls.name + "(const Rect& rect, double angle";
+					str += クラス名プリフィックス + cls.name + "( int id , const Rect& rect, double angle";
 					if ( cls.isTile )
 					{
 						str += ",int gID";
@@ -225,6 +227,7 @@ namespace SDX
 						classFile.AddLine({ "\t\t\tzoomH(zoomH)," });
 
 					}
+					classFile.AddLine({ "\t\t\tIGUI(id,rect)," });
 					classFile.AddLine({ "\t\t\tangle(angle)," });
 					classFile.AddLine({ "\t\t\trect(rect) " });
 					classFile.AddLine({ "\t\t", "{}" });
@@ -305,7 +308,7 @@ namespace SDX
 					for (auto &gui : scene.guiS)
 					{
 						std::string buf = "\t\t";
-						buf += クラス名プリフィックス + gui.type + " " + gui.name + " = { {";
+						buf += クラス名プリフィックス + gui.type + " " + gui.name + " = { " + std::to_string(gui.id) + ", {";
 						buf += std::to_string(int(gui.rect.x)) + ",";
 						buf += std::to_string(int(gui.rect.y)) + ",";
 						buf += std::to_string(int(gui.rect.GetW())) + ",";
@@ -320,7 +323,6 @@ namespace SDX
 							buf += std::to_string(gui.zoomW);
 							buf += ",";
 							buf += std::to_string(gui.zoomH);
-
 						}
 
 						int index = 0;
@@ -426,6 +428,33 @@ namespace SDX
 		}
 	}
 
+	void MakeEnumCode(std::vector<GUI_Scene> &sceneS)
+	{
+		//オブジェクトIDを列挙型で出力
+		File file("UI_Enum.h", FileMode::Write);
+		File temp("GUIEnum_Template.h", FileMode::Read);
+
+		auto strS = temp.GetLineS();
+
+		for (auto &str : strS)
+		{
+			if (str.find("@Enum") != std::string::npos)
+			{
+				for (auto& scene : sceneS)
+				{
+					for (auto &gui : scene.guiS)
+					{
+						file.AddLine({"\t\t",gui.name, " = ", gui.id , ","});
+					}
+				}
+			}
+			else
+			{
+				file.AddLine(str);
+			}
+		}
+	}
+
 	/**tmxファイルとテンプレートからコードを生成する*/
 	void TMXtoCode(const char* tmxFile, const char* templateClass , const char* templateScene , const std::string& クラス名プリフィックス = "UI_")
 	{
@@ -519,7 +548,8 @@ namespace SDX
 					double angle;
 					double zoomW = 1;
 					double zoomH = 1;
-					int gid;
+					int id,gid;
+					id = std::atoi(GetTag(it, " id=").c_str());
 					gid = std::atoi(GetTag(it, "gid=").c_str());
 					rect.x = std::atoi(GetTag(it, "x=").c_str());//四角形は左上、画像は左下
 					rect.y = std::atoi(GetTag(it, "y=").c_str());	
@@ -540,7 +570,7 @@ namespace SDX
 						rect.heightDown = tileS[gid].h * zoomH;
 					}					
 
-					sceneS.back().guiS.push_back(GUI_Scene::GUI(name, type, rect, gid, zoomW, zoomH, angle));
+					sceneS.back().guiS.push_back(GUI_Scene::GUI(name, type, id , rect, gid, zoomW, zoomH, angle));
 				}
 
 			}
@@ -582,6 +612,7 @@ namespace SDX
 		MakeFactoryCode(classNameS, classS , クラス名プリフィックス);
 		MakeClassCode(templateClass, classNameS, classS, クラス名プリフィックス);
 		MakeSceneCode(templateScene, classNameS, classS, sceneS, tmxFile, クラス名プリフィックス);
+		MakeEnumCode(sceneS);
 
 		//シーンのコード
 

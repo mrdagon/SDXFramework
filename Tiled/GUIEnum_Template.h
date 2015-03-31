@@ -5,6 +5,8 @@
 
 namespace SDX
 {
-	/**tmx読み込み用、タグ名の後には=も付ける.*/
-	std::string GetTag(std::string &元の文字, std::string タグ名);
+	enum class ObjectID
+	{
+		//@Enum
+	};
 }

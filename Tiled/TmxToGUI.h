@@ -12,7 +12,7 @@ namespace SDX
 	/** Tiledで作成したデータ(.tmx)を変換してGUIDataにする関数.*/
 	/**@todo 実装中*/
 	/** \include TranceCode.h*/
-	GUIData TMXtoGUI(const char* tmxファイル名 , const char* シーン名, std::function<void(GUIData& data, std::string& type , int gid, Rect rect, double zoomW , double zoomH , double angle, std::vector<std::string>& properties)> Factory関数 )
+	GUIData TMXtoGUI(const char* tmxファイル名 , const char* シーン名, std::function<void(GUIData& data, std::string& type , int id, int gid, Rect rect, double zoomW , double zoomH , double angle, std::vector<std::string>& properties)> Factory関数 )
 	{
 		File file(tmxファイル名, FileMode::Read);
 		auto strS = file.GetLineS();
@@ -23,6 +23,7 @@ namespace SDX
 		std::string layerName = "";
 		std::string name = "";
 		std::string type = "";
+		int id = 0;
 		int gid = 0;
 		Rect rect;
 		double angle = 0;
@@ -98,6 +99,7 @@ namespace SDX
 					rect.y = std::atoi(GetTag(it, "y=").c_str());
 					rect.widthRight = std::atof(GetTag(it, "width=").c_str());
 					rect.heightDown = std::atof(GetTag(it, "height=").c_str());
+					id = std::atoi(GetTag(it, " id=").c_str());
 					gid = std::atoi(GetTag(it, "gid=").c_str());
 					angle = std::atof(GetTag(it, "rotation=").c_str());
 
@@ -117,7 +119,7 @@ namespace SDX
 					//次の行がpropertiesでは無いなら追加
 					if (strS[index + 1].find("<properties>") == std::string::npos)
 					{
-						Factory関数(guiS, type, gid, rect,zoomW,zoomH, angle, properties);
+						Factory関数(guiS, type , id , gid, rect,zoomW,zoomH, angle, properties);
 					}
 				}
 			}
@@ -130,7 +132,7 @@ namespace SDX
 			else if (it.find("</object>") != std::string::npos && visible)
 			{
 				//追加処理
-				Factory関数(guiS, type, gid, rect , zoomW , zoomH , angle, properties);
+				Factory関数(guiS, type, id , gid, rect , zoomW , zoomH , angle, properties);
 			}
 			++index;
 		}

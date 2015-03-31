@@ -97,4 +97,15 @@ namespace SDX
 
 		return a;
 	}
+
+	std::string GetTag(std::string &元の文字, std::string タグ名)
+	{
+		if (元の文字.find(タグ名) == std::string::npos)
+		{
+			return "0";
+		}
+
+		int a = 元の文字.find(タグ名) + タグ名.size() + 1;
+		return 元の文字.substr(a, 元の文字.find("\"", a) - a);
+	}
 }

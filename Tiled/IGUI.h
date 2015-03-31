@@ -12,8 +12,13 @@ namespace SDX
 	class IGUI
 	{
 	public:
-		//int id;
-		//Rect rect;
+		IGUI(int id, const Rect& rect):
+			id(id),
+			rect(rect)
+		{}
+
+		int id;
+		Rect rect;
 
 		virtual void Init(){};
 		virtual void Final(){};
