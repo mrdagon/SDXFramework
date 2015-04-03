@@ -85,6 +85,8 @@ namespace SDX
 
 			Mix_HookMusicFinished(Music::Finished);
 
+			SDL_StopTextInput();
+
 			IsEnd() = false;
 		}
 

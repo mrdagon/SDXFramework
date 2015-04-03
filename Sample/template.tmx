@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="40" height="30" tilewidth="16" tileheight="16" nextobjectid="55">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="40" height="30" tilewidth="16" tileheight="16" nextobjectid="58">
  <tileset firstgid="1" name="Test" tilewidth="20" tileheight="20">
   <tile id="0">
    <image width="20" height="20" source="data/icon000.png"/>
@@ -49,75 +49,52 @@
  <tileset firstgid="15" name="hone" tilewidth="32" tileheight="32">
   <image source="data/hone.png" width="96" height="128"/>
  </tileset>
- <objectgroup color="#00ff00" name="TemplateCode">
-  <object id="34" name="Text" type="Text" x="-182.833" y="6" width="57" height="54">
+ <objectgroup color="#00ffff" name="TEMPLATE">
+  <object id="24" name="Image" type="Image" x="-87.5" y="265" width="57" height="54">
    <properties>
-    <property name="Draw" value="fontS[@fontNo]-&gt;Draw(@rect.GetPoint(),Color::White,@text);"/>
-    <property name="Final" value=""/>
-    <property name="Init" value=""/>
-    <property name="Update" value=""/>
+    <property name="~Draw" value="imageS[@gID]-&gt;DrawRotate(@rect.GetCenter(),1,0);"/>
    </properties>
   </object>
-  <object id="37" name="Frame" type="Frame" x="-181.833" y="89" width="57" height="54">
-   <properties>
-    <property name="Draw" value="frameS[@frameNo]-&gt;Draw(@rect);"/>
-    <property name="Final" value=""/>
-    <property name="Init" value=""/>
-    <property name="Update" value=""/>
-   </properties>
-  </object>
-  <object id="38" name="Button" type="Button" x="-181.833" y="174.333" width="57" height="54">
-   <properties>
-    <property name="Draw" value="frameS[@frameNo]-&gt;Draw(@rect);"/>
-    <property name="Final" value=""/>
-    <property name="Init" value=""/>
-    <property name="Update" value=""/>
-   </properties>
-  </object>
-  <object id="39" name="Image" type="Image" x="-184.5" y="269" width="57" height="54">
-   <properties>
-    <property name="Draw" value="imageS[@gID]-&gt;DrawRotate(@rect.GetCenter(),1,0);"/>
-    <property name="Final" value=""/>
-    <property name="Init" value=""/>
-    <property name="Update" value=""/>
-   </properties>
-  </object>
- </objectgroup>
- <objectgroup color="#00ffff" name="TemplateClass">
-  <object id="24" name="Image" type="Image" x="-87.5" y="265" width="57" height="54"/>
   <object id="16" name="Button" type="Rect" x="-88.5" y="175" width="57" height="54">
    <properties>
     <property name="frameNo" value="int"/>
+    <property name="~Draw" value="frameS[@frameNo]-&gt;Draw(@rect);"/>
    </properties>
   </object>
   <object id="2" name="Frame" type="Rect" x="-89" y="89" width="57" height="54">
    <properties>
     <property name="frameNo" value="int"/>
+    <property name="~Draw" value="frameS[@frameNo]-&gt;Draw(@rect);"/>
+    <property name="~Update" value=""/>
    </properties>
   </object>
   <object id="15" name="Text" type="Rect" x="-88.5" y="5" width="57" height="54">
    <properties>
     <property name="fontNo" value="int"/>
     <property name="text" value="std::string"/>
+    <property name="~Draw" value="fontS[@fontNo]-&gt;Draw(@rect.GetPoint(),Color::White,@text);"/>
+    <property name="~Final" value=""/>
+    <property name="~Init" value=""/>
+    <property name="~Update" value=""/>
    </properties>
   </object>
  </objectgroup>
- <objectgroup color="#ffffff" draworder="index" name="QuestScene">
+ <objectgroup color="#ffffff" draworder="index" name="TestScene">
   <object id="29" name="外枠" type="Frame" x="14.5" y="59" width="601" height="299">
    <properties>
     <property name="frameNo" value="1"/>
    </properties>
   </object>
-  <object id="44" name="くま" type="Image" gid="14" x="168" y="192"/>
+  <object id="44" name="くま" type="Image" gid="14" x="151" y="181"/>
   <object id="28" name="題字" type="Text" x="26.5" y="27" width="575" height="39">
    <properties>
-    <property name="fontNo" value="10"/>
+    <property name="fontNo" value="0"/>
     <property name="text" value="こんにちは"/>
    </properties>
   </object>
   <object id="30" name="キャンセルボタン" type="Button" x="194.5" y="231" width="108" height="53">
    <properties>
-    <property name="frameNo" value="1"/>
+    <property name="frameNo" value="0"/>
    </properties>
   </object>
   <object id="31" name="OKボタン" type="Button" x="351.5" y="229" width="111" height="56">

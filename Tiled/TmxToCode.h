@@ -2,10 +2,12 @@
 //[License]GNU Affero General Public License, version 3
 //[Contact]http://sourceforge.jp/projects/dxframework/
 #pragma once
-#include <Tiled/GUIData.h>
-#include <Tiled/TmxToGUI.h>
+//#include <Tiled/GUIData.h>
+//#include <Tiled/TmxToGUI.h>
 #include <Tiled/GetTag.h>
+#include <Multimedia/File.h>
 #include <map>
+#include <vector>
 
 namespace SDX
 {
@@ -154,11 +156,27 @@ namespace SDX
 	{
 		//各クラスのコード
 		File file(templateClass, FileMode::Read);
-		auto strS = file.GetLineS();
+		auto defstrS = file.GetLineS();
+		std::vector<std::string> strS;
+		bool isWrite;
 
 		for (auto &itt : classNameS)
 		{
 			ClassTemplate& cls = classS[itt];
+			isWrite = true;
+
+			File tempFile((クラス名プリフィックス + itt + ".h").c_str(), FileMode::Read);
+			if (tempFile.GetFileMode() != FileMode::None)
+			{
+				//既に存在する場合はそれを更新
+				strS = tempFile.GetLineS();
+			}
+			else
+			{
+				strS = defstrS;
+			}
+			tempFile.Close();
+
 			File classFile((クラス名プリフィックス + itt + ".h").c_str(), FileMode::Write);
 
 			for (auto &it : strS)
@@ -173,6 +191,7 @@ namespace SDX
 				}
 				else if (it.find("@メンバー宣言") != std::string::npos)
 				{
+					isWrite = false;
 					classFile.AddLine(it);
 					classFile.AddLine({ "\t\tRect rect;" });
 					classFile.AddLine({ "\t\tdouble angle;" });
@@ -189,6 +208,7 @@ namespace SDX
 				}
 				else if (it.find("@コンストラクタ") != std::string::npos)
 				{
+					isWrite = false;
 					std::string str = "\t\t";
 					str += クラス名プリフィックス + cls.name + "( int id , const Rect& rect, double angle";
 					if ( cls.isTile )
@@ -229,20 +249,23 @@ namespace SDX
 					classFile.AddLine({ "\t\t\trect(rect) " });
 					classFile.AddLine({ "\t\t", "{}" });
 				}
-				else if (it.find("//@関数") != std::string::npos)
+				else if (it.find("//@End") != std::string::npos)
 				{
 					classFile.AddLine(it);
-
-					for (auto& str : cls.codeS)
-					{
-						std::string buf = str.second;
-						ReplaceTag(buf, std::string(""));
-						classFile.AddLine({ "\t\tvoid", str.first , "() override{" });
-						classFile.AddLine( buf );
-						classFile.AddLine("\t\t}");
-					}
+					isWrite = true;
 				}
-				else
+				else if (it.find("//@") != std::string::npos)
+				{
+					std::string name = it.substr(it.find("//@")+3);
+
+					classFile.AddLine(it);
+					isWrite = false;
+					
+					std::string buf = cls.codeS[name];
+					ReplaceTag(buf, std::string(""));
+					classFile.AddLine( buf );
+				}
+				else if (isWrite)
 				{
 					classFile.AddLine(it);
 				}
@@ -254,13 +277,27 @@ namespace SDX
 	void MakeSceneCode(const char* templateScene, std::vector<std::string> &classNameS, std::map<std::string, ClassTemplate> &classS, std::vector<GUI_Scene> &sceneS, const char* tmxFile, const std::string& クラス名プリフィックス)
 	{
 		File file(templateScene, FileMode::Read);
-		auto strS = file.GetLineS();
-		file.Close();
-		bool isWrite;
+		auto defstrS = file.GetLineS();
+		std::vector<std::string> strS;// = file.GetLineS();
+
+		bool isWrite = true;
 
 		for (auto &scene : sceneS)
 		{
-			file.Open( (scene.name + ".h").c_str() , FileMode::Write );
+			File prevFile((scene.name + ".h").c_str(), FileMode::Read);
+
+			if (prevFile.GetFileMode() == FileMode::Read)
+			{
+				strS = prevFile.GetLineS();
+			}
+			else
+			{
+				strS = defstrS;
+			}
+			prevFile.Close();
+
+			File sceneFile((scene.name + ".h").c_str(), FileMode::Write);
+
 			isWrite = true;
 
 			for (auto &str : strS)
@@ -270,12 +307,12 @@ namespace SDX
 					int num = str.find("CLASSNAME");
 					std::string buf = str;
 					buf.replace(num, 9, scene.name);
-					file.AddLine(buf);
+					sceneFile.AddLine(buf);
 				}
 				else if (str.find("@Define") != std::string::npos)
 				{
 					isWrite = false;
-					file.AddLine(str);
+					sceneFile.AddLine(str);
 					
 					for (auto &gui : scene.guiS)
 					{
@@ -317,57 +354,60 @@ namespace SDX
 
 						buf += "};";
 	
-						file.AddLine( buf);
+						sceneFile.AddLine(buf);
 					}
 				}
 				else if (str.find("@Load") != std::string::npos)
 				{
+					std::string fileName = tmxFile;
+					fileName = fileName.substr( fileName.find_last_of("\\") + 1 );
+
 					isWrite = false;
-					file.AddLine(str);
-					file.AddLine({ "\t\t\tGUIData guiData = TMXtoGUI(\"", tmxFile, "\", \"" , scene.name  , "\", GUI_Factory);", });
-					file.AddLine("");
+					sceneFile.AddLine(str);
+					sceneFile.AddLine({ "\t\t\tGUIData guiData = TMXtoGUI(\"", fileName, "\", \"", scene.name, "\", GUI_Factory);", });
+					sceneFile.AddLine("");
 
 					int index = 0;
 					for (auto &gui : scene.guiS)
 					{
-						file.AddLine({ "\t\t\t", gui.name, " = *dynamic_cast<", クラス名プリフィックス + gui.type, "*>(guiData.dataS[", index, "].get());" });
+						sceneFile.AddLine({ "\t\t\t", gui.name, " = *dynamic_cast<", クラス名プリフィックス + gui.type, "*>(guiData.dataS[", index, "].get());" });
 						++index;
 					}
 				}
 				else if (str.find("@End") != std::string::npos)
 				{
 					isWrite = true;
-					file.AddLine(str);
+					sceneFile.AddLine(str);
 				}
 				else if (str.find("//@") != std::string::npos)
 				{
-					std::string name = str.substr(str.find("//@"));
+					std::string name = str.substr(str.find("//@")+3);
 
 					isWrite = false;
-					file.AddLine(str);//@nameを挿入
+					sceneFile.AddLine(str);//@nameを挿入
 
 					for (auto &gui : scene.guiS)
 					{
 						std::string buf = classS[gui.type].codeS[name];
 						if (buf == ""){ break; }
 						ReplaceTag(buf, gui.name + ".");
-						file.AddLine(buf);
+						sceneFile.AddLine(buf);
 					}
 				}
 				else if (isWrite)
 				{
-					file.AddLine(str);
+					sceneFile.AddLine(str);
 				}
 			}
 			file.Close();
 		}
 	}
 
-	void MakeEnumCode(std::vector<GUI_Scene> &sceneS)
+	void MakeEnumCode(const char* templateEnum, std::vector<GUI_Scene> &sceneS)
 	{
 		//オブジェクトIDを列挙型で出力
 		File file("UI_Enum.h", FileMode::Write);
-		File temp("GUIEnum_Template.h", FileMode::Read);
+		File temp( templateEnum , FileMode::Read);
 
 		auto strS = temp.GetLineS();
 
@@ -379,7 +419,10 @@ namespace SDX
 				{
 					for (auto &gui : scene.guiS)
 					{
-						file.AddLine({"\t\t",gui.name, " = ", gui.id , ","});
+						if (gui.name != "")
+						{
+							file.AddLine({ "\t\t", gui.name, " = ", gui.id, "," });
+						}
 					}
 				}
 			}
@@ -391,7 +434,7 @@ namespace SDX
 	}
 
 	/**tmxファイルとテンプレートからコードを生成する*/
-	void TMXtoCode(const char* tmxFile, const char* templateClass , const char* templateScene , const std::string& クラス名プリフィックス = "UI_")
+	void TMXtoCode(const char* tmxFile, const char* templateClass, const char* templateScene, const char* templateEnum, const std::string& クラス名プリフィックス = "UI_")
 	{
 		//まず内部データに変更
 		//その後、クラス情報を取得、その後各クラスのコード、GUI_Factoryのコード、
@@ -488,8 +531,7 @@ namespace SDX
 						//座標は画像の左下が基準になる、回転させると座標も変化する
 						//中心座標に変換
 						//角度は時計回りで-180～180
-						rect.x += tileS[gid].w / 2;
-						rect.y -= tileS[gid].h / 2;
+						rect.y -= tileS[gid].h;
 						if (rect.widthRight > 0){ zoomW = rect.widthRight; }
 						if (rect.heightDown > 0){ zoomH = rect.heightDown; }
 						rect.widthRight = tileS[gid].w * zoomW;
@@ -540,12 +582,6 @@ namespace SDX
 		MakeFactoryCode(classNameS, classS , クラス名プリフィックス);
 		MakeClassCode(templateClass, classNameS, classS, クラス名プリフィックス);
 		MakeSceneCode(templateScene, classNameS, classS, sceneS, tmxFile, クラス名プリフィックス);
-		MakeEnumCode(sceneS);
-
-		//シーンのコード
-
-		/*
-		
-		*/
+		MakeEnumCode(templateEnum,sceneS);
 	}
 }

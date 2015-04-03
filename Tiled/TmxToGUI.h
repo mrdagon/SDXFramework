@@ -106,8 +106,7 @@ namespace SDX
 					if (gid != 0)
 					{
 						//タイルセットから大きさを取得
-						rect.x += tileS[gid].w / 2;
-						rect.y -= tileS[gid].h / 2;
+						rect.y -= tileS[gid].h;
 						if (rect.widthRight > 0){ zoomW = rect.widthRight; }
 						if (rect.heightDown > 0){ zoomH = rect.heightDown; }
 						rect.widthRight = tileS[gid].w * zoomW;
