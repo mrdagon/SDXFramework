@@ -15,11 +15,7 @@ namespace SDX
 		bool isTile = false;
 		std::vector<std::string> proNameS;//プロパティ名
 		std::vector<std::string> proTypeS;//プロパティ型
-
-		std::string drawCode;
-		std::string updateCode;
-		std::string initCode;
-		std::string finalCode;
+		std::map<std::string,std::string> codeS;//各種コード
 	};
 
 	struct GUI_Scene
@@ -50,6 +46,7 @@ namespace SDX
 			int id;
 			int gID;
 			std::vector<std::string> propertieS;
+			std::map<std::string, std::string> codeS;//各種コード
 		};
 
 		std::vector<GUI> guiS;
@@ -232,41 +229,16 @@ namespace SDX
 					classFile.AddLine({ "\t\t\trect(rect) " });
 					classFile.AddLine({ "\t\t", "{}" });
 				}
-				else if (it.find("@関数") != std::string::npos)
+				else if (it.find("//@関数") != std::string::npos)
 				{
 					classFile.AddLine(it);
-					std::string nullStr = "";
 
-					if (cls.initCode != "")
+					for (auto& str : cls.codeS)
 					{
-						std::string buf = cls.initCode;
-						ReplaceTag(buf, nullStr);
-						classFile.AddLine("\t\tvoid Init() override{");
-						classFile.AddLine(buf);
-						classFile.AddLine("\t\t}");
-					}
-					else if (cls.finalCode != "")
-					{
-						std::string buf = cls.finalCode;
-						ReplaceTag(buf, nullStr);
-						classFile.AddLine("\t\tvoid Final() override{");
-						classFile.AddLine(buf);
-						classFile.AddLine("\t\t}");
-					}
-					else if(cls.updateCode != "")
-					{
-						std::string buf = cls.updateCode;
-						ReplaceTag(buf, nullStr);
-						classFile.AddLine("\t\tvoid Update() override{");
-						classFile.AddLine(buf);
-						classFile.AddLine("\t\t}");
-					}
-					else if(cls.drawCode != "")
-					{
-						std::string buf = cls.drawCode;
-						ReplaceTag(buf, nullStr);
-						classFile.AddLine("\t\tvoid Draw() override{");
-						classFile.AddLine(buf);
+						std::string buf = str.second;
+						ReplaceTag(buf, std::string(""));
+						classFile.AddLine({ "\t\tvoid", str.first , "() override{" });
+						classFile.AddLine( buf );
 						classFile.AddLine("\t\t}");
 					}
 				}
@@ -348,58 +320,6 @@ namespace SDX
 						file.AddLine( buf);
 					}
 				}
-				else if (str.find("@Init") != std::string::npos)
-				{
-					isWrite = false;
-					file.AddLine(str);//@Initを挿入
-
-					for (auto &gui : scene.guiS)
-					{
-						std::string buf = classS[gui.type].initCode;
-						if (buf == ""){ break; }
-						ReplaceTag(buf, gui.name + ".");
-						file.AddLine(buf);
-					}
-				}
-				else if (str.find("@Final") != std::string::npos)
-				{
-					isWrite = false;
-					file.AddLine(str);
-
-					for (auto &gui : scene.guiS)
-					{
-						std::string buf = classS[gui.type].finalCode;
-						if (buf == ""){ break; }
-						ReplaceTag(buf, gui.name + ".");
-						file.AddLine(buf);
-					}
-				}
-				else if (str.find("@Update") != std::string::npos)
-				{
-					isWrite = false;
-					file.AddLine(str);
-
-					for (auto &gui : scene.guiS)
-					{
-						std::string buf = classS[gui.type].updateCode;
-						if (buf == ""){ break; }
-						ReplaceTag(buf, gui.name + ".");
-						file.AddLine(buf);
-					}
-				}
-				else if (str.find("@Draw") != std::string::npos)
-				{
-					isWrite = false;
-
-					file.AddLine(str);
-					for (auto &gui : scene.guiS)
-					{
-						std::string buf = classS[gui.type].drawCode;
-						if (buf == ""){ break; }
-						ReplaceTag(buf, gui.name + ".");
-						file.AddLine(buf);
-					}
-				}
 				else if (str.find("@Load") != std::string::npos)
 				{
 					isWrite = false;
@@ -418,6 +338,21 @@ namespace SDX
 				{
 					isWrite = true;
 					file.AddLine(str);
+				}
+				else if (str.find("//@") != std::string::npos)
+				{
+					std::string name = str.substr(str.find("//@"));
+
+					isWrite = false;
+					file.AddLine(str);//@nameを挿入
+
+					for (auto &gui : scene.guiS)
+					{
+						std::string buf = classS[gui.type].codeS[name];
+						if (buf == ""){ break; }
+						ReplaceTag(buf, gui.name + ".");
+						file.AddLine(buf);
+					}
 				}
 				else if (isWrite)
 				{
@@ -483,8 +418,7 @@ namespace SDX
 		tileS.push_back({ 0, 0 });//gID = 0は空データ
 		std::string nowClass;
 
-		//0何もしない、1コードテンプレート追加、2クラステンプレート追加、3オブジェクト追加
-		int mode = 0;
+		bool isTemplate = false;//テンプレートレイヤーか否か
 		int tileW;
 		int tileH;
 
@@ -509,17 +443,13 @@ namespace SDX
 					tileS.push_back({ tileW, tileH });
 				}	
 			}
-			else if (it.find("\"TemplateCode\">") != std::string::npos)
+			else if (it.find("\"TEMPLATE\">") != std::string::npos)
 			{
-				mode = 1;
-			}
-			else if (it.find("\"TemplateClass\">") != std::string::npos)
-			{
-				mode = 2;
+				isTemplate = true;
 			}
 			else if (it.find("<objectgroup") != std::string::npos)
 			{
-				mode = 3;
+				isTemplate = false;
 				nowClass = GetTag(it,"name=");
 
 				sceneS.push_back(GUI_Scene());
@@ -527,16 +457,12 @@ namespace SDX
 			}
 			else if (it.find("<object id=") != std::string::npos)
 			{
-				if (mode <= 2)
+				if ( isTemplate )
 				{
 					nowClass = GetTag(it, "name=");
 					classS[nowClass].name = nowClass;
 					classS[nowClass].isTile = (it.find("type=\"Image\"") != std::string::npos);
-
-					if (mode == 1)
-					{
-						classNameS.push_back(nowClass);
-					}
+					classNameS.push_back(nowClass);
 				}
 				else
 				{		
@@ -576,25 +502,15 @@ namespace SDX
 			}
 			else if (it.find("<property name") != std::string::npos)
 			{
-				if (mode == 1)//Code
+				if ( isTemplate )
 				{
-					std::string proName = GetTag(it,"name=");
-					std::string code = GetTag(it, "value=");
+					std::string name = GetTag(it,"name=");
+					std::string value = GetTag(it, "value=");
 
-					if (proName == "Draw"){ classS[nowClass].drawCode = code; }
-					if (proName == "Final"){ classS[nowClass].finalCode = code; }
-					if (proName == "Init"){ classS[nowClass].initCode = code; }
-					if (proName == "Update"){ classS[nowClass].updateCode = code; }
-				}
-				else if (mode == 2)//Class
-				{
-					//gid
-					std::string name = GetTag(it, "name=");
-					std::string type = GetTag(it, "value=");
-
-					if (name == "gID")
+					if (name.find("~") != std::string::npos)
 					{
-						classS[nowClass].isTile = true;						
+						//各種コード ~は無視する
+						classS[nowClass].codeS[name.substr(1)] = value;
 					}
 					else
 					{
@@ -602,9 +518,21 @@ namespace SDX
 						classS[nowClass].proTypeS.push_back(GetTag(it, "value="));
 					}
 				}
-				else if( mode == 3)//Data
+				else
 				{
-					sceneS.back().guiS.back().propertieS.push_back(GetTag(it, "value="));
+					std::string name = GetTag(it, "name=");
+					std::string value = GetTag(it, "value=");
+
+					if (name.find("~") != std::string::npos)
+					{
+						//コード ~は無視する
+						sceneS.back().guiS.back().codeS[name.substr(1)] = value;
+					}
+					else
+					{
+						//値の場合
+						sceneS.back().guiS.back().propertieS.push_back(GetTag(it, "value="));
+					}
 				}
 			}
 		}
