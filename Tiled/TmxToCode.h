@@ -54,6 +54,22 @@ namespace SDX
 		std::vector<GUI> guiS;
 	};
 
+	struct TiledChip
+	{
+		int w;
+		int h;
+		std::string name;
+		int no = -1;
+
+		TiledChip(int w,int h , const std::string name = "" , int no = -1):
+			w(w),
+			h(h),
+			name(name),
+			no(no)
+		{}
+
+	};
+
 	/**@と<>を差し替えて、tabを挿入する.*/
 	void ReplaceTag(std::string &変換文字 , std::string &置き換え文字)
 	{
@@ -403,7 +419,7 @@ namespace SDX
 		}
 	}
 
-	void MakeEnumCode(const char* templateEnum, std::vector<GUI_Scene> &sceneS)
+	void MakeEnumCode(const char* templateEnum, std::vector<GUI_Scene> &sceneS, std::vector<TiledChip> &tileS)
 	{
 		//オブジェクトIDを列挙型で出力
 		File file("UI_Enum.h", FileMode::Write);
@@ -426,6 +442,25 @@ namespace SDX
 					}
 				}
 			}
+			else if (str.find("@Resource") != std::string::npos)
+			{
+				int index = 0;
+				for (auto& tile : tileS)
+				{
+					if (tile.name != "")
+					{
+						std::string str = tile.name;
+						if (tile.no >= 0)
+						{
+							str += "_";
+							str += std::to_string(tile.no);
+						}
+
+						file.AddLine({ "\t\t", str , " = ", index , "," });
+					}
+					++index;
+				}
+			}
 			else
 			{
 				file.AddLine(str);
@@ -445,19 +480,8 @@ namespace SDX
 		std::map<std::string, ClassTemplate> classS;
 		std::vector<std::string> classNameS;
 		std::vector<GUI_Scene> sceneS;
+		std::vector<TiledChip> tileS;
 		
-		struct TileSize
-		{
-			TileSize(int w ,int h):
-				w(w),
-				h(h)
-			{}
-
-			int w;
-			int h;
-		};
-
-		std::vector<TileSize> tileS;//各タイルの大きさ
 		tileS.push_back({ 0, 0 });//gID = 0は空データ
 		std::string nowClass;
 
@@ -474,17 +498,33 @@ namespace SDX
 			}
 			else if (it.find("<image width") != std::string::npos)
 			{
-				tileS.push_back({ std::atoi(GetTag(it, "width=").c_str()) , std::atoi(GetTag(it, "height=").c_str()) });
+				std::string name = GetTag(it, "source=");
+				name = name.substr( name.find("/") + 1);
+				name = name.substr(0, name.find("."));
+
+				while ( name.find("/") != std::string::npos)
+				{
+					name = name.replace(name.find("/"), 1, "_");
+				}
+				tileS.push_back({ std::atoi(GetTag(it, "width=").c_str()) , std::atoi(GetTag(it, "height=").c_str()) , name});				
 			}
 			else if (it.find("<image source") != std::string::npos)
 			{
+				std::string name = GetTag(it, "source=");
+				name = name.substr(name.find("/") + 1);
+				name = name.substr(0, name.find("."));
+				while (name.find("/") != std::string::npos)
+				{
+					name = name.replace(name.find("/") + 1, 1, "_");
+				}
+
 				int w = std::atoi(GetTag(it, "width=").c_str()) / tileW;
 				int h = std::atoi(GetTag(it, "height=").c_str()) / tileH;
 
 				for (int a = 0; a < w*h; ++a)
 				{
-					tileS.push_back({ tileW, tileH });
-				}	
+					tileS.push_back({ tileW, tileH ,name , a});
+				}
 			}
 			else if (it.find("\"TEMPLATE\">") != std::string::npos)
 			{
@@ -504,7 +544,6 @@ namespace SDX
 				{
 					nowClass = GetTag(it, "name=");
 					classS[nowClass].name = nowClass;
-					classS[nowClass].isTile = (it.find("type=\"Image\"") != std::string::npos);
 					classNameS.push_back(nowClass);
 				}
 				else
@@ -531,6 +570,7 @@ namespace SDX
 						//座標は画像の左下が基準になる、回転させると座標も変化する
 						//中心座標に変換
 						//角度は時計回りで-180～180
+						classS[type].isTile = true;
 						rect.y -= tileS[gid].h;
 						if (rect.widthRight > 0){ zoomW = rect.widthRight; }
 						if (rect.heightDown > 0){ zoomH = rect.heightDown; }
@@ -582,6 +622,6 @@ namespace SDX
 		MakeFactoryCode(classNameS, classS , クラス名プリフィックス);
 		MakeClassCode(templateClass, classNameS, classS, クラス名プリフィックス);
 		MakeSceneCode(templateScene, classNameS, classS, sceneS, tmxFile, クラス名プリフィックス);
-		MakeEnumCode(templateEnum,sceneS);
+		MakeEnumCode(templateEnum,sceneS,tileS);
 	}
 }
