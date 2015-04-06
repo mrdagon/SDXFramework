@@ -1,20 +1,20 @@
-﻿//Copyright © 2014 SDXFramework
+﻿//Copyright © 
 //[License]GNU Affero General Public License, version 3
-//[Contact]http://sourceforge.jp/projects/dxframework/
+//[Contact]
 #pragma once
 #include <SDXFrameWork.h>
 #include "GUI_Factory.h"
 
-namespace SDX
+namespace NAMESPACE
 {
-	class CLASSNAME : public IScene
+	class CLASSNAME : public SDX::IScene
 	{
 	public:
-		GUIData guiS;
+		SDX::GUIData guiS;
 
 		CLASSNAME()
 		{
-			guiS = TMXtoGUI("template.tmx", "CLASSNAME", GUI_Factory);
+			LoadGUI();
 			Init();
 		}
 
@@ -59,10 +59,7 @@ namespace SDX
 
 		void LoadGUI() override
 		{
-#ifndef _DEBUG			
-			return;
-#endif
-			guiS = TMXtoGUI("template.tmx", "CLASSNAME", GUI_Factory);
+			guiS = SDX::TMXtoGUI( TMX_FILE_NAME , "CLASSNAME", GUI_Factory);
 		}
 	};
 }

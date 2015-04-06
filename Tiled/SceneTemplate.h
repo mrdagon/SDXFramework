@@ -1,13 +1,13 @@
-﻿//Copyright © 2014 SDXFramework
+﻿//Copyright © 
 //[License]GNU Affero General Public License, version 3
-//[Contact]http://sourceforge.jp/projects/dxframework/
+//[Contact]
 #pragma once
 #include <SDXFrameWork.h>
 #include "GUI_Factory.h"
 
-namespace SDX
+namespace NAMESPACE
 {
-	class CLASSNAME : public IScene
+	class CLASSNAME : public SDX::IScene
 	{
 	public:
 		//@Define
@@ -52,7 +52,7 @@ namespace SDX
 
 		void LoadGUI() override
 		{
-#ifndef _DEBUG			
+#ifndef _DEBUG
 			return;
 #endif
 			//@Load

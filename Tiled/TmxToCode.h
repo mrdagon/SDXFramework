@@ -104,7 +104,7 @@ namespace SDX
 
 	}
 
-	void MakeFactoryCode(std::vector<std::string> &classNameS, std::map<std::string, ClassTemplate> &classS, const std::string& クラス名プリフィックス)
+	void MakeFactoryCode(std::vector<std::string> &classNameS, std::map<std::string, ClassTemplate> &classS, const std::string& クラス名プリフィックス, const char* 名前空間名)
 	{
 		//Factoryの生成
 		File file("GUI_Factory.h", FileMode::Write);
@@ -118,8 +118,9 @@ namespace SDX
 			file.AddLine({ "#include \"", クラス名プリフィックス + classS[it].name, ".h\"" });
 		}
 		file.AddLine("");
-		file.AddLine("namespace SDX");
+		file.AddLine({ "namespace " , 名前空間名 });
 		file.AddLine("{");
+		file.AddLine("using namespace SDX;");
 		file.AddLine("\tvoid GUI_Factory(GUIData& data, std::string& type , int id , int gid, Rect rect, double zoomW , double zoomH , double angle, std::vector<std::string>& properties)");
 		file.AddLine("\t{");
 		int index = 0;
@@ -168,7 +169,7 @@ namespace SDX
 
 	}
 
-	void MakeClassCode(const char* templateClass, std::vector<std::string> &classNameS, std::map<std::string, ClassTemplate> &classS, const std::string& クラス名プリフィックス)
+	void MakeClassCode(const char* templateClass, std::vector<std::string> &classNameS, std::map<std::string, ClassTemplate> &classS, const std::string& クラス名プリフィックス, const char* 名前空間名)
 	{
 		//各クラスのコード
 		File file(templateClass, FileMode::Read);
@@ -197,11 +198,19 @@ namespace SDX
 
 			for (auto &it : strS)
 			{
-				if (it.find("GUI_NAME") != std::string::npos)
+				if (it.find("NAMESPACE") != std::string::npos)
 				{
 					std::string buf = it;
-					int num = buf.find("GUI_NAME");
-					buf.erase(num, 8);
+					int num = buf.find("NAMESPACE");
+					buf.erase(num, 9);
+					buf.insert(num, 名前空間名);
+					classFile.AddLine(buf);
+				}
+				else if (it.find("CLASSNAME") != std::string::npos)
+				{
+					std::string buf = it;
+					int num = buf.find("CLASSNAME");
+					buf.erase(num, 9);
 					buf.insert(num, クラス名プリフィックス + cls.name);
 					classFile.AddLine(buf);
 				}
@@ -209,8 +218,6 @@ namespace SDX
 				{
 					isWrite = false;
 					classFile.AddLine(it);
-					classFile.AddLine({ "\t\tRect rect;" });
-					classFile.AddLine({ "\t\tdouble angle;" });
 					if ( cls.isTile)
 					{
 						classFile.AddLine({ "\t\tint gID;" });
@@ -260,9 +267,7 @@ namespace SDX
 						classFile.AddLine({ "\t\t\tzoomH(zoomH)," });
 
 					}
-					classFile.AddLine({ "\t\t\tIGUI(id,rect)," });
-					classFile.AddLine({ "\t\t\tangle(angle)," });
-					classFile.AddLine({ "\t\t\trect(rect) " });
+					classFile.AddLine({ "\t\t\tIGUI(id,rect,angle)" });
 					classFile.AddLine({ "\t\t", "{}" });
 				}
 				else if (it.find("//@End") != std::string::npos)
@@ -290,7 +295,7 @@ namespace SDX
 
 	}
 
-	void MakeSceneCode(const char* templateScene, std::vector<std::string> &classNameS, std::map<std::string, ClassTemplate> &classS, std::vector<GUI_Scene> &sceneS, const char* tmxFile, const std::string& クラス名プリフィックス)
+	void MakeSceneCode(const char* templateScene, std::vector<std::string> &classNameS, std::map<std::string, ClassTemplate> &classS, std::vector<GUI_Scene> &sceneS, const char* tmxFile, const std::string& クラス名プリフィックス, const char* 名前空間名)
 	{
 		File file(templateScene, FileMode::Read);
 		auto defstrS = file.GetLineS();
@@ -318,7 +323,15 @@ namespace SDX
 
 			for (auto &str : strS)
 			{
-				if (str.find("CLASSNAME") != std::string::npos)
+				if (str.find("NAMESPACE") != std::string::npos)
+				{
+					std::string buf = str;
+					int num = buf.find("NAMESPACE");
+					buf.erase(num, 9);
+					buf.insert(num, 名前空間名);
+					sceneFile.AddLine(buf);
+				}
+				else if(str.find("CLASSNAME") != std::string::npos)
 				{
 					int num = str.find("CLASSNAME");
 					std::string buf = str;
@@ -380,7 +393,7 @@ namespace SDX
 
 					isWrite = false;
 					sceneFile.AddLine(str);
-					sceneFile.AddLine({ "\t\t\tGUIData guiData = TMXtoGUI(\"", fileName, "\", \"", scene.name, "\", GUI_Factory);", });
+					sceneFile.AddLine({ "\t\t\tSDX::GUIData guiData = SDX::TMXtoGUI( TMX_FILE_NAME , \"", scene.name, "\", GUI_Factory);", });
 					sceneFile.AddLine("");
 
 					int index = 0;
@@ -419,7 +432,7 @@ namespace SDX
 		}
 	}
 
-	void MakeEnumCode(const char* templateEnum, std::vector<GUI_Scene> &sceneS, std::vector<TiledChip> &tileS)
+	void MakeEnumCode(const char* templateEnum, std::vector<GUI_Scene> &sceneS, std::vector<TiledChip> &tileS, const char* 名前空間名)
 	{
 		//オブジェクトIDを列挙型で出力
 		File file("UI_Enum.h", FileMode::Write);
@@ -429,7 +442,15 @@ namespace SDX
 
 		for (auto &str : strS)
 		{
-			if (str.find("@Enum") != std::string::npos)
+			if (str.find("NAMESPACE") != std::string::npos)
+			{
+				std::string buf = str;
+				int num = buf.find("NAMESPACE");
+				buf.erase(num, 9);
+				buf.insert(num, 名前空間名);
+				file.AddLine(buf);
+			}
+			else if (str.find("@Enum") != std::string::npos)
 			{
 				for (auto& scene : sceneS)
 				{
@@ -469,7 +490,7 @@ namespace SDX
 	}
 
 	/**tmxファイルとテンプレートからコードを生成する*/
-	void TMXtoCode(const char* tmxFile, const char* templateClass, const char* templateScene, const char* templateEnum, const std::string& クラス名プリフィックス = "UI_")
+	void TMXtoCode(const char* tmxFile, const char* templateClass, const char* templateScene, const char* templateEnum, const char* クラス名プリフィックス , const char* 名前空間名 )
 	{
 		//まず内部データに変更
 		//その後、クラス情報を取得、その後各クラスのコード、GUI_Factoryのコード、
@@ -619,9 +640,9 @@ namespace SDX
 			}
 		}
 		 
-		MakeFactoryCode(classNameS, classS , クラス名プリフィックス);
-		MakeClassCode(templateClass, classNameS, classS, クラス名プリフィックス);
-		MakeSceneCode(templateScene, classNameS, classS, sceneS, tmxFile, クラス名プリフィックス);
-		MakeEnumCode(templateEnum,sceneS,tileS);
+		MakeFactoryCode(classNameS, classS , クラス名プリフィックス,名前空間名);
+		MakeClassCode(templateClass, classNameS, classS, クラス名プリフィックス, 名前空間名);
+		MakeSceneCode(templateScene, classNameS, classS, sceneS, tmxFile, クラス名プリフィックス, 名前空間名);
+		MakeEnumCode(templateEnum, sceneS, tileS, 名前空間名);
 	}
 }

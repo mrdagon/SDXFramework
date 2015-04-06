@@ -410,6 +410,12 @@ namespace SDX
 
 				while (std::getline(iss, buf, '\n'))
 				{
+					//\rがあれば消す
+					if (buf.find("\r") != std::string::npos)
+					{
+						buf.replace(buf.find("\r"), 1, "");
+					}
+
 					std::istringstream iss2(buf);
 					while (std::getline(iss2, buf2, ','))
 					{
@@ -440,7 +446,13 @@ namespace SDX
 
 				while (std::getline(iss, buf, '\n'))
 				{
-					std::istringstream iss2(buf);
+					//\rがあれば消す
+					if (buf.find("\r") != std::string::npos)
+					{
+						buf.replace(buf.find("\r"), 1, "");
+					}
+					
+					std::istringstream iss2(buf);					
 					lineS.push_back(std::vector<std::string>());
 
 					while (std::getline(iss2, buf2, ','))

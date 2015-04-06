@@ -3,10 +3,15 @@
 //[Contact]http://sourceforge.jp/projects/dxframework/
 #pragma once
 
-namespace SDX
+namespace NAMESPACE
 {
-	enum class ObjectID
+	enum ObjectID
 	{
 		//@Enum
+	};
+
+	enum ResourceID
+	{
+		//@Resource
 	};
 }

@@ -1,13 +1,13 @@
-﻿//Copyright © 2014 SDXFramework
+﻿//Copyright © 
 //[License]GNU Affero General Public License, version 3
-//[Contact]http://sourceforge.jp/projects/dxframework/
+//[Contact]
 #pragma once
 #include <Tiled/IGUI.h>
 
-namespace SDX
+namespace NAMESPACE
 {
-	/** GUI.*/
-	class GUI_NAME : public IGUI
+	/** クラスの説明.*/
+	class CLASSNAME : public SDX::IGUI
 	{
 	public:
 		//@メンバー宣言

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="40" height="30" tilewidth="16" tileheight="16" nextobjectid="58">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="40" height="30" tilewidth="16" tileheight="16" nextobjectid="59">
  <tileset firstgid="1" name="Test" tilewidth="20" tileheight="20">
   <tile id="0">
    <image width="20" height="20" source="data/icon000.png"/>
@@ -50,25 +50,25 @@
   <image source="data/hone.png" width="96" height="128"/>
  </tileset>
  <objectgroup color="#00ffff" name="TEMPLATE">
-  <object id="24" name="Image" type="Image" x="-87.5" y="265" width="57" height="54">
+  <object id="24" name="Image" type="Image" x="256.5" y="507" width="57" height="54">
    <properties>
     <property name="~Draw" value="imageS[@gID]-&gt;DrawRotate(@rect.GetCenter(),1,0);"/>
    </properties>
   </object>
-  <object id="16" name="Button" type="Rect" x="-88.5" y="175" width="57" height="54">
+  <object id="16" name="Button" type="Rect" x="171.5" y="507" width="57" height="54">
    <properties>
     <property name="frameNo" value="int"/>
     <property name="~Draw" value="frameS[@frameNo]-&gt;Draw(@rect);"/>
    </properties>
   </object>
-  <object id="2" name="Frame" type="Rect" x="-89" y="89" width="57" height="54">
+  <object id="2" name="Frame" type="Rect" x="89" y="509" width="57" height="54">
    <properties>
     <property name="frameNo" value="int"/>
     <property name="~Draw" value="frameS[@frameNo]-&gt;Draw(@rect);"/>
     <property name="~Update" value=""/>
    </properties>
   </object>
-  <object id="15" name="Text" type="Rect" x="-88.5" y="5" width="57" height="54">
+  <object id="15" name="Text" type="Rect" x="9.5" y="509" width="57" height="54">
    <properties>
     <property name="fontNo" value="int"/>
     <property name="text" value="std::string"/>
