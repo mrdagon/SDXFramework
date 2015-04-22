@@ -547,7 +547,7 @@ namespace SDX
 					tileS.push_back({ tileW, tileH ,name , a});
 				}
 			}
-			else if (it.find("\"TEMPLATE\">") != std::string::npos)
+			else if (it.find("\"TEMPLATE\"") != std::string::npos)
 			{
 				isTemplate = true;
 			}

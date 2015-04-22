@@ -4,6 +4,7 @@
 
 #include <SDXFramework.h>
 #include <Multimedia/SDXafx.h>
+#include <Tiled/TmxToGUI.h>
 
 SDX::ImagePack imageS;
 SDX::IFrame* frameS[10];
