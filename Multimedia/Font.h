@@ -79,15 +79,14 @@ namespace SDX
             int charSize = 0;
             for (auto it = 文字列.begin(); it != 文字列.end(); it += charSize)
             {
-                if (!GetUTFSize(*it, charSize)){ continue; }
-                if (handle == nullptr && *it == ' ')
-                {
-                    位置.x += size * X拡大率;
-                    continue;
-                }
-
+                if (!GetUTFSize(*it, charSize)){ continue; }//制御文字は無視
+				
                 Image* str = GetHash(文字列.substr(std::distance(文字列.begin(), it), charSize).c_str(),charSize);
-                if (str == nullptr){ continue; }
+                if (str == nullptr)
+				{
+					位置.x += size * X拡大率;
+					continue;
+				}
 
                 str->SetColor(描画色);
                 str->DrawExtend({ 位置.x , 位置. y ,  str->GetWidth()*X拡大率, str->GetHeight()*Y拡大率 });
@@ -367,6 +366,7 @@ namespace SDX
             //http://1bit.mobi/20101026101350.html 常用漢字表
             index = 0;
             int length = 0;
+			//BOMチェック
             if( (unsigned char)strS[0][0] == 0xEF && (unsigned char)strS[0][1] == 0xBB && (unsigned char)strS[0][2] == 0xBF ){index = 3;}
 
             while(1)
@@ -435,7 +435,6 @@ namespace SDX
 				return true;
 			}
 
-
             File file(テキストファイル名.c_str(), FileMode::Read, true);
             auto strS = file.GetLineS();
             int count = 0;
@@ -467,10 +466,10 @@ namespace SDX
                 {
                     case  0: str = "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`"; break;
                     case  1: str = "abcdefghijklmnopqrstuvwxyz{|}~｡｢｣､･ｦｧｨｩｪｫｬｭｮｯｰｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿ"; break;
-                    case  2: str = "ﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜﾝﾞﾟ "; break;
+                    case  2: str = "ﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜﾝﾞﾟ  "; break;
                     case  3: str = "ぁあぃいぅうぇえぉおかがきぎくぐけげこごさざしじすずせぜそぞただ"; break;
                     case  4: str = "ちぢっつづてでとどなにぬねのはばぱひびぴふぶぷへべぺほぼぽまみむ"; break;
-                    case  5: str = "めもゃやゅゆょよらりるれろゎわゐゑをんゔゕゖ　"; break;
+                    case  5: str = "めもゃやゅゆょよらりるれろゎわゐゑをんゔゕゖ　　"; break;
                     case  6: str = "ァアィイゥウェエォオカガキギクグケゲコゴサザシジスズセゼソゾタダ"; break;
                     case  7: str = "チヂッツヅテデトドナニヌネノハバパヒビピフブプヘベペホボポマミム"; break;
                     case  8: str = "メモャヤュユョヨラリルレロヮワヰヱヲンヴヵヶヷヸヹヺ・ーヽヾヿ゠"; break;
@@ -485,14 +484,14 @@ namespace SDX
                     if (a <= 2)
                     {
                         if (a == 1 && b == 61){ break; }
-                        if( a == 2 && b == 33){ break;}
+                        if( a == 2 && b == 34){ break; }
                         ID = str[b];
                         hash[ID] = new Image(BMPフォント, { b * w/2, a * h, w / 2, h });
                     }
                     else
                     {
                         if (b >= 32){ break; }
-                        if (a == 5 && b == 23){ break; }
+                        if (a == 5 && b == 24){ break; }
 
                         ID = str[b * 3] + str[b * 3 + 1] * 256 + str[b * 3 + 2] * 256 * 256;
                         hash[ID] = new Image(BMPフォント, { b * w, a * h, w, h });
@@ -559,13 +558,22 @@ namespace SDX
                 for (auto it = 文字列.begin(); it != 文字列.end(); it += charSize)
                 {
                     lead = *it;
-                    if (lead < 0x20){ continue; }
+                    if (lead <= 0x20){ continue; }//制御文字は無視
                     else if (lead < 0x80){ charSize = 1; }
                     else if (lead < 0xE0){ charSize = 2; }
                     else if (lead < 0xF0){ charSize = 3; }
                     else { charSize = 4; }
 
-                    幅 += GetHash(文字列.substr(std::distance(文字列.begin(), it), charSize).c_str(),charSize)->GetWidth();
+					Image* buf = GetHash(文字列.substr(std::distance(文字列.begin(), it), charSize).c_str(), charSize);
+
+					if (buf)
+					{
+						幅 += buf->GetWidth();
+					}
+					else
+					{
+						幅 += size;
+					}
                 }
 
                 最大幅 = std::max(幅, 最大幅);

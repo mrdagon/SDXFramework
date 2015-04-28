@@ -279,7 +279,7 @@ namespace SDX
 				{
 					std::string name = it.substr(it.find("//@")+3);
 
-					classFile.AddLine(it);
+					classFile.AddLine(it);//@の部分をコピー
 					isWrite = false;
 					
 					std::string buf = cls.codeS[name];
@@ -418,10 +418,11 @@ namespace SDX
 					for (auto &gui : scene.guiS)
 					{
 						std::string buf = classS[gui.type].codeS[name];
-						if (buf == ""){ break; }
+						if (buf == "" ){ continue; }
 						ReplaceTag(buf, gui.name + ".");
 						sceneFile.AddLine(buf);
 					}
+
 				}
 				else if (isWrite)
 				{
@@ -458,7 +459,7 @@ namespace SDX
 					{
 						if (gui.name != "")
 						{
-							file.AddLine({ "\t\t", gui.name, " = ", gui.id, "," });
+							file.AddLine({ "\t\t",scene.name , "_" , gui.name, " = ", gui.id, "," });
 						}
 					}
 				}

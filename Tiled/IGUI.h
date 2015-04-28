@@ -24,5 +24,17 @@ namespace SDX
 		virtual void Final(){};
 		virtual void Draw(){};
 		virtual void Update(){};
+
+		/** マウスオーバー判定 */
+		bool isMouse()
+		{
+			return rect.Hit( &Input::mouse.GetPoint() );
+		}
+
+		/** クリックorタッチ判定 */
+		bool isClick()
+		{
+			return Input::mouse.Left.on && rect.Hit(&Input::mouse.GetPoint());
+		}
 	};
 }
