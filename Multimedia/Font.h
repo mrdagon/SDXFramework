@@ -36,7 +36,7 @@ namespace SDX
         {
             if (一文字目 < 0x20)
             {
-                //空白文字
+                //制御文字
                 文字長さ = 1;
                 return false;
             }
@@ -80,13 +80,13 @@ namespace SDX
             for (auto it = 文字列.begin(); it != 文字列.end(); it += charSize)
             {
                 if (!GetUTFSize(*it, charSize)){ continue; }//制御文字は無視
-				
+                
                 Image* str = GetHash(文字列.substr(std::distance(文字列.begin(), it), charSize).c_str(),charSize);
                 if (str == nullptr)
-				{
-					位置.x += size * X拡大率;
-					continue;
-				}
+                {
+                    位置.x += size * X拡大率;
+                    continue;
+                }
 
                 str->SetColor(描画色);
                 str->DrawExtend({ 位置.x , 位置. y ,  str->GetWidth()*X拡大率, str->GetHeight()*Y拡大率 });
@@ -102,21 +102,21 @@ namespace SDX
             for (auto it = 文字列.begin(); it != 文字列.end(); it += charSize)
             {
                 if (!GetUTFSize(*it, charSize)){ continue; }
-                if (handle == nullptr && *it == ' ')
+
+                Image* str = GetHash(文字列.substr(std::distance(文字列.begin(), it), charSize).c_str(),charSize);
+                if (str == nullptr)
                 {
                     位置.x += size * 拡大率;
                     continue;
                 }
 
-                Image* str = GetHash(文字列.substr(std::distance(文字列.begin(), it), charSize).c_str(),charSize);
-                if (str == nullptr){ continue; }
-
+				X補正 += int(str->GetWidth() * 拡大率 * 0.5);
                 double x = 位置.x + std::cos(角度) * X補正 + std::cos(角度 + PAI / 2) * Y補正;
                 double y = 位置.y + std::sin(角度) * X補正 + std::sin(角度 + PAI / 2) * Y補正;
 
                 str->SetColor(描画色);
                 str->DrawRotate({ x, y }, 拡大率, 角度);
-                X補正 += int(str->GetWidth() * 拡大率);
+                X補正 += int(str->GetWidth() * 拡大率 * 0.5);
             }
         }
 
@@ -270,8 +270,8 @@ namespace SDX
         /** BMPフォントデータを生成する.*/
         /** テキストファイルには出力したい文字を一行で入力します\n*/
         /** pngに変換したい場合、生成したBMPの黒の箇所を透明にして下さい\n*/
-		/** 等幅フォントのみ対応*/
-		bool MakeBMPFont(const std::string テキストファイル名)
+        /** 等幅フォントのみ対応*/
+        bool MakeBMPFont(const std::string テキストファイル名)
         {
             if (handle == nullptr){ return false; }
             SDL_Surface* surface;
@@ -366,7 +366,7 @@ namespace SDX
             //http://1bit.mobi/20101026101350.html 常用漢字表
             index = 0;
             int length = 0;
-			//BOMチェック
+            //BOMチェック
             if( (unsigned char)strS[0][0] == 0xEF && (unsigned char)strS[0][1] == 0xBB && (unsigned char)strS[0][2] == 0xBF ){index = 3;}
 
             while(1)
@@ -416,7 +416,7 @@ namespace SDX
 
             std::string fileName = TTF_FontFaceFamilyName(handle);
             fileName += TTF_FontFaceStyleName(handle);
-			fileName += std::to_string(size);
+            fileName += std::to_string(size);
             fileName += ".bmp";
 
             SDL_SaveBMP(surface, fileName.c_str());
@@ -429,11 +429,11 @@ namespace SDX
         /** テキストファイルはMakeBMPFontに使った物と同じ物を使用して下さい*/
         bool LoadBMPFont( const Image& BMPフォント , const std::string テキストファイル名)
         {
-			if (Loading::isLoading)
-			{
-				Loading::AddLoading([=]{ LoadBMPFont(BMPフォント, テキストファイル名); });
-				return true;
-			}
+            if (Loading::isLoading)
+            {
+                Loading::AddLoading([=]{ LoadBMPFont(BMPフォント, テキストファイル名); });
+                return true;
+            }
 
             File file(テキストファイル名.c_str(), FileMode::Read, true);
             auto strS = file.GetLineS();
@@ -498,6 +498,8 @@ namespace SDX
                     }
                 }
             }
+            //空白文字を登録
+            hash[0x20] = new Image(BMPフォント, { 33 * w / 2, 2 * h, w / 2, h });
 
             //一文字ずつ
             //http://1bit.mobi/20101026101350.html 常用漢字表
@@ -564,16 +566,16 @@ namespace SDX
                     else if (lead < 0xF0){ charSize = 3; }
                     else { charSize = 4; }
 
-					Image* buf = GetHash(文字列.substr(std::distance(文字列.begin(), it), charSize).c_str(), charSize);
+                    Image* buf = GetHash(文字列.substr(std::distance(文字列.begin(), it), charSize).c_str(), charSize);
 
-					if (buf)
-					{
-						幅 += buf->GetWidth();
-					}
-					else
-					{
-						幅 += size;
-					}
+                    if (buf)
+                    {
+                        幅 += buf->GetWidth();
+                    }
+                    else
+                    {
+                        幅 += size;
+                    }
                 }
 
                 最大幅 = std::max(幅, 最大幅);

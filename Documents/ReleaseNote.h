@@ -16,7 +16,7 @@ Systemにプラットフォームの種類を取得する関数と、タブレ�
 LoadBMPFont関数を非同期読み込み対応\n
 Drawing関数で半透明指定が無効になっていたバグを修正\n
 Font::MakeBmpFontで出力されるファイル名に文字サイズが入るように修正\n
-Font::DrawRotateで一行分上に表示されていたのを修正\n
+Font::DrawRotateで一行分上に表示されている等の不具合を修正\n
 Font::GetCsvToStringで改行コードが残る不具合を修正\n
 Fontクラスで登録されていない文字を表示する際に空白が入る用に修正\n
 Tiledとの外部エディタ連携機能を実装\n
