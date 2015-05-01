@@ -110,7 +110,7 @@ namespace SDX
                     continue;
                 }
 
-				X補正 += int(str->GetWidth() * 拡大率 * 0.5);
+                X補正 += int(str->GetWidth() * 拡大率 * 0.5);
                 double x = 位置.x + std::cos(角度) * X補正 + std::cos(角度 + PAI / 2) * Y補正;
                 double y = 位置.y + std::sin(角度) * X補正 + std::sin(角度 + PAI / 2) * Y補正;
 
@@ -164,7 +164,6 @@ namespace SDX
 
             hash[ID] = 対応Image;
         }
-
     public:
 
         Font() = default;
@@ -458,6 +457,9 @@ namespace SDX
             int h = BMPフォント.GetHeight() / ((count+31)/32 + 12);
             int w = BMPフォント.GetWidth() / 32;
 
+            size = w;
+            enterHeight = h;
+
             std::string str;
 
             for (int a = 0; a < 12; ++a)
@@ -478,15 +480,24 @@ namespace SDX
                     case 11: str = "ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ｛｜｝～｟｠"; break;
                 }
 
+                int count = 0;
                 for (int b = 0; b < 64; ++b)
                 {
-                    int ID;
+                    int ID = 0;
+                    int 文字長 = 0;
                     if (a <= 2)
                     {
                         if (a == 1 && b == 61){ break; }
-                        if( a == 2 && b == 34){ break; }
-                        ID = str[b];
+                        if (a == 2 && b == 34){ break; }
+                        GetUTFSize(str[count], 文字長);
+                        ID = str[count];
+
+                        if (文字長 > 1){ ID += str[count + 1] * 0x100; }
+                        if (文字長 > 2){ ID += str[count + 2] * 0x10000; }
+                        if (文字長 > 3){ ID += str[count + 3] * 0x1000000; }
+
                         hash[ID] = new Image(BMPフォント, { b * w/2, a * h, w / 2, h });
+                        count += 文字長;
                     }
                     else
                     {
