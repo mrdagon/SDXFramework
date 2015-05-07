@@ -20,6 +20,7 @@
 #include <Multimedia/System.h>
 #include <Multimedia/Window.h>
 #include <Multimedia/File.h>
+#include <Multimedia/Directory.h>
 
 #include <Utility/Rand.h>
 #include <Utility/Time.h>

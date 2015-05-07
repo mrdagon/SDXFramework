@@ -18,7 +18,6 @@ namespace SDX
 	{
 	protected:
 		std::vector<Image*> imageS;//!< 保持するImage
-		std::string fileName;
 		int widthMax = 0;//!< 最大幅
 		int heightMax = 0;//!< 最大高さ
 	public:
@@ -47,8 +46,6 @@ namespace SDX
 		/**	のように分割して、ImagePackのサイズは14になる */
 		bool Load(const char *ファイル名, int 総コマ数, int コマ割り横, int コマ割り縦)
 		{
-			fileName = ファイル名;
-
 			if (Loading::isLoading)
 			{
 				Loading::AddLoading([=]{ Load(ファイル名,総コマ数,コマ割り横,コマ割り縦); });
@@ -82,8 +79,6 @@ namespace SDX
 		/**	例:「ファイル名***.拡張子」*/
 		bool Load(const char *ファイル名, const char *拡張子, int 総コマ数, const char* 書式 = "%03d.")
 		{
-			fileName = ファイル名;
-
 			if (Loading::isLoading)
 			{
 				Loading::AddLoading([=]{ Load(ファイル名, 拡張子 ,総コマ数, 書式); });
@@ -240,7 +235,6 @@ namespace SDX
 		/** オペレータ.*/
 		Image* operator[](int index) const
 		{
-			fileName;
 			return imageS[index];
 		}
 
