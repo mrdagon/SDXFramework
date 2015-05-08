@@ -60,7 +60,7 @@ http://pentan.info/android/screen_orientation.html
 <B>7.配布パッケージ名の変更等</B>\n
 SDXFrameworkフォルダ直下の｢AndroidManifest.xml｣を開きます。\n
 @code
-<activity android:name="SDLActivity" 
+<activity android:name="SDLActivity"
 @endcode
 上の行の"SDLActivity"の部分を変更します、漢字やひらがなを含む名前には出来ません\n
 \n
