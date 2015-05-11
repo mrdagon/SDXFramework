@@ -571,7 +571,7 @@ namespace SDX
                 for (auto it = 文字列.begin(); it != 文字列.end(); it += charSize)
                 {
                     lead = *it;
-                    if (lead < 0x20){ continue; }//制御文字は無視
+                    if (lead < 0x20){ charSize = 1; continue; }//制御文字は無視
                     else if (lead < 0x80){ charSize = 1; }
                     else if (lead < 0xE0){ charSize = 2; }
                     else if (lead < 0xF0){ charSize = 3; }
