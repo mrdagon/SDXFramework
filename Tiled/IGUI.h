@@ -6,35 +6,38 @@
 
 namespace SDX
 {
-	/** GUIオブジェクトのテンプレート.*/
-	class IGUI
-	{
-	public:
-		IGUI(int id, const Rect& rect , double angle):
-			id(id),
-			rect(rect),
-			angle(angle)
-		{}
+    /** GUIオブジェクトのテンプレート.*/
+    class IGUI
+    {
+    public:
+        IGUI(int id, const Rect& rect , double angle):
+            id(id),
+            rect(rect),
+            angle(angle)
+        {}
 
-		int id;
-		Rect rect;
-		double angle;
+        virtual ~IGUI()
+        {}
 
-		virtual void Init(){};
-		virtual void Final(){};
-		virtual void Draw(){};
-		virtual void Update(){};
+        int id;
+        Rect rect;
+        double angle;
 
-		/** マウスオーバー判定 */
-		bool isMouse()
-		{
-			return rect.Hit( &Input::mouse.GetPoint() );
-		}
+        virtual void Init(){};
+        virtual void Final(){};
+        virtual void Draw(){};
+        virtual void Update(){};
 
-		/** クリックorタッチ判定 */
-		bool isClick()
-		{
-			return Input::mouse.Left.on && rect.Hit(&Input::mouse.GetPoint());
-		}
-	};
+        /** マウスオーバー判定 */
+        bool isMouse()
+        {
+            return rect.Hit( &Input::mouse.GetPoint() );
+        }
+
+        /** クリックorタッチ判定 */
+        bool isClick()
+        {
+            return Input::mouse.Left.on && rect.Hit(&Input::mouse.GetPoint());
+        }
+    };
 }
