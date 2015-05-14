@@ -50,6 +50,15 @@ namespace SDX
 			localtime_s(現在時刻, &timer);
 		}
 
+		/** 現在の日付、時刻を文字列にして返す.*/
+		static std::string GetDateString()
+		{
+			tm time;
+			GetDate( &time );
+			VariadicStream str = { time.tm_year+1900, "_" , time.tm_mon , "_" , time.tm_mday , "_" , time.tm_hour , "_" , time.tm_min , "_" , time.tm_sec};
+			return str.StringS[0];
+		}
+
 		/** FPSを取得.*/
 		static double GetFPS()
 		{
