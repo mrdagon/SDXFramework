@@ -85,7 +85,7 @@
     <property name="frameNo" value="1"/>
    </properties>
   </object>
-  <object id="44" name="くま" type="Image" gid="14" x="151" y="181"/>
+  <object id="44" name="くま" type="Image" gid="14" x="151" y="181" width="120" height="120"/>
   <object id="28" name="題字" type="Text" x="26.5" y="27" width="575" height="39">
    <properties>
     <property name="fontNo" value="0"/>
@@ -102,13 +102,13 @@
     <property name="frameNo" value="0"/>
    </properties>
   </object>
-  <object id="41" name="ねずみ" type="Image" gid="11" x="291.245" y="179.244" rotation="-0.233186"/>
-  <object id="47" name="剣" type="Image" gid="3" x="483" y="395"/>
-  <object id="43" name="にわとり" type="Image" gid="13" x="469" y="478"/>
-  <object id="46" name="短剣" type="Image" gid="2" x="149" y="165"/>
-  <object id="53" name="がいこつC" type="Image" gid="23" x="284" y="180"/>
-  <object id="52" name="がいこつA" type="Image" gid="18" x="104" y="187"/>
-  <object id="50" name="がいこつB" type="Image" gid="16" x="207" y="237"/>
-  <object id="42" name="ひよこ" type="Image" gid="12" x="33.923" y="482.923"/>
+  <object id="41" name="ねずみ" type="Image" gid="11" x="291.245" y="179.244" width="120" height="120" rotation="-0.233186"/>
+  <object id="47" name="剣" type="Image" gid="3" x="483" y="395" width="20" height="20"/>
+  <object id="43" name="にわとり" type="Image" gid="13" x="469" y="478" width="120" height="120"/>
+  <object id="46" name="短剣" type="Image" gid="2" x="149" y="165" width="20" height="20"/>
+  <object id="53" name="がいこつC" type="Image" gid="23" x="284" y="180" width="32" height="32"/>
+  <object id="52" name="がいこつA" type="Image" gid="18" x="104" y="187" width="32" height="32"/>
+  <object id="50" name="がいこつB" type="Image" gid="16" x="207" y="237" width="32" height="32"/>
+  <object id="42" name="ひよこ" type="Image" gid="12" x="33.923" y="482.923" width="120" height="120"/>
  </objectgroup>
 </map>

@@ -12,6 +12,7 @@ SDXFramework>jni>SDL>includeに解凍したファイルを上書きして下さ�
 \n
 <HR>
 <B>ver 0.13</B>\n
+VisualStudio2015対応、#define VS_2015\n
 Timeに日付を文字列で返す関数GetDateStringを追加\n
 Utility/Memory.hヘッダーを追加(デフォルトで無視される)\n
 Systemにプラットフォームの種類を取得する関数と、タブレットかどうかを取得する関数を追加。\n

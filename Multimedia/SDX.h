@@ -44,22 +44,25 @@ vartual ~a() = default;
 
 //Windowsのみ有効なコード
 #pragma comment(lib, "SDL2.lib")
+#ifdef VS_2015
+#pragma comment(lib, "SDL2main_2015.lib")
+#else
 #pragma comment(lib, "SDL2main.lib")
+#endif
 #pragma comment(lib, "SDL2_image.lib")
 #pragma comment(lib, "SDL2_mixer.lib")
 #pragma comment(lib, "SDL2_ttf.lib")
 #pragma execution_character_set("utf-8")//charの文字コードをUTF-8に変更
+
 #ifdef _DEBUG
 #pragma comment(linker, "/NODEFAULTLIB:msvcrt.lib")
 #else
-
 //コメントアウトするとRerease時にMTでコンパイル可能になる
 //#pragma comment(linker, "/NODEFAULTLIB:msvcrt.lib")
 //int fprintf( FILE * stream, const char * format, ... )
 //{
 //	return 0;
 //}
-
 #endif
 
 #include <SDL.h>

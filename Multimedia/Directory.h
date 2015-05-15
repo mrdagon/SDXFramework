@@ -31,16 +31,26 @@ namespace SDX
 #ifdef __WINDOWS__
 			namespace sys = std::tr2::sys;
 			sys::path p(ディレクトリ名);
-
-			std::for_each(sys::directory_iterator(p),sys::directory_iterator(),
-				[&](const sys::path& p) {
-				if (sys::is_regular_file(p)) { // ファイルなら...
+			
+			//std::for_each(sys::directory_iterator(p),sys::directory_iterator(),
+			std::for_each(sys::recursive_directory_iterator(p), sys::recursive_directory_iterator(),
+				[&](const sys::path& p)
+				{
+				if (sys::is_regular_file(p))
+				{ // ファイルなら...
+					//VS2015はp.filename().string().c_str()にする
+#ifdef VS_2015
+					nameS.push_back(p.filename().string().c_str());
+#else
 					nameS.push_back(p.filename().c_str());
+#endif
 				}
-				else if (sys::is_directory(p)) { // ディレクトリなら...
+				else if (sys::is_directory(p)) 
+				{ // ディレクトリなら...
 					nameS.push_back( p.string().c_str() );
 				}
 			});
+
 #else
 			DIR *dir = opendir(ディレクトリ名);
 			struct dirent　 *dp;
