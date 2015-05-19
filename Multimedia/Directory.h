@@ -38,8 +38,7 @@ namespace SDX
 				{
 				if (sys::is_regular_file(p))
 				{ // ファイルなら...
-					//VS2015はp.filename().string().c_str()にする
-#ifdef VS_2015
+#if		_MSC_VER > 1800 //VS2015以降
 					nameS.push_back(p.filename().string().c_str());
 #else
 					nameS.push_back(p.filename().c_str());

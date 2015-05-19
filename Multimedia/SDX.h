@@ -44,7 +44,7 @@ vartual ~a() = default;
 
 //Windowsのみ有効なコード
 #pragma comment(lib, "SDL2.lib")
-#ifdef VS_2015
+#if _MSC_VER > 1800
 #pragma comment(lib, "SDL2main_2015.lib")
 #else
 #pragma comment(lib, "SDL2main.lib")
