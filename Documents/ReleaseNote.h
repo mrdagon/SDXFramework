@@ -12,6 +12,7 @@ SDXFramework>jni>SDL>includeに解凍したファイルを上書きして下さ�
 \n
 <HR>
 <B>ver 0.13</B>\n
+IModelの設計をGetShapeとGetSpriteをオーバーライドする形に変更\n
 VisualStudio2015に対応、プラットフォームツールセットをv140でも動作するように\n
 Timeに日付を文字列で返す関数GetDateStringを追加\n
 Utility/Memory.hヘッダーを追加(デフォルトで無視される)\n

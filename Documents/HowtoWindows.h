@@ -6,7 +6,8 @@ SDXFrameworkの使用には\n
 が必要です。\n
 Windows環境の場合、コンパイラは「Visual Studio 2013 Community」を推奨しています。｢Express Edition for Desktop｣でもOKです。\n
 識別子にUnicodeを使用している関係で基本的にgccでコンパイルする事は出来ません。\n
-VisualStudio2012以前の環境については、サポートしていません。
+VisualStudio2012以前の環境については、サポートしていません。\n
+VisualStudio2015 Prevew版は対応していると思いますが、テストが十分出来ていません。
 <HR>
 <B>1 VisualStudioをインストールする</B>\n
 C++の規格準拠具合の関係で、VisualStudio2012以前のコンパイラは使用できません。\n

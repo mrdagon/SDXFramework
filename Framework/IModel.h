@@ -8,6 +8,7 @@
 namespace SDX
 {
 	/** ShapeとSpriteをまとめて、2Dモデルを表すクラス.*/
+	/** GetShapeとGetSpriteをオーバーライドして使用する*/
 	/** \include Model.h*/
 	class IModel : public IPosition
 	{
@@ -17,15 +18,29 @@ namespace SDX
 	protected:
 		bool isRemove = false;//!< 消滅フラグ
 	public:
-		IShape &iShape;//!< 対応Shape
-		ISprite &iSprite;//!< 対応Sprite
 
-		/** コンストラクタ.*/
-		IModel(IShape &図形, ISprite &描画方法) :
-			iShape(図形),
-			iSprite(描画方法)
-		{}
-		
+		virtual const IShape& GetShape() const = 0;
+		virtual const ISprite& GetSprite() const
+		{
+			static SpNull noSprite;
+			return noSprite;
+		}
+
+		ISprite& GetSprite()
+		{
+			return const_cast<ISprite&>(static_cast<const IModel&>(*this).GetSprite());
+		}
+
+		IShape& GetShape()
+		{
+			return const_cast<IShape&>(static_cast<const IModel&>(*this).GetShape());
+		}
+
+		/*コピペ用
+		const IShape& GetShape() const { return shape; }
+		const ISprite& GetSprite() const { return sprite; }
+		*/
+
 		virtual ~IModel() = default;
 
 		/** 消滅フラグの取得.*/
@@ -46,7 +61,7 @@ namespace SDX
 		/** 描画する.*/
 		virtual void Draw() const
 		{
-			iSprite.Draw( iShape );
+			GetSprite().Draw( GetShape() );
 
 			//当たり判定を表示するならコメントアウト解除
 			//iShape.Draw({255,0,0,128} );
@@ -60,23 +75,23 @@ namespace SDX
 			X座標ずれ *= shadowSize;
 			Y座標ずれ *= shadowSize;
 
-			double zoomX = iSprite.zoomX;
-			double zoomY = iSprite.zoomY;
-			iSprite.zoomX *= shadowSize;
-			iSprite.zoomY *= shadowSize;
+			double zoomX = GetSprite().zoomX;
+			double zoomY = GetSprite().zoomY;
+			GetSprite().zoomX *= shadowSize;
+			GetSprite().zoomY *= shadowSize;
 
-			iSprite.gap.Move(X座標ずれ,Y座標ずれ);
-			iSprite.Draw( iShape);
-			iSprite.gap.Move(-X座標ずれ, -Y座標ずれ);
+			GetSprite().gap.Move(X座標ずれ,Y座標ずれ);
+			GetSprite().Draw(GetShape());
+			GetSprite().gap.Move(-X座標ずれ, -Y座標ずれ);
 
-			iSprite.zoomX = zoomX;
-			iSprite.zoomY = zoomY;
+			GetSprite().zoomX = zoomX;
+			GetSprite().zoomY = zoomY;
 		}
 
 		/** 指定座標に移動.*/
 		void SetPos(double X座標, double Y座標) override
 		{
-			iShape.SetPos(X座標, Y座標);
+			GetShape().SetPos(X座標, Y座標);
 		}
 
 		/** 縦横別で拡大率を掛ける.*/
@@ -85,22 +100,22 @@ namespace SDX
 			zoomX *= X倍率;
 			zoomY *= Y倍率;
 
-			iShape.MultiZoom(X倍率, Y倍率);
-			iSprite.MultiZoom(X倍率, Y倍率);
+			GetShape().MultiZoom(X倍率, Y倍率);
+			GetSprite().MultiZoom(X倍率, Y倍率);
 		}
 		
 		/** 相対座標で移動.*/
 		void Move(double X移動量, double Y移動量) override
 		{
-			iShape.Move(X移動量, Y移動量);
+			GetShape().Move(X移動量, Y移動量);
 		}
 
 		/** 回転させる.*/
 		void Rotate(double 回転角度) override
 		{
 			angle += 回転角度;
-			iSprite.Rotate(回転角度);
-			iShape.Rotate(回転角度);
+			GetSprite().Rotate(回転角度);
+			GetShape().Rotate(回転角度);
 		}
 
 		/** 角度を取得する.*/
@@ -112,31 +127,31 @@ namespace SDX
 		/** X座標を取得.*/
 		double GetX() const override
 		{
-			return iShape.GetX();
+			return GetShape().GetX();
 		}
 
 		/** Y座標を取得.*/
 		double GetY() const override
 		{
-			return iShape.GetY();
+			return GetShape().GetY();
 		}
 
 		/** X座標を取得.*/
 		double GetW() const override
 		{
-			return iShape.GetW();
+			return GetShape().GetW();
 		}
 
 		/** Y座標を取得.*/
 		double GetH() const override
 		{
-			return iShape.GetH();
+			return GetShape().GetH();
 		}
 
 		/** 色をまとめて変更する、透明度も含む.*/
 		void SetColor(const Color &描画色)
 		{
-			iSprite.color = 描画色;
+			GetSprite().color = 描画色;
 		}
 
 		/** 横方向の拡大率を取得.*/
@@ -154,13 +169,13 @@ namespace SDX
 		/** Modelとの衝突判定.*/
 		bool Hit(const IModel *判定を行うModel) const
 		{
-			return iShape.Hit(&判定を行うModel->iShape);
+			return GetShape().Hit(&判定を行うModel->GetShape());
 		}
 
 		/** Shapeとの衝突判定.*/
 		bool Hit(const IShape *判定を行うShape) const
 		{
-			return iShape.Hit(判定を行うShape);
+			return GetShape().Hit(判定を行うShape);
 		}
 	};
 }

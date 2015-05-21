@@ -28,6 +28,7 @@
 #include <Utility/EnumArray.h>
 #include <Utility/Motion.h>
 #include <Utility/Speed.h>
+#include <Utility/Pool.h>
 
 #include <Framework/Anime.h>
 #include <Framework/BmpFrame.h>

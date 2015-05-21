@@ -2,9 +2,6 @@
 //[License]GNU Affero General Public License, version 3
 //[Contact]http://sourceforge.jp/projects/dxframework/
 #pragma once
-#include <Framework/Shape.h>
-#include <Utility/IMotion.h>
-
 namespace SDX
 {
 	namespace MOTION

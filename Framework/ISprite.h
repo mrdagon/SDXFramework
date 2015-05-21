@@ -31,7 +31,7 @@ namespace SDX
 		virtual ~ISprite() = default;
 
 		/** ISpriteを描画する.*/
-		virtual void Draw(const IShape &図形) = 0;
+		virtual void Draw(const IShape &図形) const = 0;
 
 		/** 表示倍率を設定.*/
 		void SetZoom(double X拡大率, double Y拡大率)

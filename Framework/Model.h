@@ -15,10 +15,13 @@ namespace SDX
 		TSprite sprite;//!< 対応Sprite
 
 		/**コンストラクタ.*/
-		Model(TShape &&図形と位置, TSprite &&描画方法) :
-			IModel(shape, sprite),
-			shape(図形と位置),
-			sprite(描画方法)
+		Model(const TShape &shape , const TSprite &sprite) :
+			shape(shape),
+			sprite(sprite)
 		{}
+
+		const IShape& GetShape() const { return shape; }
+		const ISprite& GetSprite() const { return sprite; }
+
 	};
 }

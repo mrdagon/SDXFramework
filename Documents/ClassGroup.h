@@ -46,6 +46,15 @@
 <tr>							<td>SDX::Line				<td>太さのある線を表す図形クラス</td></tr>
 <tr>							<td>SDX::Rect				<td>矩形を表す図形クラス</td></tr>
 <tr>							<td>SDX::Circle				<td>円を表す図形クラス</td></tr>
+<tr style="background:#8888ff"> <th>ユーティリティー</th>	<th>その他の便利なクラス</th></tr>
+<tr>							<td>SDX::File				<td>入出力可能なテキストかバイナリファイルを表すクラス</td></tr>
+<tr>							<td>SDX::Dirctory			<td>フォルダ内のファイル名を取得、フォルダの作成</td></tr>
+<tr>							<td>SDX::Rand				<td>乱数生成関数群</td></tr>
+<tr>							<td>SDX::Time				<td>時間と日付を取得する関数群</td></tr>
+<tr>							<td>SDX::MOTION				<td>移動方法のポリシー郡</td></tr>
+<tr>							<td>SDX::EnumArray			<td>列挙型用固定配列</td></tr>
+<tr>							<td>SDX::SPEED				<td>速度変化のポリシー郡</td></tr>
+<tr style="background:#8888ff"> <th>設計サンプル</th>		<th>再利用可能な設計のサンプル実装</th></tr>
 <tr style="background:#ccccff"> <td>2Dスプライト</th><td> </td></tr>
 <tr>							<td>SDX::ISprite			<td>2Dモデルに貼り付けるスプライトを表す抽象クラス</td></tr>
 <tr>							<td>SDX::SpImage			<td>Imageのスプライト</td></tr>
@@ -59,12 +68,5 @@
 <tr style="background:#ccccff"> <td>シーン管理</td><td></td></tr>
 <tr>							<td>SDX::IScene				<td>シーンのインターフェース</td></tr>
 <tr>							<td>SDX::Director			<td>シーンを管理するクラス</td></tr>
-<tr style="background:#8888ff"> <th>ユーティリティー</th>	<th>その他の便利なクラス</th></tr>
-<tr>							<td>SDX::File				<td>入出力可能なテキストかバイナリファイルを表すクラス</td></tr>
-<tr>							<td>SDX::Rand				<td>乱数生成関数群</td></tr>
-<tr>							<td>SDX::Time				<td>時間と日付を取得する関数群</td></tr>
-<tr>							<td>SDX::MOTION				<td>移動方法のポリシー郡</td></tr>
-<tr>							<td>SDX::EnumArray			<td>列挙型用固定配列</td></tr>
-<tr>							<td>SDX::SPEED				<td>速度変化のポリシー郡</td></tr>
 </table>
 */

@@ -35,7 +35,7 @@ bool SampleModel()
 	{
 		for (int a = 0; a < 4; ++a)
 		{
-			modelS[a]->iSprite.Update();//SpAnimeは更新が必要
+			modelS[a]->GetSprite().Update();//SpAnimeは更新が必要
 			motionS[a]->Update( modelS[a] );//modelを移動
 			modelS[a]->Draw();//modelを描画
 

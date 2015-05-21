@@ -20,7 +20,7 @@ namespace SDX
 			image(描画Image)
 		{}
 
-		void Draw(const IShape &座標) override
+		void Draw(const IShape &座標) const override
 		{
 			const Point pos = { 座標.GetX() + gap.x, 座標.GetY() + gap.x };
 			const Point center = { axis.x + image->GetHeight() / 2, axis.y + image->GetHeight() / 2 };
@@ -54,7 +54,7 @@ namespace SDX
 			return index;
 		}
 
-		void Draw(const IShape &座標) override
+		void Draw(const IShape &座標) const override
 		{
 			const auto image = imageS->operator[](index);
 
@@ -88,7 +88,7 @@ namespace SDX
 			anime.Update(aniSpeed);
 		}
 
-		void Draw(const IShape &座標) override
+		void Draw(const IShape &座標) const override
 		{
 			const Point pos = { 座標.GetX() + gap.x, 座標.GetY() + gap.y };
 			const Point center = { axis.x + film->GetHeight() / 2, axis.y + film->GetHeight() / 2 };
@@ -112,7 +112,7 @@ namespace SDX
 			str(描画する文字列)
 		{}
 
-		void Draw(const IShape &座標) override
+		void Draw(const IShape &座標) const override
 		{
 			font->DrawRotate({ 座標.GetX() + gap.x, 座標.GetY() + gap.y }, zoomX, angle, color, str, isTurn);
 
@@ -139,7 +139,7 @@ namespace SDX
 			bmpFrame(描画する枠)
 		{}
 
-		void Draw(const IShape &座標) override
+		void Draw(const IShape &座標) const override
 		{
 			bmpFrame->Draw({ 座標.GetX() + gap.x, 座標.GetY() + gap.y, 座標.GetW() * zoomX, 座標.GetH() * zoomY });
 		}
@@ -184,7 +184,7 @@ namespace SDX
 			}
 		}
 
-		void Draw(const IShape &座標) override
+		void Draw(const IShape &座標) const override
 		{
 			const int chipW = chip.GetWidth();
 			const int chipH = chip.GetHeight();
@@ -245,7 +245,7 @@ namespace SDX
 		SpNull()
 		{}
 
-		void Draw(const IShape &座標) override
+		void Draw(const IShape &座標) const override
 		{}
 	};
 }
