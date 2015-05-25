@@ -8,7 +8,7 @@ namespace SDX
 {
 /**汎用メモリプール.*/
 /**プログラムの勉強に書いたコード、効果はそれなり*/
-/**多分他のを探した方が良い*/
+/**削除する順番に速度が影響を受けにくい*/
 class Pool
 {
 	//メモリプール
@@ -27,7 +27,7 @@ public:
 		}
 		for (auto &it : emptyS)
 		{
-			it.reserve(1024);
+			it.reserve(BS);
 		}
 	}
 
