@@ -208,7 +208,6 @@ namespace SDX
 		~TempUnion() { Destoract(); }
 	};
 
-
 	/**共用体サンプルその3.*/
 	/**なんか中途半端*/
 	template<class TInterface, class T0, class T1>
@@ -272,88 +271,5 @@ namespace SDX
 			return *this;
 		}
 		~AnyUnion() { Destoract(); }
-	};
-
-	template< class TSuper , int MaxSize >
-	/*静的な何でも入る型.*/
-	/*共通スーパークラスと最大型サイズをテンプレートに入れる*/
-	/*Holderとかの分、メモリ効率は下がる*/
-	class Any
-	{
-	private:
-		char buff[MaxSize];
-
-		class IHolder
-		{
-		public:
-			virtual ~IHolder() {}
-			virtual IHolder * clone(char* buff) = 0;
-			virtual TSuper* Get(void) = 0;
-		};
-
-		template < typename T >
-		class Holder : public IHolder
-		{
-		public:
-			explicit Holder(T const & src)
-				: held(src)
-			{}
-
-			virtual IHolder *clone( char* buff )
-			{
-				return new(buff) Holder(held);
-			}
-
-			TSuper* Get()
-			{				
-				return &held;				
-			}
-
-		private:
-			T held;
-		};
-		
-	public:
-		template < typename T >
-		Any(T const & src)
-			: content(new(buff) Holder<T>(src))
-		{
-		}
-
-		Any(Any const & other)
-			: content(other.content ? other.content->clone(buff) : 0)
-		{ }
-
-		Any& operator = (Any const & rhs)
-		{
-			if (this != &rhs)
-			{
-				content = rhs.content->clone(buff);
-			}
-			return *this;
-		}
-
-		template < typename T >
-		Any& operator = ( T const & rhs)
-		{
-			content = new(buff) holder<T>(rhs);
-			return *this;
-		}
-
-
-		template < typename T >
-		Any& operator = (T const && rhs)
-		{
-			content = new(buff) Holder<T>(rhs);
-			return *this;
-		}
-
-		TSuper* Get(void)
-		{
-			content->Get();
-		}
-
-	private:
-		IHolder* content;
 	};
 }

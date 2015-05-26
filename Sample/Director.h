@@ -5,6 +5,7 @@
 //[サンプルコード作成中]
 bool SampleDirector()
 {
+	using namespace SDX;
 	class SceneA : public IScene
 	{
 	public:

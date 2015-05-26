@@ -7,12 +7,13 @@
 namespace SDX
 {
 /**汎用メモリプール.*/
-/**プログラムの勉強に書いたコード、効果はそれなり*/
+/**プログラムの勉強に書いたコードなので、効果はそれなり、テストも不十分*/
 /**削除する順番に速度が影響を受けにくい*/
 class Pool
 {
 	//メモリプール
-	static const int BS = 65536;//バッファサイズ//2のn乗にする
+	static const int BS = 65536 * 4;//バッファサイズ、2のn乗にする
+	//BSが大きいほど削除が早くなり、事前に確保するメモリの量が増える
 	int index[7];// = { BS, BS, BS, BS, BS, BS, BS };
 	std::vector<int*> poolS[7];
 
@@ -44,31 +45,33 @@ public:
 	}
 
 
-	template< class T>
+	template< class T >
 	T* Get()
 	{
 		int size = 0;
 		int buff = 1;
+		static const size_t tSize = sizeof(T);
 
-		if (sizeof(T) <= 4) { size = 0; buff = 1; }
-		else if (sizeof(T) <= 8) { size = 1;; buff = 2; }
-		else if (sizeof(T) <= 16) { size = 2; buff = 4; }
-		else if (sizeof(T) <= 32) { size = 3; buff = 8; }
-		else if (sizeof(T) <= 64) { size = 4; buff = 16; }
-		else if (sizeof(T) <= 128) { size = 5; buff = 32; }
-		else if (sizeof(T) <= 256) { size = 6; buff = 64; }
+		if ( tSize <= 4){}
+		else if (tSize <= 8) { size = 1;; buff = 2; }
+		else if (tSize <= 16) { size = 2; buff = 4; }
+		else if (tSize <= 32) { size = 3; buff = 8; }
+		else if (tSize <= 64) { size = 4; buff = 16; }
+		else if (tSize <= 128) { size = 5; buff = 32; }
+		else if (tSize <= 256) { size = 6; buff = 64; }
 		else
 		{
 			//普通にnewする
 			return new T();
 		}
 
-		//大きさ+1して最後尾を返す
 		if (emptyS[size].empty())
 		{
+			//大きさ+1して最後尾を返す
 			index[size] += buff;
 			if (index[size] >= BS)
 			{
+				//領域を増やす
 				poolS[size].push_back(new int[BS]);
 				index[size] = 0;
 			}
@@ -77,7 +80,7 @@ public:
 		}
 		else
 		{
-			//空きがある場合
+			//空きがある場合そこを使う
 			int n = emptyS[size].back();
 			emptyS[size].pop_back();
 			return new(&poolS[size][n / BS][n % BS]) T();
@@ -89,14 +92,15 @@ public:
 	{
 		int size = 0;
 		int buff = 1;
+		static const size_t tSize = sizeof(T);
 		
-		if (sizeof(T) <= 4) { size = 0; buff = 1; }
-		else if (sizeof(T) <= 8) { size = 1;; buff = 2; }
-		else if (sizeof(T) <= 16) { size = 2; buff = 4; }
-		else if (sizeof(T) <= 32) { size = 3; buff = 8; }
-		else if (sizeof(T) <= 64) { size = 4; buff = 16; }
-		else if (sizeof(T) <= 128) { size = 5; buff = 32; }
-		else if (sizeof(T) <= 256) { size = 6; buff = 64; }
+		if (tSize <= 4){}
+		else if (tSize <= 8) { size = 1;; buff = 2; }
+		else if (tSize <= 16) { size = 2; buff = 4; }
+		else if (tSize <= 32) { size = 3; buff = 8; }
+		else if (tSize <= 64) { size = 4; buff = 16; }
+		else if (tSize <= 128) { size = 5; buff = 32; }
+		else if (tSize <= 256) { size = 6; buff = 64; }
 		else
 		{
 			//普通にnewする
@@ -129,14 +133,15 @@ public:
 	{
 		int size = 0;
 		int buff = 1;
+		static const size_t tSize = sizeof(T);
 
-		if (sizeof(T) <= 4) { size = 0; buff = 1; }
-		else if (sizeof(T) <= 8) { size = 1;; buff = 2; }
-		else if (sizeof(T) <= 16) { size = 2; buff = 4; }
-		else if (sizeof(T) <= 32) { size = 3; buff = 8; }
-		else if (sizeof(T) <= 64) { size = 4; buff = 16; }
-		else if (sizeof(T) <= 128) { size = 5; buff = 32; }
-		else if (sizeof(T) <= 256) { size = 6; buff = 64; }
+		if (tSize <= 4) {}
+		else if (tSize <= 8) { size = 1;; buff = 2; }
+		else if (tSize <= 16) { size = 2; buff = 4; }
+		else if (tSize <= 32) { size = 3; buff = 8; }
+		else if (tSize <= 64) { size = 4; buff = 16; }
+		else if (tSize <= 128) { size = 5; buff = 32; }
+		else if (tSize <= 256) { size = 6; buff = 64; }
 		else
 		{
 			//普通にdeleteする
@@ -147,13 +152,14 @@ public:
 		int n = -1;
 		int a = 0;
 
+		//最後まで探して無いなら空きリストには追加しない
 		while( (unsigned int)a < poolS[size].size())
 		{
 			n = ((int*)pt - &poolS[size][a][0]);//0なら先頭要素削除
+			//見つかったら再利用
 			if ( n >= 0 && n < BS)
 			{
-				n += a * BS;
-				emptyS[size].push_back(n);
+				emptyS[size].push_back(n + a*BS);
 				return;
 			}
 			++a;

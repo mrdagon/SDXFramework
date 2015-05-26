@@ -2,8 +2,6 @@
 //[License]GNU Affero General Public License, version 3
 //[Contact]http://sourceforge.jp/projects/dxframework/
 
-namespace SDX
-{
 //×:機能自体が未実装
 //●:サンプルがほぼ実装済み
 //○:サンプル実装途中
@@ -46,4 +44,3 @@ namespace SDX
 //Screen+Renderer
 //抽象クラス関連
 //SpriteはModelと合同
-}

@@ -4,6 +4,8 @@
 
 //時間を取得したり計測する
 #include <SDXFramework.h>
+#include <Sample/TimeTest.h>
+#include <Utility/Any.h>
 
 bool SampleTime()
 {
@@ -18,9 +20,6 @@ bool SampleTime()
 	Pool pool;
 
 	std::vector<int> intS;
-	std::vector<std::shared_ptr<int>> dataS;
-	std::vector<int*> dataSS;
-
 	using UnionS = TempUnion<IUnion, Int, Double>;
 	using AnionS = TempUnion<IUnion, Int, Double>;
 	std::vector<UnionS> unionS;
@@ -30,16 +29,14 @@ bool SampleTime()
 	std::vector<Double> sDoubleS;
 	std::vector<Double*> pDoubleS;
 	std::vector<std::shared_ptr<Double>> shDoubleS;
-	//boost::object_pool<Double> bPool(1000000);
 
 	sAniS.reserve(1000000);
 	intS.reserve(1000000);
 	unionS.reserve(1000000);
-	dataS.reserve(1000000);
-	dataSS.reserve(1000000);
 
 	while (System::Update())
 	{
+		if (Input::key.Return.on){ break;}//Enterで終了
 		count++;
 		Time::CheckFPS();//FramePerSecondを更新
 		Drawing::String({ 10, 10 }, Color::White, { "FPS:", Time::GetFPS(), "\nNow:", Time::GetNowCount() });
@@ -66,7 +63,7 @@ bool SampleTime()
 
 		for (int a = 0; a < 100000; ++a)
 		{
-			auto b = new Int();
+			auto b = new Double();
 			delete b;
 		}
 
@@ -75,27 +72,28 @@ bool SampleTime()
 		char c[1000000];//大きすぎるとエラーになるので
 		for (int a = 0; a < 1000000; ++a)
 		{
-			//dataSS.push_back(new(c + a / 100 * sizeof(int)) int());
 			pDoubleS.push_back(new(c + a / 100 * sizeof(Double)) Double());
 		}
-		//dataSS.clear();
 		pDoubleS.clear();
 
 		Time::DrawWatch({ 10, 280 }, "placement new 百万回の処理時間:");
 
 		Time::StartWatch();
+		//shared_ptr使うと遅いので自力でDestroy
 		for (int a = 0; a < 1000000; ++a)
 		{
-			dataSS.push_back(pool.Get<int>(a));
+			pDoubleS.push_back(pool.Get<Double>());
 		}
-		for (auto &it : dataSS)
+
+		for (int a = 0; a < 1000000; ++a)
 		{
-			pool.Destroy(it);
+			pool.Destroy( pDoubleS[a] );
 		}
-		dataSS.clear();
 
-		Time::DrawWatch({ 10, 300 }, "Pool 100万回の処理時間:");
+		pDoubleS.clear();
 
+		Time::DrawWatch({ 10, 300 }, "Pool Double 100万回の処理時間:");
+		
 		for (int a = 0; a < 1000000; ++a)
 		{
 			intS.push_back(a);
@@ -106,24 +104,24 @@ bool SampleTime()
 
 		for (int a = 0; a < 1000000; ++a)
 		{
-			unionS.push_back(Int());
+			unionS.push_back( Double());
 		}
 		unionS.clear();
 		Time::DrawWatch({ 10, 340 }, "tempUnion 100万回の処理時間:");
 
 		for (int a = 0; a < 1000000; ++a)
 		{
-			anionS.push_back(Int());
+			anionS.push_back( Double());
 		}
 		anionS.clear();
 		Time::DrawWatch({ 10, 360 }, "AnyUnion 100万回の処理時間:");
 
 		for (int a = 0; a < 1000000; ++a)
 		{
-			sAniS.push_back(Double());
+			sAniS.push_back( Double() );
 		}
 		sAniS.clear();
-		Time::DrawWatch({ 10, 380 }, "StAny 100万回の処理時間:");
+		Time::DrawWatch({ 10, 380 }, "Any 100万回の処理時間:");
 
 		for (int a = 0; a < 1000000; ++a)
 		{
@@ -134,32 +132,10 @@ bool SampleTime()
 
 		for (int a = 0; a < 1000000; ++a)
 		{
-			//dataS.emplace_back( pool.Get<int>() , [&pool](int* buf) { pool.Destroy(buf); });
-			//dataS.push_back( std::make_shared<int>() );
-			//shDoubleS.push_back( std::make_shared<Double>() );
-			dataS.emplace_back();
-			//pDoubleS.emplace_back(new double());
+			shDoubleS.push_back( std::make_shared<Double>() );
 		}
 		shDoubleS.clear();
-		dataS.clear();
 		Time::DrawWatch({ 10, 420 }, "shared_ptr 100万回の処理時間:");
-
-		/*
-		//boost::poolのテスト
-		//断片化回避のためなのか、後ろから順番に削除しないと遅い
-		for (int a = 0; a < 1000000; ++a)
-		{
-			pDoubleS.push_back(bPool.construct() );
-		}
-		for (int a = 1000000 - 1; a >= 0; --a)
-		{
-			bPool.destroy(pDoubleS[a]);
-		}
-		pDoubleS.clear();
-		Time::DrawWatch({ 10, 440 }, "boost::pool 100万回の処理時間:");
-		*/
-		
-		if (Input::key.Return.on){ break;}//Enterで終了
 	}
 
 	System::End();
