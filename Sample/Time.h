@@ -7,6 +7,7 @@
 #include <Sample/TimeTest.h>
 #include <Utility/Any.h>
 
+/*VS2015用に作成中*/
 bool SampleTime()
 {
 	using namespace SDX;
