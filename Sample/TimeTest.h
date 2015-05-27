@@ -11,32 +11,29 @@ namespace SDX
 	{
 	public:
 		virtual ~IUnion(){}
+
+		virtual int Get() = 0;
 	};
 
 	class Int :public IUnion
 	{
 		int num;
+	public:
+		int Get() {	return 1; }
 	};
 
 	class Double :public IUnion
 	{
 		double num;
+	public:
+		int Get() { return 2; }
 	};
 
 	class Float :public IUnion
 	{
-	public:
 		float num;
-
-		~Float()
-		{
-			static int b = 0;
-			if (b == 1000)
-			{
-				SDX::Window::SetTitle("OK");
-			}
-			++b;
-		}
+	public:
+		int Get() { return 3; }
 	};
 
 	/**共用体サンプル.*/

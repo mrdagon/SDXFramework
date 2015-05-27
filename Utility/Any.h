@@ -15,14 +15,13 @@ namespace SDX
 	{
 	private:
 		char buff[MaxSize];
-		TSuper* pSuper;
+		TSuper* pSuper = nullptr;
 
 	public:
 		template < typename T >
 		Any(const T& src) :
 			pSuper(new(buff) T(src))
-		{
-		}
+		{}
 
 		~Any()
 		{
@@ -33,7 +32,6 @@ namespace SDX
 		{
 			if (this != & src)
 			{
-				//これで行ける？
 				for (int a = 0;a < MaxSize;++a)
 				{
 					buff[a] = src.buff[a];
@@ -45,7 +43,7 @@ namespace SDX
 		template < typename T >
 		Any& operator = (const T& src)
 		{
-			pSuper = new(buff) T(rhs);
+			pSuper = new(buff) T(src);
 			return *this;
 		}
 
