@@ -4,57 +4,33 @@
 
 //時間を取得したり計測する
 #include <SDXFramework.h>
-#include <Sample/TimeTest.h>
+//#include <Sample/TimeTest.h>//MSVC 2013以前非対応
 #include <Utility/Any.h>
+#include <Utility/Pool.h>
+#include <array>
 
-//#include <boost/pool/pool_alloc.hpp>
-//#include <boost/intrusive_ptr.hpp>
-
-namespace my
-{
-	class SharedObject
-	{
-	private:
-		SharedObject() : ref_count(1) {}
-	public:
-		static SharedObject* create() { return new SharedObject; }
-		int AddRef() { return ++ref_count; }
-		int Release() {
-			if (0 == --ref_count) { delete this; return 0; }
-			return ref_count;
-		}
-	private:
-		int ref_count;
-	};
-
-	void intrusive_ptr_add_ref(SharedObject* ptr)
-	{
-		ptr->AddRef();
-	}
-
-	void intrusive_ptr_release(SharedObject* ptr)
-	{
-		ptr->Release();
-	}
-}
-
-static int count = 0;
-
-class Test
+class ITest
 {
 public:
-	bool isKill = true;
+	int num;
+	virtual ~ITest() {}
+};
 
-	void Update()
+class Test: public ITest
+{
+public:
+	Test& operator=(int value)
 	{
-		if (isKill) { return; }
-		++count;
-	}
-	void Update2()
-	{
-		++count;
+		num = value;
+		return *this;
 	}
 };
+
+std::vector<int> a;
+std::vector<int> b;
+std::vector<int> c;
+
+std::array<std::vector<int>*, 3> vecS = { &a,&b,&c };
 
 bool SampleTime()
 {
@@ -66,34 +42,20 @@ bool SampleTime()
 
 	int count = 0;
 
+	const int n1 = (int)std::ceil(std::log2(8));
+	const int n2 = (int)std::ceil(std::log2(9));
+	const int n3 = (int)std::ceil(std::log2(17));
+
 	Pool pool;
+	std::vector<Test> vecA(1000);
+	std::vector<Any<ITest,sizeof(Test)+4>> vecB;
+	std::vector<std::shared_ptr<Test> > vecC;
+	std::vector<ITest*> vecD;
 
-	//std::array<int, 1000> arrA;
-	std::vector<int> arrA(1000);
-	int arrB[1000];
-	
-	std::vector<int> intS;
-	using UnionS = TempUnion<IUnion, Int, Double>;
-	using AnionS = TempUnion<IUnion, Int, Double>;
-	std::vector<UnionS> unionS;
-	std::vector<AnionS> anionS;
-	std::vector<Any<IUnion,32>> sAniS;
-
-	std::vector<Double> sDoubleS;
-	std::vector<Double*> pDoubleS;
-	std::vector<Double*> 空きS;
-
-	std::vector<Test> testS;
-	std::vector<int> emptyS;
-
-	for (int a = 0;a < 1000000;++a) testS.emplace_back();
-
-	std::vector<std::shared_ptr<Double> > shDoubleS;
-
-	空きS.reserve(1000000);
-	sAniS.reserve(1000000);
-	intS.reserve(1000000);
-	unionS.reserve(1000000);
+	vecA.reserve(1000000);
+	vecB.reserve(1000000);
+	vecC.reserve(1000000);
+	vecD.reserve(1000000);
 
 	while (System::Update())
 	{
@@ -107,23 +69,6 @@ bool SampleTime()
 		Drawing::String({ 10, 100 }, Color::White, { date.tm_year + 1900, "年 ", date.tm_mon + 1, "月 ", date.tm_mday, "日" });
 
 		Time::StartWatch();//処理時間の計測開始
-
-		for (int b = 0; b < 10000; b++)
-		for (int a = 0; a < 1000; a++)
-		{
-			arrA[a] = a+b;
-		}
-
-		Time::DrawWatch({ 10, 220 }, "array10000の処理時間:");
-
-		for (int b = 0; b < 10000; b++)
-		for (int a = 0; a < 1000; a++)
-		{
-			arrB[a] = a+b;
-		}
-
-		Time::DrawWatch({ 10, 240 }, "配列10000回の処理時間:");
-		continue;
 
 		for (int a = 0; a < 100; ++a)
 		{
@@ -141,100 +86,57 @@ bool SampleTime()
 
 		for (int a = 0; a < 100000; ++a)
 		{
-			auto b = new Double();
+			auto b = new Test();
 			delete b;
 		}
 
 		Time::DrawWatch({ 10, 260 }, "new delete 十万回の処理時間:");
 
-		char c[1000000];//大きすぎるとエラーになるので
+		char c[1000000];//大きすぎるとエラーになるので注意
 		for (int a = 0; a < 1000000; ++a)
 		{
-			pDoubleS.push_back(new(c + a / 100 * sizeof(Double)) Double());
+			vecD.push_back(new(c + a / 100 * sizeof(Test)) Test());
 		}
-		pDoubleS.clear();
+		vecD.clear();
 
-		Time::DrawWatch({ 10, 280 }, "placement new 百万回の処理時間:");
+		Time::DrawWatch({ 10, 280 }, "placement new 100万回の処理時間:");
 
 		Time::StartWatch();
-		//shared_ptr使うと遅いので自力でDestroy
 		for (int a = 0; a < 1000000; ++a)
 		{
-			pDoubleS.push_back(pool.Get<Double>());
+			vecD.push_back(pool.Get<Test>());
 		}
-
+		//shared_ptrと組み合わせるとさらに遅いので自力でDestroy
 		for (int a = 0; a < 1000000; ++a)
 		{
-			pool.Destroy( pDoubleS[a] );
+			pool.Destroy( vecD[a] );
 		}
 
-		pDoubleS.clear();
+		vecD.clear();
 
-		Time::DrawWatch({ 10, 300 }, "Pool Double 100万回の処理時間:");
+		Time::DrawWatch({ 10, 300 }, "Pool 100万回の処理時間:");
 		
 		for (int a = 0; a < 1000000; ++a)
 		{
-			intS.push_back(a);
+			vecA.emplace_back();
 		}
-		intS.clear();
+		vecA.clear();
 
-		Time::DrawWatch({ 10, 320 }, "vector<int> 100万回の処理時間:");
+		Time::DrawWatch({ 10, 320 }, "vector<Test> 100万回の処理時間:");
 
 		for (int a = 0; a < 1000000; ++a)
 		{
-			unionS.push_back( Double());
+			vecC.push_back( std::make_shared<Test>() );
 		}
-		unionS.clear();
-		Time::DrawWatch({ 10, 340 }, "tempUnion 100万回の処理時間:");
+		vecC.clear();
+		Time::DrawWatch({ 10, 340 }, "shared_ptr 100万回の処理時間:");
 
 		for (int a = 0; a < 1000000; ++a)
 		{
-			anionS.push_back( Double());
+			vecB.emplace_back( Test());
 		}
-		anionS.clear();
-		Time::DrawWatch({ 10, 360 }, "AnyUnion 100万回の処理時間:");
-
-		for (int a = 0; a < 1000000; ++a)
-		{
-			sAniS.emplace_back( Double() );
-		}
-		sAniS.clear();
-		Time::DrawWatch({ 10, 380 }, "Any 100万回の処理時間:");
-
-		//for (int a = 0; a < 1000000; ++a)
-		//{
-		//	sDoubleS.emplace_back();
-		//}
-		/*
-		for (int a = 0;a < 1000000; ++a)
-		{
-			emptyS.push_back(a);
-
-			//testS[a].isKill = true;
-		}
-
-		for (int a = 0;a < 1000000; ++a)
-		{
-			testS[emptyS.back()].isKill = false;
-			emptyS.pop_back();
-		}
-		*/
-		for (int b = 0;b < 5; ++ b)
-		for (int a = 0;a < 1000000; ++a)
-		{
-			testS[a].Update();
-			//emptyS.pop_back();
-		}
-
-		sDoubleS.clear();
-		Time::DrawWatch({ 10, 400 }, "vector<Double> 100万回の処理時間:");
-
-		for (int a = 0; a < 1000000; ++a)
-		{
-			shDoubleS.push_back( std::make_shared<Double>() );
-		}
-		shDoubleS.clear();
-		Time::DrawWatch({ 10, 420 }, "shared_ptr 100万回の処理時間:");
+		vecB.clear();
+		Time::DrawWatch({ 10, 360 }, "Any 100万回の処理時間:");
 	}
 
 	System::End();

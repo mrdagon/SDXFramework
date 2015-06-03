@@ -6,26 +6,29 @@
 
 namespace SDX
 {
-	template< class TSuper, int MaxSize >
+	template< class TBase, int MaxSize >
 	/*静的にメモリを確保する動的型.*/
-	/*共通スーパークラスと最大型サイズをテンプレートに入れる*/
+	/*共通基底クラスと最大型サイズをテンプレートに入れる*/
 	/*Holderとか実装してない分、メモリ効率は良い*/
 	/*Any同士の代入とかが無理*/
 	class Any
 	{
 	private:
 		char buff[MaxSize];
-		TSuper* pSuper = nullptr;
 
 	public:
 		template < typename T >
-		Any(const T& src) :
-			pSuper(new(buff) T(src))
-		{}
+		Any(const T& src)
+		{
+			static_assert(sizeof(T) <= MaxSize, "Any<> MaxSize Over");
+			//継承チェック
+			//static_assert(std::is_base_of<TBase, T>(), "KEISYOU SITENAI");
+			new(buff) T(src);
+		}
 
 		~Any()
 		{
-			pSuper->~TSuper();
+			((TBase*)this)->~TBase();
 		}
 
 		Any& operator = (Any const & src)
@@ -43,22 +46,23 @@ namespace SDX
 		template < typename T >
 		Any& operator = (const T& src)
 		{
-			pSuper = new(buff) T(src);
+			static_assert(sizeof(T) <= MaxSize, "Any<> MaxSize Over");
+			*this = new(buff) T(src);
 			return *this;
 		}
 
-		TSuper* Get(void)
+		TBase* operator->()
 		{
-			return pSuper;
+			return (TBase*)this;
 		}
 	};
 
-	template< class TSuper , int MaxSize >
+	template< class TBase , int MaxSize >
 	/*静的にメモリを確保する動的型.*/
 	/*共通スーパークラスと最大型サイズをテンプレートに入れる*/
 	/*Holderとかの分も考えて、MaxSizeを指定する必要がありメモリ効率が下がる*/
-	/*コピー等が可能*/
-	class ClonableAny
+	/*色々安全にした分、メモリ効率が若干悪く、速度も若干遅い*/
+	class SafeAny
 	{
 	private:
 		char buff[MaxSize];
@@ -68,7 +72,7 @@ namespace SDX
 		public:
 			virtual ~IHolder() {}
 			virtual IHolder * clone(char* buff) = 0;
-			virtual TSuper* Get(void) = 0;
+			virtual TBase* Get(void) = 0;
 		};
 
 		IHolder* content;
@@ -92,7 +96,7 @@ namespace SDX
 				return new(buff) Holder(held);
 			}
 
-			TSuper* Get()
+			TBase* Get()
 			{
 				return &held;
 			}
@@ -103,20 +107,22 @@ namespace SDX
 		
 	public:
 		template < typename T >
-		ClonableAny(T const & src) :
+		SafeAny(T const & src) :
 			content(new(buff) Holder<T>(src))
-		{ }
+		{
+			static_assert(sizeof(Holder<T>) <= MaxSize, "SafeAny<> MaxSize Over");
+		}
 
-		ClonableAny(ClonableAny const & other) :
+		SafeAny(SafeAny const & other) :
 			content(other.content ? other.content->clone(buff) : 0)
 		{ }
 
-		~ClonableAny()
+		~SafeAny()
 		{
 			content->~IHolder();
 		}
 
-		ClonableAny& operator = (ClonableAny const & src)
+		SafeAny& operator = (SafeAny const & src)
 		{
 			if (this != &src)
 			{
@@ -126,13 +132,14 @@ namespace SDX
 		}
 
 		template < typename T >
-		ClonableAny& operator = ( T const & src)
+		SafeAny& operator = ( T const & src)
 		{
+			static_assert(sizeof(Holder<T>) <= MaxSize, "SafeAny<> MaxSize Over");
 			content = new(buff) Holder<T>(src);
 			return *this;
 		}
 
-		TSuper* Get(void)
+		TBase* operator->()
 		{
 			content->Get();
 		}

@@ -408,8 +408,9 @@ namespace SDX
 					isWrite = true;
 					sceneFile.AddLine(str);
 				}
-				else if (str.find("//@") != std::string::npos)
+				else if (str.find("//@") != std::string::npos && str.find("@todo") == std::string::npos)
 				{
+					//@todoタグは無視
 					std::string name = str.substr(str.find("//@")+3);
 
 					isWrite = false;
