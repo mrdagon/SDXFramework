@@ -1,9 +1,9 @@
 ﻿/*!
 @page ReleaseNote 更新履歴
 各バージョンの主な更新履歴です \n
-今後の変更予定はSorceForgeのチケットやTodo一覧を参照して下さい\n
+今後の変更予定はOSDNのチケットやTodo一覧を参照して下さい\n
 \n
-SorceForgeで配布しているファイルはデータを全て含む、安定版です\n
+OSDNで配布しているファイルはデータを全て含む、安定版です\n
 開発中のバージョンを入手したい場合や、差分ファイルだけ欲しい場合は\n
 以下のページ右下の"Download ZIP"からソースをダウンロードし\n
 https://github.com/mrdagon/SDXFramework
@@ -12,11 +12,12 @@ SDXFramework>jni>SDL>includeに解凍したファイルを上書きして下さ�
 \n
 <HR>
 <B>ver 0.13</B>\n
+SDXafx.hの場所を変更、SDX.hはそのまま\n
 削除した実装はOldフォルダに移す事に\n
 UtilityにAny.hとPool.hを追加、デフォルトでインクルードはしていない\n
 Sample関数を名前空間でくくってたのを解除\n
 IModelの設計をGetShapeとGetSpriteをオーバーライドする形に変更\n
-VisualStudio2015に対応、プラットフォームツールセットをv140でも動作するように\n
+VisualStudio2015に対応したlibファイルを追加、プラットフォームツールセットをv140でも動作するように\n
 Timeに日付を文字列で返す関数GetDateStringを追加\n
 Systemにプラットフォームの種類を取得する関数と、タブレットかどうかを取得する関数を追加。\n
 LoadBMPFont関数を非同期読み込み対応\n
@@ -25,7 +26,7 @@ Font::MakeBmpFontで出力されるファイル名に文字サイズが入るよ
 Font::DrawRotateで一行分上に表示されている等の不具合を修正\n
 Font::GetCsvToStringで改行コードが残る不具合を修正\n
 Fontクラスで登録されていない文字を表示する際に空白が入る用に修正\n
-Tiledとの外部エディタ連携機能を実装\n
+外部エディタとしてTiledとの連携機能を仮実装\n
 \n
 <B>ver 0.12</B>\n
 Window::SetLogicalSize関数を追加\n

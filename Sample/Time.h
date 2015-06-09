@@ -137,6 +137,10 @@ bool SampleTime()
 		}
 		vecB.clear();
 		Time::DrawWatch({ 10, 360 }, "Any 100万回の処理時間:");
+
+
+
+
 	}
 
 	System::End();

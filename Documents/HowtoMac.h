@@ -12,7 +12,7 @@ AppStoreからXcodeの最新版をダウンロードしてインストールし�
 <HR>
 <B>2 SDXFrameworkをダウンロードする</B>\n
 下記サイトで最新版を配布しているので、リンク先からダウンロードして下さい\n
-<a href="https://sourceforge.jp/projects/dxframework/" target="_blank"><B>SorceForge</B></a>\n
+<a href="https://sourceforge.jp/projects/dxframework/" target="_blank"><B>OSDN</B></a>\n
 解凍すると「SDXFramework」と言うフォルダが出来るので。\n
 ホームディレクリ等において下さい。\n
 <HR>
@@ -69,7 +69,7 @@ Add  frameworks & libraries here に  「SDXFramework/MacOSX」の中にある\n
 main.cppファイルに以下のコードをコピペして、コンパイルして実行して下さい。\n
 @code
 #include <SDXFramework.h>
-#include <Multimedia/SDXafx.h>
+#include <SDXafx.h>
 
 using namespace SDX;
 

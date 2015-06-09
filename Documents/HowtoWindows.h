@@ -21,7 +21,7 @@ C++の規格準拠具合の関係で、VisualStudio2012以前のコンパイラ�
 <HR>
 <B>2 SDXFrameworkをダウンロードする</B>\n
 下記サイトで最新版を配布しているので、リンク先からダウンロードして下さい\n
-<a href="https://sourceforge.jp/projects/dxframework/" target="_blank"><B>SorceForge</B></a>\n
+<a href="https://sourceforge.jp/projects/dxframework/" target="_blank"><B>OSDN</B></a>\n
 <HR>
 <B>3 新規プロジェクトの作成</B>\n
 <B>プロジェクトの作成</B>\n
@@ -59,7 +59,7 @@ WindowsXPでも動作するようにしたい場合は｢実行可能ファイ�
 追加したcppファイルに以下のコードをコピペして、コンパイルして実行して下さい。\n
 @code
 #include <SDXFramework.h>
-#include <Multimedia/SDXafx.h>
+#include <SDXafx.h>
 
 using namespace SDX;
 
@@ -109,7 +109,7 @@ SDXは色々な理由があって、大半のコードをヘッダーに実装�
 pre_compile.cpp（cppとhを間違えないで下さい）には\n
 @code
 #include "stdafx.h"
-#include <Multimedia/SDXafx.h>
+#include <SDXafx.h>
 @endcode
 と入力して下さい。\n
 \n
@@ -122,7 +122,7 @@ stdafx.hには\n
 先ほどの「main.cpp」の\n
 @code
 #include <SDXFramework.h>
-#include <Multimedia/SDXafx.h>
+#include <SDXafx.h>
 @endcode
 の三行を\n
 @code

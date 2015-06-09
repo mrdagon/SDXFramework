@@ -21,7 +21,7 @@ clangの最新版や標準ライブラリ等を入手し、c++のコンパイル
 main.cppファイルを作成します。\n
 @code
 #include <SDXFramework.h>
-#include <Multimedia/SDXafx.h>
+#include <SDXafx.h>
 
 using namespace SDX;
 

@@ -18,7 +18,7 @@
 \n
 @section リンク
 <B>[SDX開発コミュニティ]</B>\n
-<a href="https://sourceforge.jp/projects/dxframework/" target="_blank"><B>SorceForge</B></a>\n
+<a href="https://sourceforge.jp/projects/dxframework/" target="_blank"><B>OSDN</B></a>\n
 <B>[最新版リポジトリ]</B>\n
 <a href="https://github.com/mrdagon/SDXFramework" target="_blank"><B>Github</B></a>\n
 <B>[使用しているライブラリ]</B>\n
