@@ -74,7 +74,9 @@ namespace SDX
 			//デフォルトフォントの設定
 			setlocale(LC_CTYPE, "jpn");//文字コードを日本語に
 
+#ifndef OMIT_SDL2_TTF
 			TTF_Init();
+#endif
 			Drawing::SetDefaultFont(SystemFont::Gothic, 16 , 2 );
 			SDL_InitSubSystem(SDL_INIT_JOYSTICK | SDL_INIT_GAMECONTROLLER | SDL_INIT_EVERYTHING);
 
@@ -94,7 +96,9 @@ namespace SDX
 		/** この関数を使用した後は速やかにプログラムを終了させなければならない。*/
 		static bool End()
 		{
+#ifndef OMIT_SDL2_TTF
 			TTF_Quit();
+#endif
 			Mix_CloseAudio();
 			Mix_Quit();
 			SDL_Quit();

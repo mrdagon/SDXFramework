@@ -51,7 +51,11 @@ vartual ~a() = default;
 #endif
 #pragma comment(lib, "SDL2_image.lib")
 #pragma comment(lib, "SDL2_mixer.lib")
+
+#ifndef OMIT_SDL2_TTF
 #pragma comment(lib, "SDL2_ttf.lib")
+#endif
+
 #pragma execution_character_set("utf-8")//charの文字コードをUTF-8に変更
 
 #ifdef _DEBUG

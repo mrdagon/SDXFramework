@@ -12,6 +12,7 @@
 #include <Multimedia/File.h>
 
 #include <map>
+#include <unordered_map>
 #include <iomanip>
 
 namespace SDX
@@ -28,7 +29,7 @@ namespace SDX
         bool isBlendRender;
         int size = 0;//!<
         int enterHeight = 0;//!<
-        mutable std::map<int, Image*> hash;//!<
+		mutable std::unordered_map<int, Image*> hash;//!<
 
         int style = TTF_STYLE_NORMAL;//!<
         
@@ -134,8 +135,9 @@ namespace SDX
             {
                 if (handle == nullptr){ return nullptr; }
 
-                SDL_Surface* surface;
+                SDL_Surface* surface = nullptr;
 
+#ifndef OMIT_SDL2_TTF
                 if (isBlendRender)
                 {
                     surface = TTF_RenderUTF8_Blended(handle, 文字, { 255, 255, 255 });
@@ -144,6 +146,7 @@ namespace SDX
                 {
                     surface = TTF_RenderUTF8_Solid(handle, 文字, { 255, 255, 255 });
                 }
+#endif
 
                 SDL_Texture* moji = SDL_CreateTextureFromSurface(Screen::GetHandle(), surface);				
                 hash[ID] = new Image(moji, surface->w, surface->h);
@@ -176,7 +179,7 @@ namespace SDX
 
         /** フォントを作成する.*/
         /**	行間は0の場合、改行後の文字が上下くっつく。\n*/
-        /** BMPフォント専用にしたい場合、フォント名は無効な物を入れる*/
+        /** BMPフォント専用にしたい場合、SetSizeを使うと良い*/
         bool Load(const char *フォント名, int 大きさ, int 行間 = 0, bool 高品質レンダリングフラグ = true )
         {
             if (Loading::isLoading)
@@ -191,10 +194,14 @@ namespace SDX
             this->size = 大きさ;
             this->enterHeight = 行間 + 大きさ;
             isBlendRender = 高品質レンダリングフラグ;
+
+#ifndef OMIT_SDL2_TTF
             handle = TTF_OpenFont(フォント名, 大きさ);
+#endif
 
             return (handle != nullptr);
         }
+
 
         /** フォントハンドルをメモリから開放する.*/
         bool Release() const
@@ -265,6 +272,15 @@ namespace SDX
 
             return image;
         }
+
+		/** フォントの行間を再指定する.*/
+		/** Loadしたフォントの大きさが変化するわけでは無い\n*/
+		/** BMPフォント専用にしたい場合、Loadでは無くこっちが良い*/
+		bool SetSize(int 大きさ, int 行間 = 0)
+		{
+			this->size = 大きさ;
+			this->enterHeight = 行間 + 大きさ;
+		}
 
         /** BMPフォントデータを生成する.*/
         /** テキストファイルには出力したい文字を一行で入力します\n*/

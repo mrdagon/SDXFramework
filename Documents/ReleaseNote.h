@@ -12,20 +12,24 @@ SDXFramework>jni>SDL>includeに解凍したファイルを上書きして下さ�
 \n
 <HR>
 <B>ver 0.13</B>\n
+[破壊的変更]\n
 SDXafx.hの場所を変更、SDX.hはそのまま\n
+IModelの設計をGetShapeとGetSpriteをオーバーライドする形に変更\n
+Font::DrawRotateで一行分上に表示されている等の不具合を修正\n
+Fontクラスで登録されていない文字を表示する際に空白が入る用に修正\n
+Font::GetCsvToStringで改行コードが残る不具合を修正\n
+[細かな修正等]\n
+OMIT_SDL2_TTFマクロでttf関連の機能を無効に出来るように変更\n
+Fontの内部構造をmapからunorderd_mapに変更\n
 削除した実装はOldフォルダに移す事に\n
 UtilityにAny.hとPool.hを追加、デフォルトでインクルードはしていない\n
 Sample関数を名前空間でくくってたのを解除\n
-IModelの設計をGetShapeとGetSpriteをオーバーライドする形に変更\n
 VisualStudio2015に対応したlibファイルを追加、プラットフォームツールセットをv140でも動作するように\n
 Timeに日付を文字列で返す関数GetDateStringを追加\n
 Systemにプラットフォームの種類を取得する関数と、タブレットかどうかを取得する関数を追加。\n
 LoadBMPFont関数を非同期読み込み対応\n
 Drawing関数で半透明指定が無効になっていたバグを修正\n
 Font::MakeBmpFontで出力されるファイル名に文字サイズが入るように修正\n
-Font::DrawRotateで一行分上に表示されている等の不具合を修正\n
-Font::GetCsvToStringで改行コードが残る不具合を修正\n
-Fontクラスで登録されていない文字を表示する際に空白が入る用に修正\n
 外部エディタとしてTiledとの連携機能を仮実装\n
 \n
 <B>ver 0.12</B>\n
