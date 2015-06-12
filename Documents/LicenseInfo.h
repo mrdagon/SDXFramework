@@ -38,6 +38,55 @@ Copyright © 2014~ SDXFramework\n
 http://sourceforge.jp/projects/dxframework/simple/
 <BR>
 <HR>
+[内部で使っているライブラリのライセンス]\n
+SDL2.0等が利用しているライブラリのライセンスにも従う必要があります\n
+該当するdll等を使用していない場合、それらのライセンスを表記する必要はありません\n
+使用する場合は各種ライセンス表記が必要です\n
+各ライセンス文はSDL2/licenceフォルダにコピーが置いてあります\n
+\n
+SDL2\n
+SDL2_image\n
+SDL2_mixer\n
+SDL2_ttf\n
+zlib\n
+はzlibライセンスなので、無改変の場合特にライセンス表記は不要です。\n
+<table>
+<caption>ライブラリ一覧</caption>
+<tr style="background:#ccccff"> <td>SDL_image</td>				<td> </td></tr>
+<tr>							<td>libjpeg			<td>使用している事を表記する</td></tr>
+<tr>							<td>libpng			<td>libpngライセンス、表記は任意</td></tr>
+<tr>							<td>libtiff			<td>BSDライクライセンス、著作権者表記、ライセンス文のコピーが必要</td></tr>
+<tr>							<td>libwebp			<td>BSDライセンス、著作権者表記、ライセンス文のコピーが必要</td></tr>
+<tr style="background:#ccccff"> <td>SDL_mixer</td><td> </td></tr>
+<tr>							<td>libFLAC				<td>BSDライクライセンス、著作権者表記、ライセンス文のコピーが必要</td></tr>
+<tr>							<td>libmikmod				<td>LGPL ver2、著作権者表記、ライセンス文のコピーが必要</td></tr>
+<tr>							<td>libmodplug				<td>パブリックドメイン、著作権表記等は任意</td></tr>
+<tr>							<td>libogg/libvorbis		<td>BSDライクライセンス、著作権者表記、ライセンス文のコピーが必要</td></tr>
+<tr>							<td>smpeg2				<td>LGPL ver2、著作権者表記、ライセンス文のコピーが必要</td></tr>
+<tr style="background:#ccccff"> <td>SDL_ttf</td><td> </td></tr>
+<tr>							<td>libfreetype	<td>FreeType License、著作権者表記、ライセンス文のコピーが必要</td></tr>
+</table>
+\n
+例えば全ての機能を利用する場合は、\n
+SDXFramework Copyright © 2014~ \n
+http://sourceforge.jp/projects/dxframework/simple/
+\n
+libjpeg copyright (C) 1991-2012, Thomas G. Lane, Guido Vollbeding.All rights reserved.\n
+\n
+libtiff Copyright (c) 1988-1997 Sam Leffler.All rights reserved.\n
+libtiff Copyright (c) 1991-1997 Silicon Graphics, Inc.All rights reserved.\n
+\n
+libwebp Copyright (c) 2010, Google Inc.All rights reserved.\n
+libFLAC Copyright (C) 2000,2001,2002,2003,2004,2005,2006,2007  Josh Coalson.All rights reserved.\n
+libmikmod Copyright (c) Mikmod.All rights reserved.\n
+libogg Copyright (c) 2002-2008 Xiph.org Foundation.All rights reserved.\n
+smpeg Copyright (c)Loki Software.All rights reserved.\n
+libfreetype  Copyright 1996-2002, 2006 by David Turner, Robert Wilhelm, and Werner Lemberg.All rights reserved.\n
+\n
+以上の内容をreadmeやゲーム内のクレジット等の分かりやすい所に明記し。\n
+\n
+SDL2/licenceフォルダのテキストファイルを一緒に配布する等して下さい\n
+<HR>
 SDXFrameworkには以下のライブラリを利用しています\n
 Android用の設定ファイルを一部変更しています\n
 \n
