@@ -13,7 +13,7 @@ SDXFramework>jni>SDL>includeに解凍したファイルを上書きして下さ�
 <HR>
 <B>ver 0.13</B>\n
 [破壊的変更]\n
-SDXafx.hの場所を変更、SDX.hはそのまま\n
+SDXafx.hのファイルパスを変更\n
 IModelの設計をGetShapeとGetSpriteをオーバーライドする形に変更\n
 Font::DrawRotateで一行分上に表示されている等の不具合を修正\n
 Fontクラスで登録されていない文字を表示する際に空白が入る用に修正\n

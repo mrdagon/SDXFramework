@@ -220,11 +220,14 @@ DLLと実行ファイルを同じフォルダに置くとどれが実行ファ�
 相対パスのショートカットを置く等すると良いと思います。\n
 <B>10 dllを減らす。</B>\n
 ある機能やデータフォーマットを必要としていない場合、dllを一緒に配布しなくても良いDLLがあります\n
+\n
+BMPフォントしか使わない場合は、#define OMIT_SDL2_TTFをstdafx.hに定義すると、ttf関連の機能を無効に出来ます。
+\n
 SDL2.dll:必須\n
 SDL2_main.dll:必須\n
 SDL2_image.dll:ほぼ必須\n
 SDL2_mixer.dll:ほぼ必須\n
-SDL2_ttf.dll:ほぼ必須\n
+SDL2_ttf.dll:ttf機能を無効にしないなら必須\n
 zlib1.dll:ほぼ必須\n
 \n
 『libwebp-4.dll』\n
@@ -243,10 +246,10 @@ jpeg形式のファイルを使うなら必要\n
 ogg形式の音声ファイルを使うなら必要\n
 \n
 『libmodplug-1.dll』\n
-基本的に必須\n
+必須\n
 \n
 『libmikmod-2.dll』\n
-基本的に必須\n
+必須\n
 \n
 『libFLAC-8.dll』\n
 FLAC形式の音声ファイルを使うなら必要\n

@@ -11,7 +11,7 @@ namespace SDX
 {
 	/** BGM用音声を表すクラス.*/
 	/** \include Music.h*/
-	/**@todo 中途再生周りのテスト*/
+	/**@todo 中途再生周りのテスト、音量変更時ノイズっぽいのが出る？*/
 	class Music
 	{
 		friend class System;
