@@ -74,10 +74,8 @@ SDXFramework Copyright © 2014~ \n
 http://sourceforge.jp/projects/dxframework/simple/
 \n
 libjpeg copyright (C) 1991-2012, Thomas G. Lane, Guido Vollbeding.All rights reserved.\n
-\n
 libtiff Copyright (c) 1988-1997 Sam Leffler.All rights reserved.\n
 libtiff Copyright (c) 1991-1997 Silicon Graphics, Inc.All rights reserved.\n
-\n
 libwebp Copyright (c) 2010, Google Inc.All rights reserved.\n
 libFLAC Copyright (C) 2000,2001,2002,2003,2004,2005,2006,2007  Josh Coalson.All rights reserved.\n
 libmikmod Copyright (c) Mikmod.All rights reserved.\n
