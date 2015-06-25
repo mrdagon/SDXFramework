@@ -51,6 +51,7 @@ namespace SDX
 		/** ファイル名とモードを指定して、ファイルを開く.*/
 		bool Open(const char* ファイル名, FileMode 読み書きモード, bool バイナリファイル = false, SaveMode Androidの保存先 = SaveMode::Asset)
 		{
+
 #ifdef __ANDROID__
 			switch (Androidの保存先)
 			{
@@ -67,7 +68,13 @@ namespace SDX
 				break;
 			}
 #else
+	#ifdef __WINDOWS__
 			fileName = ファイル名;
+	#else
+			fileName = SDL_GetBasePath();
+			fileName += "/";
+			fileName += ファイル名;
+	#endif
 #endif
 
 			isBinary = バイナリファイル;

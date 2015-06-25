@@ -31,13 +31,15 @@ namespace SDX
         /** マウスオーバー判定 */
         bool isMouse()
         {
-            return rect.Hit( &Input::mouse.GetPoint() );
+			auto pt = Input::mouse.GetPoint();
+            return rect.Hit( &pt );
         }
 
         /** クリックorタッチ判定 */
         bool isClick()
         {
-            return Input::mouse.Left.on && rect.Hit(&Input::mouse.GetPoint());
+			auto pt = Input::mouse.GetPoint();
+            return Input::mouse.Left.on && rect.Hit(&pt);
         }
     };
 }

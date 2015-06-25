@@ -51,8 +51,11 @@ namespace SDX
 			});
 
 #else
-			DIR *dir = opendir(ディレクトリ名);
-			struct dirent　 *dp;
+			std::string str = SDL_GetBasePath();
+			str += "/";
+			str += ディレクトリ名;
+			DIR *dir = opendir(str.c_str());
+			struct dirent *dp;
 
 			if( dir == nullptr ){return nameS;}
 
