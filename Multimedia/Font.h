@@ -276,7 +276,7 @@ namespace SDX
 		/** フォントの行間を再指定する.*/
 		/** Loadしたフォントの大きさが変化するわけでは無い\n*/
 		/** BMPフォント専用にしたい場合、Loadでは無くこっちが良い*/
-		bool SetSize(int 大きさ, int 行間 = 0)
+		void SetSize(int 大きさ, int 行間 = 0)
 		{
 			this->size = 大きさ;
 			this->enterHeight = 行間 + 大きさ;

@@ -54,7 +54,7 @@ namespace SDX
 			DIR *dir = opendir(ディレクトリ名);
 			struct dirent　 *dp;
 
-			if( dir == nullptr ){return false;}
+			if( dir == nullptr ){return nameS;}
 
 			for (dp = readdir(dir); dp != NULL; dp = readdir(dir))
 			{

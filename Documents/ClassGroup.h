@@ -54,7 +54,7 @@
 <tr>							<td>SDX::MOTION				<td>移動方法のポリシー郡</td></tr>
 <tr>							<td>SDX::EnumArray			<td>列挙型用固定配列</td></tr>
 <tr>							<td>SDX::SPEED				<td>速度変化のポリシー郡</td></tr>
-<tr style="background:#8888ff"> <th>設計サンプル</th>		<th>再利用可能な設計のサンプル実装</th></tr>
+<tr style="background:#8888ff"> <th>設計サンプル</th>		<th>再利用可能な設計のサンプル集</th></tr>
 <tr style="background:#ccccff"> <td>2Dスプライト</th><td> </td></tr>
 <tr>							<td>SDX::ISprite			<td>2Dモデルに貼り付けるスプライトを表す抽象クラス</td></tr>
 <tr>							<td>SDX::SpImage			<td>Imageのスプライト</td></tr>

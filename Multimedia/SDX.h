@@ -29,7 +29,7 @@ namespace SDX
 	double CompAngle(double 角度A, double 角度B);
 }
 
-//暫定的に、マクロ使用
+//モノステートパターン実現のために暫定的に、マクロ使用。変えるかも
 #define MONO_STATE(a) \
 a() = default;\
 ~a() = default;\
@@ -38,35 +38,34 @@ a(const a& src) = delete;\
 void operator =(const a&& src) = delete;\
 a(const a&& src) = delete;
 
-//暫定的に、マクロ使用
-#define INTERFACE(a) \
-vartual ~a() = default;
-
 //Windowsのみ有効なコード
 #pragma comment(lib, "SDL2.lib")
+
 #if _MSC_VER > 1800
-#pragma comment(lib, "SDL2main_2015.lib")
+	#ifdef _DEBUG
+		#pragma comment(lib, "SDL2main_2015.lib")
+	#else
+		#pragma comment(lib, "SDL2main_2015_MT.lib")
+	#endif
 #else
-#pragma comment(lib, "SDL2main.lib")
+	#ifdef _DEBUG
+		#pragma comment(lib, "SDL2main.lib")
+	#else
+		#pragma comment(lib, "SDL2main_MT.lib")
+	#endif
 #endif
+
 #pragma comment(lib, "SDL2_image.lib")
 #pragma comment(lib, "SDL2_mixer.lib")
 
 #ifndef OMIT_SDL2_TTF
-#pragma comment(lib, "SDL2_ttf.lib")
+	#pragma comment(lib, "SDL2_ttf.lib")
 #endif
 
 #pragma execution_character_set("utf-8")//charの文字コードをUTF-8に変更
 
 #ifdef _DEBUG
-#pragma comment(linker, "/NODEFAULTLIB:msvcrt.lib")
-#else
-//コメントアウトするとRerease時にMTでコンパイル可能になる
-//#pragma comment(linker, "/NODEFAULTLIB:msvcrt.lib")
-//int fprintf( FILE * stream, const char * format, ... )
-//{
-//	return 0;
-//}
+	#pragma comment(linker, "/NODEFAULTLIB:msvcrt.lib")
 #endif
 
 #include <SDL.h>
