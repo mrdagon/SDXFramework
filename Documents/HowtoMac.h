@@ -126,4 +126,6 @@ http://d.hatena.ne.jp/o_mega/20080512/1210612958
 [参考/Library not loaded エラー？ここを見直そう]\n
 http://qiita.com/kakipo/items/3cd87e00bc96bc3888b2
 \n
+[SDXのサンプルゲーム、Mac版の配布ファイルを参考にどうぞ]\n
+http://osdn.jp/projects/grachestd/\n
 */

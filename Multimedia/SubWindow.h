@@ -135,6 +135,7 @@ namespace SDX
 		}
 
 		/** スクリーンモードを設定する.*/
+		/** @todo MacOSXでフルスクリーンからウィンドウモードに戻すとエラー？*/
 		bool SetFullscreen(bool フルスクリーンフラグ)
 		{
 			if (handle == nullptr){ return false; }
@@ -148,8 +149,8 @@ namespace SDX
 			}
 			else
 			{
-				SDL_SetWindowFullscreen( handle, 0);
-				SDL_SetWindowSize( handle, GetWidth(), GetHeight());
+				SDL_SetWindowFullscreen(handle, 0);
+				SDL_SetWindowSize(handle, GetWidth(), GetHeight());
 			}
 			return true;
 		}

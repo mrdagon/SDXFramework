@@ -14,6 +14,7 @@
 <B>[その他]</B>\n
 @ref CodingRule\n
 @ref ReleaseNote\n
+@ref HowToTiled
 @ref todo "未実装関数やTodo一覧"\n
 \n
 @section リンク

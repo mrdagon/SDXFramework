@@ -19,9 +19,11 @@ Font::DrawRotateで一行分上に表示されている等の不具合を修正\
 Fontクラスで登録されていない文字を表示する際に空白が入る用に修正\n
 Font::GetCsvToStringで改行コードが残る不具合を修正\n
 VisualStudioでReleaseビルドする時はMTにするように変更\n
+\n
 [細かな修正等]\n
 OMIT_SDL2_TTFマクロでttf関連の機能を無効に出来るように変更\n
 Fontの内部構造をmapからunorderd_mapに変更\n
+OSXでのFileクラスのバグを修正\n
 削除した実装はOldフォルダに移す事に\n
 UtilityにAny.hとPool.hを追加、デフォルトでインクルードはしていない\n
 Sample関数を名前空間でくくってたのを解除\n
